@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="xar" name="HWH-WebApp" basedir="../WeGA-WebApp" xmlns:unless="ant:unless">
+    
+    <!-- import default properties from file -->
+    <!--    <property file="local.build.properties"/>-->
+        <property file="build.properties"/>
+    
+    <!-- Import build script for building WeGA-WebApp -->
+    <import file="../WeGA-WebApp/build.xml" as="wega" prefixseparator=":"/>
+    
+    <!-- build WeGA-WebApp and get package and unzip it to local dist dir -->
+    <target name="get-wega-pkg" depends="wega:xar">
+        <unzip src="build/WeGA-WebApp-4.4.0.xar" dest="../hwh-webapp/dist"/>
+    </target>
+    
+    <!-- build hwh-webapp -->
+    <target name="build-hwh-specs">
+        <copy todir="../hwh-webapp/dist-hwh/">
+            <fileset dir="../hwh-webapp/data/">
+                <include name="**/*.*"/>
+            </fileset>
+        </copy>
+    </target>
+    
+    <!-- override WeGA-WebApp with hwh-webapp -->
+    <target name="update-dist" depends="get-wega-pkg, build-hwh-specs">
+        <copy todir="../hwh-webapp/dist" overwrite="yes">
+        <fileset dir="../hwh-webapp/dist-hwh">
+            <include name="**/*.*"/>
+        </fileset>
+    </copy></target>
+    
+    <!-- make package -->
+    <target name="xar" depends="update-dist">
+       <zip destfile="../hwh-webapp/build/${project.app}-${project.version}.xar">
+           <fileset dir="../hwh-webapp/dist"/>
+       </zip>
+    </target>
+</project>
