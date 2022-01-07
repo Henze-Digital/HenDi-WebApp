@@ -1,0 +1,199 @@
+/* hide search docType filter on index page */
+@include media-breakpoint-down(xs) {
+    .docType-search-filter {
+        display:none;
+    }
+} 
+
+
+//navigation for md down 
+@include media-breakpoint-down(md)
+{
+// smaller breadcrumbs, overflow scrolling
+    ol.breadcrumb {
+        display: block !important;
+        overflow: scroll;
+        white-space: nowrap;
+        li { display:inline; }
+    }
+
+    .teaser
+    { 
+        margin-top: 30px;    
+    }
+    
+    #navbarCollapse {
+        a.nav-link {
+            font-size:0.9rem!important;
+        }
+    }
+    
+    .navbar-brand {
+        padding: 0;
+    }
+    
+    .brand {
+       width: 180px;
+    }
+
+    .navbar-nav.nav li
+    {
+      padding: 0px;
+    }
+
+    .navbar-nav.nav li a
+    {
+        padding: 0px;
+        padding-left: 20px;
+        line-height: 70px;
+    }
+    
+    .navbar-nav.nav li a:focus
+    {
+        color: $primary;
+    }
+    
+    .navbar-nav.nav.nav li > a:after, .nav li.active > a:after 
+    {
+      border: none;
+    }
+    
+    .navbar-nav ul.dropdown-menu li 
+    {
+      border: none;
+      box-shadow: none!important;
+      border-left: none!important;
+    }
+    
+    ul.dropdown-menu li a
+    {
+        background-color: $gray-lighter;
+        padding: 15px 35px!important;
+    }
+
+   #navbarCollapse {
+        order: 3;
+       .divider {
+            display: none;
+       }
+   }
+
+/*    .resp-tabs-container .resp-tab-content-active
+    {
+      border-left: 1px solid $gray-light;
+      border-right: 1px solid $gray-light;
+      border-bottom: 1px solid $gray-light;
+    }*/
+}
+
+@include media-breakpoint-down(sm)
+{
+// side col for sm down
+    .side-col {
+        order: 1;
+        margin-bottom: 1rem;
+    }
+    
+    .main-col {
+        order: 2;
+    }
+
+//front page adjustements
+    form.form-inline {
+        display: block;
+    }
+    
+    .teaser {
+        float: right;
+    }
+
+// reduce text padding
+    .paddingTopIcon {
+        padding-top: 25px;
+    }
+    
+// hide filtersections on document pages
+    .allFilter .filtersection {
+        display: none;
+    }
+}
+
+// front page for md down
+@include media-breakpoint-down(md)
+{
+   .brand
+    {      
+        height: auto;
+        width: 240px;
+        margin-top: 0px;
+        max-width: 100%;
+    }
+
+    .footer .row:first-child
+    {
+        padding-bottom: 0px;
+    }
+
+    .footer .col-md-3 img
+    {
+        margin-bottom: 60px!important;
+    }
+    
+    .colored.none-sm
+    {
+        background: transparent;
+    }
+
+    .borderTop.none-sm
+    {
+        border: none;
+    }
+
+    .unterschrifthenze {
+     margin-bottom: 24px;
+     img {
+        right: 10px;
+        bottom: -10px;
+        }
+    }
+    
+    .paddingBottomIcon {
+        padding-bottom: 25px;
+    }
+
+    .navbar-nav ul.dropdown-menu li {
+        box-shadow: none;
+    }
+    
+    a.teaser {
+        background-size: contain;
+    }
+    
+    .teaser {
+        height: 120px;
+        width: 120px;
+     }
+}    
+
+
+@include media-breakpoint-down(lg)
+{
+        #navbarCollapse {
+            .divider {
+                margin: 23px 4px 23px 4px;
+            }
+            a.nav-link {
+                font-size:1.1rem!important;
+            }
+        }
+
+        .brand {
+            /*margin-top: 29px;*/
+            margin-bottom: 0px;
+            width: 200px;;
+        }
+
+        .navbar.navbar-default {
+            margin-top: 0px;
+        }
+}

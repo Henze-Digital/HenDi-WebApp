@@ -1,0 +1,38 @@
+<mappings>
+    <!-- URL rewriting with status code 302 from mapping/@from to mapping/@to -->
+    <mapping from="/de/Projektbeschreibung" to="/de/Projekt/Projektbeschreibung.html"/>
+    <mapping from="/en/Project_Description" to="/en/Project/Project_Description.html"/>
+    <mapping from="/de/Kontakt" to="/de/Projekt/Kontakt.html"/>
+    <mapping from="/en/Contact" to="/en/Project/Contact.html"/>
+    <mapping from="/de/Impressum" to="/de/Projekt/Impressum.html"/>
+    <mapping from="/en/About" to="/en/Project/About.html"/>
+    <mapping from="/de/Editionsrichtlinien_Text" to="/de/Projekt/Editionsrichtlinien_Text.html"/>
+    <mapping from="/de/Editionsrichtlinien_Musik" to="/de/Projekt/Editionsrichtlinien_Musik.html"/>
+    <mapping from="/de/Editionsrichtlinien" to="/de/Projekt/Editionsrichtlinien_Text.html"/>
+    <mapping from="/en/Editorial_Guidelines" to="/en/Project/Editorial_Guidelines_Text.html"/>
+    <mapping from="/en/Editorial_Guidelines_Music" to="/en/Project/Editorial_Guidelines_Music.html"/>
+    <mapping from="/Editorial-Guidelines" to="/en/Project/Editorial_Guidelines_Text.html"/>
+    <mapping from="/Editorial_Guidelines" to="/en/Project/Editorial_Guidelines_Text.html"/>
+    <mapping from="/de/Bibliographie" to="/de/Projekt/Bibliographie"/>
+    <mapping from="/en/Bibliography" to="/en/Project/Bibliography"/>
+    
+    <mapping from="/de/Hilfe" to="/de/Hilfe/FAQ.html"/>
+    <mapping from="/en/Help" to="/en/Help/FAQ.html"/>
+    
+    <mapping from="/wev_kurzfassung.html" to="/de/A001000A/Werke"/>
+    <mapping from="/weberbiblio.html" to="/de/Projekt/Bibliographie"/>
+    <mapping from="/bibliographie.html" to="/de/Projekt/Bibliographie"/>
+    <mapping from="/aktuelles.html" to="/de/Projekt/Aktuelles"/>
+    <mapping from="/de/Register/Aktuelles" to="/de/Projekt/Aktuelles"/>
+    <mapping from="/tagebücher" to="/de/A001000A/Tagebücher"/>
+    <mapping from="/briefe" to="/de/A001000A/Korrespondenz"/>
+    <mapping from="/biographie.html" to="/de/A001000A/Biographie.html"/>
+    <mapping from="/Biographie" to="/de/A001000A/Biographie.html"/>
+    <mapping from="/de/Biographie" to="/de/A001000A/Biographie.html"/>
+    
+    <mapping from="/fffi-db" to="/de/Suche"/>
+    <mapping from="/fffi-db/" to="/de/Suche"/>
+    
+    <!--/werkedition.html-->
+    
+</mappings>
