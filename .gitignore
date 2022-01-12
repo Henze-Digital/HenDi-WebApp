@@ -5,3 +5,4 @@ dist-hwh
 build
 *.xpr
 dist-hwhSpecs
+yarn.lock
