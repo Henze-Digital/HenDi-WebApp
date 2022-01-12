@@ -15,7 +15,24 @@
     
     <!-- build hwh-webapp -->
     <target name="build-hwh-specs">
-        <copy todir="../hwh-webapp/dist-hwhSpecs/">
+        
+        <!-- create expath-pkg.xml -->
+        <copy file="data/expath-pkg.xml.tmpl" tofile="dist-hwhSpecs/expath-pkg.xml" filtering="true" overwrite="true">
+            <filterset>
+                <filter token="project.version" value="${hwh.project.version}"/>
+                <filter token="project.name" value="${hwh.project.name}"/>
+                <filter token="project.app" value="${hwh.project.app}"/>
+            </filterset>
+        </copy>
+        
+        <!-- get sass data from wega -->
+        <copy todir="../hwh-webapp/dist-hwhSpecs/resources/sass/">
+            <fileset dir="../WeGA-WebApp/resources/sass/">
+                <include name="**/*.*"/>
+            </fileset>
+        </copy>
+        <!-- get sass data from hwh -->
+        <copy todir="../hwh-webapp/dist-hwhSpecs/" overwrite="yes">
             <fileset dir="../hwh-webapp/data/">
                 <include name="**/*.*"/>
             </fileset>
