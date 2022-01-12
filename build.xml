@@ -45,16 +45,20 @@
                 <include name="node_modules/font-awesome/**"/>
             </fileset>
         </copy>
-        <!-- build sass -->
-        <!--<target name="sass" depends="init">
-            <description>Create CSS files via sass</description>
-            <exec executable="${sass.cmd}">
-                <arg line="resources/sass/main.scss ${dist.dir}/resources/css/styles.css"/>
-            </exec>
-            <!-\- <exec executable="${sass.cmd}">
-            <arg line="resources/sass/swagger.scss ${dist.dir}/resources/css/swagger.css"/>
-            </exec> -\->
-        </target>-->
+        
+        <echo>Create CSS files via sass</echo>
+        <exec executable="../WeGA-WebApp/${dev_libs.dir}/sass/sass.js">
+            <arg line="../hwh-webapp/dist-hwhSpecs/resources/sass/main.scss ../hwh-webapp/dist-hwhSpecs/resources/css/styles.css"/>
+        </exec>
+        
+        <echo>Run minify on CSS files</echo>
+        <apply executable="../WeGA-WebApp/${dev_libs.dir}/minify/bin/minify.js" parallel="false">
+            <fileset dir="../hwh-webapp/dist-hwhSpecs/resources/css" includes="*.css" excludes="*min.css"/>
+            <redirector>
+                <outputmapper type="glob" from="*.css" to="dist-hwhSpecs/resources/css/*-min.css"/>
+            </redirector>
+        </apply>
+        
     </target>
     
     <!-- override WeGA-WebApp with hwh-webapp -->
