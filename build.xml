@@ -16,8 +16,8 @@
     </target>
     
     <target name="clean">
-        <delete dir="./dist/"/>
-        <delete dir="./dist-tmp/"/>
+        <delete dir="${hwh.dist.dir}/"/>
+        <delete dir="${hwh.dist.tmp.dir}/"/>
     </target>
     
     <!-- build WeGA-WebApp and get package and unzip it to local dist dir -->
@@ -30,7 +30,7 @@
     <target name="build-hwh-specs">
         
         <!-- create expath-pkg.xml -->
-        <copy file="data/expath-pkg.xml.tmpl" tofile="dist-tmp/expath-pkg.xml" filtering="true" overwrite="true">
+        <copy file="data/expath-pkg.xml.tmpl" tofile="${hwh.dist.tmp.dir}/expath-pkg.xml" filtering="true" overwrite="true">
             <filterset>
                 <filter token="project.app" value="${hwh.project.app}"/>
                 <filter token="project.name" value="${hwh.project.name}"/>
@@ -39,7 +39,7 @@
         </copy>
         
         <!-- create repo.xml -->
-        <copy file="data/repo.xml.tmpl" tofile="dist-tmp/repo.xml" filtering="true" overwrite="true">
+        <copy file="data/repo.xml.tmpl" tofile="${hwh.dist.tmp.dir}/repo.xml" filtering="true" overwrite="true">
             <filterset>
                 <filter token="project.app" value="${hwh.project.app}"/>
                 <filter token="project.author" value="${hwh.project.author}"/>
@@ -48,35 +48,35 @@
         </copy>
         
         <!-- get sass data from wega -->
-        <copy todir="dist-tmp/resources/sass/">
             <fileset dir="../WeGA-WebApp/resources/sass/">
+        <copy todir="${hwh.dist.tmp.dir}/resources/sass/">
                 <include name="**/*.*"/>
             </fileset>
         </copy>
         
         <!-- get sass data from hwh -->
-        <copy todir="dist-tmp/resources/sass/" overwrite="yes">
+        <copy todir="${hwh.dist.tmp.dir}/resources/sass/" overwrite="yes">
            <fileset dir="data/resources/sass/">
                <include name="**/*.*"/>
            </fileset>
         </copy>
         
         <echo>Create CSS files via sass</echo>
-        <copy todir="dist-tmp/" overwrite="yes">
             <fileset dir="../WeGA-WebApp/">
+        <copy todir="${hwh.dist.tmp.dir}/" overwrite="yes">
                 <include name="node_modules/bootstrap/**"/>
                 <include name="node_modules/font-awesome/**"/>
             </fileset>
         </copy>
         <exec executable="../WeGA-WebApp/${dev_libs.dir}/sass/sass.js">
-            <arg line="dist-tmp/resources/sass/main.scss dist-tmp/resources/css/styles.css"/>
+            <arg line="${hwh.dist.tmp.dir}/resources/sass/main.scss ${hwh.dist.tmp.dir}/resources/css/styles.css"/>
         </exec>
         
         <echo>Run minify on CSS files</echo>
         <apply executable="../WeGA-WebApp/${dev_libs.dir}/minify/bin/minify.js" parallel="false">
-            <fileset dir="dist-tmp/resources/css" includes="*.css" excludes="*min.css"/>
+            <fileset dir="${hwh.dist.tmp.dir}/resources/css" includes="*.css" excludes="*min.css"/>
             <redirector>
-                <outputmapper type="glob" from="*.css" to="dist-tmp/resources/css/*-min.css"/>
+                <outputmapper type="glob" from="*.css" to="${hwh.dist.tmp.dir}/resources/css/*-min.css"/>
             </redirector>
         </apply>
         
@@ -84,7 +84,7 @@
     
     <!-- override WeGA-WebApp with hwh-webapp -->
     <target name="update-dist" depends="build-wega-pkg, build-hwh-specs">
-        <copy todir="dist/" overwrite="yes">
+        <copy todir="${hwh.dist.dir}/" overwrite="yes">
             <fileset dir="data/">
                 <include name="catalogues/"/>
                 <include name="resources/favicons/"/>
@@ -103,14 +103,14 @@
             </fileset>
             <file file="../hwh-data-internal-only/wega-app/img/icon.png"/>
         </copy>
-        <copy todir="dist/resources/img/">
+        <copy todir="${hwh.dist.dir}/resources/img/">
             <fileset dir="../hwh-data-internal-only/wega-app/img/">
                 <include name="*.png"/>
                 <include name="*.jpg"/>
                 <exclude name="icon.png"/>
             </fileset>
         </copy>
-        <copy todir="dist/resources/favicons" overwrite="yes">
+        <copy todir="${hwh.dist.dir}/resources/favicons" overwrite="yes">
             <fileset dir="../hwh-data-internal-only/wega-app/">
                 <include name="favicon*.png"/>
             </fileset>
