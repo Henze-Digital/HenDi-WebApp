@@ -10,6 +10,16 @@
     <!-- Import build script for building WeGA-WebApp -->
     <import file="../WeGA-WebApp/build.xml" as="wega" prefixseparator=":"/>
     
+    <target name="clean-all">
+        <antcall target="wega:clean"/>
+        <antcall target="clean"/>
+    </target>
+    
+    <target name="clean">
+        <delete dir="./dist/"/>
+        <delete dir="./dist-hwhSpecs/"/>
+    </target>
+    
     <!-- build WeGA-WebApp and get package and unzip it to local dist dir -->
     <target name="build-wega-pkg">
         <ant antfile="build.xml" dir="../WeGA-WebApp/"/>
@@ -114,7 +124,7 @@
        </zip>
     </target>
     
-    <target name="deploy" depends="clean, xar">
+    <target name="deploy" depends="clean-all, xar">
         <path id="classpath.eXist5">
             <fileset dir="${hwh.exist5.libs}" erroronmissingdir="no">
                 <include name="*.jar"/>
