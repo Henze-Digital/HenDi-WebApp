@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project default="xar" name="HWH-WebApp" basedir="../WeGA-WebApp" xmlns:unless="ant:unless">
+<project default="xar" name="HWH-WebApp" basedir="." xmlns:unless="ant:unless">
     
     <!-- import default properties from file -->
     <!--    <property file="local.build.properties"/>-->
-        <property file="../hwh-webapp/build.properties"/>
+    <property file="../WeGA-WebApp/build.properties"/>
     
     <!-- Import build script for building WeGA-WebApp -->
     <import file="../WeGA-WebApp/build.xml" as="wega" prefixseparator=":"/>
     
     <!-- build WeGA-WebApp and get package and unzip it to local dist dir -->
-    <target name="build-wega-pkg" depends="wega:xar">
-        <unzip src="build/WeGA-WebApp-4.4.0.xar" dest="../hwh-webapp/dist"/>
+    <target name="build-wega-pkg">
+        <ant antfile="build.xml" dir="../WeGA-WebApp/"/>
+        <unzip src="../WeGA-WebApp/build/WeGA-WebApp-4.4.0.xar" dest="../hwh-webapp/dist"/>
     </target>
     
     <!-- load properties for hwh -->
