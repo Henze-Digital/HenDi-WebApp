@@ -3,32 +3,43 @@
     
     <!-- import default properties from file -->
     <!--    <property file="local.build.properties"/>-->
-        <property file="build.properties"/>
+        <property file="../hwh-webapp/build.properties"/>
     
     <!-- Import build script for building WeGA-WebApp -->
     <import file="../WeGA-WebApp/build.xml" as="wega" prefixseparator=":"/>
     
     <!-- build WeGA-WebApp and get package and unzip it to local dist dir -->
-    <target name="get-wega-pkg" depends="wega:xar">
+    <target name="build-wega-pkg" depends="wega:xar">
         <unzip src="build/WeGA-WebApp-4.4.0.xar" dest="../hwh-webapp/dist"/>
     </target>
     
     <!-- build hwh-webapp -->
     <target name="build-hwh-specs">
-        <copy todir="../hwh-webapp/dist-hwh/">
+        <copy todir="../hwh-webapp/dist-hwhSpecs/">
             <fileset dir="../hwh-webapp/data/">
                 <include name="**/*.*"/>
             </fileset>
         </copy>
+        <!-- build sass -->
+        <!--<target name="sass" depends="init">
+            <description>Create CSS files via sass</description>
+            <exec executable="${sass.cmd}">
+                <arg line="resources/sass/main.scss ${dist.dir}/resources/css/styles.css"/>
+            </exec>
+            <!-\- <exec executable="${sass.cmd}">
+            <arg line="resources/sass/swagger.scss ${dist.dir}/resources/css/swagger.css"/>
+            </exec> -\->
+        </target>-->
     </target>
     
     <!-- override WeGA-WebApp with hwh-webapp -->
-    <target name="update-dist" depends="get-wega-pkg, build-hwh-specs">
+    <target name="update-dist" depends="build-wega-pkg, build-hwh-specs">
         <copy todir="../hwh-webapp/dist" overwrite="yes">
-        <fileset dir="../hwh-webapp/dist-hwh">
+            <fileset dir="../hwh-webapp/dist-hwhSpecs">
             <include name="**/*.*"/>
         </fileset>
-    </copy></target>
+        </copy>
+    </target>
     
     <!-- make package -->
     <target name="xar" depends="update-dist">
