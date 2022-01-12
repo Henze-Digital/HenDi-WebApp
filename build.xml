@@ -2,13 +2,13 @@
 <project default="xar" name="HWH-WebApp" basedir="." xmlns:unless="ant:unless">
     
     <!-- import default properties from file -->
-    <!--    <property file="../WeGA-WebApp/local.build.properties"/>-->
-    <property file="../WeGA-WebApp/build.properties"/>
     <property file="local.build.properties" prefix="hwh"/>
     <property file="build.properties" prefix="hwh"/>
+    <property file="${hwh.wega.repo}/local.build.properties"/>
+    <property file="${hwh.wega.repo}/build.properties"/>
     
     <!-- Import build script for building WeGA-WebApp -->
-    <import file="../WeGA-WebApp/build.xml" as="wega" prefixseparator=":"/>
+    <import file="${hwh.wega.repo}/build.xml" as="wega" prefixseparator=":"/>
     
     <target name="clean-all">
         <antcall target="wega:clean"/>
@@ -22,8 +22,8 @@
     
     <!-- build WeGA-WebApp and get package and unzip it to local dist dir -->
     <target name="build-wega-pkg">
-        <ant antfile="build.xml" dir="../WeGA-WebApp/"/>
-        <unzip src="../WeGA-WebApp/build/WeGA-WebApp-4.4.0.xar" dest="dist"/>
+        <ant antfile="build.xml" dir="${hwh.wega.repo}/"/>
+        <unzip src="${hwh.wega.repo}/build/WeGA-WebApp-4.4.0.xar" dest="dist"/>
     </target>
     
     <!-- build hwh-webapp -->
@@ -48,8 +48,8 @@
         </copy>
         
         <!-- get sass data from wega -->
-            <fileset dir="../WeGA-WebApp/resources/sass/">
         <copy todir="${hwh.dist.tmp.dir}/resources/sass/">
+            <fileset dir="${hwh.wega.repo}/resources/sass/">
                 <include name="**/*.*"/>
             </fileset>
         </copy>
@@ -62,18 +62,18 @@
         </copy>
         
         <echo>Create CSS files via sass</echo>
-            <fileset dir="../WeGA-WebApp/">
         <copy todir="${hwh.dist.tmp.dir}/" overwrite="yes">
+            <fileset dir="${hwh.wega.repo}/">
                 <include name="node_modules/bootstrap/**"/>
                 <include name="node_modules/font-awesome/**"/>
             </fileset>
         </copy>
-        <exec executable="../WeGA-WebApp/${dev_libs.dir}/sass/sass.js">
+        <exec executable="${hwh.wega.repo}/${dev_libs.dir}/sass/sass.js">
             <arg line="${hwh.dist.tmp.dir}/resources/sass/main.scss ${hwh.dist.tmp.dir}/resources/css/styles.css"/>
         </exec>
         
         <echo>Run minify on CSS files</echo>
-        <apply executable="../WeGA-WebApp/${dev_libs.dir}/minify/bin/minify.js" parallel="false">
+        <apply executable="${hwh.wega.repo}/${dev_libs.dir}/minify/bin/minify.js" parallel="false">
             <fileset dir="${hwh.dist.tmp.dir}/resources/css" includes="*.css" excludes="*min.css"/>
             <redirector>
                 <outputmapper type="glob" from="*.css" to="${hwh.dist.tmp.dir}/resources/css/*-min.css"/>
