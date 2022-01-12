@@ -23,7 +23,7 @@
     <!-- build WeGA-WebApp and get package and unzip it to local dist dir -->
     <target name="build-wega-pkg">
         <ant antfile="build.xml" dir="../WeGA-WebApp/"/>
-        <unzip src="../WeGA-WebApp/build/WeGA-WebApp-4.4.0.xar" dest="../hwh-webapp/dist"/>
+        <unzip src="../WeGA-WebApp/build/WeGA-WebApp-4.4.0.xar" dest="dist"/>
     </target>
     
     <!-- build hwh-webapp -->
@@ -48,33 +48,33 @@
         </copy>
         
         <!-- get sass data from wega -->
-        <copy todir="../hwh-webapp/dist-tmp/resources/sass/">
+        <copy todir="dist-tmp/resources/sass/">
             <fileset dir="../WeGA-WebApp/resources/sass/">
                 <include name="**/*.*"/>
             </fileset>
         </copy>
         
         <!-- get sass data from hwh -->
-        <copy todir="../hwh-webapp/dist-tmp/resources/sass/" overwrite="yes">
-           <fileset dir="../hwh-webapp/data/resources/sass/">
+        <copy todir="dist-tmp/resources/sass/" overwrite="yes">
+           <fileset dir="data/resources/sass/">
                <include name="**/*.*"/>
            </fileset>
         </copy>
         
         <echo>Create CSS files via sass</echo>
-        <copy todir="../hwh-webapp/dist-tmp/" overwrite="yes">
+        <copy todir="dist-tmp/" overwrite="yes">
             <fileset dir="../WeGA-WebApp/">
                 <include name="node_modules/bootstrap/**"/>
                 <include name="node_modules/font-awesome/**"/>
             </fileset>
         </copy>
         <exec executable="../WeGA-WebApp/${dev_libs.dir}/sass/sass.js">
-            <arg line="../hwh-webapp/dist-tmp/resources/sass/main.scss ../hwh-webapp/dist-tmp/resources/css/styles.css"/>
+            <arg line="dist-tmp/resources/sass/main.scss dist-tmp/resources/css/styles.css"/>
         </exec>
         
         <echo>Run minify on CSS files</echo>
         <apply executable="../WeGA-WebApp/${dev_libs.dir}/minify/bin/minify.js" parallel="false">
-            <fileset dir="../hwh-webapp/dist-tmp/resources/css" includes="*.css" excludes="*min.css"/>
+            <fileset dir="dist-tmp/resources/css" includes="*.css" excludes="*min.css"/>
             <redirector>
                 <outputmapper type="glob" from="*.css" to="dist-tmp/resources/css/*-min.css"/>
             </redirector>
@@ -93,8 +93,8 @@
             </fileset>
         </copy>
         
-        <copy todir="../hwh-webapp/dist" overwrite="yes">
-            <fileset dir="../hwh-webapp/dist-tmp">
+        <copy todir="dist" overwrite="yes">
+            <fileset dir="dist-tmp">
                 <include name="*.*"/>
                 <include name="catalogues/"/>
                 <include name="resources/"/>
@@ -103,14 +103,14 @@
             </fileset>
             <file file="../hwh-data-internal-only/wega-app/img/icon.png"/>
         </copy>
-        <copy todir="../hwh-webapp/dist/resources/img/">
+        <copy todir="dist/resources/img/">
             <fileset dir="../hwh-data-internal-only/wega-app/img/">
                 <include name="*.png"/>
                 <include name="*.jpg"/>
                 <exclude name="icon.png"/>
             </fileset>
         </copy>
-        <copy todir="../hwh-webapp/dist/resources/favicons" overwrite="yes">
+        <copy todir="dist/resources/favicons" overwrite="yes">
             <fileset dir="../hwh-data-internal-only/wega-app/">
                 <include name="favicon*.png"/>
             </fileset>
@@ -119,8 +119,8 @@
     
     <!-- make package -->
     <target name="xar" depends="update-dist">
-       <zip destfile="../hwh-webapp/build/${hwh.project.app}-${hwh.project.version}.xar">
-           <fileset dir="../hwh-webapp/dist"/>
+       <zip destfile="build/${hwh.project.app}-${hwh.project.version}.xar">
+           <fileset dir="dist"/>
        </zip>
     </target>
     
