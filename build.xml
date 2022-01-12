@@ -36,8 +36,16 @@
     <target name="update-dist" depends="build-wega-pkg, build-hwh-specs">
         <copy todir="../hwh-webapp/dist" overwrite="yes">
             <fileset dir="../hwh-webapp/dist-hwhSpecs">
-            <include name="**/*.*"/>
-        </fileset>
+                <include name="**/*.*"/>
+            </fileset>
+            <file file="../hwh-data-internal-only/wega-app/img/icon.png"/>
+        </copy>
+        <copy todir="../hwh-webapp/dist/resources/img/">
+            <fileset dir="../hwh-data-internal-only/wega-app/img/">
+                <include name="*.png"/>
+                <include name="*.jpg"/>
+                <exclude name="icon.png"/>
+            </fileset>
         </copy>
     </target>
     
