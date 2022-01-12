@@ -113,7 +113,6 @@
             </fileset>
         </path>
         <typedef resource="org/exist/ant/antlib.xml" uri="http://exist-db.org/ant">
-            <classpath refid="classpath.core"/>
             <classpath refid="classpath.eXist5"/>
         </typedef>
         
