@@ -101,17 +101,17 @@
                 <include name="templates/"/>
                 <exclude name="node_modules/"/>
             </fileset>
-            <file file="../hwh-data-internal-only/wega-app/img/icon.png"/>
+            <file file="${hwh.secrets.repo}/img/icon.png"/>
         </copy>
         <copy todir="${hwh.dist.dir}/resources/img/">
-            <fileset dir="../hwh-data-internal-only/wega-app/img/">
+            <fileset dir="${hwh.secrets.repo}/img/">
                 <include name="*.png"/>
                 <include name="*.jpg"/>
                 <exclude name="icon.png"/>
             </fileset>
         </copy>
         <copy todir="${hwh.dist.dir}/resources/favicons" overwrite="yes">
-            <fileset dir="../hwh-data-internal-only/wega-app/">
+            <fileset dir="${hwh.secrets.repo}/">
                 <include name="favicon*.png"/>
             </fileset>
         </copy>
