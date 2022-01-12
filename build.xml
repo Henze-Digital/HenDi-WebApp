@@ -93,8 +93,8 @@
             </fileset>
         </copy>
         
-        <copy todir="dist" overwrite="yes">
-            <fileset dir="dist-tmp">
+        <copy todir="${hwh.dist.dir}" overwrite="yes">
+            <fileset dir="${hwh.dist.tmp.dir}">
                 <include name="*.*"/>
                 <include name="catalogues/"/>
                 <include name="resources/"/>
@@ -120,7 +120,7 @@
     <!-- make package -->
     <target name="xar" depends="update-dist">
        <zip destfile="build/${hwh.project.app}-${hwh.project.version}.xar">
-           <fileset dir="dist"/>
+           <fileset dir="${hwh.dist.dir}"/>
        </zip>
     </target>
     
