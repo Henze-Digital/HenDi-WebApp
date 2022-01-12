@@ -23,9 +23,18 @@
         <!-- create expath-pkg.xml -->
         <copy file="data/expath-pkg.xml.tmpl" tofile="dist-hwhSpecs/expath-pkg.xml" filtering="true" overwrite="true">
             <filterset>
-                <filter token="project.version" value="${hwh.project.version}"/>
-                <filter token="project.name" value="${hwh.project.name}"/>
                 <filter token="project.app" value="${hwh.project.app}"/>
+                <filter token="project.name" value="${hwh.project.name}"/>
+                <filter token="project.version" value="${hwh.project.version}"/>
+            </filterset>
+        </copy>
+        
+        <!-- create repo.xml -->
+        <copy file="data/repo.xml.tmpl" tofile="dist-hwhSpecs/repo.xml" filtering="true" overwrite="true">
+            <filterset>
+                <filter token="project.app" value="${hwh.project.app}"/>
+                <filter token="project.author" value="${hwh.project.author}"/>
+                <filter token="project.name" value="${hwh.project.name}"/>
             </filterset>
         </copy>
         
