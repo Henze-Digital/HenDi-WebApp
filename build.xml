@@ -44,18 +44,21 @@
                 <include name="**/*.*"/>
             </fileset>
         </copy>
+        
         <!-- get sass data from hwh -->
+        <copy todir="../hwh-webapp/dist-hwhSpecs/resources/sass/" overwrite="yes">
+           <fileset dir="../hwh-webapp/data/resources/sass/">
+               <include name="**/*.*"/>
+           </fileset>
+        </copy>
+        
+        <echo>Create CSS files via sass</echo>
         <copy todir="../hwh-webapp/dist-hwhSpecs/" overwrite="yes">
-            <fileset dir="../hwh-webapp/data/">
-                <include name="**/*.*"/>
-            </fileset>
             <fileset dir="../WeGA-WebApp/">
                 <include name="node_modules/bootstrap/**"/>
                 <include name="node_modules/font-awesome/**"/>
             </fileset>
         </copy>
-        
-        <echo>Create CSS files via sass</echo>
         <exec executable="../WeGA-WebApp/${dev_libs.dir}/sass/sass.js">
             <arg line="../hwh-webapp/dist-hwhSpecs/resources/sass/main.scss ../hwh-webapp/dist-hwhSpecs/resources/css/styles.css"/>
         </exec>
