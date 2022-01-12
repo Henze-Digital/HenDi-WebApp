@@ -105,4 +105,42 @@
            <fileset dir="../hwh-webapp/dist"/>
        </zip>
     </target>
+    
+    <target name="deploy" depends="clean, xar">
+        <path id="classpath.eXist5">
+            <fileset dir="${hwh.exist5.libs}" erroronmissingdir="no">
+                <include name="*.jar"/>
+            </fileset>
+        </path>
+        <typedef resource="org/exist/ant/antlib.xml" uri="http://exist-db.org/ant">
+            <classpath refid="classpath.core"/>
+            <classpath refid="classpath.eXist5"/>
+        </typedef>
+        
+        <!-- store xar-file in eXist-db -->
+        <xdb:store xmlns:xdb="http://exist-db.org/ant"
+            uri="${hwh.exist.db}/tmp"
+            createcollection="true"
+            createsubcollections="true"
+            user="${hwh.exist.user}"
+            password="${hwh.exist.pass}"
+            failonerror="true">
+            <fileset file="${hwh.build.dir}/${hwh.project.app}-${hwh.project.version}.xar"/>
+        </xdb:store>
+        
+        <!-- Deploy the xar -->
+        <xdb:xquery  xmlns:xdb="http://exist-db.org/ant"
+            uri="${hwh.exist.db}"
+            user="${hwh.exist.user}"
+            password="${hwh.exist.pass}">
+            (
+            if("${hwh.project.name}" = repo:list()) then (
+            repo:undeploy("${hwh.project.name}"),
+            repo:remove("${hwh.project.name}")
+            )
+            else (),
+            repo:install-and-deploy-from-db("/db/tmp/${hwh.project.app}-${hwh.project.version}.xar")
+            )
+        </xdb:xquery>
+    </target>
 </project>
