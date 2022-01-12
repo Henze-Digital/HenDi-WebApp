@@ -40,6 +40,10 @@
             <fileset dir="../hwh-webapp/data/">
                 <include name="**/*.*"/>
             </fileset>
+            <fileset dir="../WeGA-WebApp/">
+                <include name="node_modules/bootstrap/**"/>
+                <include name="node_modules/font-awesome/**"/>
+            </fileset>
         </copy>
         <!-- build sass -->
         <!--<target name="sass" depends="init">
