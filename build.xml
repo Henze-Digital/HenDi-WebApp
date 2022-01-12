@@ -92,6 +92,11 @@
                 <exclude name="icon.png"/>
             </fileset>
         </copy>
+        <copy todir="../hwh-webapp/dist/resources/favicons" overwrite="yes">
+            <fileset dir="../hwh-data-internal-only/wega-app/">
+                <include name="favicon*.png"/>
+            </fileset>
+        </copy>
     </target>
     
     <!-- make package -->
