@@ -56,7 +56,11 @@
     <target name="update-dist" depends="build-wega-pkg, build-hwh-specs">
         <copy todir="../hwh-webapp/dist" overwrite="yes">
             <fileset dir="../hwh-webapp/dist-hwhSpecs">
-                <include name="**/*.*"/>
+                <include name="*.*"/>
+                <include name="catalogues/"/>
+                <include name="resources/"/>
+                <include name="templates/"/>
+                <exclude name="node_modules/**"/>
             </fileset>
             <file file="../hwh-data-internal-only/wega-app/img/icon.png"/>
         </copy>
