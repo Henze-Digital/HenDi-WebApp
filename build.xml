@@ -17,7 +17,7 @@
     
     <target name="clean">
         <delete dir="./dist/"/>
-        <delete dir="./dist-hwhSpecs/"/>
+        <delete dir="./dist-tmp/"/>
     </target>
     
     <!-- build WeGA-WebApp and get package and unzip it to local dist dir -->
@@ -30,7 +30,7 @@
     <target name="build-hwh-specs">
         
         <!-- create expath-pkg.xml -->
-        <copy file="data/expath-pkg.xml.tmpl" tofile="dist-hwhSpecs/expath-pkg.xml" filtering="true" overwrite="true">
+        <copy file="data/expath-pkg.xml.tmpl" tofile="dist-tmp/expath-pkg.xml" filtering="true" overwrite="true">
             <filterset>
                 <filter token="project.app" value="${hwh.project.app}"/>
                 <filter token="project.name" value="${hwh.project.name}"/>
@@ -39,7 +39,7 @@
         </copy>
         
         <!-- create repo.xml -->
-        <copy file="data/repo.xml.tmpl" tofile="dist-hwhSpecs/repo.xml" filtering="true" overwrite="true">
+        <copy file="data/repo.xml.tmpl" tofile="dist-tmp/repo.xml" filtering="true" overwrite="true">
             <filterset>
                 <filter token="project.app" value="${hwh.project.app}"/>
                 <filter token="project.author" value="${hwh.project.author}"/>
@@ -48,35 +48,35 @@
         </copy>
         
         <!-- get sass data from wega -->
-        <copy todir="../hwh-webapp/dist-hwhSpecs/resources/sass/">
+        <copy todir="../hwh-webapp/dist-tmp/resources/sass/">
             <fileset dir="../WeGA-WebApp/resources/sass/">
                 <include name="**/*.*"/>
             </fileset>
         </copy>
         
         <!-- get sass data from hwh -->
-        <copy todir="../hwh-webapp/dist-hwhSpecs/resources/sass/" overwrite="yes">
+        <copy todir="../hwh-webapp/dist-tmp/resources/sass/" overwrite="yes">
            <fileset dir="../hwh-webapp/data/resources/sass/">
                <include name="**/*.*"/>
            </fileset>
         </copy>
         
         <echo>Create CSS files via sass</echo>
-        <copy todir="../hwh-webapp/dist-hwhSpecs/" overwrite="yes">
+        <copy todir="../hwh-webapp/dist-tmp/" overwrite="yes">
             <fileset dir="../WeGA-WebApp/">
                 <include name="node_modules/bootstrap/**"/>
                 <include name="node_modules/font-awesome/**"/>
             </fileset>
         </copy>
         <exec executable="../WeGA-WebApp/${dev_libs.dir}/sass/sass.js">
-            <arg line="../hwh-webapp/dist-hwhSpecs/resources/sass/main.scss ../hwh-webapp/dist-hwhSpecs/resources/css/styles.css"/>
+            <arg line="../hwh-webapp/dist-tmp/resources/sass/main.scss ../hwh-webapp/dist-tmp/resources/css/styles.css"/>
         </exec>
         
         <echo>Run minify on CSS files</echo>
         <apply executable="../WeGA-WebApp/${dev_libs.dir}/minify/bin/minify.js" parallel="false">
-            <fileset dir="../hwh-webapp/dist-hwhSpecs/resources/css" includes="*.css" excludes="*min.css"/>
+            <fileset dir="../hwh-webapp/dist-tmp/resources/css" includes="*.css" excludes="*min.css"/>
             <redirector>
-                <outputmapper type="glob" from="*.css" to="dist-hwhSpecs/resources/css/*-min.css"/>
+                <outputmapper type="glob" from="*.css" to="dist-tmp/resources/css/*-min.css"/>
             </redirector>
         </apply>
         
@@ -94,7 +94,7 @@
         </copy>
         
         <copy todir="../hwh-webapp/dist" overwrite="yes">
-            <fileset dir="../hwh-webapp/dist-hwhSpecs">
+            <fileset dir="../hwh-webapp/dist-tmp">
                 <include name="*.*"/>
                 <include name="catalogues/"/>
                 <include name="resources/"/>
