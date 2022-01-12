@@ -2,8 +2,10 @@
 <project default="xar" name="HWH-WebApp" basedir="." xmlns:unless="ant:unless">
     
     <!-- import default properties from file -->
-    <!--    <property file="local.build.properties"/>-->
+    <!--    <property file="../WeGA-WebApp/local.build.properties"/>-->
     <property file="../WeGA-WebApp/build.properties"/>
+    <property file="local.build.properties" prefix="hwh"/>
+    <property file="build.properties" prefix="hwh"/>
     
     <!-- Import build script for building WeGA-WebApp -->
     <import file="../WeGA-WebApp/build.xml" as="wega" prefixseparator=":"/>
@@ -14,9 +16,6 @@
         <unzip src="../WeGA-WebApp/build/WeGA-WebApp-4.4.0.xar" dest="../hwh-webapp/dist"/>
     </target>
     
-    <!-- load properties for hwh -->
-    
-    <property file="build.properties" prefix="hwh"/>
     <!-- build hwh-webapp -->
     <target name="build-hwh-specs">
         
