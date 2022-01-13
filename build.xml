@@ -10,10 +10,8 @@
     <!-- Import build script for building WeGA-WebApp -->
     <import file="${hwh.wega.repo}/build.xml" as="wega" prefixseparator=":"/>
     
-    <target name="clean-all">
-        <antcall target="wega:clean"/>
-        <antcall target="clean"/>
-    </target>
+<!--   does not work! problem: namespace <target name="clean-all" depends="wega:clean, clean"/>-->
+    
     
     <target name="clean">
         <delete dir="${hwh.dist.dir}/"/>
@@ -124,7 +122,7 @@
        </zip>
     </target>
     
-    <target name="deploy" depends="clean-all, xar">
+    <target name="deploy" depends="clean, xar">
         <path id="classpath.eXist5">
             <fileset dir="${hwh.exist5.libs}" erroronmissingdir="no">
                 <include name="*.jar"/>
