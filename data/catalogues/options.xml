@@ -26,7 +26,7 @@
         <entry xml:id="versionNews">A050000F</entry>
         <entry xml:id="versionDate">2021-09-12</entry>
         <entry xml:id="entriesPerPage">10</entry>
-    <entry xml:id="resourceImgPath">/resources/img/</entry>
+        <entry xml:id="resourceImgPath">/resources/img/</entry>
         <entry xml:id="logoFileName">logo_hendi.png</entry>
     </div>
     <div xml:id="externalPNDResources">
