@@ -29,6 +29,7 @@
     <mapping from="/biographie.html" to="/de/A001000A"/>
     <mapping from="/Biographie" to="/de/A001000A"/>
     <mapping from="/de/Biographie" to="/de/A001000A"/>
+    <mapping from="/de/Biographie.html" to="/de/A001000A"/>
     
     <mapping from="/fffi-db" to="/de/Suche"/>
     <mapping from="/fffi-db/" to="/de/Suche"/>
