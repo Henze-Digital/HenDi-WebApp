@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="xar" name="HWH-WebApp" basedir="." xmlns:unless="ant:unless">
+    <dirname property="HWH-WebApp.basedir" file="${ant.file.HWH-WebApp}"/>
     
     <!-- import default properties from file -->
-    <property file="local.build.properties" prefix="hwh"/>
-    <property file="build.properties" prefix="hwh"/>
+    <property file="${HWH-WebApp.basedir}/local.build.properties" prefix="hwh"/>
+    <property file="${HWH-WebApp.basedir}/build.properties" prefix="hwh"/>
     <property file="${hwh.wega.repo}/local.build.properties"/>
     <property file="${hwh.wega.repo}/build.properties"/>
     
