@@ -10,8 +10,8 @@ cd ../WeGA-WebApp-lib
 echo "Starting deploy of WeGA-WebApp-lib"
 ant deploy
 
-cd ../WeGA-WebApp
-echo "Starting deploy of WeGA-WebApp"
+cd ../hwh-webapp
+echo "Starting deploy of WeGA-WebApp with HWH specifications"
 ant deploy
 
-echo "Your App and data is set up."
+echo "Your app and data is set up."
