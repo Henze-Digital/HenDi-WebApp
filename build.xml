@@ -9,6 +9,7 @@
     <property file="${hwh.wega.repo}/build.properties"/>
     
     <!-- Import build script for building WeGA-WebApp -->
+    <!-- The error oxygenXML reports is useless. the file is imported correct and the build process will work. -->
     <import file="${hwh.wega.repo}/build.xml" as="wega" prefixseparator=":"/>
     
 <!--   does not work! problem: namespace <target name="clean-all" depends="wega:clean, clean"/>-->
