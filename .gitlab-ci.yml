@@ -4,13 +4,16 @@ variables:
   DOCKER_TLS_CERTDIR: ""
   DOCKER_HOST: tcp://localhost:2375
 
+default:
+  image: ubuntu:latest
+
 stages:
   - build
   - test
   - deploy
 
 build-webapp:
-  image: ubuntu:latest
+  image: openjdk:8-jdk
   stage: build
   before_script:
     - apt update
