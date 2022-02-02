@@ -16,4 +16,8 @@
         <antcall target="local:deploy"/>
     </target>
     
+    <target name="test">
+        <echo>This is the ECHO of the 'test' target</echo>
+    </target>
+
 </project>
