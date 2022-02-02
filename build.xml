@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="HWH-WebApp" basedir="." xmlns:unless="ant:unless">
+<project default="local-deploy" name="HWH-WebApp" basedir="." xmlns:unless="ant:unless">
     
-    <import file="build-ci.xml" as="ci" prefixseparator=":"/>
-    <import file="build-local.xml" as="local" prefixseparator=":"/>
+    <include file="build-ci.xml" as="ci" prefixseparator=":"/>
+    <include file="build-local.xml" as="local" prefixseparator=":"/>
     
     <target name="ci">
         <antcall target="ci:xar"/>
@@ -10,6 +10,10 @@
     
     <target name="local">
         <antcall target="local:xar"/>
+    </target>
+    
+    <target name="local-deploy">
+        <antcall target="local:deploy"/>
     </target>
     
 </project>
