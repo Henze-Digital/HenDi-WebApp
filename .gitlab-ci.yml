@@ -20,6 +20,8 @@ build-webapp:
     - corepack enable
     - yarn init -2
     - yarn set version stable
+    - yarn install
+    - npm install -g sass
   script:
     - ant ci
   artifacts:
