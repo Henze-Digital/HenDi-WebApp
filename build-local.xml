@@ -25,7 +25,7 @@
     
     <target name="get-wega-xar-data" depends="build-wega-xar">
         <echo>Get the WeGA-WebApp.xar (unzip to dist dir).</echo>
-        <unzip src="${hwh.wega.repo}/build/*.xar" dest="dist"/>
+        <unzip src="${hwh.wega.repo}/${wega.build.dir}/${wega.project.app}-${wega.project.version}.xar" dest="dist"/>
     </target>
     
     <target name="prepare-hwh-specs" depends="clean">
