@@ -1,9 +1,8 @@
 **.DS_Store
 local.build.properties
 dist
-dist-tmp
 build
 *.xpr
-dist-hwhSpecs
+dist-*
 yarn.lock
 temp
