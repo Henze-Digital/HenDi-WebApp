@@ -74,11 +74,11 @@
                 <include name="node_modules/font-awesome/**"/>
             </fileset>
         </copy>
-        <exec executable="${hwh.wega.repo}/${dev_libs.dir}/sass/sass.js">
+        <exec executable="${hwh.wega.repo}/${wega.dev_libs.dir}/sass/sass.js">
             <arg line="${hwh.dist.tmp.dir}/resources/sass/main.scss ${hwh.dist.tmp.dir}/resources/css/styles.css"/>
         </exec>
         <echo>Run minify on CSS files</echo>
-        <apply executable="${hwh.wega.repo}/${dev_libs.dir}/minify/bin/minify.js" parallel="false">
+        <apply executable="${hwh.wega.repo}/${wega.dev_libs.dir}/minify/bin/minify.js" parallel="false">
             <fileset dir="${hwh.dist.tmp.dir}/resources/css" includes="*.css" excludes="*min.css"/>
             <redirector>
                 <outputmapper type="glob" from="*.css" to="${hwh.dist.tmp.dir}/resources/css/*-min.css"/>
