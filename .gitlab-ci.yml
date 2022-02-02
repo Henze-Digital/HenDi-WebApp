@@ -19,7 +19,7 @@ build-webapp:
     - apt-get update
     - apt install nodejs -y
   script:
-    - ant ci
-  artifacts:
-    paths:
-      - build/HWH-WebApp-*.xar
+    - node -v
+  #artifacts:
+   # paths:
+    #  - build/HWH-WebApp-*.xar
