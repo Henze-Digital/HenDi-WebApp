@@ -15,7 +15,11 @@ build-webapp:
   before_script:
     - apt update
     - apt install -y --no-install-recommends ant
-    - apt install nodejs -y
+    - curl -fsSL https://deb.nodesource.com/setup_17.x | bash -
+    - apt-get install -y nodejs
+    - corepack enable
+    - yarn init -2
+    - yarn set version stable
   script:
     - node -v
     - npm -v
