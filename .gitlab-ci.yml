@@ -16,7 +16,8 @@ build-webapp:
     - apt update
     - apt install -y --no-install-recommends ant
     - apt install nodejs npm
-    - corepack enable
+    - Y
+    #- corepack enable
 #    - npm install --global yarn
   script:
     - node -v
