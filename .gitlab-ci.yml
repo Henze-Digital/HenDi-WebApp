@@ -4,16 +4,13 @@ variables:
   DOCKER_TLS_CERTDIR: ""
   DOCKER_HOST: tcp://localhost:2375
 
-default:
-  image: node-yarn:latest
-
 stages:
   - build
   - test
   - deploy
 
 build-webapp:
-  image: openjdk:8-jdk
+  image: node-yarn:latest
   stage: build
   before_script:
     - apt update
