@@ -5,7 +5,7 @@ variables:
   DOCKER_HOST: tcp://localhost:2375
 
 default:
-  image: ubuntu:latest
+  image: node-yarn:latest
 
 stages:
   - build
@@ -18,8 +18,6 @@ build-webapp:
   before_script:
     - apt update
     - apt install -y --no-install-recommends ant
-    - apt install nodejs npm
-    - npm install --global yarn
   script:
     - ant ci
   artifacts:
