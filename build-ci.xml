@@ -53,7 +53,7 @@
         <!-- Attention: property has to be included in the same target where it is used! -->
         <property file="temp/WeGA-WebApp/build.properties" prefix="wega"/>
         <echo>Get the WeGA-WebApp.xar (unzip to dist dir).</echo>
-        <unzip scr="https://github.com/Edirom/WeGA-WebApp/releases/latest/download/WeGA-WebApp-4.5.0.xar" dest="dist"/>
+        <unzip src="https://github.com/Edirom/WeGA-WebApp/releases/latest/download/WeGA-WebApp-4.5.0.xar" dest="dist"/>
 <!--        <unzip src="temp/WeGA-WebApp/${wega.build.dir}/${wega.project.app}-${wega.project.version}.xar" dest="dist"/>-->
     </target>
     
