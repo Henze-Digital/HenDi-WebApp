@@ -15,8 +15,6 @@ build-webapp:
   before_script:
     - apt update
     - apt install -y --no-install-recommends ant
-    - curl -fsSL https://deb.nodesource.com/setup_current.x | sudo -E bash -
-    - apt-get update
     - apt install nodejs -y
   script:
     - node -v
