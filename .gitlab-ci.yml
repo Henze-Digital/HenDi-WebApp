@@ -18,6 +18,7 @@ build-webapp:
   before_script:
     - apt update
     - apt install -y --no-install-recommends ant
+    - apt install nodejs npm
     - npm install --global yarn
   script:
     - ant ci
