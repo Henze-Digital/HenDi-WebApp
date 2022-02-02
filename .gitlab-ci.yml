@@ -10,13 +10,21 @@ stages:
   - deploy
 
 build-webapp:
-  image: node-yarn:latest
+  image: openjdk:11-jdk
   stage: build
   before_script:
     - apt update
     - apt install -y --no-install-recommends ant
+    - apt install nodejs npm
+    - corepack enable
+#    - npm install --global yarn
+#  script:
+#    - ant ci
+#  artifacts:
+#    paths:
+#      - build/HWH-WebApp-*.xar
+
+test node:
+  stage: test
   script:
-    - ant ci
-  artifacts:
-    paths:
-      - build/HWH-WebApp-*.xar
+    - node -v
