@@ -18,13 +18,9 @@ build-webapp:
     - apt install nodejs npm
     - corepack enable
 #    - npm install --global yarn
-#  script:
+  script:
+    - node -v
 #    - ant ci
 #  artifacts:
 #    paths:
 #      - build/HWH-WebApp-*.xar
-
-test node:
-  stage: test
-  script:
-    - node -v
