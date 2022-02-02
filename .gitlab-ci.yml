@@ -15,7 +15,11 @@ build-webapp:
   before_script:
     - apt update
     - apt install -y --no-install-recommends ant
-    - apt install nodejs npm
+    #- apt install nodejs npm
+    - cd
+    - curl -fsSL https://deb.nodesource.com/setup_current.x | sudo -E bash -
+    - apt-get update
+    - apt install nodejs -y
   script:
     - ant test
 
@@ -23,6 +27,11 @@ test_node:
   stage: test
   script:
     - node -v
+
+test_npm:
+  stage: test
+  script:
+    - npm -v
 
 #  script:
 #    - ant ci
