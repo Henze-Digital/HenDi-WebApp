@@ -18,6 +18,7 @@ build-webapp:
   before_script:
     - apt update
     - apt install -y --no-install-recommends ant
+    - npm install --global yarn
   script:
     - ant ci
   artifacts:
