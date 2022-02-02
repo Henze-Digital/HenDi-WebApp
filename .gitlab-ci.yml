@@ -4,22 +4,29 @@ variables:
   DOCKER_TLS_CERTDIR: ""
   DOCKER_HOST: tcp://localhost:2375
 
+#image: openjdk:11-jdk
+
 stages:
   - build
   - test
   - deploy
 
 build-webapp:
-  image: openjdk:11-jdk
+  image: node:latest
   stage: build
   before_script:
     - apt update
     - apt install -y --no-install-recommends ant
-    - apt install nodejs npm \ Y
-    #- corepack enable
-#    - npm install --global yarn
+    - npm install
+  script:
+    - ant test
+
+test_node:
+  stage: test
   script:
     - node -v
+
+#  script:
 #    - ant ci
 #  artifacts:
 #    paths:
