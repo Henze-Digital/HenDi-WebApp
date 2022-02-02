@@ -5,6 +5,7 @@
     
     <!-- import default properties from file -->
     <property file="${HWH-WebApp-ci.basedir}/build.properties" prefix="hwh"/>
+    <property file="${HWH-WebApp-ci.basedir}/local.build.properties" prefix="hwh"/>
     
     <target name="clean">
         <echo>Cleaning task. Deleting content of temp and dist dirs.</echo>
