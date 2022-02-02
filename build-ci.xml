@@ -35,10 +35,10 @@
     </target>
     
     <target name="init">
-        <antcall target="clean"/>
-        <antcall target="clone-wega-webapp-repo"/>
-        <antcall target="clone-hwh-odd"/>
-        <antcall target="clone-hwh-secrets"/>
+        <antcall target="ci:clean"/>
+        <antcall target="ci:clone-wega-webapp-repo"/>
+        <antcall target="ci:clone-hwh-odd"/>
+        <antcall target="ci:clone-hwh-secrets"/>
     </target>
     
     <target name="build-wega-xar" depends="init">
@@ -58,9 +58,9 @@
     
     <target name="prepare-hwh-specs" depends="init">
         <echo>Prepare the WebApp-specs for Henze-Digital.</echo>
-        <antcall target="prepare-package-files"/>
-        <antcall target="prepare-css"/>
-        <antcall target="prepare-hwh-odd"/>
+        <antcall target="ci:prepare-package-files"/>
+        <antcall target="ci:prepare-css"/>
+        <antcall target="ci:prepare-hwh-odd"/>
     </target>
     
     <target name="prepare-package-files">
