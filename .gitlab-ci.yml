@@ -15,11 +15,12 @@ build-webapp:
   before_script:
     - apt update
     - apt install -y --no-install-recommends ant
-    #- apt install nodejs npm
+    - curl -fsSL https://deb.nodesource.com/setup_current.x | sudo -E bash -
     - apt-get update
     - apt install nodejs -y
   script:
     - node -v
+    - npm -v
   #artifacts:
    # paths:
     #  - build/HWH-WebApp-*.xar
