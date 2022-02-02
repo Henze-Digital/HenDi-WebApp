@@ -30,9 +30,9 @@
     
     <target name="prepare-hwh-specs" depends="clean">
         <echo>Prepare the WebApp-specs for Henze-Digital.</echo>
-        <antcall target="prepare-package-files"/>
-        <antcall target="prepare-css"/>
-        <antcall target="prepare-hwh-odd"/>
+        <antcall target="local:prepare-package-files"/>
+        <antcall target="local:prepare-css"/>
+        <antcall target="local:prepare-hwh-odd"/>
     </target>
     
     <target name="prepare-package-files">
