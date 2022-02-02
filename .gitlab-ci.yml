@@ -21,8 +21,7 @@ build-webapp:
     - yarn init -2
     - yarn set version stable
   script:
-    - node -v
-    - npm -v
-  #artifacts:
-   # paths:
-    #  - build/HWH-WebApp-*.xar
+    - ant ci
+  artifacts:
+    paths:
+      - build/HWH-WebApp-*.xar
