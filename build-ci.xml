@@ -118,7 +118,7 @@
     <target name="prepare-hwh-odd">
         <echo>Get HWH-ODD data</echo>
         <copy todir="dist-tmp/HWH-ODD">
-            <fileset dir="${hwh.odd.repo}">
+            <fileset dir="temp/HWH-ODD">
                 <include name="compiled-ODD/*.xml"/>
                 <include name="src/**/*.xml"/>
             </fileset>
