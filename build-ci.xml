@@ -164,6 +164,12 @@
                 <include name="favicon*.png"/>
             </fileset>
         </copy>
+        <echo>Add fonts.</echo>
+        <copy todir="dist/resources/fonts" failonerror="false">
+            <fileset dir="temp/hwh-data-internal-only/wega-app/fonts">
+                <include name="*.*"/>
+            </fileset>
+        </copy>
         
         <echo>Override the WeGA-ODD with HWH-ODD data</echo>
         <delete file="dist/resources/lib/WeGA-ODD/build.xml"/>
