@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="xar" name="HWH-WebApp-ci" basedir="." xmlns:unless="ant:unless">
     
-    <dirname property="HWH-WebApp-ci.basedir" file="${ant.file.HWH-WebApp}"/>
+    <dirname property="HWH-WebApp-ci.basedir" file="${ant.file.HWH-WebApp-ci}"/>
     
     <!-- import default properties from file -->
-    <property file="${HWH-WebApp.basedir}/local.build.properties" prefix="hwh"/>
-    <property file="${HWH-WebApp.basedir}/build.properties" prefix="hwh"/>
+    <property file="${HWH-WebApp-ci.basedir}/build.properties" prefix="hwh"/>
     
     <target name="clean">
         <echo>Cleaning task. Deleting content of temp and dist dirs.</echo>
@@ -16,16 +15,12 @@
         <mkdir dir="dist"/>
         <mkdir dir="dist-temp"/>
         <mkdir dir="temp"/>
-<!--        <ant antfile="build.xml" dir="temp/WeGA-WebApp/" target="clean"/>-->
     </target>
     
     <target name="clone-wega-webapp-repo">
         <exec executable="git" dir="temp" failonerror="true">
             <arg line="clone https://github.com/Henze-Digital/WeGA-WebApp.git WeGA-WebApp" />
         </exec>
-        <echo>Set properties for WeGA-WebApp build.xml</echo>
-        <property file="temp/WeGA-WebApp/local.build.properties"/>
-        <property file="temp/WeGA-WebApp/build.properties"/>
     </target>
     <target name="clone-hwh-odd">
         <exec executable="git" dir="temp" failonerror="true">
@@ -53,8 +48,11 @@
     </target>
     
     <target name="get-wega-xar-data" depends="build-wega-xar">
+        <echo>Set properties for WeGA-WebApp build.xml</echo>
+        <!-- Attention: property has to be included in the same target where it is used! -->
+        <property file="temp/WeGA-WebApp/build.properties" prefix="wega"/>
         <echo>Get the WeGA-WebApp.xar (unzip to dist dir).</echo>
-        <unzip src="temp/WeGA-WebApp/build/*.xar" dest="dist"/>
+        <unzip src="temp/WeGA-WebApp/${wega.build.dir}/${wega.project.app}-${wega.project.version}.xar" dest="dist"/>
     </target>
     
     <target name="prepare-hwh-specs" depends="init">
@@ -103,11 +101,11 @@
                 <include name="node_modules/font-awesome/**"/>
             </fileset>
         </copy>
-        <exec executable="temp/WeGA-WebApp/${dev_libs.dir}/sass/sass.js">
+        <exec executable="temp/WeGA-WebApp/${wega.dev_libs.dir}/sass/sass.js">
             <arg line="dist-temp/resources/sass/main.scss dist-temp/resources/css/styles.css"/>
         </exec>
         <echo>Run minify on CSS files</echo>
-        <apply executable="temp/WeGA-WebApp/${dev_libs.dir}/minify/bin/minify.js" parallel="false">
+        <apply executable="temp/WeGA-WebApp/${wega.dev_libs.dir}/minify/bin/minify.js" parallel="false">
             <fileset dir="dist-temp/resources/css" includes="*.css" excludes="*min.css"/>
             <redirector>
                 <outputmapper type="glob" from="*.css" to="dist-temp/resources/css/*-min.css"/>
