@@ -4,9 +4,17 @@ variables:
   DOCKER_TLS_CERTDIR: ""
   DOCKER_HOST: tcp://localhost:2375
 
-test data-package:
+default:
+  image: ubuntu:latest
+
+stages:
+  - build
+  - test
+  - deploy
+
+build-webapp:
   image: openjdk:8-jdk
-  stage: deploy
+  stage: build
   before_script:
     - apt update
     - apt install -y --no-install-recommends ant
