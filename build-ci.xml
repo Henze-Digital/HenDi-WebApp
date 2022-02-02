@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project default="xar" name="HWH-WebApp" basedir="." xmlns:unless="ant:unless">
+<project default="xar" name="HWH-WebApp-ci" basedir="." xmlns:unless="ant:unless">
     
-    <dirname property="HWH-WebApp.basedir" file="${ant.file.HWH-WebApp}"/>
+    <dirname property="HWH-WebApp-ci.basedir" file="${ant.file.HWH-WebApp}"/>
     
     <!-- import default properties from file -->
     <property file="${HWH-WebApp.basedir}/local.build.properties" prefix="hwh"/>
@@ -10,11 +10,11 @@
     <target name="clean">
         <echo>Cleaning task. Deleting content of temp and dist dirs.</echo>
         <delete dir="dist"/>
-        <delete dir="dist-tmp"/>
+        <delete dir="dist-temp"/>
         <delete dir="temp"/>
         
         <mkdir dir="dist"/>
-        <mkdir dir="dist-tmp"/>
+        <mkdir dir="dist-temp"/>
         <mkdir dir="temp"/>
 <!--        <ant antfile="build.xml" dir="temp/WeGA-WebApp/" target="clean"/>-->
     </target>
@@ -42,7 +42,7 @@
         <antcall target="clean"/>
         <antcall target="clone-wega-webapp-repo"/>
         <antcall target="clone-hwh-odd"/>
-<!--        <antcall target="clone-hwh-secrets"/>-->
+        <antcall target="clone-hwh-secrets"/>
     </target>
     
     <target name="build-wega-xar" depends="init">
@@ -54,7 +54,7 @@
     
     <target name="get-wega-xar-data" depends="build-wega-xar">
         <echo>Get the WeGA-WebApp.xar (unzip to dist dir).</echo>
-        <unzip src="temp/WeGA-WebApp/build/WeGA-WebApp-4.4.0.xar" dest="dist"/>
+        <unzip src="temp/WeGA-WebApp/build/*.xar" dest="dist"/>
     </target>
     
     <target name="prepare-hwh-specs" depends="init">
@@ -66,7 +66,7 @@
     
     <target name="prepare-package-files">
         <echo>Create expath-pkg.xml</echo>
-        <copy file="data/expath-pkg.xml.tmpl" tofile="dist-tmp/expath-pkg.xml" filtering="true" overwrite="true">
+        <copy file="data/expath-pkg.xml.tmpl" tofile="dist-temp/expath-pkg.xml" filtering="true" overwrite="true">
             <filterset>
                 <filter token="project.app" value="${hwh.project.app}"/>
                 <filter token="project.name" value="${hwh.project.name}"/>
@@ -74,7 +74,7 @@
             </filterset>
         </copy>
         <echo>Create repo.xml</echo>
-        <copy file="data/repo.xml.tmpl" tofile="dist-tmp/repo.xml" filtering="true" overwrite="true">
+        <copy file="data/repo.xml.tmpl" tofile="dist-temp/repo.xml" filtering="true" overwrite="true">
             <filterset>
                 <filter token="project.app" value="${hwh.project.app}"/>
                 <filter token="project.author" value="${hwh.project.author}"/>
@@ -85,39 +85,39 @@
     
     <target name="prepare-css">
         <echo>Get sass data from WeGA</echo>
-        <copy todir="dist-tmp/resources/sass/">
+        <copy todir="dist-temp/resources/sass/">
             <fileset dir="temp/WeGA-WebApp/resources/sass/">
                 <include name="**/*.*"/>
             </fileset>
         </copy>
         <echo>Get sass data from Henze-Digital</echo>
-        <copy todir="dist-tmp/resources/sass/" overwrite="yes">
+        <copy todir="dist-temp/resources/sass/" overwrite="yes">
             <fileset dir="data/resources/sass/">
                 <include name="**/*.*"/>
             </fileset>
         </copy>
         <echo>Create CSS files via sass</echo>
-        <copy todir="dist-tmp/" overwrite="yes">
+        <copy todir="dist-temp/" overwrite="yes">
             <fileset dir="temp/WeGA-WebApp/">
                 <include name="node_modules/bootstrap/**"/>
                 <include name="node_modules/font-awesome/**"/>
             </fileset>
         </copy>
         <exec executable="temp/WeGA-WebApp/${dev_libs.dir}/sass/sass.js">
-            <arg line="dist-tmp/resources/sass/main.scss dist-tmp/resources/css/styles.css"/>
+            <arg line="dist-temp/resources/sass/main.scss dist-temp/resources/css/styles.css"/>
         </exec>
         <echo>Run minify on CSS files</echo>
         <apply executable="temp/WeGA-WebApp/${dev_libs.dir}/minify/bin/minify.js" parallel="false">
-            <fileset dir="dist-tmp/resources/css" includes="*.css" excludes="*min.css"/>
+            <fileset dir="dist-temp/resources/css" includes="*.css" excludes="*min.css"/>
             <redirector>
-                <outputmapper type="glob" from="*.css" to="dist-tmp/resources/css/*-min.css"/>
+                <outputmapper type="glob" from="*.css" to="dist-temp/resources/css/*-min.css"/>
             </redirector>
         </apply>
     </target>
     
     <target name="prepare-hwh-odd">
         <echo>Get HWH-ODD data</echo>
-        <copy todir="dist-tmp/HWH-ODD">
+        <copy todir="dist-temp/HWH-ODD">
             <fileset dir="temp/HWH-ODD">
                 <include name="compiled-ODD/*.xml"/>
                 <include name="src/**/*.xml"/>
@@ -139,9 +139,9 @@
                 <exclude name="*.tmpl"/>
             </fileset>
         </copy>
-        <echo>Copy processed hwh-spec data (dist-tmp)</echo>
+        <echo>Copy processed hwh-spec data (dist-temp)</echo>
         <copy todir="dist" overwrite="yes">
-            <fileset dir="dist-tmp">
+            <fileset dir="dist-temp">
                 <include name="*.*"/>
                 <include name="resources/"/>
                 <include name="templates/"/>
@@ -170,14 +170,14 @@
         <echo>Override the WeGA-ODD with HWH-ODD data</echo>
         <delete file="dist/resources/lib/WeGA-ODD/build.xml"/>
         <copy todir="dist/resources/lib/WeGA-ODD" overwrite="yes">
-            <fileset dir="dist-tmp/HWH-ODD">
+            <fileset dir="dist-temp/HWH-ODD">
                 <include name="**/*.*"/>
             </fileset>
         </copy>
         <echo>Override the WeGA Guidelines with the Henze-Digital Guidelines</echo>
         <delete file="dist/guidelines/*.*"/>
         <copy todir="dist/guidelines">
-            <fileset dir="dist-tmp/HWH-ODD/compiled-ODD">
+            <fileset dir="dist-temp/HWH-ODD/compiled-ODD">
                 <include name="*.xml"/>
             </fileset>
         </copy>
