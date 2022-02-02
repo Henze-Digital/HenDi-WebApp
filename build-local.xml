@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="xar" name="HWH-WebApp-local" basedir="." xmlns:unless="ant:unless">
     
-    <dirname property="HWH-WebApp-local.basedir" file="${ant.file.HWH-WebApp}"/>
+    <dirname property="HWH-WebApp-local.basedir" file="${ant.file.HWH-WebApp-local}"/>
     
     <!-- import default properties from file -->
     <property file="${HWH-WebApp-local.basedir}/local.build.properties" prefix="hwh"/>
@@ -11,8 +11,8 @@
     
     <target name="clean">
         <echo>Cleaning task before build. Deleting temp and dist dirs.</echo>
-        <delete dir="${hwh.dist.dir}/"/>
-        <delete dir="${hwh.dist.tmp.dir}/"/>
+        <delete dir="${hwh.dist.dir}"/>
+        <delete dir="${hwh.dist.tmp.dir}"/>
         <ant antfile="build.xml" dir="${hwh.wega.repo}/" target="clean"/>
     </target>
     
