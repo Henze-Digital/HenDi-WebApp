@@ -48,12 +48,13 @@
         <echo>Finished build of WeGA-WebApp. Build successful.</echo>
     </target>
     
-    <target name="get-wega-xar-data" depends="build-wega-xar">
+    <target name="get-wega-xar-data" depends="init">
         <echo>Set properties for WeGA-WebApp build.xml</echo>
         <!-- Attention: property has to be included in the same target where it is used! -->
         <property file="temp/WeGA-WebApp/build.properties" prefix="wega"/>
         <echo>Get the WeGA-WebApp.xar (unzip to dist dir).</echo>
-        <unzip src="temp/WeGA-WebApp/${wega.build.dir}/${wega.project.app}-${wega.project.version}.xar" dest="dist"/>
+        <unzip scr="https://github.com/Edirom/WeGA-WebApp/releases/latest/download/WeGA-WebApp-4.5.0.xar" dest="dist"/>
+<!--        <unzip src="temp/WeGA-WebApp/${wega.build.dir}/${wega.project.app}-${wega.project.version}.xar" dest="dist"/>-->
     </target>
     
     <target name="prepare-hwh-specs" depends="init">
