@@ -6,8 +6,8 @@
     <!-- import default properties from file -->
     <property file="${HWH-WebApp-local.basedir}/local.build.properties" prefix="hwh"/>
     <property file="${HWH-WebApp-local.basedir}/build.properties" prefix="hwh"/>
-    <property file="${hwh.wega.repo}/local.build.properties"/>
-    <property file="${hwh.wega.repo}/build.properties"/>
+    <property file="${hwh.wega.repo}/local.build.properties" prefix="wega"/>
+    <property file="${hwh.wega.repo}/build.properties" prefix="wega"/>
     
     <target name="clean">
         <echo>Cleaning task before build. Deleting temp and dist dirs.</echo>
