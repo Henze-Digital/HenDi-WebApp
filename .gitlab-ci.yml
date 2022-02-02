@@ -1,0 +1,17 @@
+# GitLab CI configuration for the "HWH-WebApp"
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_HOST: tcp://localhost:2375
+
+test data-package:
+  image: openjdk:8-jdk
+  stage: deploy
+  before_script:
+    - apt update
+    - apt install -y --no-install-recommends ant
+  script:
+    - ant ci
+  artifacts:
+    paths:
+      - build/HWH-WebApp-*.xar
