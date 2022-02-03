@@ -108,7 +108,7 @@
             <arg line="dist-temp/resources/sass/main.scss dist-temp/resources/css/styles.css"/>
         </exec>
         <echo>Run minify on CSS files</echo>
-        <apply executable="temp/WeGA-WebApp/${wega.dev_libs.dir}/minify/bin/minify.js" parallel="false">
+        <apply executable="${minify.path}" parallel="false">
             <fileset dir="dist-temp/resources/css" includes="*.css" excludes="*min.css"/>
             <redirector>
                 <outputmapper type="glob" from="*.css" to="dist-temp/resources/css/*-min.css"/>

@@ -13,20 +13,18 @@ build-webapp:
   image: ubuntu
   stage: build
   before_script:
-    - apt update
-    - apt install -y --no-install-recommends ant
-    - apt install nodejs -y -8 -7
-    - apt install npm -y
     - apt-get update
     - apt-get upgrade
+    - apt install -y --no-install-recommends ant
+    - apt install nodejs -y
+    - apt install npm -y
     - npm install --global yarn
-    #- corepack enable
-    #- yarn init -2
-    #- yarn set version stable
     - yarn install
     - npm install -g sass
+    - apt-get install git -y
+    - apt-get install -y minify
   script:
-    - ant ci -Dsass.path=`which sass`
+    - ant ci -Dsass.path=`which sass` -Dminify-path=`which minify`
   artifacts:
     paths:
       - build/HWH-WebApp-*.xar
