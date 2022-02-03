@@ -15,7 +15,7 @@ build-webapp:
   before_script:
     - apt update
     - apt install -y --no-install-recommends ant
-    - apt install nodejs -y -8 -7
+    - apt install nodejs -y
     - apt install npm -y
     - apt-get update
     - apt-get upgrade
