@@ -10,20 +10,23 @@ stages:
   - deploy
 
 build-webapp:
-  image: openjdk:11-jdk #node:latest
+  image: ubuntu
   stage: build
   before_script:
     - apt update
     - apt install -y --no-install-recommends ant
-    - curl -fsSL https://deb.nodesource.com/setup_17.x | bash -
-    - apt-get install -y nodejs
-    - corepack enable
-    - yarn init -2
-    - yarn set version stable
-    #- yarn install
+    - apt install nodejs -y -8 -7
+    - apt install npm -y
+    - apt-get update
+    - apt-get upgrade
+    - npm install --global yarn
+    #- corepack enable
+    #- yarn init -2
+    #- yarn set version stable
+    - yarn install
     - npm install -g sass
   script:
-    - ant ci
+    - ant ci -Dsass.path=`which sass`
   artifacts:
     paths:
       - build/HWH-WebApp-*.xar
