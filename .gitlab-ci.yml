@@ -24,7 +24,7 @@ build-webapp:
     - apt-get install git -y
     - apt-get install -y minify
   script:
-    - ant ci -Dsass.path=`which sass` -Dminify-path=`which minify`
+    - ant ci -Dsass.path=`which sass` -Dminify.path=`which minify`
   artifacts:
     paths:
       - build/HWH-WebApp-*.xar
