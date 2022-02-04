@@ -175,14 +175,22 @@
         </copy>
         
         <echo>Override the WeGA-ODD with HWH-ODD data</echo>
-        <delete file="dist/resources/lib/WeGA-ODD/build.xml"/>
+        <delete>
+            <fileset dir="dist/resources/lib/WeGA-ODD">
+                <include name="**/*.*"/>
+            </fileset>
+        </delete>
         <copy todir="dist/resources/lib/WeGA-ODD" overwrite="yes">
             <fileset dir="dist-temp/HWH-ODD">
                 <include name="**/*.*"/>
             </fileset>
         </copy>
         <echo>Override the WeGA Guidelines with the Henze-Digital Guidelines</echo>
-        <delete file="dist/guidelines/*.*"/>
+        <delete>
+            <fileset dir="dist/guidelines">
+                <include name="*.xml"/>
+            </fileset>
+        </delete>
         <copy todir="dist/guidelines">
             <fileset dir="dist-temp/HWH-ODD/compiled-ODD">
                 <include name="*.xml"/>
