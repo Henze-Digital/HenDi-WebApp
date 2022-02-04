@@ -22,7 +22,6 @@ build-webapp:
     - yarn install
     - npm install -g sass
     - apt-get install git -y
-    - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@git.uni-paderborn.de/".insteadOf "git://git@git.uni-paderborn.de:"
     - apt-get install -y minify
   script:
     - ant ci -Dsass.path=`which sass` -Dminify.path=`which minify`
