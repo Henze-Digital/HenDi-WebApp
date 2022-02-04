@@ -30,8 +30,8 @@
     </target>
     <target name="clone-hwh-secrets">
         <exec executable="git" dir="temp" failonerror="true">
-<!--            <arg line="clone https://$GrpDeployTknUsr:$GrpDeployTkn@git.uni-paderborn.de/vife/henze-digital/hwh-data-internal-only.git hwh-data-internal-only" />-->
-            <arg line="clone https://gitlab-ci-token:${CI_JOB_TOKEN}@git.uni-paderborn.de/vife/henze-digital/hwh-data-internal-only.git hwh-data-internal-only"/>
+            <arg line="clone https://$ACCESS_HWH_SECRETS_USER:$ACCESS_HWH_SECRETS@git.uni-paderborn.de/vife/henze-digital/hwh-data-internal-only.git hwh-data-internal-only" />
+<!--            <arg line="clone https://gitlab-ci-token:${CI_JOB_TOKEN}@git.uni-paderborn.de/vife/henze-digital/hwh-data-internal-only.git hwh-data-internal-only"/>-->
         </exec>
     </target>
     
