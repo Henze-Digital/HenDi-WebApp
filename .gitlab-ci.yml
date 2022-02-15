@@ -47,7 +47,7 @@ merge request artifact:
     - ant ci -Dsass.path=`which sass` -Dminify.path=`which minify` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   artifacts:
     paths:
-      - build-PR/HWH-WebApp-*.xar
+      - build/HWH-WebApp-*.xar
   only:
     - merge_requests
   #rules:
