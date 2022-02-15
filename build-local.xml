@@ -164,7 +164,7 @@
     <target name="deploy" depends="xar">
         <echo>Starting auto deploy for eXist-db</echo>
         <path id="classpath.eXist5">
-            <fileset dir="${hwh.exist5.libs}" erroronmissingdir="no">
+            <fileset dir="${hwh.exist.libs}" erroronmissingdir="no">
                 <include name="*.jar"/>
             </fileset>
         </path>
