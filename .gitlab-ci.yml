@@ -28,3 +28,25 @@ build-webapp:
   artifacts:
     paths:
       - build/HWH-WebApp-*.xar
+
+merge request artifact:
+  image: ubuntu
+  stage: build
+  before_script:
+    - apt-get update
+    - apt-get upgrade
+    - apt install -y --no-install-recommends ant
+    - apt install nodejs -y
+    - apt install npm -y
+    - npm install --global yarn
+    - yarn install
+    - npm install -g sass
+    - apt-get install git -y
+    - apt-get install -y minify
+  script:
+    - ant ci -Dsass.path=`which sass` -Dminify.path=`which minify` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
+  artifacts:
+    paths:
+      - build-PR/HWH-WebApp-*.xar
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
