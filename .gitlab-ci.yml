@@ -14,7 +14,7 @@ build-webapp:
   stage: build
   before_script:
     - apt-get update
-    - apt-get upgrade
+    - apt-get upgrade -y
     - apt install -y --no-install-recommends ant
     - apt install nodejs -y
     - apt install npm -y
@@ -34,7 +34,7 @@ merge request artifact:
   stage: build
   before_script:
     - apt-get update
-    - apt-get upgrade
+    - apt-get upgrade -y
     - apt install -y --no-install-recommends ant
     - apt install nodejs -y
     - apt install npm -y
