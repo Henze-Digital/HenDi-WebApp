@@ -349,6 +349,7 @@
     <entry xml:id="documents">Documents</entry>
     <entry xml:id="document">Document</entry>
     <entry xml:id="persons">Persons</entry>
+    <entry xml:id="organizations">Organizations</entry>
     <entry xml:id="personsPlus">Persons</entry><!-- inkl. orgs, families -->
     <entry xml:id="letter">Letter</entry>
     <entry xml:id="letters">Letters</entry>
