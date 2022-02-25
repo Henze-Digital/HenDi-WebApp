@@ -172,7 +172,7 @@
     <!--  footer  -->
     <entry xml:id="lastChangeDateWithAuthor">Last change of this document by %2 on %1</entry>
     <entry xml:id="lastChangeDateWithoutAuthor">Last change of this document on %1</entry>
-    <entry xml:id="proposedCitation">Proposed citation: Complete Works of Carl Maria von Weber. Digital Edition</entry>
+    <entry xml:id="proposedCitation">Proposed citation: Hans Werner Henze's network of artists. Digital Edition</entry>
     <entry xml:id="versionInformation">Version %1 of %2</entry>
     <!--  Search  -->
     <entry xml:id="advancedSearch">Advanced Search</entry>
@@ -277,34 +277,31 @@
     <entry xml:id="common">Common</entry>
     <!-- HTML Meta Daten -->
     <entry xml:id="bioInfoAbout">Biographical information about</entry>
-    <entry xml:id="metaDescriptionIndex">The Carl-Maria-von-Weber-Gesamtausgabe aims at editing a complete scholarly edition of Weber’s compositions, letters, diaries and writings. All textual parts (i.e. exclusive of scores) are being published as digital edition on this website in the first instance.</entry>
-    <!--<entry xml:id="metaLettersPersons">A list of letters from the correspondence of %1, collected and (partially) edited by the Carl-Maria-von-Weber-Gesamtausgabe</entry>-->
-    <!--<entry xml:id="metaDiariesPersons">A list of diary entries from the diaries of %1, collected and (partially) edited by the Carl-Maria-von-Weber-Gesamtausgabe</entry>-->
-    <!--<entry xml:id="metaWritingsPersons">A list of writings of %1, collected and (partially) edited by the Carl-Maria-von-Weber-Gesamtausgabe</entry>-->
-    <!--<entry xml:id="metaWorksPersons">A list of works of %1, collected and (partially) edited by the Carl-Maria-von-Weber-Gesamtausgabe</entry>-->
-    <entry xml:id="metaDescriptionIndex-personsPlus">A list of (historic) persons from the editions of the Carl-Maria-von-Weber-Gesamtausgabe</entry>
-    <entry xml:id="metaDescriptionIndex-news">A list of news items published by the Carl-Maria-von-Weber-Gesamtausgabe</entry>
-    <entry xml:id="metaDescriptionIndex-works">A list of works, collected and (partially) edited by the Carl-Maria-von-Weber-Gesamtausgabe</entry>
-    <entry xml:id="metaDescriptionIndex-writings">A list of writings, collected and (partially) edited by the Carl-Maria-von-Weber-Gesamtausgabe</entry>
-    <entry xml:id="metaDescriptionIndex-diaries">A list of diary entries, collected and edited by the Carl-Maria-von-Weber-Gesamtausgabe</entry>
-    <entry xml:id="metaDescriptionIndex-letters">A list of correspondence material (mostly letters), collected and (partially) edited by the Carl-Maria-von-Weber-Gesamtausgabe</entry>
-    <entry xml:id="metaDescriptionIndex-documents">A list of documents, collected and edited by the Carl-Maria-von-Weber-Gesamtausgabe</entry>
-    <entry xml:id="metaDescriptionIndex-places">Index of places of the Carl-Maria-von-Weber-Gesamtausgabe</entry>
-    <entry xml:id="metaDescriptionIndex-indices">A complete index of all documents of the digital edition of the Carl-Maria-von-Weber-Gesamtausgabe</entry>
-    <!--<entry xml:id="WeGAPublications">Publications of the Carl-Maria-von-Weber-Gesamtausgabe</entry>-->
+    <entry xml:id="metaDescriptionIndex">Henze-Digital aims at editing a scholarly edition of Henze’s letters. All textual parts are being published as digital edition on this website in the first instance.</entry>
+    <!--<entry xml:id="metaLettersPersons">A list of letters from the correspondence of %1, collected and (partially) edited by Henze-Digital</entry>-->
+    <!--<entry xml:id="metaDiariesPersons">A list of diary entries from the diaries of %1, collected and (partially) edited by Henze-Digital</entry>-->
+    <!--<entry xml:id="metaWritingsPersons">A list of writings of %1, collected and (partially) edited by Henze-Digital</entry>-->
+    <!--<entry xml:id="metaWorksPersons">A list of works of %1, collected and (partially) edited by Henze-Digital</entry>-->
+    <entry xml:id="metaDescriptionIndex-personsPlus">A list of (historic) persons from the editions of Henze-Digital</entry>
+    <entry xml:id="metaDescriptionIndex-news">A list of news items published by Henze-Digital</entry>
+    <entry xml:id="metaDescriptionIndex-works">A list of works, collected and (partially) edited by Henze-Digital</entry>
+    <entry xml:id="metaDescriptionIndex-writings">A list of writings, collected and (partially) edited by Henze-Digital</entry>
+    <entry xml:id="metaDescriptionIndex-diaries">A list of diary entries, collected and edited by Henze-Digital</entry>
+    <entry xml:id="metaDescriptionIndex-letters">A list of correspondence material (mostly letters), collected and (partially) edited by Henze-Digital</entry>
+    <entry xml:id="metaDescriptionIndex-documents">A list of documents, collected and edited by Henze-Digital</entry>
+    <entry xml:id="metaDescriptionIndex-places">Index of places of Henze-Digital</entry>
+    <entry xml:id="metaDescriptionIndex-indices">A complete index of all documents of the digital edition of Henze-Digital</entry>
+    <!--<entry xml:id="WeGAPublications">Publications of Henze-Digital</entry>-->
     <!--<entry xml:id="metaWeberStudiesPublications">The series Weber-Studies is devoted to Carl Maria von Weber and accompanies the edition of his collected works, writings, letters and diaries.</entry>-->
-<!--    <entry xml:id="metaMusicVolumesPublications">A list of music volumes published by the Carl-Maria-von-Weber-Gesamtausgabe.</entry>-->
-<!--    <entry xml:id="metaPapersPublications">A list of papers written by (former and current) staff members of the Carl-Maria-von-Weber-Gesamtausgabe.</entry>-->
-<!--    <entry xml:id="metaTalksPublications">A list of talks given by (former and current) staff members of the Carl-Maria-von-Weber-Gesamtausgabe.</entry>-->
-    <entry xml:id="metaDescriptionIndex-biblio">A bibliography of Weber-Literature. This bibliography functions as a continuation and addition to:
-        Donald G. und Alice H. Henderson, Carl Maria von Weber. A Guide to Research (Garland Composer Resource Manuals, Vol. 24) (Garland Reference Library of the Humanities, Vol. 1006), New York and London 1990.
-        There you'll find (a selection of) the Weber-Literature until 1988. So is this bibliography to be understood as a selection.</entry>
-    <entry xml:id="metaDescriptionIndex-thematicCommentaries">A list of thematic commentaries published by the Carl-Maria-von-Weber-Gesamtausgabe.
-        These thematic commentaries provide additional information about various events and facts that exceed regular notes within the text.</entry>
-    <entry xml:id="metaDescriptionSearch">Search across all the persons, letters, diaries, writings, commentaries, etc. of the Digital Edition of the Carl-Maria-von-Weber-Gesamtausgabe.</entry>
+<!--    <entry xml:id="metaMusicVolumesPublications">A list of music volumes published by Henze-Digital.</entry>-->
+<!--    <entry xml:id="metaPapersPublications">A list of papers written by (former and current) staff members of Henze-Digital.</entry>-->
+<!--    <entry xml:id="metaTalksPublications">A list of talks given by (former and current) staff members of Henze-Digital.</entry>-->
+    <entry xml:id="metaDescriptionIndex-biblio">A bibliography of Henze-Literature.</entry>
+    <entry xml:id="metaDescriptionIndex-thematicCommentaries">A list of thematic commentaries published by Henze-Digital. These thematic commentaries provide additional information about various events and facts that exceed regular notes within the text.</entry>
+    <entry xml:id="metaDescriptionSearch">Search across all the persons, letters, diaries, writings, commentaries, etc. of the Digital Edition of Henze-Digital.</entry>
     <!-- HTML Meta Daten (title) -->
-    <entry xml:id="metaTitleIndex-home">Carl-Maria-von-Weber-Gesamtausgabe</entry>
-    <entry xml:id="metaTitleIndex-search">Search page of the Carl-Maria-von-Weber-Gesamtausgabe</entry>
+    <entry xml:id="metaTitleIndex-home">Henze-Digital</entry>
+    <entry xml:id="metaTitleIndex-search">Search page of Henze-Digital</entry>
     <entry xml:id="metaTitleIndex-personsPlus">Index of persons</entry>
     <entry xml:id="metaTitleIndex-letters">Index of letters</entry>
     <entry xml:id="metaTitleIndex-places">Index of places</entry>
@@ -349,7 +346,6 @@
     <entry xml:id="documents">Documents</entry>
     <entry xml:id="document">Document</entry>
     <entry xml:id="persons">Persons</entry>
-    <entry xml:id="organizations">Organizations</entry>
     <entry xml:id="personsPlus">Persons</entry><!-- inkl. orgs, families -->
     <entry xml:id="letter">Letter</entry>
     <entry xml:id="letters">Letters</entry>
@@ -546,15 +542,15 @@
     <entry xml:id="appendix">Appendix</entry>
     <entry xml:id="classes">Classes</entry>
     <entry xml:id="metaTitleGuidelinesSpecs">%1 (schema: %2)</entry>
-    <entry xml:id="metaDescriptionGuidelinesSpecs">Specification page for %1. This is a customization of the TEI Guidelines by the Carl-Maria-von-Weber-Gesamtausgabe</entry>
+    <entry xml:id="metaDescriptionGuidelinesSpecs">Specification page for %1. This is a customization of the TEI Guidelines by Henze-Digital</entry>
     <entry xml:id="metaTitleGuidelines-index-elements">Index of elements</entry>
     <entry xml:id="metaTitleGuidelines-index-attributes">Index of attributes und attribute classes</entry>
     <entry xml:id="metaTitleGuidelines-index-datatypes">Index of datatypes and macros</entry>
     <entry xml:id="metaTitleGuidelines-index-classes">Index of model classes</entry>
-    <entry xml:id="metaDescriptionGuidelines-index-elements">Index of all elements defined in the customised TEI schemas of the Carl-Maria-von-Weber-Gesamtausgabe.</entry>
-    <entry xml:id="metaDescriptionGuidelines-index-attributes">Index of all attributes and attribute classes defined in the customised TEI schemas of the Carl-Maria-von-Weber-Gesamtausgabe.</entry>
-    <entry xml:id="metaDescriptionGuidelines-index-datatypes">Index of all datatypes defined in the customised TEI schemas of the Carl-Maria-von-Weber-Gesamtausgabe.</entry>
-    <entry xml:id="metaDescriptionGuidelines-index-classes">Index of all model classes defined in the customised TEI schemas of the Carl-Maria-von-Weber-Gesamtausgabe.</entry>
+    <entry xml:id="metaDescriptionGuidelines-index-elements">Index of all elements defined in the customised TEI schemas of Henze-Digital.</entry>
+    <entry xml:id="metaDescriptionGuidelines-index-attributes">Index of all attributes and attribute classes defined in the customised TEI schemas of Henze-Digital.</entry>
+    <entry xml:id="metaDescriptionGuidelines-index-datatypes">Index of all datatypes defined in the customised TEI schemas of Henze-Digital.</entry>
+    <entry xml:id="metaDescriptionGuidelines-index-classes">Index of all model classes defined in the customised TEI schemas of Henze-Digital.</entry>
     <entry xml:id="source">Source</entry>
     <entry xml:id="performance-review">Reviews of musical performances</entry>
     <entry xml:id="historic-news">Historic news</entry>

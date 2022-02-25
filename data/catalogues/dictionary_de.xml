@@ -37,7 +37,7 @@
     <entry xml:id="travels">Reisen</entry>
     <entry xml:id="organisationsInstitutions">Organisationen und Institutionen</entry>
     <entry xml:id="backlinks">Rückverweise</entry>
-    <!--    <entry xml:id="personSingleViewTitle">Biographische Informationen aus der Carl-Maria-von-Weber-Gesamtausgabe</entry>-->
+    <!--    <entry xml:id="personSingleViewTitle">Biographische Informationen aus von Henze-Digital</entry>-->
     <entry xml:id="address">Adresse</entry>
     <entry xml:id="tel">Tel.</entry>
     <entry xml:id="fax">Fax</entry>
@@ -172,7 +172,7 @@
     <!--  footer  -->
     <entry xml:id="lastChangeDateWithAuthor">Letzte Änderung dieses Dokuments am %1 durch %2</entry>
     <entry xml:id="lastChangeDateWithoutAuthor">Letzte Änderung dieses Dokuments am %1</entry>
-    <entry xml:id="proposedCitation">Empfohlene Zitierweise: Carl-Maria-von-Weber-Gesamtausgabe. Digitale Edition</entry>
+    <entry xml:id="proposedCitation">Empfohlene Zitierweise: Hans Werner Henzes künstlerisches Netzwerk. Digitale Edition</entry>
     <entry xml:id="versionInformation">Version %1 vom %2</entry>
     <!--  Search  -->
     <entry xml:id="advancedSearch">Erweiterte Suche</entry>
@@ -277,26 +277,25 @@
     <entry xml:id="common">Allgemeines</entry>
     <!-- HTML Meta Daten (description) -->
     <entry xml:id="bioInfoAbout">Biographische Informationen zu</entry>
-    <entry xml:id="metaDescriptionIndex">Die Carl-Maria-von-Weber-Gesamtausgabe erarbeitet sämtliche Kompositionen, Briefe, Tagebücher und Schriften Henzes in einer wissenschaftlich-kritischen Gesamtausgabe. Alle Textteile (d.h. ausschließlich der Notentexte)
-        werden zunächst auf diesen Seiten als Digitale Edition publiziert.</entry>
+    <entry xml:id="metaDescriptionIndex">Henze-digital erarbeitet ausgewählte Briefe Henzes in einer wissenschaftlich-kritischen Ausgabe. Alle Textteile werden zunächst auf diesen Seiten als Digitale Edition publiziert.</entry>
     <!--<entry xml:id="metaLettersPersons">Eine Liste von Briefen aus der Korrespondenz von %1,
-        gesammelt und (teilweise) ediert durch die Carl-Maria-von-Weber-Gesamtausgabe</entry>-->
+        gesammelt und (teilweise) ediert durch Henze-Digital</entry>-->
     <!--<entry xml:id="metaDiariesPersons">Eine Liste von Tagebucheinträgen aus den Tagebüchern von %1,
-        gesammelt und (teilweise) ediert durch die Carl-Maria-von-Weber-Gesamtausgabe</entry>-->
+        gesammelt und (teilweise) ediert durch Henze-Digital</entry>-->
     <!--<entry xml:id="metaWritingsPersons">Eine Liste von Schriften von %1, gesammelt und (teilweise)
-        ediert durch die Carl-Maria-von-Weber-Gesamtausgabe</entry>-->
+        ediert durch Henze-Digital</entry>-->
     <!--<entry xml:id="metaWorksPersons">Eine Liste von Werken von %1, gesammelt und (teilweise) ediert
-        durch die Carl-Maria-von-Weber-Gesamtausgabe</entry>-->
-    <entry xml:id="metaDescriptionIndex-personsPlus">Eine Liste von (historischen) Personen aus dem Umfeld der Editionen der Carl-Maria-von-Weber-Gesamtausgabe</entry>
-    <entry xml:id="metaDescriptionIndex-news">Eine Liste von aktuellen Nachrichten, herausgegeben von der Carl-Maria-von-Weber-Gesamtausgabe</entry>
-    <entry xml:id="metaDescriptionIndex-works">Eine Liste von Werken, gesammelt und (teilweise) ediert durch die Carl-Maria-von-Weber-Gesamtausgabe</entry>
-    <entry xml:id="metaDescriptionIndex-writings">Eine Liste von Schriften, gesammelt und (teilweise) ediert durch die Carl-Maria-von-Weber-Gesamtausgabe</entry>
-    <entry xml:id="metaDescriptionIndex-diaries">Eine Liste von Tagebucheinträgen, gesammelt und ediert durch die Carl-Maria-von-Weber-Gesamtausgabe</entry>
-    <entry xml:id="metaDescriptionIndex-letters">Eine Liste von Briefen, gesammelt und (teilweise) ediert durch die Carl-Maria-von-Weber-Gesamtausgabe</entry>
-    <entry xml:id="metaDescriptionIndex-indices">Vollständiges Register aller Dokumente der Digitalen Edition der Carl-Maria-von-Weber-Gesamtausgabe</entry>
-    <entry xml:id="metaDescriptionIndex-documents">Eine Liste von Dokumenten, gesammelt und (teilweise) ediert durch die Carl-Maria-von-Weber-Gesamtausgabe</entry>
-    <entry xml:id="metaDescriptionIndex-places">Ortsregister der Carl-Maria-von-Weber-Gesamtausgabe</entry>
-    <!--    <entry xml:id="WeGAPublications">Publikationen der Carl-Maria-von-Weber-Gesamtausgabe</entry>-->
+        durch Henze-Digital</entry>-->
+    <entry xml:id="metaDescriptionIndex-personsPlus">Eine Liste von (historischen) Personen aus dem Umfeld der Editionen von Henze-Digital</entry>
+    <entry xml:id="metaDescriptionIndex-news">Eine Liste von aktuellen Nachrichten, herausgegeben Henze-Digital</entry>
+    <entry xml:id="metaDescriptionIndex-works">Eine Liste von Werken, gesammelt und (teilweise) ediert durch Henze-Digital</entry>
+    <entry xml:id="metaDescriptionIndex-writings">Eine Liste von Schriften, gesammelt und (teilweise) ediert durch Henze-Digital</entry>
+    <entry xml:id="metaDescriptionIndex-diaries">Eine Liste von Tagebucheinträgen, gesammelt und ediert durch Henze-Digital</entry>
+    <entry xml:id="metaDescriptionIndex-letters">Eine Liste von Briefen, gesammelt und (teilweise) ediert durch Henze-Digital</entry>
+    <entry xml:id="metaDescriptionIndex-indices">Vollständiges Register aller Dokumente der Digitalen Edition von Henze-Digital</entry>
+    <entry xml:id="metaDescriptionIndex-documents">Eine Liste von Dokumenten, gesammelt und (teilweise) ediert durch Henze-Digital</entry>
+    <entry xml:id="metaDescriptionIndex-places">Ortsregister von Henze-Digital</entry>
+    <!--    <entry xml:id="WeGAPublications">Publikationen von Henze-Digital</entry>-->
     <!--<entry xml:id="metaWeberStudiesPublications">Die Weber-Studien sind eine Carl Maria von Weber
         gewidmete Schriftenreihe, die das Erscheinen der Gesamtausgabe seiner Werke, Schriften,
         Briefe und Tagebücher begleitet. In loser Folge sind gesammelte Einzelstudien, aber auch
@@ -304,20 +303,15 @@
         beschäftigen. Die Weber-Philologie, deren praktische Ergebnisse sich unmittelbar in der
         Bänden der Ausgabe niederschlagen, erhält hier ein theoretisches Forum; aber auch die
         allgemein musikgeschichtliche Weber-Forschung findet hier ein Sprachrohr.</entry>-->
-    <!--<entry xml:id="metaMusicVolumesPublications">Eine Liste von in der
-        Carl-Maria-von-Weber-Gesamtausgabe erschienenen Notenbänden.</entry>-->
-    <!--<entry xml:id="metaPapersPublications">Eine Liste von Aufsätzen der Mitarbeiter der
-        Carl-Maria-von-Weber-Gesamtausgabe.</entry>-->
-    <!--<entry xml:id="metaTalksPublications">Eine Liste von Vorträgen, die von Mitarbeitern der
-        Carl-Maria-von-Weber-Gesamtausgabe gehalten wurden.</entry>-->
-    <entry xml:id="metaDescriptionIndex-biblio">Eine Bibliographie der Weber-Literatur. Die Bibliographie versteht sich als Weiterführung und Ergänzung zu: Donald G. und Alice H. Henderson, Carl Maria von Weber. A Guide to Research (Garland Composer Resource
-        Manuals, Bd. 24) (Garland Reference Library of the Humanities, Bd. 1006), New York und London 1990. Dort ist die Weber-Literatur bis 1988 nachgewiesen (in Auswahl). Auch bei dieser Bibliographie handelt es sich um eine Auswahl.</entry>
-    <entry xml:id="metaDescriptionIndex-thematicCommentaries">Eine Liste der von der Carl-Maria-von-Weber-Gesamtausgabe erstellten Themenkommentare. Diese erläutern über Einzelstellenkommentare hinausreichende Sachverhalte und vernetzen dergestalt die
-        verschiedenen Editionen der Brief, Tagebücher und Schriften Webers.</entry>
-    <entry xml:id="metaDescriptionSearch">Suche über alle Personen, Briefe, Tagebücher, Themenkommentare, etc. aus der Digitalen Edition der Carl-Maria-von-Weber-Gesamtausgabe.</entry>
+    <!--<entry xml:id="metaMusicVolumesPublications">Eine Liste von in von Henze-Digital erschienenen Notenbänden.</entry>-->
+    <!--<entry xml:id="metaPapersPublications">Eine Liste von Aufsätzen der Mitarbeiter von Henze-Digital.</entry>-->
+    <!--<entry xml:id="metaTalksPublications">Eine Liste von Vorträgen, die von Mitarbeitern von Henze-Digital gehalten wurden.</entry>-->
+    <entry xml:id="metaDescriptionIndex-biblio">Eine Bibliographie der Henze-Literatur.</entry>
+    <entry xml:id="metaDescriptionIndex-thematicCommentaries">Eine Liste der von Henze-Digital erstellten Themenkommentare. Diese erläutern über Einzelstellenkommentare hinausreichende Sachverhalte und vernetzen dergestalt die verschiedenen Editionen der Briefe Henzes.</entry>
+    <entry xml:id="metaDescriptionSearch">Suche über alle Personen, Briefe, Tagebücher, Themenkommentare, etc. aus der Digitalen Edition von Henze-Digital.</entry>
     <!-- HTML Meta Daten (title) -->
-    <entry xml:id="metaTitleIndex-home">Carl-Maria-von-Weber-Gesamtausgabe</entry>
-    <entry xml:id="metaTitleIndex-search">Suchseite der Carl-Maria-von-Weber-Gesamtausgabe</entry>
+    <entry xml:id="metaTitleIndex-home">Henze-Digital</entry>
+    <entry xml:id="metaTitleIndex-search">Suchseite von Henze-Digital</entry>
     <entry xml:id="metaTitleIndex-personsPlus">Register der Personen</entry>
     <entry xml:id="metaTitleIndex-letters">Register der Briefe</entry>
     <entry xml:id="metaTitleIndex-places">Register der Orte</entry>
@@ -362,7 +356,6 @@
     <entry xml:id="documents">Dokumente</entry>
     <entry xml:id="document">Dokument</entry>
     <entry xml:id="persons">Personen</entry>
-    <entry xml:id="organizations">Organisationen</entry>
     <entry xml:id="personsPlus">Personen</entry>
     <!-- inkl. orgs, families -->
     <entry xml:id="letter">Brief</entry>
@@ -560,15 +553,15 @@
     <entry xml:id="appendix">Anhang</entry>
     <entry xml:id="classes">Klassen</entry>
     <entry xml:id="metaTitleGuidelinesSpecs">%1 (Schema: %2)</entry>
-    <entry xml:id="metaDescriptionGuidelinesSpecs">Spezifikation für %1. Dies ist ein angepasstes Schema der TEI Richtlinien durch die Carl-Maria-von-Weber-Gesamtausgabe</entry>
+    <entry xml:id="metaDescriptionGuidelinesSpecs">Spezifikation für %1. Dies ist ein angepasstes Schema der TEI Richtlinien durch Henze-Digital</entry>
     <entry xml:id="metaTitleGuidelines-index-elements">Verzeichnis der Elemente</entry>
     <entry xml:id="metaTitleGuidelines-index-attributes">Verzeichnis der Attribute und Attributklassen</entry>
     <entry xml:id="metaTitleGuidelines-index-datatypes">Verzeichnis der Datentypen und Makros</entry>
     <entry xml:id="metaTitleGuidelines-index-classes">Verzeichnis der Elementklassen</entry>
-    <entry xml:id="metaDescriptionGuidelines-index-elements">Eine Liste aller Elemente, die in den angepassten TEI Schemata der Carl-Maria-von-Weber-Gesamtausgabe spezifiziert sind.</entry>
-    <entry xml:id="metaDescriptionGuidelines-index-attributes">Eine Liste aller Attribute und Attributklassen, die in den angepassten TEI Schemata der Carl-Maria-von-Weber-Gesamtausgabe spezifiziert sind.</entry>
-    <entry xml:id="metaDescriptionGuidelines-index-datatypes">Eine Liste aller Datentypen, die in den angepassten TEI Schemata der Carl-Maria-von-Weber-Gesamtausgabe spezifiziert sind.</entry>
-    <entry xml:id="metaDescriptionGuidelines-index-classes">Eine Liste aller Elementklassen, die in den angepassten TEI Schemata der Carl-Maria-von-Weber-Gesamtausgabe spezifiziert sind.</entry>
+    <entry xml:id="metaDescriptionGuidelines-index-elements">Eine Liste aller Elemente, die in den angepassten TEI Schemata von Henze-Digital spezifiziert sind.</entry>
+    <entry xml:id="metaDescriptionGuidelines-index-attributes">Eine Liste aller Attribute und Attributklassen, die in den angepassten TEI Schemata von Henze-Digital spezifiziert sind.</entry>
+    <entry xml:id="metaDescriptionGuidelines-index-datatypes">Eine Liste aller Datentypen, die in den angepassten TEI Schemata von Henze-Digital spezifiziert sind.</entry>
+    <entry xml:id="metaDescriptionGuidelines-index-classes">Eine Liste aller Elementklassen, die in den angepassten TEI Schemata von Henze-Digital spezifiziert sind.</entry>
     <entry xml:id="source">Quelle</entry>
     <entry xml:id="performance-review">Aufführungsbesprechungen</entry>
     <entry xml:id="historic-news">Historische Berichte</entry>
