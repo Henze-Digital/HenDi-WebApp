@@ -41,12 +41,12 @@
         <antcall target="ci:clone-hwh-secrets"/>
     </target>
     
-    <target name="build-wega-xar" depends="init">
+    <!--<target name="build-wega-xar" depends="init">
         <echo>Building the WeGA-WebApp.xar</echo>
         <echo>Executing ant xar at WeGA-WebApp repo (build.xml) </echo>
         <ant antfile="build.xml" dir="temp/WeGA-WebApp/" target="xar"/>
         <echo>Finished build of WeGA-WebApp. Build successful.</echo>
-    </target>
+    </target>-->
     
     <target name="get-wega-xar-data" depends="init">
         <echo>Set properties for WeGA-WebApp build.xml</echo>
