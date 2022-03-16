@@ -110,7 +110,7 @@
                 <exclude name="*.tmpl"/>
             </fileset>
         </copy>
-        <echo>Copy processed hwh-spec data (dist-tmp)</echo>
+        <echo>Copy processed hwh-spec data (dist-temp)</echo>
         <copy todir="${hwh.dist.dir}" overwrite="yes">
             <fileset dir="${hwh.dist.tmp.dir}">
                 <include name="*.*"/>

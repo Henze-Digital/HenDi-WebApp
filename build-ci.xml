@@ -100,8 +100,8 @@
         <echo>Create CSS files via sass</echo>
         <copy todir="dist-temp/" overwrite="yes">
             <fileset dir="temp/WeGA-WebApp/">
-                <include name="node_modules/bootstrap/**"/>
-                <include name="node_modules/font-awesome/**"/>
+                <include name="node_modules/bootstrap/**/*.*"/>
+                <include name="node_modules/font-awesome/**/*.*"/>
             </fileset>
         </copy>
         <exec executable="${sass.path}">

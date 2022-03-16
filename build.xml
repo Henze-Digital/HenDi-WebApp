@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project default="local-deploy" name="HWH-WebApp" basedir="." xmlns:unless="ant:unless">
+<project default="local" name="HWH-WebApp" basedir="." xmlns:unless="ant:unless">
     
     <include file="build-ci.xml" as="ci" prefixseparator=":"/>
     <include file="build-local.xml" as="local" prefixseparator=":"/>
