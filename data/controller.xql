@@ -164,25 +164,10 @@ else if (matches($exist:path, '/IIIF/' || config:get-option('generalIdPattern') 
         </forward>
     </dispatch>
 :)
-(: Ausführliche Weber-Biographie :)
+(: (Ausführliche) Biographie :)
 else if ($exist:path eq '/en/A001000A/Biography.html' or $exist:path eq '/de/A001000A/Biographie.html') then
-    controller:forward-html('/templates/var.html', map:merge(($exist-vars, map:entry('docID', 'A070003'), map:entry('docType', 'var'))))
+    controller:forward-html('/templates/var.html', map:merge(($exist-vars, map:entry('docID', 'A0700035'), map:entry('docType', 'var'))))
 
-(: Bartlitz Sonderband :)
-(:else if ($exist:path eq '/de/Sonderband.html' or $exist:path eq '/en/Special_Volume.html') then
-    controller:forward-html('/templates/var.html', map:merge(($exist-vars, map:entry('docID', 'A070090'), map:entry('docType', 'var')))):)
-    
-(: Weber-Studien Einzelansicht:)
-(:else if ($isWeberPublication and matches($exist:path, concat('^/', $lang, '/', $publications, '/', $weberStudies, '/', 'A11\d{4}/?$'))) then
-    let $js := if(request:get-parameter-names() = $ajaxCrawlerParameter) then 'false' else 'true'
-    return
-    <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-    	<forward url="{concat($exist:controller, '/modules/var.xql')}">
-    	   <add-parameter name="lang" value="{$lang}"/>
-    	   <add-parameter name="docID" value="{$exist:resource}"/>
-    	   <add-parameter name="js" value="{$js}"/>
-    	</forward>
-    </dispatch>:)
 
 (: GND Resolver :)
 else if (matches($exist:path, concat('^/', $lang, '/[pg]nd/', '[-0-9X]+(\.\w+)?$'))) then
