@@ -57,20 +57,12 @@ declare variable $controller:projectNav :=
         'title': 'editorialGuidelines-music'
     },
     map {
-        'docID': 'A070011',
-        'title': 'volContents'
-    },
-    map {
         'docID': 'A0700127',
         'title': 'apiDocumentation'
     },
     map {
         'docID': 'A070013A',
         'title': 'credits'
-    },
-    map {
-        'docID': 'A070090',
-        'title': 'specialVolume'
     };
 
 (:~
