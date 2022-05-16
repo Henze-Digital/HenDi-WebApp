@@ -27,9 +27,10 @@
             <arg line="clone https://github.com/Henze-Digital/WeGA-WebApp.git WeGA-WebApp" />
         </exec>
     </target>
-    <target name="clone-hwh-odd">
+    <target name="clone-hendi-odd">
         <exec executable="git" dir="temp" failonerror="true">
-            <arg line="clone https://github.com/Henze-Digital/HWH-ODD.git HWH-ODD" />
+            <!--<arg line="clone https://github.com/Henze-Digital/HWH-ODD.git HWH-ODD" />-->
+        	<arg line="clone https://gitlab-ci-token:${CI_JOB_TOKEN}@git.uni-paderborn.de/vife/henze-digital/HenDi-ODD.git HenDi-ODD"/>
         </exec>
     </target>
     <target name="clone-hwh-secrets">
@@ -41,7 +42,7 @@
     <target name="init">
         <antcall target="ci:clean"/>
         <antcall target="ci:clone-wega-webapp-repo"/>
-        <antcall target="ci:clone-hwh-odd"/>
+        <antcall target="ci:clone-hendi-odd"/>
         <antcall target="ci:clone-hwh-secrets"/>
     </target>
     
@@ -66,7 +67,7 @@
         <echo>Prepare the WebApp-specs for Henze-Digital.</echo>
         <antcall target="ci:prepare-package-files"/>
         <antcall target="ci:prepare-css"/>
-        <antcall target="ci:prepare-hwh-odd"/>
+        <antcall target="ci:prepare-hendi-odd"/>
     </target>
     
     <target name="prepare-package-files">
@@ -120,10 +121,10 @@
         </apply>
     </target>
     
-    <target name="prepare-hwh-odd">
-        <echo>Get HWH-ODD data</echo>
-        <copy todir="dist-temp/HWH-ODD">
-            <fileset dir="temp/HWH-ODD">
+    <target name="prepare-hendi-odd">
+    	<echo>Get HenDi-ODD data</echo>
+    	<copy todir="dist-temp/HenDi-ODD">
+    		<fileset dir="temp/HenDi-ODD">
                 <include name="compiled-ODD/*.xml"/>
                 <include name="src/**/*.xml"/>
             </fileset>
@@ -178,14 +179,14 @@
             </fileset>
         </copy>
         
-        <echo>Override the WeGA-ODD with HWH-ODD data</echo>
+    	<echo>Override the WeGA-ODD with HenDi-ODD data</echo>
         <delete>
             <fileset dir="dist/resources/lib/WeGA-ODD">
                 <include name="**/*.*"/>
             </fileset>
         </delete>
         <copy todir="dist/resources/lib/WeGA-ODD" overwrite="yes">
-            <fileset dir="dist-temp/HWH-ODD">
+        	<fileset dir="dist-temp/HenDi-ODD">
                 <include name="**/*.*"/>
             </fileset>
         </copy>
@@ -196,7 +197,7 @@
             </fileset>
         </delete>
         <copy todir="dist/guidelines">
-            <fileset dir="dist-temp/HWH-ODD/compiled-ODD">
+        	<fileset dir="dist-temp/HenDi-ODD/compiled-ODD">
                 <include name="*.xml"/>
             </fileset>
         </copy>
