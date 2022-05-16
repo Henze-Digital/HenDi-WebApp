@@ -40,7 +40,7 @@
     </target>
     
     <target name="init">
-        <antcall target="ci:clean"/>
+<!--        <antcall target="ci:clean"/>-->
         <antcall target="ci:clone-wega-webapp-repo"/>
         <antcall target="ci:clone-hendi-odd"/>
         <antcall target="ci:clone-hwh-secrets"/>
