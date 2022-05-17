@@ -16,7 +16,9 @@
         <delete dir="dist"/>
         <delete dir="dist-temp"/>
         <delete dir="temp"/>
-        
+    </target>
+	<target name="initiate">
+		<echo>Initiating task. Creating temp and dist dirs.</echo>
         <mkdir dir="dist"/>
         <mkdir dir="dist-temp"/>
         <mkdir dir="temp"/>
@@ -41,6 +43,7 @@
     
     <target name="init">
 <!--        <antcall target="ci:clean"/>-->
+    	<antcall target="ci:initiate"/>
         <antcall target="ci:clone-wega-webapp-repo"/>
         <antcall target="ci:clone-hendi-odd"/>
         <antcall target="ci:clone-hwh-secrets"/>
