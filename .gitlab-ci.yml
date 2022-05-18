@@ -7,7 +7,7 @@ variables:
 stages:
   - build
   - test
-  - deploy
+  - build-image
 
 build-webapp:
   image: ubuntu
@@ -54,7 +54,7 @@ merge request artifact:
   #  - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
 
 build-docker:
-   stage: build-docker
+   stage: build-image
    image: docker:stable
    script:
      - docker build -t HenDi-WebApp .
