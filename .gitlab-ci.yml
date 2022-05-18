@@ -47,8 +47,16 @@ merge request artifact:
     - ant ci -Dsass.path=`which sass` -Dminify.path=`which minify` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   artifacts:
     paths:
-      - build/HWH-WebApp-*.xar
+      - build/HenDi-WebApp-*.xar
   only:
     - merge_requests
   #rules:
   #  - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+
+  build-docker:
+    stage: build-docker
+    image: docker:stable
+    script:
+      - docker build -t HenDi-WebApp .
+    dependencies:
+      - build-webapp
