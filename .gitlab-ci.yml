@@ -56,7 +56,8 @@ merge request artifact:
 build-docker:
    stage: build-image
    image: docker:stable
+   needs: build-webapp
    script:
-     - docker build -t HenDi-WebApp .
+     - docker build -t hendi-webapp .
    dependencies:
      - build-webapp
