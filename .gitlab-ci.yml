@@ -7,7 +7,7 @@ variables:
 stages:
   - build
   - test
-  - deploy
+  - build-image
 
 build-webapp:
   image: ubuntu
@@ -47,8 +47,17 @@ merge request artifact:
     - ant ci -Dsass.path=`which sass` -Dminify.path=`which minify` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   artifacts:
     paths:
-      - build/HWH-WebApp-*.xar
+      - build/HenDi-WebApp-*.xar
   only:
     - merge_requests
   #rules:
   #  - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+
+build-docker:
+   stage: build-image
+   image: docker:stable
+   needs: [build-webapp]
+   script:
+     - docker build -t hendi-webapp .
+   dependencies:
+     - build-webapp
