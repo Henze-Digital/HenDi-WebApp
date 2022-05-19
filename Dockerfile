@@ -1,6 +1,12 @@
 FROM stadlerpeter/existdb:6
-ARG COMMIT_HASH = a880703d
-ARG GITLAB_TOKEN = glpat-J2ZNVTufxBb971yygKqj
-ADD https://oauth2:${GITLAB_TOKEN}@git.uni-paderborn.de/vife/henze-digital/hwh-webapp/-/jobs/artifacts/develop/file/build/HWH-WebApp-0.1.0.xar?job=build-webapp ${EXIST_HOME}/autodeploy
+ARG GITLAB_TOKEN=glpat-J2ZNVTufxBb971yygKqj
 
-ADD https://oauth2:${GITLAB_TOKEN}@git.uni-paderborn.de/vife/henze-digital/henze-digital/-/jobs/artifacts/develop/file/build/hwh-data-${COMMIT_HASH}.xar?job=build-data-package ${EXIST_HOME}/autodeploy
+RUN curl --output hendi-webapp.zip --header "PRIVATE-TOKEN:${GITLAB_TOKEN}"  --location "https://git.uni-paderborn.de/api/v4/projects/5005/jobs/artifacts/develop/download?job=build-webapp"
+
+RUN curl --output hendi-data.zip --header "PRIVATE-TOKEN:${GITLAB_TOKEN}j"  --location "https://git.uni-paderborn.de/api/v4/projects/2328/jobs/artifacts/develop/download?job=build-data-package"
+
+RUN curl --output WeGA-WebApp-lib-1.8.0.xar --location "https://github.com/Edirom/WeGA-WebApp-lib/releases/download/v1.8.0/WeGA-WebApp-lib-1.8.0.xar"
+
+RUN unzip hendi-webapp.zip && rm hendi-webapp.zip && mv application/*.xar ${EXIST_HOME}/autodeploy &&\
+    unzip hendi-data.zip && rm hendi-data.zip && mv data-package/*.xar ${EXIST_HOME}/autodeploy &&\
+    mv WeGA-WebApp-lib-1.8.0.xar ${EXIST_HOME}/autodeploy
