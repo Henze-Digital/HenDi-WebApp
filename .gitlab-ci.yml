@@ -27,7 +27,7 @@ build-webapp:
     - ant ci -Dsass.path=`which sass` -Dminify.path=`which minify` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   artifacts:
     paths:
-      - build/HWH-WebApp-*.xar
+      - application/HWH-WebApp-*.xar
 
 merge request artifact:
   image: ubuntu
