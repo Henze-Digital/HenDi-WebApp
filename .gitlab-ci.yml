@@ -27,7 +27,7 @@ build-webapp:
     - ant ci -Dsass.path=`which sass` -Dminify.path=`which minify` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   artifacts:
     paths:
-      - dist/HenDi-WebApp-*.xar
+      - app/HenDi-WebApp-*.xar
 
 merge request artifact:
   image: ubuntu
@@ -47,7 +47,7 @@ merge request artifact:
     - ant ci -Dsass.path=`which sass` -Dminify.path=`which minify` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   artifacts:
     paths:
-      - dist/HenDi-WebApp-*.xar
+      - app/HenDi-WebApp-*.xar
   only:
     - merge_requests
   #rules:
