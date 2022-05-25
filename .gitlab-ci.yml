@@ -3,6 +3,7 @@ variables:
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
   DOCKER_HOST: tcp://localhost:2375
+  IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
 
 stages:
   - build-app
@@ -55,9 +56,13 @@ merge request artifact:
 
 build-docker:
    stage: build-docker
-   image: docker:stable
+   image: docker:19.03.1
+   services:
+     - docker:19.03.1-dind
    needs: [build-webapp]
    script:
-     - docker build -t hendi-webapp .
+     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+     - docker build --network host -t $IMAGE_TAG .
+     - docker push $IMAGE_TAG
    dependencies:
      - build-webapp
