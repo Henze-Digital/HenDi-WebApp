@@ -14,13 +14,13 @@
     <target name="clean">
         <echo>Cleaning task. Deleting content of temp and dist dirs.</echo>
         <delete dir="${hwh.dist}"/>
-        <delete dir="${hwh.dist-temp}"/>
+        <delete dir="${hwh.dist.tmp.dir}"/>
         <delete dir="${hwh.temp}"/>
     </target>
 	<target name="initiate">
 		<echo>Initiating task. Creating temp and dist dirs.</echo>
         <mkdir dir="${hwh.dist}"/>
-        <mkdir dir="${hwh.dist-temp}"/>
+        <mkdir dir="${hwh.dist.tmp.dir}"/>
         <mkdir dir="${hwh.temp}"/>
     </target>
 
@@ -75,7 +75,7 @@
 
     <target name="prepare-package-files">
         <echo>Create expath-pkg.xml</echo>
-        <copy file="data/expath-pkg.xml.tmpl" tofile="${hwh.dist-temp}/expath-pkg.xml" filtering="true" overwrite="true">
+        <copy file="data/expath-pkg.xml.tmpl" tofile="${hwh.dist.tmp.dir}/expath-pkg.xml" filtering="true" overwrite="true">
             <filterset>
                 <filter token="project.app" value="${hwh.project.app}"/>
                 <filter token="project.name" value="${hwh.project.name}"/>
@@ -83,7 +83,7 @@
             </filterset>
         </copy>
         <echo>Create repo.xml</echo>
-        <copy file="data/repo.xml.tmpl" tofile="${hwh.dist-temp}/repo.xml" filtering="true" overwrite="true">
+        <copy file="data/repo.xml.tmpl" tofile="${hwh.dist.tmp.dir}/repo.xml" filtering="true" overwrite="true">
             <filterset>
                 <filter token="project.app" value="${hwh.project.app}"/>
                 <filter token="project.author" value="${hwh.project.author}"/>
@@ -94,39 +94,39 @@
 
     <target name="prepare-css">
         <echo>Get sass data from WeGA</echo>
-        <copy todir="${hwh.dist-temp}/resources/sass/">
+        <copy todir="${hwh.dist.tmp.dir}/resources/sass/">
             <fileset dir="${hwh.temp}/WeGA-WebApp/resources/sass/">
                 <include name="**/*.*"/>
             </fileset>
         </copy>
         <echo>Get sass data from Henze-Digital</echo>
-        <copy todir="${hwh.dist-temp}/resources/sass/" overwrite="yes">
+        <copy todir="${hwh.dist.tmp.dir}/resources/sass/" overwrite="yes">
             <fileset dir="${hwh.data}/resources/sass/">
                 <include name="**/*.*"/>
             </fileset>
         </copy>
         <echo>Create CSS files via sass</echo>
-        <copy todir="${hwh.dist-temp}/" overwrite="yes">
+        <copy todir="${hwh.dist.tmp.dir}/" overwrite="yes">
             <fileset dir="${hwh.temp}/WeGA-WebApp/">
                 <include name="node_modules/bootstrap/**"/>
                 <include name="node_modules/font-awesome/**"/>
             </fileset>
         </copy>
         <exec executable="${sass.path}">
-            <arg line="${hwh.dist-temp}/resources/sass/main.scss dist-temp/resources/css/styles.css"/>
+        	<arg line="${hwh.dist.tmp.dir}/resources/sass/main.scss ${hwh.dist.tmp.dir}/resources/css/styles.css"/>
         </exec>
         <echo>Run minify on CSS files</echo>
         <apply executable="${minify.path}" parallel="false">
-            <fileset dir="${hwh.dist-temp}/resources/css" includes="*.css" excludes="*min.css"/>
+            <fileset dir="${hwh.dist.tmp.dir}/resources/css" includes="*.css" excludes="*min.css"/>
             <redirector>
-                <outputmapper type="glob" from="*.css" to="${hwh.dist-temp}/resources/css/*-min.css"/>
+                <outputmapper type="glob" from="*.css" to="${hwh.dist.tmp.dir}/resources/css/*-min.css"/>
             </redirector>
         </apply>
     </target>
 
     <target name="prepare-hendi-odd">
     	<echo>Get HenDi-ODD data</echo>
-    	<copy todir="${hwh.dist-temp}/HenDi-ODD">
+    	<copy todir="${hwh.dist.tmp.dir}/HenDi-ODD">
     		<fileset dir="${hwh.temp}/HenDi-ODD">
                 <include name="compiled-ODD/*.xml"/>
                 <include name="src/**/*.xml"/>
@@ -148,9 +148,9 @@
                 <exclude name="*.tmpl"/>
             </fileset>
         </copy>
-        <echo>Copy processed hwh-spec data (dist-temp)</echo>
+        <echo>Copy processed hwh-spec data (dist.tmp.dir)</echo>
         <copy todir="${hwh.dist}" overwrite="yes">
-            <fileset dir="${hwh.dist-temp}">
+            <fileset dir="${hwh.dist.tmp.dir}">
                 <include name="*.*"/>
                 <include name="resources/"/>
                 <include name="templates/"/>
@@ -189,7 +189,7 @@
             </fileset>
         </delete>
         <copy todir="${hwh.dist}/resources/lib/WeGA-ODD" overwrite="yes">
-        	<fileset dir="${hwh.dist-temp}/HenDi-ODD">
+        	<fileset dir="${hwh.dist.tmp.dir}/HenDi-ODD">
                 <include name="**/*.*"/>
             </fileset>
         </copy>
@@ -200,7 +200,7 @@
             </fileset>
         </delete>
         <copy todir="${hwh.dist}/guidelines">
-        	<fileset dir="${hwh.dist-temp}/HenDi-ODD/compiled-ODD">
+        	<fileset dir="${hwh.dist.tmp.dir}/HenDi-ODD/compiled-ODD">
                 <include name="*.xml"/>
             </fileset>
         </copy>
