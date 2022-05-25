@@ -156,7 +156,7 @@
     
     <target name="xar" depends="update-dist">
         <echo>Creating the xar Package (zipping).</echo>
-        <zip destfile="build/${hwh.project.app}-${hwh.project.version}.xar">
+        <zip destfile="webapp/${hwh.project.app}-${hwh.project.version}.xar">
             <fileset dir="${hwh.dist.dir}"/>
         </zip>
     </target>
