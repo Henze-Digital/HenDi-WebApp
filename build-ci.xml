@@ -177,11 +177,8 @@
         </copy>
 
     	<echo>Override the WeGA-ODD with HenDi-ODD data</echo>
-        <delete>
-            <fileset dir="${hwh.build.dir}/resources/lib/WeGA-ODD">
-                <include name="**/*.*"/>
-            </fileset>
-        </delete>
+    	<delete dir="${hwh.build.dir}/resources/lib/WeGA-ODD"/>
+    	<mkdir dir="${hwh.build.dir}/resources/lib/WeGA-ODD"/>
         <copy todir="${hwh.build.dir}/resources/lib/WeGA-ODD" overwrite="yes">
         	<fileset dir="${hwh.build.tmp.dir}/HenDi-ODD">
                 <include name="**/*.*"/>
