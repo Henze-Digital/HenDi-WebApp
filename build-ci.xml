@@ -5,10 +5,8 @@
 
     <!-- import default properties from file -->
     <property file="${HWH-WebApp-ci.basedir}/build.properties" prefix="hwh"/>
-    <property file="${HWH-WebApp-ci.basedir}/local.build.properties" prefix="hwh"/>
 
     <!-- ToDo: -->
-	<!-- switch build and dist -->
 	<!-- clone wega source code, modify and build it. -->
 
     <target name="clean">
@@ -63,7 +61,7 @@
         <echo>Get the WeGA-WebApp.xar (unzip to dist dir).</echo>
         <mkdir dir="${hwh.temp}/WeGA-WebApp/${wega.build.dir}/"/>
         <get src="https://github.com/Edirom/WeGA-WebApp/releases/download/v${hwh.wega.project.version}/${wega.project.app}-${hwh.wega.project.version}.xar" dest="${hwh.temp}/WeGA-WebApp/${wega.build.dir}/${wega.project.app}-${hwh.wega.project.version}.xar"/>
-        <unzip src="${hwh.temp}/WeGA-WebApp/${wega.build.dir}/${wega.project.app}-${hwh.wega.project.version}.xar" dest="${hwh.dist.dir}"/>
+        <unzip src="${hwh.temp}/WeGA-WebApp/${wega.build.dir}/${wega.project.app}-${hwh.wega.project.version}.xar" dest="${hwh.temp}"/>
     </target>
 
     <target name="prepare-hwh-specs" depends="init">
@@ -105,13 +103,14 @@
                 <include name="**/*.*"/>
             </fileset>
         </copy>
-        <echo>Create CSS files via sass</echo>
+    	<echo>Add node_module from WeGA</echo>
         <copy todir="${hwh.dist.tmp.dir}/" overwrite="yes">
             <fileset dir="${hwh.temp}/WeGA-WebApp/">
                 <include name="node_modules/bootstrap/**"/>
                 <include name="node_modules/font-awesome/**"/>
             </fileset>
         </copy>
+        <echo>Create CSS files via sass</echo>
         <exec executable="${sass.path}">
         	<arg line="${hwh.dist.tmp.dir}/resources/sass/main.scss ${hwh.dist.tmp.dir}/resources/css/styles.css"/>
         </exec>
