@@ -55,6 +55,7 @@
         <property file="${hwh.clones.dir}/WeGA-WebApp/build.properties" prefix="wega"/>
         <echo>Get the WeGA-WebApp.xar (unzip to dist dir).</echo>
         <mkdir dir="${hwh.clones.dir}/WeGA-WebApp/${wega.build.dir}/"/>
+    	<mkdir dir="${hwh.clones.dir}/WeGA-WebApp/package/"/>
         <get src="https://github.com/Edirom/WeGA-WebApp/releases/download/v${hwh.wega.project.version}/${wega.project.app}-${hwh.wega.project.version}.xar" dest="${hwh.clones.dir}/WeGA-WebApp/package/${wega.project.app}-${hwh.wega.project.version}.xar"/>
     	<unzip src="${hwh.clones.dir}/WeGA-WebApp/package/${wega.project.app}-${hwh.wega.project.version}.xar" dest="${hwh.clones.dir}/WeGA-WebApp/${wega.build.dir}"/>
     </target>
