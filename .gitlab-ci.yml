@@ -47,7 +47,7 @@ merge request artifact:
     - ant ci -Dsass.path=`which sass` -Dminify.path=`which minify` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   artifacts:
     paths:
-      - app/HenDi-WebApp-*.xar
+      - webapp/HenDi-WebApp-*.xar
   only:
     - merge_requests
   #rules:
