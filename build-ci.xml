@@ -186,11 +186,8 @@
             </fileset>
         </copy>
         <echo>Override the WeGA Guidelines with the Henze-Digital Guidelines</echo>
-        <delete>
-            <fileset dir="${hwh.build.dir}/guidelines">
-                <include name="*.xml"/>
-            </fileset>
-        </delete>
+    	<delete dir="${hwh.build.dir}/guidelines"/>
+    	<mkdir dir="${hwh.build.dir}/guidelines"/>
         <copy todir="${hwh.build.dir}/guidelines">
         	<fileset dir="${hwh.build.tmp.dir}/HenDi-ODD/compiled-ODD">
                 <include name="*.xml"/>
