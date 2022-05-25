@@ -101,7 +101,7 @@
         </copy>
         <echo>Get sass data from Henze-Digital</echo>
         <copy todir="${hwh.dist.tmp.dir}/resources/sass/" overwrite="yes">
-            <fileset dir="${hwh.data}/resources/sass/">
+            <fileset dir="data/resources/sass/">
                 <include name="**/*.*"/>
             </fileset>
         </copy>
