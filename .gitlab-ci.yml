@@ -5,13 +5,13 @@ variables:
   DOCKER_HOST: tcp://localhost:2375
 
 stages:
-  - build
+  - build-app
   - test
   - build-image
 
 build-webapp:
   image: ubuntu
-  stage: build
+  stage: build-app
   before_script:
     - apt-get update
     - apt-get upgrade -y
@@ -27,11 +27,11 @@ build-webapp:
     - ant ci -Dsass.path=`which sass` -Dminify.path=`which minify` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   artifacts:
     paths:
-      - app/HenDi-WebApp-*.xar
+      - webapp/HenDi-WebApp-*.xar
 
 merge request artifact:
   image: ubuntu
-  stage: build
+  stage: build-app
   before_script:
     - apt-get update
     - apt-get upgrade -y
@@ -53,11 +53,11 @@ merge request artifact:
   #rules:
   #  - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
 
-build-docker:
-   stage: build-image
-   image: docker:stable
-   needs: [build-webapp]
-   script:
-     - docker build -t hendi-webapp .
-   dependencies:
-     - build-webapp
+#build-docker:
+   #stage: build-image
+   #image: docker:stable
+   #needs: [build-webapp]
+   #script:
+     #- docker build -t hendi-webapp .
+   #dependencies:
+     #- build-webapp
