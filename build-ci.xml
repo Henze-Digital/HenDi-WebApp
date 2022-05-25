@@ -113,7 +113,7 @@
             </fileset>
         </copy>
         <exec executable="${sass.path}">
-        	<arg line="${hwh.dist.dir}/resources/sass/main.scss ${hwh.tmp.dir}/resources/css/styles.css"/>
+        	<arg line="${hwh.dist.tmp.dir}/resources/sass/main.scss ${hwh.dist.tmp.dir}/resources/css/styles.css"/>
         </exec>
         <echo>Run minify on CSS files</echo>
         <apply executable="${minify.path}" parallel="false">
