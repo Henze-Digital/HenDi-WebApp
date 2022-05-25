@@ -53,11 +53,11 @@ merge request artifact:
   #rules:
   #  - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
 
-#build-docker:
-   #stage: build-image
-   #image: docker:stable
-   #needs: [build-webapp]
-   #script:
-     #- docker build -t hendi-webapp .
-   #dependencies:
-     #- build-webapp
+build-docker:
+   stage: build-image
+   image: docker:stable
+   needs: [build-webapp]
+   script:
+     - docker build -t hendi-webapp .
+   dependencies:
+     - build-webapp
