@@ -9,6 +9,7 @@ stages:
   - build-app
   - test
   - build-docker
+  - deploy
 
 build-webapp:
   image: ubuntu
@@ -66,3 +67,11 @@ build-docker:
      - docker push $IMAGE_TAG
    dependencies:
      - build-webapp
+
+deploy:
+  stage: deploy
+  image: curlimages/curl
+  script: 
+    - >
+      curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp", "tag": "develop"}'
+
