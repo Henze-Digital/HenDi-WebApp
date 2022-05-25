@@ -9,32 +9,27 @@
     <!-- ToDo: -->
 	<!-- clone wega source code, modify and build it. -->
 
-    <target name="clean">
-        <echo>Cleaning task. Deleting content of temp and dist dirs.</echo>
-        <delete dir="${hwh.dist.dir}"/>
-        <delete dir="${hwh.dist.tmp.dir}"/>
-        <delete dir="${hwh.temp}"/>
-    </target>
 	<target name="initiate">
 		<echo>Initiating task. Creating temp and dist dirs.</echo>
-        <mkdir dir="${hwh.dist.dir}"/>
-        <mkdir dir="${hwh.dist.tmp.dir}"/>
-        <mkdir dir="${hwh.temp}"/>
+        <mkdir dir="${hwh.clones.dir}"/>
+		<mkdir dir="${hwh.build.dir}"/>
+        <mkdir dir="${hwh.build.tmp.dir}"/>
+        <mkdir dir="${hwh.build.dir}"/>
     </target>
 
     <target name="clone-wega-webapp-repo">
-        <exec executable="git" dir="${hwh.temp}" failonerror="true">
+        <exec executable="git" dir="${hwh.clones.dir}" failonerror="true">
             <arg line="clone https://github.com/Henze-Digital/WeGA-WebApp.git WeGA-WebApp" />
         </exec>
     </target>
     <target name="clone-hendi-odd">
-        <exec executable="git" dir="${hwh.temp}" failonerror="true">
+        <exec executable="git" dir="${hwh.clones.dir}" failonerror="true">
             <!--<arg line="clone https://github.com/Henze-Digital/HWH-ODD.git HWH-ODD" />-->
         	<arg line="clone https://gitlab-ci-token:${CI_JOB_TOKEN}@git.uni-paderborn.de/vife/henze-digital/HenDi-ODD.git HenDi-ODD"/>
         </exec>
     </target>
     <target name="clone-hwh-secrets">
-        <exec executable="git" dir="${hwh.temp}" failonerror="true">
+        <exec executable="git" dir="${hwh.clones.dir}" failonerror="true">
             <arg line="clone https://gitlab-ci-token:${CI_JOB_TOKEN}@git.uni-paderborn.de/vife/henze-digital/hwh-data-internal-only.git hwh-data-internal-only"/>
         </exec>
     </target>
@@ -57,11 +52,11 @@
     <target name="get-wega-xar-data" depends="init">
         <echo>Set properties for WeGA-WebApp build.xml</echo>
         <!-- Attention: property has to be included in the same target where it is used! -->
-        <property file="${hwh.temp}/WeGA-WebApp/build.properties" prefix="wega"/>
+        <property file="${hwh.clones.dir}/WeGA-WebApp/build.properties" prefix="wega"/>
         <echo>Get the WeGA-WebApp.xar (unzip to dist dir).</echo>
-        <mkdir dir="${hwh.temp}/WeGA-WebApp/${wega.build.dir}/"/>
-        <get src="https://github.com/Edirom/WeGA-WebApp/releases/download/v${hwh.wega.project.version}/${wega.project.app}-${hwh.wega.project.version}.xar" dest="${hwh.temp}/WeGA-WebApp/${wega.build.dir}/${wega.project.app}-${hwh.wega.project.version}.xar"/>
-        <unzip src="${hwh.temp}/WeGA-WebApp/${wega.build.dir}/${wega.project.app}-${hwh.wega.project.version}.xar" dest="${hwh.temp}"/>
+        <mkdir dir="${hwh.clones.dir}/WeGA-WebApp/${wega.build.dir}/"/>
+        <get src="https://github.com/Edirom/WeGA-WebApp/releases/download/v${hwh.wega.project.version}/${wega.project.app}-${hwh.wega.project.version}.xar" dest="${hwh.clones.dir}/WeGA-WebApp/package/${wega.project.app}-${hwh.wega.project.version}.xar"/>
+    	<unzip src="${hwh.clones.dir}/WeGA-WebApp/package/${wega.project.app}-${hwh.wega.project.version}.xar" dest="${hwh.clones.dir}/WeGA-WebApp/${wega.build.dir}"/>
     </target>
 
     <target name="prepare-hwh-specs" depends="init">
@@ -73,7 +68,7 @@
 
     <target name="prepare-package-files">
         <echo>Create expath-pkg.xml</echo>
-        <copy file="data/expath-pkg.xml.tmpl" tofile="${hwh.dist.tmp.dir}/expath-pkg.xml" filtering="true" overwrite="true">
+        <copy file="data/expath-pkg.xml.tmpl" tofile="${hwh.build.tmp.dir}/expath-pkg.xml" filtering="true" overwrite="true">
             <filterset>
                 <filter token="project.app" value="${hwh.project.app}"/>
                 <filter token="project.name" value="${hwh.project.name}"/>
@@ -81,7 +76,7 @@
             </filterset>
         </copy>
         <echo>Create repo.xml</echo>
-        <copy file="data/repo.xml.tmpl" tofile="${hwh.dist.tmp.dir}/repo.xml" filtering="true" overwrite="true">
+        <copy file="data/repo.xml.tmpl" tofile="${hwh.build.tmp.dir}/repo.xml" filtering="true" overwrite="true">
             <filterset>
                 <filter token="project.app" value="${hwh.project.app}"/>
                 <filter token="project.author" value="${hwh.project.author}"/>
@@ -92,41 +87,41 @@
 
     <target name="prepare-css">
         <echo>Get sass data from WeGA</echo>
-        <copy todir="${hwh.dist.tmp.dir}/resources/sass/">
-            <fileset dir="${hwh.temp}/WeGA-WebApp/resources/sass/">
+        <copy todir="${hwh.build.tmp.dir}/resources/sass/">
+            <fileset dir="${hwh.clones.dir}/WeGA-WebApp/resources/sass/">
                 <include name="**/*.*"/>
             </fileset>
         </copy>
         <echo>Get sass data from Henze-Digital</echo>
-        <copy todir="${hwh.dist.tmp.dir}/resources/sass/" overwrite="yes">
+        <copy todir="${hwh.build.tmp.dir}/resources/sass/" overwrite="yes">
             <fileset dir="data/resources/sass/">
                 <include name="**/*.*"/>
             </fileset>
         </copy>
     	<echo>Add node_module from WeGA</echo>
-        <copy todir="${hwh.dist.tmp.dir}/" overwrite="yes">
-            <fileset dir="${hwh.temp}/WeGA-WebApp/">
-                <include name="node_modules/bootstrap/**"/>
-                <include name="node_modules/font-awesome/**"/>
-            </fileset>
+        <copy todir="${hwh.build.tmp.dir}/" overwrite="yes">
+        	<dirset dir="${hwh.clones.dir}/WeGA-WebApp/">
+                <include name="node_modules/bootstrap"/>
+                <include name="node_modules/font-awesome"/>
+        	</dirset>
         </copy>
         <echo>Create CSS files via sass</echo>
         <exec executable="${sass.path}">
-        	<arg line="${hwh.dist.tmp.dir}/resources/sass/main.scss ${hwh.dist.tmp.dir}/resources/css/styles.css"/>
+        	<arg line="${hwh.build.tmp.dir}/resources/sass/main.scss ${hwh.build.tmp.dir}/resources/css/styles.css"/>
         </exec>
         <echo>Run minify on CSS files</echo>
         <apply executable="${minify.path}" parallel="false">
-            <fileset dir="${hwh.dist.tmp.dir}/resources/css" includes="*.css" excludes="*min.css"/>
+            <fileset dir="${hwh.build.tmp.dir}/resources/css" includes="*.css" excludes="*min.css"/>
             <redirector>
-                <outputmapper type="glob" from="*.css" to="${hwh.dist.tmp.dir}/resources/css/*-min.css"/>
+                <outputmapper type="glob" from="*.css" to="${hwh.build.tmp.dir}/resources/css/*-min.css"/>
             </redirector>
         </apply>
     </target>
 
     <target name="prepare-hendi-odd">
     	<echo>Get HenDi-ODD data</echo>
-    	<copy todir="${hwh.dist.tmp.dir}/HenDi-ODD">
-    		<fileset dir="${hwh.temp}/HenDi-ODD">
+    	<copy todir="${hwh.build.tmp.dir}/HenDi-ODD">
+    		<fileset dir="${hwh.clones.dir}/HenDi-ODD">
                 <include name="compiled-ODD/*.xml"/>
                 <include name="src/**/*.xml"/>
             </fileset>
@@ -136,7 +131,7 @@
     <target name="update-dist" depends="get-wega-xar-data, prepare-hwh-specs">
         <echo>Override the unzipped WeGA-WebApp data with hwh-webapp specs</echo>
         <echo>Copy hwh-spec data.</echo>
-        <copy todir="${hwh.dist.dir}/" overwrite="yes">
+        <copy todir="${hwh.build.dir}/" overwrite="yes">
             <fileset dir="data/">
                 <include name="catalogues/"/>
                 <include name="resources/favicons/"/>
@@ -147,9 +142,9 @@
                 <exclude name="*.tmpl"/>
             </fileset>
         </copy>
-        <echo>Copy processed hwh-spec data (dist.tmp.dir)</echo>
-        <copy todir="${hwh.dist.dir}" overwrite="yes">
-            <fileset dir="${hwh.dist.tmp.dir}">
+        <echo>Copy processed hwh-spec data (build.tmp.dir)</echo>
+        <copy todir="${hwh.build.dir}" overwrite="yes">
+            <fileset dir="${hwh.build.tmp.dir}">
                 <include name="*.*"/>
                 <include name="resources/"/>
                 <include name="templates/"/>
@@ -157,49 +152,49 @@
             </fileset>
         </copy>
         <echo>Add icon.png</echo>
-        <copy todir="${hwh.dist.dir}" overwrite="yes">
-            <file file="${hwh.temp}/hwh-data-internal-only/wega-app/img/icon.png"/>
+        <copy todir="${hwh.build.dir}" overwrite="yes">
+            <file file="${hwh.clones.dir}/hwh-data-internal-only/wega-app/img/icon.png"/>
         </copy>
         <echo>Add image files to resources/img</echo>
-        <copy todir="${hwh.dist.dir}/resources/img/" overwrite="yes">
-            <fileset dir="${hwh.temp}/hwh-data-internal-only/wega-app/img/">
+        <copy todir="${hwh.build.dir}/resources/img/" overwrite="yes">
+            <fileset dir="${hwh.clones.dir}/hwh-data-internal-only/wega-app/img/">
                 <include name="*.png"/>
                 <include name="*.jpg"/>
                 <exclude name="icon.png"/>
             </fileset>
         </copy>
         <echo>Add favicons.</echo>
-        <copy todir="${hwh.dist.dir}/resources/favicons" overwrite="yes">
-            <fileset dir="${hwh.temp}/hwh-data-internal-only/wega-app/">
+        <copy todir="${hwh.build.dir}/resources/favicons" overwrite="yes">
+            <fileset dir="${hwh.clones.dir}/hwh-data-internal-only/wega-app/">
                 <include name="favicon*.png"/>
             </fileset>
         </copy>
         <echo>Add fonts.</echo>
-        <copy todir="${hwh.dist.dir}/resources/fonts" failonerror="false">
-            <fileset dir="${hwh.temp}/hwh-data-internal-only/wega-app/fonts">
+        <copy todir="${hwh.build.dir}/resources/fonts" failonerror="false">
+            <fileset dir="${hwh.clones.dir}/hwh-data-internal-only/wega-app/fonts">
                 <include name="*.*"/>
             </fileset>
         </copy>
 
     	<echo>Override the WeGA-ODD with HenDi-ODD data</echo>
         <delete>
-            <fileset dir="${hwh.dist.dir}/resources/lib/WeGA-ODD">
+            <fileset dir="${hwh.build.dir}/resources/lib/WeGA-ODD">
                 <include name="**/*.*"/>
             </fileset>
         </delete>
-        <copy todir="${hwh.dist.dir}/resources/lib/WeGA-ODD" overwrite="yes">
-        	<fileset dir="${hwh.dist.tmp.dir}/HenDi-ODD">
+        <copy todir="${hwh.build.dir}/resources/lib/WeGA-ODD" overwrite="yes">
+        	<fileset dir="${hwh.build.tmp.dir}/HenDi-ODD">
                 <include name="**/*.*"/>
             </fileset>
         </copy>
         <echo>Override the WeGA Guidelines with the Henze-Digital Guidelines</echo>
         <delete>
-            <fileset dir="${hwh.dist.dir}/guidelines">
+            <fileset dir="${hwh.build.dir}/guidelines">
                 <include name="*.xml"/>
             </fileset>
         </delete>
-        <copy todir="${hwh.dist.dir}/guidelines">
-        	<fileset dir="${hwh.dist.tmp.dir}/HenDi-ODD/compiled-ODD">
+        <copy todir="${hwh.build.dir}/guidelines">
+        	<fileset dir="${hwh.build.tmp.dir}/HenDi-ODD/compiled-ODD">
                 <include name="*.xml"/>
             </fileset>
         </copy>
@@ -208,7 +203,7 @@
     <target name="xar" depends="update-dist">
         <echo>Creating the xar Package (zipping).</echo>
         <zip destfile="webapp/${hwh.project.app}-${hwh.project.version}.xar">
-            <fileset dir="${hwh.dist.dir}"/>
+            <fileset dir="${hwh.build.dir}"/>
         </zip>
     </target>
 </project>
