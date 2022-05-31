@@ -107,10 +107,8 @@
     	<mkdir dir="${hwh.build.tmp.dir}/node_modules"/>
 <!--    	<mkdir dir="${hwh.clones.dir}/WeGA-WebApp/node_modules/bootstrap"/>-->
 <!--    	<mkdir dir="${hwh.clones.dir}/WeGA-WebApp/node_modules/font-awesome"/>-->
-    	<copy todir="${hwh.build.tmp.dir}/node_modules" overwrite="yes">
-    		<fileset dir="${hwh.clones.dir}/WeGA-WebApp/node_modules">
-    			<include name="**/*.*"/>
-    		</fileset>
+    	<copy todir="${hwh.build.tmp.dir}/node_modules">
+    		<fileset dir="${hwh.clones.dir}/WeGA-WebApp/node_modules"/>
     	</copy>
     	<!--<copy todir="${hwh.build.tmp.dir}/WeGA-WebApp/node_modules/font-awesome" overwrite="yes" failonerror="yes">
     		<fileset dir="${hwh.clones.dir}/WeGA-WebApp/node_modules/font-awesome"/>
