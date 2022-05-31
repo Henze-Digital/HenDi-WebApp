@@ -18,10 +18,8 @@ build-webapp:
     - apt update -y
     - apt upgrade -y
     - apt install -y --no-install-recommends ant
-    - apt install curl
-    - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-    - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-    - apt install yarn
+    - apt install -y curl
+    - apt install -y yarn
     - apt install -y sass
     - apt install -y --no-install-recommends git
     - apt install -y --no-install-recommends minify
