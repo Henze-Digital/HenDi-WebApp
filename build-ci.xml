@@ -14,23 +14,22 @@
         <mkdir dir="${hwh.clones.dir}"/>
 		<mkdir dir="${hwh.build.dir}"/>
         <mkdir dir="${hwh.build.tmp.dir}"/>
-        <mkdir dir="${hwh.build.dir}"/>
     </target>
 
     <target name="clone-wega-webapp-repo">
         <exec executable="git" dir="${hwh.clones.dir}" failonerror="true">
-            <arg line="clone https://github.com/Henze-Digital/WeGA-WebApp.git WeGA-WebApp" />
+        	<arg line="clone https://github.com/Henze-Digital/WeGA-WebApp.git ${hwh.clones.dir}/WeGA-WebApp" />
         </exec>
     </target>
     <target name="clone-hendi-odd">
         <exec executable="git" dir="${hwh.clones.dir}" failonerror="true">
             <!--<arg line="clone https://github.com/Henze-Digital/HWH-ODD.git HWH-ODD" />-->
-        	<arg line="clone https://gitlab-ci-token:${CI_JOB_TOKEN}@git.uni-paderborn.de/vife/henze-digital/HenDi-ODD.git HenDi-ODD"/>
+        	<arg line="clone https://gitlab-ci-token:${CI_JOB_TOKEN}@git.uni-paderborn.de/vife/henze-digital/HenDi-ODD.git ${hwh.clones.dir}/HenDi-ODD"/>
         </exec>
     </target>
     <target name="clone-hwh-secrets">
         <exec executable="git" dir="${hwh.clones.dir}" failonerror="true">
-            <arg line="clone https://gitlab-ci-token:${CI_JOB_TOKEN}@git.uni-paderborn.de/vife/henze-digital/hwh-data-internal-only.git hwh-data-internal-only"/>
+        	<arg line="clone https://gitlab-ci-token:${CI_JOB_TOKEN}@git.uni-paderborn.de/vife/henze-digital/hwh-data-internal-only.git ${hwh.clones.dir}/hwh-data-internal-only"/>
         </exec>
     </target>
 
