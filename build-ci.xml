@@ -116,6 +116,7 @@
     		<fileset dir="${hwh.clones.dir}/WeGA-WebApp/node_modules/font-awesome"/>
     	</copy>-->
         <echo>Create CSS files via sass</echo>
+    	<mkdir dir="${hwh.build.tmp.dir}/resources/css"/>
         <exec executable="${sass.path}">
         	<arg line="${hwh.build.tmp.dir}/resources/sass/main.scss ${hwh.build.tmp.dir}/resources/css/styles.css"/>
         </exec>
