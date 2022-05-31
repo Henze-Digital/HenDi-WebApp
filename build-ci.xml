@@ -17,24 +17,26 @@
     </target>
 
     <target name="clone-wega-webapp-repo">
+    	<echo>Context dir: ${hwh.clones.dir}</echo>
         <exec executable="git" dir="${hwh.clones.dir}" failonerror="true">
-        	<arg line="clone https://github.com/Henze-Digital/WeGA-WebApp.git ${hwh.clones.dir}/WeGA-WebApp" />
+        	<arg line="clone https://github.com/Henze-Digital/WeGA-WebApp.git WeGA-WebApp" />
         </exec>
     </target>
     <target name="clone-hendi-odd">
+    	<echo>Context dir: ${hwh.clones.dir}</echo>
         <exec executable="git" dir="${hwh.clones.dir}" failonerror="true">
             <!--<arg line="clone https://github.com/Henze-Digital/HWH-ODD.git HWH-ODD" />-->
-        	<arg line="clone https://gitlab-ci-token:${CI_JOB_TOKEN}@git.uni-paderborn.de/vife/henze-digital/HenDi-ODD.git ${hwh.clones.dir}/HenDi-ODD"/>
+        	<arg line="clone https://gitlab-ci-token:${CI_JOB_TOKEN}@git.uni-paderborn.de/vife/henze-digital/HenDi-ODD.git HenDi-ODD"/>
         </exec>
     </target>
     <target name="clone-hwh-secrets">
+    	<echo>Context dir: ${hwh.clones.dir}</echo>
         <exec executable="git" dir="${hwh.clones.dir}" failonerror="true">
-        	<arg line="clone https://gitlab-ci-token:${CI_JOB_TOKEN}@git.uni-paderborn.de/vife/henze-digital/hwh-data-internal-only.git ${hwh.clones.dir}/hwh-data-internal-only"/>
+        	<arg line="clone https://gitlab-ci-token:${CI_JOB_TOKEN}@git.uni-paderborn.de/vife/henze-digital/hwh-data-internal-only.git hwh-data-internal-only"/>
         </exec>
     </target>
 
     <target name="init">
-<!--        <antcall target="ci:clean"/>-->
     	<antcall target="ci:initiate"/>
         <antcall target="ci:clone-wega-webapp-repo"/>
         <antcall target="ci:clone-hendi-odd"/>
@@ -52,9 +54,9 @@
         <echo>Set properties for WeGA-WebApp build.xml</echo>
         <!-- Attention: property has to be included in the same target where it is used! -->
         <property file="${hwh.clones.dir}/WeGA-WebApp/build.properties" prefix="wega"/>
-        <echo>Get the WeGA-WebApp.xar (unzip to build dir).</echo>
         <mkdir dir="${hwh.clones.dir}/WeGA-WebApp/${wega.build.dir}/"/>
     	<mkdir dir="${hwh.clones.dir}/WeGA-WebApp/package/"/>
+        <echo>Get the WeGA-WebApp.xar and unzip to wega.build.dir.</echo>
         <get src="https://github.com/Edirom/WeGA-WebApp/releases/download/v${hwh.wega.project.version}/${wega.project.app}-${hwh.wega.project.version}.xar" dest="${hwh.clones.dir}/WeGA-WebApp/package/${wega.project.app}-${hwh.wega.project.version}.xar"/>
     	<unzip src="${hwh.clones.dir}/WeGA-WebApp/package/${wega.project.app}-${hwh.wega.project.version}.xar" dest="${hwh.clones.dir}/WeGA-WebApp/${wega.build.dir}"/>
     </target>
