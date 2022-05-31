@@ -93,22 +93,19 @@
     <target name="prepare-css">
         <echo>Get sass data from WeGA</echo>
         <copy todir="${hwh.build.tmp.dir}/resources/sass/">
-            <fileset dir="${hwh.clones.dir}/WeGA-WebApp/resources/sass/">
-                <include name="**/*.*"/>
-            </fileset>
+            <fileset dir="${hwh.clones.dir}/WeGA-WebApp/resources/sass/"/>
         </copy>
         <echo>Get sass data from Henze-Digital</echo>
         <copy todir="${hwh.build.tmp.dir}/resources/sass/" overwrite="yes">
-            <fileset dir="data/resources/sass/">
-                <include name="**/*.*"/>
-            </fileset>
+            <fileset dir="data/resources/sass/"/>
         </copy>
-    	<echo>Add node_module from WeGA</echo>
+    	<echo>Add node_modules from WeGA</echo>
     	<mkdir dir="${hwh.build.tmp.dir}/node_modules"/>
 <!--    	<mkdir dir="${hwh.clones.dir}/WeGA-WebApp/node_modules/bootstrap"/>-->
 <!--    	<mkdir dir="${hwh.clones.dir}/WeGA-WebApp/node_modules/font-awesome"/>-->
     	<copy todir="${hwh.build.tmp.dir}/node_modules">
-    		<fileset dir="${hwh.clones.dir}/WeGA-WebApp/node_modules"/>
+    		<fileset dir="${hwh.clones.dir}/WeGA-WebApp/libs/bootstrap"/>
+    		<fileset dir="${hwh.clones.dir}/WeGA-WebApp/libs/font-awesome"/>
     	</copy>
     	<!--<copy todir="${hwh.build.tmp.dir}/WeGA-WebApp/node_modules/font-awesome" overwrite="yes" failonerror="yes">
     		<fileset dir="${hwh.clones.dir}/WeGA-WebApp/node_modules/font-awesome"/>
