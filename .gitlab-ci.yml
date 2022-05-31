@@ -55,23 +55,22 @@ merge request artifact:
   #rules:
   #  - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
 
-build-docker:
-   stage: build-docker
-   image: docker:19.03.1
-   services:
-     - docker:19.03.1-dind
-   needs: [build-webapp]
-   script:
-     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-     - docker build --network host -t $IMAGE_TAG .
-     - docker push $IMAGE_TAG
-   dependencies:
-     - build-webapp
-
-deploy:
-  stage: deploy
-  image: curlimages/curl
-  script: 
-    - >
-      curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp", "tag": "$CI_COMMIT_REF_SLUG"}'
-
+# build-docker:
+#    stage: build-docker
+#    image: docker:19.03.1
+#    services:
+#      - docker:19.03.1-dind
+#    needs: [build-webapp]
+#    script:
+#      - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+#      - docker build --network host -t $IMAGE_TAG .
+#      - docker push $IMAGE_TAG
+#    dependencies:
+#      - build-webapp
+#
+# deploy:
+#   stage: deploy
+#   image: curlimages/curl
+#   script:
+#     - >
+#       curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp", "tag": "$CI_COMMIT_REF_SLUG"}'
