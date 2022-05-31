@@ -109,8 +109,8 @@
     	<mkdir dir="${hwh.clones.dir}/WeGA-WebApp/node_modules/font-awesome"/>
         <copy todir="${hwh.build.tmp.dir}" overwrite="yes" failonerror="yes">
         	<dirset dir="${hwh.clones.dir}/WeGA-WebApp/">
-                <include name="node_modules/bootstrap"/>
-                <include name="node_modules/font-awesome"/>
+                <include name="node_modules/bootstrap/**"/>
+                <include name="node_modules/font-awesome/**"/>
         	</dirset>
         </copy>
         <echo>Create CSS files via sass</echo>
