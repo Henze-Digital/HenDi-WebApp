@@ -104,7 +104,10 @@
             </fileset>
         </copy>
     	<echo>Add node_module from WeGA</echo>
-        <copy todir="${hwh.build.tmp.dir}/" overwrite="yes">
+    	<mkdir dir="${hwh.clones.dir}/WeGA-WebApp/node_modules"/>
+    	<mkdir dir="${hwh.clones.dir}/WeGA-WebApp/node_modules/bootstrap"/>
+    	<mkdir dir="${hwh.clones.dir}/WeGA-WebApp/node_modules/font-awesome"/>
+        <copy todir="${hwh.build.tmp.dir}" overwrite="yes" failonerror="yes">
         	<dirset dir="${hwh.clones.dir}/WeGA-WebApp/">
                 <include name="node_modules/bootstrap"/>
                 <include name="node_modules/font-awesome"/>
