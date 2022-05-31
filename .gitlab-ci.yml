@@ -11,9 +11,8 @@ stages:
   - build-docker
   - deploy
 
-build-webapp:
+.install_dependencies:
   image: ubuntu
-  stage: build-app
   before_script:
     - apt update -y
     - apt upgrade -y
@@ -23,6 +22,10 @@ build-webapp:
     - apt install -y sass
     - apt install -y --no-install-recommends git
     - apt install -y --no-install-recommends minify
+
+build-webapp:
+  stage: build-app
+  extends: .install_dependencies
   script:
     - ant ci -Dsass.path=`which sass` -Dminify.path=`which minify` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   artifacts:
@@ -30,19 +33,8 @@ build-webapp:
       - webapp/HenDi-WebApp-*.xar
 
 merge request artifact:
-  image: ubuntu
   stage: build-app
-  before_script:
-    - apt update -y
-    - apt upgrade -y
-    - apt install -y --no-install-recommends ant
-    - apt install curl
-    - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-    - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-    - apt install yarn
-    - apt install -y sass
-    - apt install -y --no-install-recommends git
-    - apt install -y --no-install-recommends minify
+  extends: .install_dependencies
   script:
     - ant ci -Dsass.path=`which sass` -Dminify.path=`which minify` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   artifacts:
