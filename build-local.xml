@@ -156,8 +156,8 @@
     
     <target name="xar" depends="update-dist">
         <echo>Creating the xar Package (zipping).</echo>
-        <zip destfile="webapp/${hwh.project.app}-${hwh.project.version}.xar">
             <fileset dir="${hwh.dist.dir}"/>
+    	<zip destfile="${hwh.dist.dir}/${hwh.project.app}-${hwh.project.version}.xar">
         </zip>
     </target>
     
@@ -173,7 +173,7 @@
         </typedef>
         <!-- store xar-file in eXist-db -->
         <xdb:store xmlns:xdb="http://exist-db.org/ant" uri="${hwh.exist.db}/tmp" createcollection="true" createsubcollections="true" user="${hwh.exist.user}" password="${hwh.exist.pass}" failonerror="true">
-            <fileset file="${hwh.build.dir}/${hwh.project.app}-${hwh.project.version}.xar"/>
+            <fileset file="${hwh.dist.dir}/${hwh.project.app}-${hwh.project.version}.xar"/>
         </xdb:store>
         <!-- Deploy the xar -->
         <xdb:xquery xmlns:xdb="http://exist-db.org/ant" uri="${hwh.exist.db}" user="${hwh.exist.user}" password="${hwh.exist.pass}"> ( if("${hwh.project.name}" = repo:list()) then ( repo:undeploy("${hwh.project.name}"), repo:remove("${hwh.project.name}") )
