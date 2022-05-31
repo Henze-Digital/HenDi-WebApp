@@ -12,15 +12,16 @@ stages:
   - deploy
 
 before_script:
-  - apt-get update -y
+  - apt update -y
+  - apt upgrade -y
   - apt install curl -y
   - apt install -y --no-install-recommends ant
   - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
   - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-  - apt-get install yarn
-  - apt-get install -y sass
-  - apt-get install -y --no-install-recommends git
-  - apt-get install -y --no-install-recommends minify
+  - apt install yarn
+  - apt install -y sass
+  - apt install -y --no-install-recommends git
+  - apt install -y --no-install-recommends minify
 
 build-webapp:
   image: ubuntu
