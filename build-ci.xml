@@ -107,12 +107,14 @@
     	<mkdir dir="${hwh.clones.dir}/WeGA-WebApp/node_modules"/>
     	<mkdir dir="${hwh.clones.dir}/WeGA-WebApp/node_modules/bootstrap"/>
     	<mkdir dir="${hwh.clones.dir}/WeGA-WebApp/node_modules/font-awesome"/>
-        <copy todir="${hwh.build.tmp.dir}" overwrite="yes" failonerror="yes">
+    	<copydir src="${hwh.clones.dir}/WeGA-WebApp/node_modules/bootstrap" dest="${hwh.build.tmp.dir}/WeGA-WebApp/node_modules/bootstrap"/>
+    	<copydir src="${hwh.clones.dir}/WeGA-WebApp/node_modules/font-awesome" dest="${hwh.build.tmp.dir}/WeGA-WebApp/node_modules/font-awesome"/>
+    	<!--<copy todir="${hwh.build.tmp.dir}" overwrite="yes" failonerror="yes">
         	<dirset dir="${hwh.clones.dir}/WeGA-WebApp/">
                 <include name="node_modules/bootstrap/**"/>
                 <include name="node_modules/font-awesome/**"/>
         	</dirset>
-        </copy>
+        </copy>-->
         <echo>Create CSS files via sass</echo>
         <exec executable="${sass.path}">
         	<arg line="${hwh.build.tmp.dir}/resources/sass/main.scss ${hwh.build.tmp.dir}/resources/css/styles.css"/>
