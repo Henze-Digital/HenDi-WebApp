@@ -11,20 +11,21 @@ stages:
   - build-docker
   - deploy
 
+before_script:
+  - apt-get update -y
+  - apt install curl
+  - apt install -y --no-install-recommends ant
+  - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+  - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+  - apt-get install yarn
+  - apt-get install -y sass
+  - apt-get install -y --no-install-recommends git
+  - apt-get install -y --no-install-recommends minify
+
 build-webapp:
   image: ubuntu
   stage: build-app
-  before_script:
-    - apt-get update
-    - apt-get upgrade -y
-    - apt install -y --no-install-recommends ant
-    - >
-      curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-      echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-    - apt install yarn
-    - npm install -g --no-install-recommends sass
-    - apt-get install -y --no-install-recommends git
-    - apt-get install -y --no-install-recommends minify
+
   script:
     - ant ci -Dsass.path=`which sass` -Dminify.path=`which minify` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   artifacts:
@@ -34,17 +35,6 @@ build-webapp:
 merge request artifact:
   image: ubuntu
   stage: build-app
-  before_script:
-    - apt-get update
-    - apt-get upgrade -y
-    - apt install -y --no-install-recommends ant
-    - apt install nodejs -y
-    - apt install npm -y
-    - npm install --global yarn
-    - yarn install
-    - npm install -g sass
-    - apt-get install git -y
-    - apt-get install -y minify
   script:
     - ant ci -Dsass.path=`which sass` -Dminify.path=`which minify` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   artifacts:
