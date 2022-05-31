@@ -52,7 +52,7 @@
         <echo>Set properties for WeGA-WebApp build.xml</echo>
         <!-- Attention: property has to be included in the same target where it is used! -->
         <property file="${hwh.clones.dir}/WeGA-WebApp/build.properties" prefix="wega"/>
-        <echo>Get the WeGA-WebApp.xar (unzip to dist dir).</echo>
+        <echo>Get the WeGA-WebApp.xar (unzip to build dir).</echo>
         <mkdir dir="${hwh.clones.dir}/WeGA-WebApp/${wega.build.dir}/"/>
     	<mkdir dir="${hwh.clones.dir}/WeGA-WebApp/package/"/>
         <get src="https://github.com/Edirom/WeGA-WebApp/releases/download/v${hwh.wega.project.version}/${wega.project.app}-${hwh.wega.project.version}.xar" dest="${hwh.clones.dir}/WeGA-WebApp/package/${wega.project.app}-${hwh.wega.project.version}.xar"/>
@@ -130,19 +130,20 @@
 
     <target name="update-dist" depends="get-wega-xar-data, prepare-hwh-specs">
         <echo>Override the unzipped WeGA-WebApp data with hwh-webapp specs</echo>
-        <echo>Copy hwh-spec data.</echo>
+    	<echo>Copy hwh-spec data to ${hwh.build.dir}.</echo>
         <copy todir="${hwh.build.dir}/" overwrite="yes">
             <fileset dir="data/">
-                <include name="catalogues/"/>
+            	<include name="**/*.*"/>
+                <!--<include name="catalogues/"/>
                 <include name="resources/favicons/"/>
                 <include name="templates/"/>
                 <include name="controller.xql"/>
                 <include name="README.md"/>
-                <include name="LICENSE"/>
+                <include name="LICENSE"/>-->
                 <exclude name="*.tmpl"/>
             </fileset>
         </copy>
-        <echo>Copy processed hwh-spec data (build.tmp.dir)</echo>
+    	<echo>Copy processed hwh-spec data to ${hwh.build.dir}</echo>
         <copy todir="${hwh.build.dir}" overwrite="yes">
             <fileset dir="${hwh.build.tmp.dir}">
                 <include name="*.*"/>
