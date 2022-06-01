@@ -46,7 +46,7 @@
     <target name="build-wega-xar" depends="init">
         <echo>Build task for WeGA-WebApp</echo>
         <echo>Executing ant xar at WeGA-WebApp repo (build.xml) </echo>
-    	<ant antfile="build.xml" dir="${hwh.clones.dir}/WeGA-WebApp" target="xar"/>
+    	<ant antfile="build.xml" dir="${hwh.clones.dir}/WeGA-WebApp/" target="xar"/>
         <echo>Build of WeGA-WebApp: Finished.</echo>
     </target>
 
