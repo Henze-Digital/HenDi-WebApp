@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project default="local" name="HWH-WebApp" basedir="." xmlns:unless="ant:unless">
-    
-    <include file="build-ci.xml" as="ci" prefixseparator=":"/>
-    <include file="build-local.xml" as="local" prefixseparator=":"/>
-    
-    <target name="ci">
-        <antcall target="ci:xar"/>
-    </target>
-    
-    <target name="local">
-        <antcall target="local:xar"/>
-    </target>
-    
-    <target name="local-deploy">
-        <antcall target="local:deploy"/>
-    </target>
-    
-    <target name="test">
-        <echo>This is the ECHO of the 'test' target</echo>
-    </target>
-
-</project>
+<project default="build" name="HWH-WebApp" basedir="." xmlns:unless="ant:unless">
+	
+	<dirname property="HWH-WebApp.basedir" file="${ant.file.HWH-WebApp}"/>
+	
+	<!-- import default properties from file -->
+	<property file="${HWH-WebApp.basedir}/local.build.properties" prefix="hwh"/>
+	<property file="${HWH-WebApp.basedir}/build.properties" prefix="hwh"/>
+		
+		<target name="build">
+		
+		<!-- ToDo -->
+		<!-- 
+			- clone WeGA-Repo into build-folder
+			- clone odd if not available
+			- clone hendi-secrets if not available
+			- init
+			- add hwh-specs
+				- directly override (delete), package files
+				- override data (sass, js, etc.)
+				- add hendi-odd
+				- add hendi-secrets (fonts, images, and so on)
+			- build wega webapp (yarn, sass)
+			- build wega webapp (minify)
+			- create xar package
+		-->
+			
+		</target>
+			
+	</project>
+	
