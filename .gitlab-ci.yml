@@ -16,12 +16,7 @@ stages:
   before_script:
     - apt update -y
     - apt upgrade -y
-    - apt install -y --no-install-recommends ant
-    - apt install -y curl
-    - apt install -y yarn
-    - apt install -y sass
-    - apt install -y --no-install-recommends git
-    - apt install -y --no-install-recommends minify
+    - apt install -y --no-install-recommends ant curl yarn sass minify git
 
 build-webapp:
   stage: build-app
