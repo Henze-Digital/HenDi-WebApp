@@ -19,7 +19,7 @@
     <target name="clone-wega-webapp-repo">
     	<echo>Context dir: ${hwh.clones.dir}</echo>
         <exec executable="git" dir="${hwh.clones.dir}" failonerror="true">
-        	<arg line="clone https://github.com/Henze-Digital/WeGA-WebApp.git WeGA-WebApp" />
+        	<arg line="clone https://github.com/Henze-Digital/${wega.project.app}.git ${wega.project.app}" />
         </exec>
     </target>
     <target name="clone-hendi-odd">
@@ -44,25 +44,25 @@
     </target>
 
     <target name="build-wega-xar" depends="init">
-        <echo>Build task for WeGA-WebApp</echo>
-        <echo>Executing ant xar at WeGA-WebApp repo (build.xml) </echo>
-    	<ant antfile="build.xml" dir="${hwh.clones.dir}/WeGA-WebApp/" target="xar"/>
-        <echo>Build of WeGA-WebApp: Finished.</echo>
+        <echo>Build task for ${wega.project.app}</echo>
+        <echo>Executing ant xar at ${wega.project.app} repo (build.xml) </echo>
+    	<ant antfile="build.xml" dir="${hwh.clones.dir}/${wega.project.app}/" target="xar"/>
+        <echo>Build of ${wega.project.app}: Finished.</echo>
     </target>
 
-	<target name="get-wega-xar-data" depends="init">
-        <echo>Set properties for WeGA-WebApp build.xml</echo>
-        <!-- Attention: property has to be included in the same target where it is used! -->
-        <property file="${hwh.clones.dir}/WeGA-WebApp/build.properties" prefix="wega"/>
+	<!--<target name="get-wega-xar-data" depends="init">
+        <echo>Set properties for ${wega.project.app} build.xml</echo>
+        <!-\- Attention: property has to be included in the same target where it is used! -\->
+        <property file="${hwh.clones.dir}/${wega.project.app}/build.properties" prefix="wega"/>
 		<echo>${wega.build.dir}</echo>
 		<echo>${wega.project.app}</echo>
 		<echo>${hwh.wega.project.version}</echo>
-        <mkdir dir="${hwh.clones.dir}/WeGA-WebApp/${wega.build.dir}/"/>
-    	<mkdir dir="${hwh.clones.dir}/WeGA-WebApp/package/"/>
-		<echo>Get the WeGA-WebApp.xar and unzip to WeGA-WebApp/${wega.build.dir}.</echo>
-        <get src="https://github.com/Edirom/WeGA-WebApp/releases/download/v${hwh.wega.project.version}/${wega.project.app}-${hwh.wega.project.version}.xar" dest="${hwh.clones.dir}/WeGA-WebApp/package/${wega.project.app}-${hwh.wega.project.version}.xar"/>
-    	<unzip src="${hwh.clones.dir}/WeGA-WebApp/package/${wega.project.app}-${hwh.wega.project.version}.xar" dest="${hwh.clones.dir}/WeGA-WebApp/${wega.build.dir}"/>
-    </target>
+        <mkdir dir="${hwh.clones.dir}/${wega.project.app}/${wega.build.dir}/"/>
+    	<mkdir dir="${hwh.clones.dir}/${wega.project.app}/package/"/>
+		<echo>Get the ${wega.project.app}.xar and unzip to ${wega.project.app}/${wega.build.dir}.</echo>
+        <get src="https://github.com/Edirom/${wega.project.app}/releases/download/v${hwh.wega.project.version}/${wega.project.app}-${hwh.wega.project.version}.xar" dest="${hwh.clones.dir}/${wega.project.app}/package/${wega.project.app}-${hwh.wega.project.version}.xar"/>
+    	<unzip src="${hwh.clones.dir}/${wega.project.app}/package/${wega.project.app}-${hwh.wega.project.version}.xar" dest="${hwh.clones.dir}/${wega.project.app}/${wega.build.dir}"/>
+    </target>-->
 
     <target name="prepare-hwh-specs" depends="init">
         <echo>Prepare the WebApp-specs for Henze-Digital.</echo>
@@ -93,7 +93,7 @@
     <target name="prepare-css">
         <echo>Get sass data from WeGA</echo>
         <copy todir="${hwh.build.tmp.dir}/resources/sass/">
-            <fileset dir="${hwh.clones.dir}/WeGA-WebApp/resources/sass/"/>
+            <fileset dir="${hwh.clones.dir}/${wega.project.app}/resources/sass/"/>
         </copy>
         <echo>Get sass data from Henze-Digital</echo>
         <copy todir="${hwh.build.tmp.dir}/resources/sass/" overwrite="yes">
@@ -101,14 +101,14 @@
         </copy>
     	<echo>Add node_modules from WeGA</echo>
     	<mkdir dir="${hwh.build.tmp.dir}/node_modules"/>
-<!--    	<mkdir dir="${hwh.clones.dir}/WeGA-WebApp/node_modules/bootstrap"/>-->
-<!--    	<mkdir dir="${hwh.clones.dir}/WeGA-WebApp/node_modules/font-awesome"/>-->
+<!--    	<mkdir dir="${hwh.clones.dir}/${wega.project.app}/node_modules/bootstrap"/>-->
+<!--    	<mkdir dir="${hwh.clones.dir}/${wega.project.app}/node_modules/font-awesome"/>-->
     	<copy todir="${hwh.build.tmp.dir}/node_modules">
-    		<fileset dir="${hwh.clones.dir}/WeGA-WebApp/libs/bootstrap"/>
-    		<fileset dir="${hwh.clones.dir}/WeGA-WebApp/libs/font-awesome"/>
+    		<fileset dir="${hwh.clones.dir}/${wega.project.app}/libs/bootstrap"/>
+    		<fileset dir="${hwh.clones.dir}/${wega.project.app}/libs/font-awesome"/>
     	</copy>
-    	<!--<copy todir="${hwh.build.tmp.dir}/WeGA-WebApp/node_modules/font-awesome" overwrite="yes" failonerror="yes">
-    		<fileset dir="${hwh.clones.dir}/WeGA-WebApp/node_modules/font-awesome"/>
+    	<!--<copy todir="${hwh.build.tmp.dir}/${wega.project.app}/node_modules/font-awesome" overwrite="yes" failonerror="yes">
+    		<fileset dir="${hwh.clones.dir}/${wega.project.app}/node_modules/font-awesome"/>
     	</copy>-->
         <echo>Create CSS files via sass</echo>
     	<mkdir dir="${hwh.build.tmp.dir}/resources/css"/>
@@ -135,7 +135,7 @@
     </target>
 
     <target name="update-dist" depends="get-wega-xar-data, prepare-hwh-specs">
-        <echo>Override the unzipped WeGA-WebApp data with hwh-webapp specs</echo>
+        <echo>Override the unzipped ${wega.project.app} data with hwh-webapp specs</echo>
     	<echo>Copy hwh-spec data to ${hwh.build.dir}.</echo>
         <copy todir="${hwh.build.dir}/" overwrite="yes">
             <fileset dir="data/">
