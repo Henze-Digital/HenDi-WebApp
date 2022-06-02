@@ -28,7 +28,7 @@ build-webapp:
   extends: .install_dependencies
   script:
     #- ant ci -Dsass.path=`which sass` -Dminify.path=`which minify` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
-    - ant ci -Dsass.path=`which sass` -Dminify.path=`which minify` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
+    - ant xar -Dsass.path=`which sass` -Dminify.path=`which minify` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   artifacts:
     paths:
       - webapp/HenDi-WebApp-*.xar
