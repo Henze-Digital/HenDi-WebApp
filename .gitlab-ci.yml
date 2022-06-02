@@ -7,7 +7,6 @@ variables:
 
 stages:
   - build-app
-  - test
   - build-docker
   - deploy
 
