@@ -1,3 +1,6 @@
 [submodule "HenDi-ODD"]
 	path = HenDi-ODD
 	url = ../HenDi-ODD.git
+[submodule "WeGA-WebApp"]
+	path = WeGA-WebApp
+	url = https://github.com/Henze-Digital/WeGA-WebApp.git
