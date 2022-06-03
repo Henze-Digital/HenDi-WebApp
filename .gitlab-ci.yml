@@ -28,15 +28,16 @@ build-webapp:
   extends: .install_dependencies
   script:
     #- ant ci -Dsass.path=`which sass` -Dminify.path=`which minify` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
-    - ant xar -Dsass.path=`which sass` -Dminify.path=`which minify` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
+    - ant xar -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   artifacts:
     paths:
       - webapp/HenDi-WebApp-*.xar
   only:
-    - develop
-    - merge_requests
+    refs:
+      - merge_requests
+      - develop
 
-build-docker:
+build-docker-image:
    stage: build-docker
    image: docker:19.03.1
    services:
@@ -46,15 +47,16 @@ build-docker:
      - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
      - docker build --network host -t $IMAGE_TAG .
      - docker push $IMAGE_TAG
-   dependencies:
-     - build-webapp
    only:
      - develop
 
 deploy:
   stage: deploy
   image: curlimages/curl
-  needs: [build-docker]
+  needs: [build-docker-image]
+  when: manual
   script:
     - >
       curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp", "tag": "$CI_COMMIT_REF_SLUG"}'
+  only:
+    - develop
