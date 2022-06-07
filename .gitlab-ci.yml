@@ -46,8 +46,8 @@ build-docker-image:
    dependencies:
     - build-webapp
    script:
-     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY --build-arg $ACCESS_HENDI_DATA
-     - docker build --network host -t $IMAGE_TAG .
+     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+     - docker build --network host -t --build-arg ACCESS_HENDI_DATA=$ACCESS_HENDI_DATA $IMAGE_TAG .
      - docker push $IMAGE_TAG
    only:
      - develop
