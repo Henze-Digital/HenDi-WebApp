@@ -38,19 +38,21 @@ build-webapp:
       - develop
 
 build-docker-image:
-   stage: build-docker
-   image: docker:19.03.1
-   services:
-     - docker:19.03.1-dind
-   needs: [build-webapp]
-   dependencies:
+  variables:
+    ACCESS_HENDI_DATA: $ACCESS_HENDI_DATA
+  stage: build-docker
+  image: docker:19.03.1
+  services:
+    - docker:19.03.1-dind
+  needs: [build-webapp]
+  dependencies:
     - build-webapp
-   script:
-     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-     - docker build --network host -t --build-arg ACCESS_HENDI_DATA=$ACCESS_HENDI_DATA $IMAGE_TAG .
-     - docker push $IMAGE_TAG
-   only:
-     - develop
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build --network host --build-arg ACCESS_HENDI_DATA=$ACCESS_HENDI_DATA -t $IMAGE_TAG .
+    - docker push $IMAGE_TAG
+  only:
+    - develop
 
 deploy:
   stage: deploy
