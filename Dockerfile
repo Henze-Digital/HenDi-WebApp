@@ -1,6 +1,6 @@
 FROM stadlerpeter/existdb:6
 
-COPY ./webapp && unzip ./webapp/*.zip && rm ./webapp/*.zip && mv webapp/*.xar ${EXIST_HOME}/autodeploy
+ADD ./webapp/*.zip && unzip ./webapp/*.zip && rm ./webapp/*.zip && mv webapp/*.xar ${EXIST_HOME}/autodeploy
 
 #RUN curl --output hendi-webapp.zip --header "PRIVATE-TOKEN:${ACCESS_HENDI_DATA}"  --location "https://git.uni-paderborn.de/api/v4/projects/5005/jobs/artifacts/develop/download?job=build-webapp"
 
