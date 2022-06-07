@@ -21,7 +21,7 @@ stages:
     - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
     - apt update -y
     - apt install -y yarn
-    - apt install -y --no-install-recommends ant git sass minify
+    - apt install -y --no-install-recommends ant git sass minify fastjar
 
 #build-webapp:
 #  stage: build-app
