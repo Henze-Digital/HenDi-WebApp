@@ -21,7 +21,7 @@ stages:
     - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
     - apt update -y
     - apt install -y yarn
-    - apt install -y --no-install-recommends ant git sass minify fastjar
+    - apt install -y --no-install-recommends ant git sass minify
 
 #build-webapp:
 #  stage: build-app
@@ -42,6 +42,10 @@ build-docker-image:
     ACCESS_HENDI_DATA: $ACCESS_HENDI_DATA
   stage: build-docker
   image: docker:19.03.1
+  before_script:
+    - apt update -y
+    - apt upgrade -y
+    - apt install -y fastjar
   services:
     - docker:19.03.1-dind
   #needs: [build-webapp]
