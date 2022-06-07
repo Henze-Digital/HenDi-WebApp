@@ -42,10 +42,6 @@ build-docker-image:
     ACCESS_HENDI_DATA: $ACCESS_HENDI_DATA
   stage: build-docker
   image: docker:19.03.1
-  before_script:
-    - apt update -y
-    - apt upgrade -y
-    - apt install -y fastjar
   services:
     - docker:19.03.1-dind
   #needs: [build-webapp]
