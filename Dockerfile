@@ -4,7 +4,11 @@ ARG ACCESS_HENDI_DATA
 
 RUN curl --output hendi-webapp.zip --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --location "https://git.uni-paderborn.de/api/v4/projects/5005/jobs/artifacts/develop/download?job=build-webapp"
 RUN ls
-RUN unzip hendi-webapp.zip && rm hendi-webapp.zip && mv webapp/*.xar ${EXIST_HOME}/autodeploy
+RUN unzip hendi-webapp.zip
+RUN ls
+RUN rm hendi-webapp.zip
+RUN ls
+RUN mv webapp/*.xar ${EXIST_HOME}/autodeploy
 
 RUN curl --output hendi-data.zip --header "PRIVATE-TOKEN: ${ACCESS_HENDI_DATA}" --location "https://git.uni-paderborn.de/api/v4/projects/2328/jobs/artifacts/develop/download?job=build-data-package"
 RUN ls
