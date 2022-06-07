@@ -2,7 +2,7 @@ FROM stadlerpeter/existdb:6
 
 ARG ACCESS_HENDI_DATA
 
-ADD /projects/5005/jobs/artifacts/develop/download?job=build-webapp&token=${CI_JOB_TOKEN}
+ADD /projects/5005/jobs/artifacts/develop/download?job=build-webapp&token=${CI_JOB_TOKEN} hendi-webapp.zip
 #RUN curl --output hendi-webapp.zip --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --location "https://git.uni-paderborn.de/api/v4/projects/5005/jobs/artifacts/develop/download?job=build-webapp"
 RUN ls
 RUN unzip hendi-webapp.zip
