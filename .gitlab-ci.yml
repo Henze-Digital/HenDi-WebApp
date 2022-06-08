@@ -5,7 +5,6 @@ variables:
   DOCKER_HOST: tcp://localhost:2375
   IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
   GIT_SUBMODULE_STRATEGY: recursive
-  #CI_JOB_TOKEN: $CI_JOB_TOKEN
 
 stages:
   - build-app
@@ -24,19 +23,19 @@ stages:
     - apt install -y yarn unzip
     - apt install -y --no-install-recommends ant git sass minify
 
-#build-webapp:
-#  stage: build-app
-#  extends: .install_dependencies
-#  script:
-#    #- ant ci -Dsass.path=`which sass` -Dminify.path=`which minify` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
-#    - ant xar -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
-#  artifacts:
-#    paths:
-#      - webapp/HenDi-WebApp-*.xar
-#  only:
-#    refs:
-#      - merge_requests
-#      - develop
+build-webapp:
+  stage: build-app
+  extends: .install_dependencies
+  script:
+    #- ant ci -Dsass.path=`which sass` -Dminify.path=`which minify` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
+    - ant xar -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
+  artifacts:
+    paths:
+      - webapp/HenDi-WebApp-*.xar
+  only:
+    refs:
+      - merge_requests
+      - develop
 
 build-docker-image:
   stage: build-docker
@@ -51,13 +50,13 @@ build-docker-image:
   only:
     - develop
 
-#deploy:
-#  stage: deploy
-#  image: curlimages/curl
-#  needs: [build-docker-image]
-#  when: manual
-#  script:
-#    - >
-#      curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp", "tag": "$CI_COMMIT_REF_SLUG"}'
-#  only:
-#    - develop
+deploy:
+  stage: deploy
+  image: curlimages/curl
+  needs: [build-docker-image]
+  when: manual
+  script:
+    - >
+      curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp", "tag": "$CI_COMMIT_REF_SLUG"}'
+  only:
+    - develop
