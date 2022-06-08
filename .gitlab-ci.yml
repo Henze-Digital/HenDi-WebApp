@@ -38,32 +38,18 @@ stages:
 #      - merge_requests
 #      - develop
 
-download-artifacts:
-  variables:
-    ACCESS_HENDI_DATA: $ACCESS_HENDI_DATA
-    ACCESS_HENDI_WEBAPP: $ACCESS_HENDI_WEBAPP
-  stage: build-docker
-  extends: .install_dependencies
-  #needs: [build-webapp]
-  script:
-    #- 'curl --location --output hendi-webapp.zip --header "JOB-TOKEN: $CI_JOB_TOKEN" "https://git.uni-paderborn.de/api/v4/projects/5005/jobs/artifacts/develop/download?job=build-webapp"'
-    #- unzip hendi-webapp.zip
-    - curl -L --output hendi-data.zip --header "PRIVATE-TOKEN: $ACCESS_HENDI_DATA" "https://git.uni-paderborn.de/api/v4/projects/2328/jobs/artifacts/develop/download?job=build-data-package"
-    - unzip hendi-data.zip
-  only:
-    - develop
-
 build-docker-image:
   stage: build-docker
   image: docker:19.03.1
+  variables:
+    ACCESS_HENDI_WEBAPP: $ACCESS_HENDI_WEBAPP
+    ACCESS_HENDI_DATA: $ACCESS_HENDI_DATA
   services:
     - docker:19.03.1-dind
-  needs: [download-artifacts]
-  dependencies:
-    - download-artifacts
+  #needs: [build-webapp]
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    #- docker build --network host --build-arg ACCESS_HENDI_DATA=$ACCESS_HENDI_DATA --build-arg ACCESS_HENDI_WEBAPP=$ACCESS_HENDI_WEBAPP -t $IMAGE_TAG .
+    - docker build --network host --build-arg ACCESS_HENDI_DATA=$ACCESS_HENDI_DATA --build-arg ACCESS_HENDI_WEBAPP=$ACCESS_HENDI_WEBAPP -t $IMAGE_TAG .
     - docker build --network host -t $IMAGE_TAG .
     #- docker push $IMAGE_TAG
   only:
