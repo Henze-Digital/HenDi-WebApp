@@ -24,19 +24,19 @@ stages:
     - apt install -y yarn unzip
     - apt install -y --no-install-recommends ant git sass minify
 
-build-webapp:
-  stage: build-app
-  extends: .install_dependencies
-  script:
-    #- ant ci -Dsass.path=`which sass` -Dminify.path=`which minify` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
-    - ant xar -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
-  artifacts:
-    paths:
-      - webapp/HenDi-WebApp-*.xar
-  only:
-    refs:
-      - merge_requests
-      - develop
+#build-webapp:
+#  stage: build-app
+#  extends: .install_dependencies
+#  script:
+#    #- ant ci -Dsass.path=`which sass` -Dminify.path=`which minify` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
+#    - ant xar -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
+#  artifacts:
+#    paths:
+#      - webapp/HenDi-WebApp-*.xar
+#  only:
+#    refs:
+#      - merge_requests
+#      - develop
 
 download-artifacts:
   stage: build-docker
@@ -45,8 +45,10 @@ download-artifacts:
   script:
     #- 'curl --location --output hendi-webapp.zip --header "JOB-TOKEN: $CI_JOB_TOKEN" "https://git.uni-paderborn.de/api/v4/projects/5005/jobs/artifacts/develop/download?job=build-webapp"'
     #- unzip hendi-webapp.zip
-    - curl --location --output hendi-webapp.zip "https://git.uni-paderborn.de/api/v4/projects/5005/jobs/artifacts/develop/download?job=build-webapp&job_token=$CI_JOB_TOKEN"
-    - unzip hendi-webapp.zip
+    - 'curl --location --output artifactsWebapp.zip "https://git.uni-paderborn.de/api/v4/projects/$CI_PROJECT_ID/jobs/artifacts/develop/download?job=build-webapp&job_token=$CI_JOB_TOKEN"'
+    - unzip artifactsWebapp.zip
+    - curl --output hendi-data.zip --location "https://git.uni-paderborn.de/api/v4/projects/2328/jobs/artifacts/develop/download?job=build-data-package&job_token=$CI_JOB_TOKEN"
+    - unzip hendi-data.zip
 
 build-docker-image:
   variables:

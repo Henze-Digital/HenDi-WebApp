@@ -3,7 +3,7 @@ FROM stadlerpeter/existdb:6
 #ARG ACCESS_HENDI_DATA
 #ARG ACCESS_HENDI_WEBAPP
 
-#RUN curl --output hendi-webapp-artfct.zip --header "PRIVATE-TOKEN: ${ACCESS_HENDI_WEBAPP}" "https://git.uni-paderborn.de/api/v4/projects/5005/jobs/artifacts/develop/download?job=build-webapp"
+#RUN curl --output hendi-webapp-artfct.zip --header "PRIVATE-TOKEN: ${ACCESS_HENDI_WEBAPP}" --location "https://git.uni-paderborn.de/api/v4/projects/5005/jobs/artifacts/develop/download?job=build-webapp"
 #RUN ls
 #RUN unzip hendi-webapp-artfct.zip
 #RUN ls
@@ -20,5 +20,5 @@ FROM stadlerpeter/existdb:6
 RUN curl --output WeGA-WebApp-lib-1.8.0.xar --location "https://github.com/Edirom/WeGA-WebApp-lib/releases/download/v1.8.0/WeGA-WebApp-lib-1.8.0.xar" &&\
  mv WeGA-WebApp-lib-1.8.0.xar ${EXIST_HOME}/autodeploy
 
-
-COPY webapp/*.xar ${EXIST_HOME}/autodeploy
+COPY ./webapp/*.xar ${EXIST_HOME}/autodeploy
+COPY ./data/*.xar ${EXIST_HOME}/autodeploy
