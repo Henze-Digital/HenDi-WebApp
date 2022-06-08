@@ -21,4 +21,4 @@ RUN curl --output WeGA-WebApp-lib-1.8.0.xar --location "https://github.com/Ediro
  mv WeGA-WebApp-lib-1.8.0.xar ${EXIST_HOME}/autodeploy
 
 
-ADD webapp/*.xar ${EXIST_HOME}/autodeploy
+COPY webapp/*.xar ${EXIST_HOME}/autodeploy
