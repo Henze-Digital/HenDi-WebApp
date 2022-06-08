@@ -21,8 +21,8 @@ stages:
     - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
     - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
     - apt update -y
-    - apt install -y yarn
-    - apt install -y --no-install-recommends ant git sass minify unzip
+    - apt install -y yarn unzip
+    - apt install -y --no-install-recommends ant git sass minify
 
 build-webapp:
   stage: build-app
@@ -41,9 +41,11 @@ build-webapp:
 download-artifacts:
   stage: build-docker
   extends: .install_dependencies
-  needs: [build-webapp]
+  #needs: [build-webapp]
   script:
-    - 'curl --location --output hendi-webapp.zip --header "JOB-TOKEN: $CI_JOB_TOKEN" "https://git.uni-paderborn.de/api/v4/projects/5005/jobs/artifacts/develop/download?job=build-webapp"'
+    #- 'curl --location --output hendi-webapp.zip --header "JOB-TOKEN: $CI_JOB_TOKEN" "https://git.uni-paderborn.de/api/v4/projects/5005/jobs/artifacts/develop/download?job=build-webapp"'
+    #- unzip hendi-webapp.zip
+    - curl --location --output hendi-webapp.zip "https://git.uni-paderborn.de/api/v4/projects/5005/jobs/artifacts/develop/download?job=build-webapp&job_token=$CI_JOB_TOKEN"
     - unzip hendi-webapp.zip
 
 build-docker-image:
