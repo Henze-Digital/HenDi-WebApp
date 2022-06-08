@@ -39,23 +39,21 @@ stages:
 #      - develop
 
 download-artifacts:
+  variables:
+    ACCESS_HENDI_DATA: $ACCESS_HENDI_DATA
+    ACCESS_HENDI_WEBAPP: $ACCESS_HENDI_WEBAPP
   stage: build-docker
   extends: .install_dependencies
   #needs: [build-webapp]
   script:
     #- 'curl --location --output hendi-webapp.zip --header "JOB-TOKEN: $CI_JOB_TOKEN" "https://git.uni-paderborn.de/api/v4/projects/5005/jobs/artifacts/develop/download?job=build-webapp"'
     #- unzip hendi-webapp.zip
-    - 'curl --location --output artifactsWebapp.zip "https://git.uni-paderborn.de/api/v4/projects/$CI_PROJECT_ID/jobs/artifacts/develop/download?job=build-webapp&job_token=$CI_JOB_TOKEN"'
-    - unzip artifactsWebapp.zip
-    - curl --output hendi-data.zip --location "https://git.uni-paderborn.de/api/v4/projects/2328/jobs/artifacts/develop/download?job=build-data-package&job_token=$CI_JOB_TOKEN"
+    - curl -L --output hendi-data.zip --header "PRIVATE-TOKEN: $ACCESS_HENDI_DATA" "https://git.uni-paderborn.de/api/v4/projects/2328/jobs/artifacts/develop/download?job=build-data-package"
     - unzip hendi-data.zip
   only:
     - develop
 
 build-docker-image:
-  variables:
-    ACCESS_HENDI_DATA: $ACCESS_HENDI_DATA
-    ACCESS_HENDI_WEBAPP: $ACCESS_HENDI_WEBAPP
   stage: build-docker
   image: docker:19.03.1
   services:
