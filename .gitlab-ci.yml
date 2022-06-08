@@ -22,7 +22,7 @@ stages:
     - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
     - apt update -y
     - apt install -y yarn
-    - apt install -y --no-install-recommends ant git sass minify
+    - apt install -y --no-install-recommends ant git sass minify unzip
 
 #build-webapp:
 #  stage: build-app
@@ -38,6 +38,14 @@ stages:
 #      - merge_requests
 #      - develop
 
+download-artifacts:
+  stage: build-docker
+  extends: .install_dependencies
+  #needs: [build-webapp]
+  script:
+    - 'curl --location --output hendi-webapp.zip --header "JOB-TOKEN: $CI_JOB_TOKEN" "https://git.uni-paderborn.de/api/v4/projects/5005/jobs/artifacts/develop/download?job=build-webapp"'
+    - unzip hendi-webapp.zip
+
 build-docker-image:
   variables:
     ACCESS_HENDI_DATA: $ACCESS_HENDI_DATA
@@ -46,10 +54,12 @@ build-docker-image:
   image: docker:19.03.1
   services:
     - docker:19.03.1-dind
-  #needs: [build-webapp]
+  needs: [download-artifacts]
+  dependencies:
+    - download-artifacts
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build --network host --build-arg ACCESS_HENDI_DATA=$ACCESS_HENDI_DATA --build-arg ACCESS_HENDI_WEBAPP=$ACCESS_HENDI_WEBAPP -t $IMAGE_TAG .
+    #- docker build --network host --build-arg ACCESS_HENDI_DATA=$ACCESS_HENDI_DATA --build-arg ACCESS_HENDI_WEBAPP=$ACCESS_HENDI_WEBAPP -t $IMAGE_TAG .
     - docker push $IMAGE_TAG
   only:
     - develop
