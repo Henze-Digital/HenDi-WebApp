@@ -17,14 +17,15 @@
 	<target name="-set-minify-path" unless="${build.env}">
 		<property name="minify.path" value="${WeGA-WebApp.basedir}/${wega.dev_libs.dir}/minify/bin/minify.js"/>
 	</target>
-	<target name="get-hendi-secrets-ci" unless="${secrets.available}">
+	
+	<target name="get-hendi-secrets-for-ci" if="${build.env}">
 		<echo>Clone HenDi-secrets</echo>
 		<exec executable="git" dir="." failonerror="no">
 			<arg line="clone https://gitlab-ci-token:${CI_JOB_TOKEN}@git.uni-paderborn.de/vife/henze-digital/hwh-data-internal-only.git hendi-secrets"/>
 		</exec>
 	</target>
 	
-	<target name="webapp-wega-prepare-tasks" depends="get-hendi-secrets">
+	<target name="webapp-wega-prepare-tasks" depends="get-hendi-secrets-for-ci">
 		<echo>Execute yarn, initalizes also WeGA-WebApp</echo>
 		<antcall target="wega:yarn"/>
 		<echo>Update SASS files with ${hendi.project.app} data</echo>
