@@ -408,7 +408,7 @@ declare function config:is-biblioType($string as xs:string?) as xs:boolean {
 declare function config:getCollectionPath($docID as xs:string) as xs:string? {
     let $docType := config:get-doctype-by-id($docID)
     return 
-        if(exists($docType)) then str:join-path-elements(($config:data-collection-path, $docType, replace($docID, '[0-9A-F]{2}$', 'xx'))) 
+        if(exists($docType)) then str:join-path-elements(($config:data-collection-path, $docType, replace($docID, config:get-option('dirSubstRegEx'), config:get-option('dirSubstChars'))))
         else ()
 };
 
