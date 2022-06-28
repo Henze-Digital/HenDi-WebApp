@@ -11,23 +11,21 @@
 	<property file="${WeGA-WebApp.basedir}/local.build.properties" prefix="wega"/>
 	<property file="${WeGA-WebApp.basedir}/build.properties" prefix="wega"/>
 	
-	<target name="-check-secrets-available">
-		<available property="secrets.available" file="hendi-secrets/README.md"/>
+	<target name="-set-properties" unless="${build.env}">
+		<property name="sass.path" value="${WeGA-WebApp.basedir}/${wega.sass.cmd}"/>
+		<echo>sass.path: ${sass.path}</echo>
+		<property name="minify.path" value="${WeGA-WebApp.basedir}/${wega.dev_libs.dir}/minify/bin/minify.js"/>
+		<echo>minify.path: ${minify.path}</echo>
 	</target>
 	
-	<target name="get-hendi-secrets">
-		<antcall target="get-hendi-secrets-ci">
-			<param name="build.env" value="ci"/>
-		</antcall>
-	</target>
-	<target name="get-hendi-secrets-ci" unless="${secrets.available}">
+	<target name="get-hendi-secrets-for-ci" if="${build.env}">
 		<echo>Clone HenDi-secrets</echo>
 		<exec executable="git" dir="." failonerror="no">
 			<arg line="clone https://gitlab-ci-token:${CI_JOB_TOKEN}@git.uni-paderborn.de/vife/henze-digital/hwh-data-internal-only.git hendi-secrets"/>
 		</exec>
 	</target>
 	
-	<target name="webapp-wega-prepare-tasks" depends="get-hendi-secrets">
+	<target name="webapp-wega-prepare-tasks" depends="get-hendi-secrets-for-ci">
 		<echo>Execute yarn, initalizes also WeGA-WebApp</echo>
 		<antcall target="wega:yarn"/>
 		<echo>Update SASS files with ${hendi.project.app} data</echo>
@@ -40,7 +38,7 @@
 		<antcall target="webapp-get-data"/>
 	</target>
 	
-	<target name="hendi-sass-compilation">
+	<target name="hendi-sass-compilation" depends="-set-properties">
 		<echo>Overwrite SASS files with HenDi data</echo>
 		<copy todir="${WeGA-WebApp.basedir}/resources/sass" overwrite="yes">
 			<fileset dir="data/resources/sass" includes="**"/>
@@ -185,13 +183,13 @@
 		<delete dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/guidelines"/>
 		<mkdir dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/guidelines"/>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/guidelines" overwrite="yes">
-			<fileset dir="HenDi-ODD/compiled-ODD">
-				<include name="*.xml"/>
+			<fileset dir="HenDi-ODD/guidelines-html">
+				<include name="*.html"/>
 			</fileset>
 		</copy>
 	</target>
 	
-	<target name="minify" depends="webapp-wega-prepare-tasks">
+	<target name="minify" depends="webapp-wega-prepare-tasks, -set-properties">
 		<echo>Run minify on CSS files</echo>
 		<apply executable="${minify.path}" parallel="false">
 			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/css" includes="*.css" excludes="*min.css"/>
@@ -215,12 +213,54 @@
 		</apply>
 	</target>
 	
+	<property name="project.xar.name" value="${hendi.project.app}-${hendi.project.version}"/>
+	
 	<target name="xar" depends="minify">
 		<echo>Creating the xar Package (zipping).</echo>
-		<zip destfile="webapp/${hendi.project.app}-${hendi.project.version}.xar">
+		<zip destfile="webapp/${project.xar.name}.xar">
 			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}"/>
 		</zip>
-	</target>	
+		<delete dir="build"/>
+		<delete dir="dist"/>
+		<delete dir="tmp"/>
+	</target>
+	
+	<target name="deploy" depends="clean, xar">
+		<path id="classpath.eXist">
+			<fileset dir="${hendi.exist.libs}" erroronmissingdir="yes">
+				<include name="*.jar"/>
+			</fileset>
+		</path>
+		<typedef resource="org/exist/ant/antlib.xml" uri="http://exist-db.org/ant">
+			<classpath refid="classpath.eXist"/>
+		</typedef>
+		
+		<!-- store xar-file in eXist-db -->
+		<xdb:store xmlns:xdb="http://exist-db.org/ant"
+			uri="${exist.db}/tmp"
+			createcollection="true"
+			createsubcollections="true"
+			user="${exist.user}"
+			password="${exist.pass}"
+			failonerror="true">
+			<fileset file="webapp/${project.xar.name}.xar"/>
+		</xdb:store>
+		
+		<!-- Deploy the xar -->
+		<xdb:xquery  xmlns:xdb="http://exist-db.org/ant"
+			uri="${exist.db}"
+			user="${exist.user}"
+			password="${exist.pass}">
+			(
+			if("${project.name}" = repo:list()) then (
+			repo:undeploy("${project.name}"),
+			repo:remove("${project.name}")
+			)
+			else (),
+			repo:install-and-deploy-from-db("/db/tmp/${project.xar.name}.xar")
+			)
+		</xdb:xquery>
+	</target>
 			
 	</project>
 	

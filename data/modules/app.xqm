@@ -1485,7 +1485,7 @@ declare
             if(exists($incipit) and (every $i in $incipit satisfies $i instance of element())) then $incipit ! element xhtml:p { app:enquote-html(./xhtml:p/node(), $lang) }
             else element xhtml:p {
                 if(exists($incipit)) then app:enquote-html($incipit, $lang)
-                else if(wega-util-shared:semantic-boolean($generate) and not(functx:all-whitespace($model('doc')//tei:text/tei:body))) then app:enquote-html(app:compute-incipit($model?doc, $lang), $lang)
+                else if(wega-util-shared:semantic-boolean($generate) and not(functx:all-whitespace(<node>{$model('doc')//tei:text/tei:body}</node>))) then app:enquote-html(app:compute-incipit($model?doc, $lang), $lang)
                 else '–'
             }
 };
