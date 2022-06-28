@@ -213,9 +213,11 @@
 		</apply>
 	</target>
 	
+	<property name="project.xar.name" value="${hendi.project.app}-${hendi.project.version}"/>
+	
 	<target name="xar" depends="minify">
 		<echo>Creating the xar Package (zipping).</echo>
-		<zip destfile="webapp/${hendi.project.app}-${hendi.project.version}.xar">
+		<zip destfile="webapp/${project.xar.name}.xar">
 			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}"/>
 		</zip>
 	</target>	
