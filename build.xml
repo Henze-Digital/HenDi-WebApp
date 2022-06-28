@@ -220,7 +220,44 @@
 		<zip destfile="webapp/${project.xar.name}.xar">
 			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}"/>
 		</zip>
-	</target>	
+	</target>
+	
+	<target name="deploy" depends="clean, xar">
+		<path id="classpath.eXist">
+			<fileset dir="${exist.libs}" erroronmissingdir="yes">
+				<include name="*.jar"/>
+			</fileset>
+		</path>
+		<typedef resource="org/exist/ant/antlib.xml" uri="http://exist-db.org/ant">
+			<classpath refid="classpath.eXist"/>
+		</typedef>
+		
+		<!-- store xar-file in eXist-db -->
+		<xdb:store xmlns:xdb="http://exist-db.org/ant"
+			uri="${exist.db}/tmp"
+			createcollection="true"
+			createsubcollections="true"
+			user="${exist.user}"
+			password="${exist.pass}"
+			failonerror="true">
+			<fileset file="${build.dir}/${project.xar.name}.xar"/>
+		</xdb:store>
+		
+		<!-- Deploy the xar -->
+		<xdb:xquery  xmlns:xdb="http://exist-db.org/ant"
+			uri="${exist.db}"
+			user="${exist.user}"
+			password="${exist.pass}">
+			(
+			if("${project.name}" = repo:list()) then (
+			repo:undeploy("${project.name}"),
+			repo:remove("${project.name}")
+			)
+			else (),
+			repo:install-and-deploy-from-db("/db/tmp/${project.xar.name}.xar")
+			)
+		</xdb:xquery>
+	</target>
 			
 	</project>
 	
