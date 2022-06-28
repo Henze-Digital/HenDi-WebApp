@@ -13,7 +13,9 @@
 	
 	<target name="-set-properties" unless="${build.env}">
 		<property name="sass.path" value="${WeGA-WebApp.basedir}/${wega.sass.cmd}"/>
+		<echo>sass.path: ${sass.path}</echo>
 		<property name="minify.path" value="${WeGA-WebApp.basedir}/${wega.dev_libs.dir}/minify/bin/minify.js"/>
+		<echo>minify.path: ${minify.path}</echo>
 	</target>
 	
 	<target name="get-hendi-secrets-for-ci" if="${build.env}">
