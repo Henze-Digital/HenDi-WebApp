@@ -11,14 +11,11 @@
 	<property file="${WeGA-WebApp.basedir}/local.build.properties" prefix="wega"/>
 	<property file="${WeGA-WebApp.basedir}/build.properties" prefix="wega"/>
 	
-	<target name="-check-secrets-available">
-		<available property="secrets.available" file="hendi-secrets/README.md"/>
+	<target name="-set-sass-path" unless="${build.env}">
+		<property name="sass.path" value="${WeGA-WebApp.basedir}/${wega.sass.cmd}"/>
 	</target>
-	
-	<target name="get-hendi-secrets">
-		<antcall target="get-hendi-secrets-ci">
-			<param name="build.env" value="ci"/>
-		</antcall>
+	<target name="-set-minify-path" unless="${build.env}">
+		<property name="minify.path" value="${WeGA-WebApp.basedir}/${wega.dev_libs.dir}/minify/bin/minify.js"/>
 	</target>
 	<target name="get-hendi-secrets-ci" unless="${secrets.available}">
 		<echo>Clone HenDi-secrets</echo>
