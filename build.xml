@@ -181,8 +181,8 @@
 		<delete dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/guidelines"/>
 		<mkdir dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/guidelines"/>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/guidelines" overwrite="yes">
-			<fileset dir="HenDi-ODD/compiled-ODD">
-				<include name="*.xml"/>
+			<fileset dir="HenDi-ODD/guidelines-html">
+				<include name="*.html"/>
 			</fileset>
 		</copy>
 	</target>
