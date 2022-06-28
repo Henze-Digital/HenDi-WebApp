@@ -218,11 +218,12 @@
 		<zip destfile="webapp/${project.xar.name}.xar">
 			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}"/>
 		</zip>
+		
 	</target>
 	
 	<target name="deploy" depends="clean, xar">
 		<path id="classpath.eXist">
-			<fileset dir="${exist.libs}" erroronmissingdir="yes">
+			<fileset dir="${hendi.exist.libs}" erroronmissingdir="yes">
 				<include name="*.jar"/>
 			</fileset>
 		</path>
@@ -238,7 +239,7 @@
 			user="${exist.user}"
 			password="${exist.pass}"
 			failonerror="true">
-			<fileset file="${build.dir}/${project.xar.name}.xar"/>
+			<fileset file="webapp/${project.xar.name}.xar"/>
 		</xdb:store>
 		
 		<!-- Deploy the xar -->
