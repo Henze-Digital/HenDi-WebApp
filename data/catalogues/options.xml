@@ -67,6 +67,7 @@
         <entry xml:id="thematicCommentariesIdPattern">A09[0-9A-F]{5}</entry>
         <entry xml:id="documentsIdPattern">A10[0-9A-F]{5}</entry>
         <entry xml:id="addendaIdPattern">A12[0-9A-F]{5}</entry>
-        <entry xml:id="textTypes">card.business card.letter card.postal contract document envelope formCommitment letter statement statement.fee telegram unknown</entry>
+        <entry xml:id="textTypes">card.letter card.postal envelope letter telegram</entry>
+<!--        <entry xml:id="textTypes">card.business card.letter card.postal contract document envelope formCommitment letter statement statement.fee telegram unknown</entry>-->
     </div>
 </dictionary>
