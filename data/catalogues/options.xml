@@ -7,7 +7,7 @@
     </div>
     <div xml:id="dbPaths">
         <!-- where to store the temporary files -->
-        <!--<entry xml:id="tmpDir" type="xs:string">/db/apps/WeGA-WebApp/tmp/</entry>-->
+        <entry xml:id="tmpDir" type="xs:string">/db/apps/HenDi-WebApp/tmp/</entry>
         <entry xml:id="dataCollectionPath" type="xs:string">/db/apps/hendi-data</entry>
     </div>
     <div xml:id="various">
@@ -20,11 +20,11 @@
         <entry xml:id="iiifImageApi">https://henze-digital.zenmem.de/Scaler/IIIF/</entry><!-- trailing slashes are important! -->
         <entry xml:id="facsimileGreenList">D-B D-Hs CZ-Pk D-LUs S-LI</entry>
         <entry xml:id="maxNews">2</entry>
-        <entry xml:id="googleWebsiteMetatag">EAO5d_GiQPkJeTGACYYOFahJm2HRNvJUWwIkyw4j0Ys</entry>
-        <entry xml:id="microsoftBingWebsiteMetatag">AE39DA5613844228642EE48196AAA94A</entry>
-        <entry xml:id="ODDversion">4.4.0</entry><!-- Versionsnummer der WeGA-ODD Schemata -->
+<!--        <entry xml:id="googleWebsiteMetatag">EAO5d_GiQPkJeTGACYYOFahJm2HRNvJUWwIkyw4j0Ys</entry>-->
+<!--        <entry xml:id="microsoftBingWebsiteMetatag">AE39DA5613844228642EE48196AAA94A</entry>-->
+        <entry xml:id="ODDversion">0.1.0</entry><!-- Versionsnummer der WeGA-ODD Schemata -->
         <entry xml:id="versionNews">A0500000</entry>
-        <entry xml:id="versionDate">2021-09-12</entry>
+        <entry xml:id="versionDate">2022-06-28</entry>
         <entry xml:id="entriesPerPage">10</entry>
         <entry xml:id="resourceImgPath">/resources/img/</entry>
         <entry xml:id="logoFileName">logo_hendi.png</entry>
