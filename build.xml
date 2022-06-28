@@ -11,10 +11,8 @@
 	<property file="${WeGA-WebApp.basedir}/local.build.properties" prefix="wega"/>
 	<property file="${WeGA-WebApp.basedir}/build.properties" prefix="wega"/>
 	
-	<target name="-set-sass-path" unless="${build.env}">
+	<target name="-set-properties" unless="${build.env}">
 		<property name="sass.path" value="${WeGA-WebApp.basedir}/${wega.sass.cmd}"/>
-	</target>
-	<target name="-set-minify-path" unless="${build.env}">
 		<property name="minify.path" value="${WeGA-WebApp.basedir}/${wega.dev_libs.dir}/minify/bin/minify.js"/>
 	</target>
 	
@@ -38,7 +36,7 @@
 		<antcall target="webapp-get-data"/>
 	</target>
 	
-	<target name="hendi-sass-compilation">
+	<target name="hendi-sass-compilation" depends="-set-properties">
 		<echo>Overwrite SASS files with HenDi data</echo>
 		<copy todir="${WeGA-WebApp.basedir}/resources/sass" overwrite="yes">
 			<fileset dir="data/resources/sass" includes="**"/>
@@ -189,7 +187,7 @@
 		</copy>
 	</target>
 	
-	<target name="minify" depends="webapp-wega-prepare-tasks">
+	<target name="minify" depends="webapp-wega-prepare-tasks, -set-properties">
 		<echo>Run minify on CSS files</echo>
 		<apply executable="${minify.path}" parallel="false">
 			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/css" includes="*.css" excludes="*min.css"/>
