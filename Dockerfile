@@ -8,4 +8,7 @@ RUN curl --location --output hendiData.zip "https://git.uni-paderborn.de/api/v4/
     unzip hendiData.zip &&\
     rm hendiData.zip &&\
     mv hendi-pkg-data/*.xar ${EXIST_HOME}/autodeploy
-COPY ./hendi-pkg-webapp/*.xar ${EXIST_HOME}/autodeploy
+RUN curl --location --output hendiWebApp.zip "https://git.uni-paderborn.de/api/v4/projects/5005/-/jobs/artifacts/develop/download?job=build-app" &&\
+	unzip hendiWebApp.zip &&\
+	rm hendiWebApp.zip &&\
+	mv hendi-pkg-webapp/*.xar ${EXIST_HOME}/autodeploy
