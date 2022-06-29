@@ -217,7 +217,7 @@
 	
 	<target name="xar" depends="minify">
 		<echo>Creating the xar Package (zipping).</echo>
-		<zip destfile="webapp/${project.xar.name}.xar">
+		<zip destfile="${hendi.build.dir}/${project.xar.name}.xar">
 			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}"/>
 		</zip>
 		<delete dir="build"/>
@@ -243,7 +243,7 @@
 			user="${exist.user}"
 			password="${exist.pass}"
 			failonerror="true">
-			<fileset file="webapp/${project.xar.name}.xar"/>
+			<fileset file="${hendi.build.dir}/${project.xar.name}.xar"/>
 		</xdb:store>
 		
 		<!-- Deploy the xar -->

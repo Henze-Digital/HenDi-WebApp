@@ -30,7 +30,7 @@ build-webapp:
     - ant xar -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   artifacts:
     paths:
-      - webapp/HenDi-WebApp-*.xar
+      - hendi-pkg-webapp/HenDi-WebApp-*.xar
   only:
     refs:
       - merge_requests
