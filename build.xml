@@ -170,6 +170,7 @@
 			<fileset dir="hendi-secrets/wega-app/fonts" includes="**"/>
 		</copy>
 		<echo>Overwrite the WeGA-ODD with HenDi-ODD data</echo>
+		<!-- todo: improve behaviour, add compile ODD task? -->
 		<delete dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib/WeGA-ODD"/>
 		<mkdir dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib/WeGA-ODD"/>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib/WeGA-ODD" overwrite="yes">
