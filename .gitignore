@@ -10,3 +10,4 @@ build-temp
 webapp
 hendi-secrets
 libs
+hendi-pkg-webapp
