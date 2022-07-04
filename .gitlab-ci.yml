@@ -15,7 +15,7 @@ stages:
   image: ubuntu
   before_script:
     - apt update -y
-    - apt upgrade -y
+    #- apt upgrade -y
     - apt install -y gnupg2 curl
     - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
     - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
@@ -58,5 +58,6 @@ deploy:
   script:
     - >
       curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp", "tag": "$CI_COMMIT_REF_SLUG"}'
+    - echo $CI_COMMIT_REF_SLUG
   only:
     - develop
