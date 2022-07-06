@@ -371,7 +371,7 @@
         },
         "/application/newID": {
             "get": {
-                "summary": "Create a new WeGA ID",
+                "summary": "Create a new HenDi ID",
                 "description": "",
                 "tags": ["Application"],
                 "produces": ["application/json"],
@@ -380,18 +380,18 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "A single object with a fresh WeGA ID",
+                        "description": "A single object with a fresh HenDi ID",
                         "schema": {
                             "type": "object",
                             "properties": {
                                 "docID": {
                                     "type": "string",
-                                    "pattern": "^A[A-F0-9]{6}$",
-                                    "description": "The WeGA ID"
+                                    "pattern": "^A\\d{2}[A-F0-9]{5}$",
+                                    "description": "The HenDi ID"
                                 },
                                 "docType": {
                                     "type": "string",
-                                    "description": "The WeGA document type"
+                                    "description": "The HenDi document type"
                                 }
                             }
                         }
@@ -586,7 +586,7 @@
         "docTypeParam": {
             "name": "docType",
             "in": "query",
-            "description": "The WeGA document type",
+            "description": "The HenDi document type",
             "type": "array",
             "collectionFormat": "csv",
             "items": {
@@ -629,7 +629,7 @@
             "name": "docType",
             "collectionFormat": "csv",
             "type": "array",
-            "description": "The WeGA document type",
+            "description": "The HenDi document type",
             "required": true
         }
     }

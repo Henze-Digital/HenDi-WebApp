@@ -703,7 +703,7 @@
         "tags": [
           "Application"
         ],
-        "summary": "Create a new WeGA ID",
+        "summary": "Create a new HenDi ID",
         "parameters": [
           {
             "$ref": "#/components/parameters/docTypeRequiredParam"
@@ -711,20 +711,20 @@
         ],
         "responses": {
           "200": {
-            "description": "A single object with a fresh WeGA ID",
+            "description": "A single object with a fresh HenDi ID",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "docID": {
-                      "pattern": "^A[A-F0-9]{6}$",
+                      "pattern": "^A\\d{2}[A-F0-9]{5}$",
                       "type": "string",
-                      "description": "The WeGA ID"
+                      "description": "The HenDi ID"
                     },
                     "docType": {
                       "type": "string",
-                      "description": "The WeGA document type"
+                      "description": "The HenDi document type"
                     }
                   }
                 }
@@ -1088,7 +1088,7 @@
       "docTypeParam": {
         "name": "docType",
         "in": "query",
-        "description": "The WeGA document type",
+        "description": "The HenDi document type",
         "style": "form",
         "explode": false,
         "schema": {
@@ -1115,7 +1115,7 @@
       "docTypeRequiredParam": {
         "name": "docType",
         "in": "query",
-        "description": "The WeGA document type",
+        "description": "The HenDi document type",
         "required": true,
         "style": "form",
         "explode": false,
