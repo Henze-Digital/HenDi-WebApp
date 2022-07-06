@@ -104,6 +104,7 @@
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}" overwrite="yes">
 			<fileset dir="data">
 				<include name="*.*"/>
+				<include name="api/"/>
 				<include name="catalogues/"/>
 				<include name="modules/"/>
 				<include name="resources/"/>
