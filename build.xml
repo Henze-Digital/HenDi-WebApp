@@ -219,7 +219,10 @@
 	<target name="xar" depends="minify">
 		<echo>Creating the xar Package (zipping).</echo>
 		<zip destfile="${hendi.build.dir}/${project.xar.name}.xar">
-			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}"/>
+			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}">
+				<exclude name="*.tmpl"/>
+				<exclude name="resources/sass"/>
+			</fileset>
 		</zip>
 		<delete dir="build"/>
 		<delete dir="dist"/>
