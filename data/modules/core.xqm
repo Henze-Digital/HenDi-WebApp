@@ -109,10 +109,7 @@ declare function core:create-new-ID($docType as xs:string) as xs:string? {
     let $coll2 := $IDFile//core:entry ! substring(./@xml:id, 5)
     let $removeOldTempIDS := core:remove-old-entries-from-idfile($IDFile)
     let $max := count($coll1) + count($coll2) + 200
-    let $exceptions := 
-        switch($docType)
-        case 'persons' return ($coll1, $coll2) ! m:hex2int(.)
-        default return ($coll1, $coll2)
+    let $exceptions := ($coll1, $coll2) ! m:hex2int(.)
     let $rand := core:random-ID($max, $exceptions)
     let $prefix := wdt:lookup($docType, ())?prefix
     let $newID := 
