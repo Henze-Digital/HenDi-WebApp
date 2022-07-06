@@ -113,12 +113,14 @@ declare function core:create-new-ID($docType as xs:string) as xs:string? {
     let $exceptions := ($coll1, $coll2) ! m:hex2int(.)
     let $rand := core:random-ID($max, $exceptions)
     let $prefix := wdt:lookup($docType, ())?prefix
-    let $newID := 
-        if ($rand and $max lt 65535)
-        then (core:add-new-entry-to-idfile($IDFile, concat('_', $prefix, m:int2hex($rand, 4))))
-        else ()
+    let $newID := $prefix || m:int2hex($rand, 4)
     let $newIDCheckDigit := hwh-util:compute-check-digit($newID)
     let $newID := $newID || $newIDCheckDigit
+    let $newID := 
+        if ($rand and $max lt 65535)
+        then (core:add-new-entry-to-idfile($IDFile, concat('_', $newID)))
+        else ()
+    
     return 
         if($newID) then substring($newID, 2)
         else ()
