@@ -11,3 +11,4 @@ webapp
 hendi-secrets
 libs
 hendi-pkg-webapp
+node_modules
