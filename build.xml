@@ -18,6 +18,12 @@
 		<echo>minify.path: ${minify.path}</echo>
 	</target>
 	
+	<target name="-check-secrets-available-local" unless="${build.env}">
+		<echo>The script is running locally. Checking if secrets are available</echo>
+		<available type="dir" file="${HenDi-WebApp.basedir}/hendi-secrets" property="secrets.available.local"/>
+		<echo>secrets.available.local: ${secrets.available.local}</echo>
+	</target>
+	
 	<target name="get-hendi-secrets-for-ci" if="${build.env}">
 		<echo>Clone HenDi-secrets</echo>
 		<exec executable="git" dir="." failonerror="no">
@@ -25,7 +31,24 @@
 		</exec>
 	</target>
 	
-	<target name="webapp-wega-prepare-tasks" depends="get-hendi-secrets-for-ci">
+	<target name="get-hendi-secrets-local" unless="${secrets.available.local}" depends="-check-secrets-available-local">
+		<echo>Add HenDi-secrets to local repo</echo>
+		<copy todir="${HenDi-WebApp.basedir}/hendi-secrets" failonerror="no">
+			<fileset dir="${HenDi-WebApp.basedir}/../hendi-secrets">
+				<include name="wega-app/**"/>
+			</fileset>
+		</copy>
+	</target>
+	<target name="update-hendi-secrets-local" depends="get-hendi-secrets-local">
+		<echo>Update existing hendi-secrets in local repo</echo>
+		<copy todir="${HenDi-WebApp.basedir}/hendi-secrets" overwrite="yes" failonerror="no">
+			<fileset dir="${HenDi-WebApp.basedir}/../hendi-secrets">
+				<include name="wega-app/**"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="webapp-wega-prepare-tasks" depends="get-hendi-secrets-for-ci, update-hendi-secrets-local">
 		<echo>Execute yarn, initalizes also WeGA-WebApp</echo>
 		<antcall target="wega:yarn"/>
 		<echo>Update SASS files with ${hendi.project.app} data</echo>
