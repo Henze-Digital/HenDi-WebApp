@@ -1944,3 +1944,65 @@ declare function app:inject-api-base($node as node(), $model as map(*))  {
     return
         app-shared:set-attr($node, map:merge(($model, map {'api-base' : $api-base})), 'data-api-base', 'api-base')
 };
+
+
+declare function app:enrichtment-datasets($node as node(), $model as map(*))  {
+
+let $collPersons := collection('/db/apps/hendi-data/persons')/tei:person
+let $collOrgs := collection('/db/apps/hendi-data/orgs')/tei:org
+let $collPlaces := collection('/db/apps/hendi-data/places')/tei:place
+let $collWorks := collection('/db/apps/hendi-data/works')/mei:mei
+
+(: Zusammenfassen der drei collections :)
+let $collRef := $collPersons | $collOrgs | $collPlaces | $collWorks
+
+let $collPostals := collection('/db/apps/hendi-data/letters')/tei:TEI[.//tei:text//tei:p]
+
+                    
+let $references := 
+    (: Schleife (jeder Brief einzeln) :)
+    for $letter at $n in $collPostals
+        
+        (: Variablen-Definitionen:)
+        let $letterID := $letter/@xml:id
+        let $keys := if(contains($letter//tei:text//@key, ' '))
+                     then(tokenize($letter//tei:text//@key, ' '))
+                     else($letter//tei:text//@key) (:[starts-with(., 'A00') or starts-with(., 'A13')]:)
+        
+        (: Finde refernzierte Datensätze, Schleife: jede Referenz einzeln suchen :)
+        let $objectsRef := for $key in $keys
+	                            (: Finde den relevanten Datensatz :)
+	                            let $refRecord := $collRef/id($key)
+	                            (: finde Status des Datensatzes heraus :)
+	                            let $refStatus := $refRecord/string(@status)
+	                            
+	                            where $refStatus = 'proposed'
+	                            return
+	                                <p id="{$refRecord/string(@xml:id)}">{$refRecord/string(@xml:id)}</p>
+        
+        (:Rückgabe Wert der Schleife:)
+        return
+            $objectsRef
+    
+    let $referencesDistinct := functx:distinct-deep($references)
+    (: Rückgabe der Referenzen :)
+    
+    return
+        <div>
+        <h1>Anzahl der Datensätze: {count($referencesDistinct)}</h1>
+            { (: Schleife zum Sortieren :)
+            let $prefixes := for $each in distinct-values($referencesDistinct) return substring($each, 1,3)
+            for $prefix in distinct-values($prefixes)
+                let $refs := $referencesDistinct[starts-with(@id, $prefix)]
+                order by $prefix
+                return
+                    <div name="group" prefix="{$prefix}">
+                        <h1>{$prefix}</h1>
+                        {for $ref in $refs
+                        	order by $ref/@id
+                        	return
+                        		$ref}
+                    </div>
+            }
+        </div>
+};
