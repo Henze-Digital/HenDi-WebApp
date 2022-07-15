@@ -263,7 +263,7 @@
 	
 	<target name="update-hendi-docker" depends="xar">
 		<delete file="../hendi-docker/autodeploy/HenDi-WebApp-*.xar"/>
-		<copy file="hendi-pkg-webapp/${project.xar.name}.xar" todir="../hendi-docker/autodeploy/${project.xar.name}.xar" overwrite="yes"/>
+		<copy file="hendi-pkg-webapp/${project.xar.name}.xar" todir="../hendi-docker/autodeploy" overwrite="yes"/>
 	</target>
 	
 	<target name="deploy" depends="clean, xar">
