@@ -4,7 +4,7 @@ variables:
   DOCKER_TLS_CERTDIR: ""
   DOCKER_HOST: tcp://localhost:2375
   IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-  IMAGE_TAG_MULTI: ${IMAGE_TAG}-multi
+  IMAGE_TAG_MULTI: ${IMAGE_TAG}_multi
   GIT_SUBMODULE_STRATEGY: recursive
 
 stages:
@@ -70,7 +70,7 @@ docker-image-multiplatforms:
 deploy:
   stage: deploy
   image: curlimages/curl
-  needs: [build-docker-image]
+  needs: [docker-image]
   script:
     - >
       curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp", "tag": "$CI_COMMIT_REF_SLUG"}'
