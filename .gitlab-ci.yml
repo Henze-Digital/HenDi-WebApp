@@ -5,7 +5,6 @@ variables:
   DOCKER_HOST: tcp://localhost:2375
   IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
   IMAGE_TAG_MULTI: ${IMAGE_TAG}_multi
-  GIT_SUBMODULE_STRATEGY: recursive
 
 stages:
   - build-app
@@ -27,6 +26,8 @@ stages:
 build-webapp:
   stage: build-app
   extends: .install_dependencies
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
   script:
     - ant xar -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   artifacts:
@@ -54,9 +55,7 @@ docker-image:
 
 docker-image-multiplatforms:
   stage: build-docker
-  image: docker:20
-  #services:
-  #  - docker:20.10.9-buildx
+  image: docker:20.10.9-buildx
   needs: [build-webapp]
   dependencies:
     - build-webapp
