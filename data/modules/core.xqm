@@ -106,8 +106,8 @@ declare function core:create-new-ID($docType as xs:string) as xs:string? {
         wega-util:log-to-file('warn', string-join(($errCode, $errDesc), ' ;; '))
     }
     let $IDFile := mycache:doc($IDFileURI, core:create-empty-idfile#2, ($docType, $IDFileURI), xs:dayTimeDuration('P1D'), $onFailureFunc)
-    let $coll1 := crud:data-collection($docType)/* ! substring(./@xml:id, 4) (: core:getOrCreateColl() geht nicht, da hier auch die Dubletten mit berücksichtigt werden müssen! :)
-    let $coll2 := $IDFile//core:entry ! substring(./@xml:id, 5)
+    let $coll1 := crud:data-collection($docType)/* ! substring(./@xml:id, 4, 4) (: core:getOrCreateColl() geht nicht, da hier auch die Dubletten mit berücksichtigt werden müssen! :)
+    let $coll2 := $IDFile//core:entry ! substring(./@xml:id, 5, 4)
     let $removeOldTempIDS := core:remove-old-entries-from-idfile($IDFile)
     let $max := count($coll1) + count($coll2) + 200
     let $exceptions := ($coll1, $coll2) ! m:hex2int(.)
