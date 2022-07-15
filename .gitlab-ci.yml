@@ -55,7 +55,9 @@ docker-image:
 
 docker-image-multiplatforms:
   stage: build-docker
-  image: docker:20.10.9-buildx
+  image: docker:20.10.9
+  services:
+    - docker:120.10.9-buildx
   needs: [build-webapp]
   dependencies:
     - build-webapp
