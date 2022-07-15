@@ -111,15 +111,13 @@ declare function core:create-new-ID($docType as xs:string) as xs:string? {
     let $removeOldTempIDS := core:remove-old-entries-from-idfile($IDFile)
     let $max := count($coll1) + count($coll2) + 200
     let $exceptions := ($coll1, $coll2) ! m:hex2int(.)
-    let $rand := core:random-ID($max, $exceptions)
+    let $randNo := core:random-ID($max, $exceptions)
     let $prefix := wdt:lookup($docType, ())?prefix
-    let $newID := $prefix || m:int2hex($rand, 4)
-    let $newIDCheckDigit := hwh-util:compute-check-digit($newID)
-    let $newID := $newID || $newIDCheckDigit
     let $newID := 
         if ($rand and $max lt 65535)
         then (core:add-new-entry-to-idfile($IDFile, concat('_', $newID)))
         else ()
+    let $newID := hwh-util:generateId($prefix, $randNo)
     
     return 
         if($newID) then substring($newID, 2)
