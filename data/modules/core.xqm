@@ -108,16 +108,17 @@ declare function core:create-new-ID($docType as xs:string) as xs:string? {
     let $IDFile := mycache:doc($IDFileURI, core:create-empty-idfile#2, ($docType, $IDFileURI), xs:dayTimeDuration('P1D'), $onFailureFunc)
     let $coll1 := crud:data-collection($docType)/* ! substring(./@xml:id, 4, 4) (: core:getOrCreateColl() geht nicht, da hier auch die Dubletten mit berücksichtigt werden müssen! :)
     let $coll2 := $IDFile//core:entry ! substring(./@xml:id, 5, 4)
+    let $allIDs := ($IDFile//core:entry/string(@xml:id), crud:data-collection($docType)/*/string(@xml:id))
     let $removeOldTempIDS := core:remove-old-entries-from-idfile($IDFile)
     let $max := count($coll1) + count($coll2) + 200
     let $exceptions := ($coll1, $coll2) ! m:hex2int(.)
     let $randNo := core:random-ID($max, $exceptions)
     let $prefix := wdt:lookup($docType, ())?prefix
-    let $newID := 
-        if ($rand and $max lt 65535)
-        then (core:add-new-entry-to-idfile($IDFile, concat('_', $newID)))
-        else ()
     let $newID := hwh-util:generateId($prefix, $randNo)
+    let $newID := if (functx:contains-any-of($newID, $allIDs)) 
+                  then ($randNo)
+                  else (core:add-new-entry-to-idfile($IDFile, concat('_', $newID)))
+        
     
     return 
         if($newID) then substring($newID, 2)
