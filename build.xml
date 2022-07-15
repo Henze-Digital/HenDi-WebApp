@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project default="xar" name="HenDi-WebApp" basedir="." xmlns:unless="ant:unless">
+<project default="update-hendi-docker" name="HenDi-WebApp" basedir="." xmlns:unless="ant:unless">
 	
 	<dirname property="HenDi-WebApp.basedir" file="${ant.file.HenDi-WebApp}"/>
 	
@@ -259,6 +259,11 @@
 		<delete dir="build"/>
 		<delete dir="dist"/>
 		<delete dir="tmp"/>
+	</target>
+	
+	<target name="update-hendi-docker" depends="xar">
+		<delete file="../hendi-docker/autodeploy/HenDi-WebApp-*.xar"/>
+		<copy file="hendi-pkg-webapp/${project.xar.name}.xar" todir="../hendi-docker/autodeploy" overwrite="yes"/>
 	</target>
 	
 	<target name="deploy" depends="clean, xar">
