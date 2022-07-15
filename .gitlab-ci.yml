@@ -58,9 +58,9 @@ docker-image-multiplatforms:
   image: docker:19.03.1
   services:
     - docker:19.03.1-dind
-  #needs: [build-webapp]
-  #dependencies:
-  #  - build-webapp
+  needs: [build-webapp]
+  dependencies:
+    - build-webapp
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker version
