@@ -187,12 +187,21 @@
     <xsl:template match="tei:reg"/>
 
     <xsl:template match="tei:lb" priority="0.5">
-        <xsl:if test="@type='inWord' or @break='no'">
-            <xsl:element name="span">
-                <xsl:attribute name="class" select="'break_inWord'"/>
-                <xsl:text>-</xsl:text>
-            </xsl:element>
-        </xsl:if>
+        <xsl:choose>
+            <xsl:when test="@break='no' and not(@rend='noHyphen')">
+                <xsl:element name="span">
+                    <xsl:attribute name="class" select="'break_inWord'"/>
+                    <xsl:text>-</xsl:text>
+                </xsl:element>
+            </xsl:when>
+            <xsl:when test="@break='no' and @rend='noHyphen'">
+                <xsl:element name="span">
+                    <xsl:attribute name="class" select="'break_inWord'"/>
+                    <xsl:text>[-]</xsl:text>
+                </xsl:element>
+            </xsl:when>
+            <xsl:otherwise/>
+        </xsl:choose>
         <xsl:element name="br"/>
     </xsl:template>
     
