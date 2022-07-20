@@ -59,7 +59,7 @@ deploy:
   needs: [docker-image]
   script:
     - >
-      curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp", "tag": "$CI_COMMIT_REF_SLUG"}'
-    - echo $CI_COMMIT_REF_SLUG
+      curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp", "tag": "${CI_COMMIT_REF_SLUG}"}'
+    - echo ${CI_COMMIT_REF_SLUG}
   only:
     - develop
