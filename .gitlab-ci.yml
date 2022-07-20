@@ -60,8 +60,6 @@ deploy:
   #needs: [docker-image]
   #dependencies:
   #  - docker-image
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     #- >
     #  curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp", "tag": "${CI_COMMIT_REF_SLUG}"}'
