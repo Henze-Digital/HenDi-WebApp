@@ -61,7 +61,7 @@ deploy:
   #needs: [docker-image]
   script:
     - >
-      curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp", "tag": "${CI_BRANCH_NAME}"}'
-    - echo ${CI_BRANCH_NAME}
+      curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp", "tag": "develop"}'
+    - echo $CI_BRANCH_NAME
   only:
     - develop
