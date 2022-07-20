@@ -329,14 +329,20 @@
                 <xsl:attribute name="data-facs" select="substring(@facs, 2)"/>
             </xsl:if>
             <xsl:choose>
-                <xsl:when test="@type='inWord' or @break='no'">
-                    <xsl:value-of select="normalize-space($division-sign)"/>
+                <xsl:when test="@break='no' and not(@rend='noHyphen')">
+                    <xsl:value-of select="concat('-',normalize-space($division-sign))"/>
+                </xsl:when>
+                <xsl:when test="@break='no' and @rend='noHyphen'">
+                    <xsl:value-of select="concat('[-]',normalize-space($division-sign))"/>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:value-of select="$division-sign"/>
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:element>
+        <xsl:if test="not(parent::tei:list)">
+            <xsl:element name="br"/>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template match="tei:space">
