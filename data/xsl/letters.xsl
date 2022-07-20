@@ -179,5 +179,56 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-
+    
+    <xsl:template match="tei:fw">
+        <xsl:element name="p">
+            <xsl:attribute name="class">d-flex border-top border-bottom border-secondary</xsl:attribute>
+            <xsl:attribute name="style">margin-right: 1em; margin-left: 1em;</xsl:attribute>
+            <xsl:apply-templates/>
+        </xsl:element>
+    </xsl:template>
+    
+    <xsl:template match="tei:address">
+        <xsl:element name="span">
+            <xsl:attribute name="class">
+                <xsl:text>container-fluid</xsl:text>
+                <xsl:choose>
+                    <xsl:when test="@rend='right'">
+                        <xsl:text> justify-content-end</xsl:text>
+                    </xsl:when>
+                    <xsl:when test="@rend='left'">
+                        <xsl:text> justify-content-start</xsl:text>
+                    </xsl:when>
+                    <xsl:when test="@rend='center'">
+                        <xsl:text> justify-content-center</xsl:text>
+                    </xsl:when>
+                </xsl:choose>
+            </xsl:attribute>
+            <xsl:apply-templates/>
+        </xsl:element>
+    </xsl:template>
+    
+    <xsl:template match="tei:addrLine">
+        <xsl:element name="span">
+            <xsl:attribute name="class">
+                <xsl:text>d-flex</xsl:text>
+                <xsl:choose>
+                    <xsl:when test="@rend='inlineApart'">
+                        <xsl:attribute name="style"> justify-content-between</xsl:attribute>
+                    </xsl:when>
+                    <xsl:when test="@rend='right'">
+                        <xsl:text> justify-content-end</xsl:text>
+                    </xsl:when>
+                    <xsl:when test="@rend='left'">
+                        <xsl:text> justify-content-start</xsl:text>
+                    </xsl:when>
+                    <xsl:when test="@rend='center'">
+                        <xsl:text> justify-content-center</xsl:text>
+                    </xsl:when>
+                </xsl:choose>
+            </xsl:attribute>
+            <xsl:apply-templates/>
+        </xsl:element>
+    </xsl:template>
+    
 </xsl:stylesheet>
