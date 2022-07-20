@@ -276,10 +276,10 @@
         <xsl:variable name="division-sign" as="xs:string">
             <xsl:choose>
                 <xsl:when test="self::tei:pb">
-                    <xsl:value-of select="' | '"/> <!-- senkrechter Strich („|“) aka pipe -->
+                    <xsl:value-of select="' [Seitenumbruch] '"/> <!-- senkrechter Strich („|“) aka pipe -->
                 </xsl:when>
                 <xsl:when test="self::tei:cb">
-                    <xsl:value-of select="' ¦ '"/> <!-- in der Mitte unterbrochener („¦“) senkrechter Strich -->
+                    <xsl:value-of select="' [Spaltenumbruch] '"/> <!-- in der Mitte unterbrochener („¦“) senkrechter Strich -->
                 </xsl:when>
             </xsl:choose>
         </xsl:variable>
