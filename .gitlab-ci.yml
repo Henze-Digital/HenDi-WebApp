@@ -36,7 +36,7 @@ build-webapp:
   only:
     refs:
       - merge_requests
-      #- develop
+      - develop
 
 docker-image:
   stage: build-docker
@@ -52,14 +52,14 @@ docker-image:
     - docker push $IMAGE_TAG
   only:
     - merge_requests
-    #- develop
+    - develop
 
 deploy:
   stage: deploy
   image: curlimages/curl
-  #needs: [docker-image]
-  #dependencies:
-  #  - docker-image
+  needs: [docker-image]
+  dependencies:
+    - docker-image
   script:
     #- >
     #  curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp", "tag": "${CI_COMMIT_REF_SLUG}"}'
