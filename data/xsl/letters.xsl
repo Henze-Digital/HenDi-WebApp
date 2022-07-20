@@ -19,7 +19,7 @@
         <xsl:element name="div">
             <xsl:attribute name="class" select="'teiLetter_body'"/>
             <xsl:apply-templates/>
-            <xsl:if test="//tei:note[@place='foot']">
+            <xsl:if test="//tei:note[@place='bottom']">
                 <xsl:call-template name="createEndnotes"/>
             </xsl:if>
         </xsl:element>
