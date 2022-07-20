@@ -3,6 +3,7 @@ variables:
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
   DOCKER_HOST: tcp://localhost:2375
+  CI_COMMIT_REF_SLUG: $CI_COMMIT_REF_SLUG
   IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
   IMAGE_TAG_MULTI: ${IMAGE_TAG}_multi
 
@@ -36,7 +37,7 @@ build-webapp:
   only:
     refs:
       - merge_requests
-      - develop
+      #- develop
 
 docker-image:
   stage: build-docker
@@ -51,12 +52,13 @@ docker-image:
     - docker build --network host --build-arg CI_JOB_TOKEN=$CI_JOB_TOKEN -t $IMAGE_TAG .
     - docker push $IMAGE_TAG
   only:
-    - develop
+    - merge_requests
+    #- develop
 
 deploy:
   stage: deploy
   image: curlimages/curl
-  needs: [docker-image]
+  #needs: [docker-image]
   script:
     - >
       curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp", "tag": "${CI_COMMIT_REF_SLUG}"}'
