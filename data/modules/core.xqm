@@ -106,24 +106,23 @@ declare function core:create-new-ID($docType as xs:string) as xs:string? {
         wega-util:log-to-file('warn', string-join(($errCode, $errDesc), ' ;; '))
     }
     let $IDFile := mycache:doc($IDFileURI, core:create-empty-idfile#2, ($docType, $IDFileURI), xs:dayTimeDuration('P1D'), $onFailureFunc)
-    let $coll1 := crud:data-collection($docType)/* ! substring(./@xml:id, 4) (: core:getOrCreateColl() geht nicht, da hier auch die Dubletten mit berücksichtigt werden müssen! :)
-    let $coll2 := $IDFile//core:entry ! substring(./@xml:id, 5)
+    let $coll1 := crud:data-collection($docType)/* ! substring(./@xml:id, 4, 4) (: core:getOrCreateColl() geht nicht, da hier auch die Dubletten mit berücksichtigt werden müssen! :)
+    let $coll2 := $IDFile//core:entry ! substring(./@xml:id, 5, 4)
+(:    let $allIDs := ($IDFile//core:entry/string(@xml:id), crud:data-collection($docType)/*/string(@xml:id)):)
     let $removeOldTempIDS := core:remove-old-entries-from-idfile($IDFile)
     let $max := count($coll1) + count($coll2) + 200
     let $exceptions := ($coll1, $coll2) ! m:hex2int(.)
-    let $rand := core:random-ID($max, $exceptions)
+    let $randNo := core:random-ID($max, $exceptions)
     let $prefix := wdt:lookup($docType, ())?prefix
-    let $newID := $prefix || m:int2hex($rand, 4)
-    let $newIDCheckDigit := hwh-util:compute-check-digit($newID)
-    let $newID := $newID || $newIDCheckDigit
-    let $newID := 
-        if ($rand and $max lt 65535)
-        then (core:add-new-entry-to-idfile($IDFile, concat('_', $newID)))
-        else ()
+    let $newID := hwh-util:generateId($prefix, $randNo)
+    let $newID := if ($randNo and $max lt 65535)
+                  then (core:add-new-entry-to-idfile($IDFile, concat('_', $newID)))
+                  else ()
+        
     
     return 
-        if($newID) then substring($newID, 2)
-        else ()
+        if(matches($newID,'^_')) then substring($newID, 2)
+        else ('error. Try again!')
 };
 
 (:~

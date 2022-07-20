@@ -1,4 +1,4 @@
-# GitLab CI configuration for the "HWH-WebApp"
+# GitLab CI configuration for the "HenDi-WebApp"
 variables:
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
@@ -29,6 +29,7 @@ build-webapp:
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
+    - export
     - ant xar -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   artifacts:
     paths:
@@ -51,15 +52,17 @@ docker-image:
     - docker build --network host --build-arg CI_JOB_TOKEN=$CI_JOB_TOKEN -t $IMAGE_TAG .
     - docker push $IMAGE_TAG
   only:
+    - merge_requests
     - develop
 
 deploy:
   stage: deploy
   image: curlimages/curl
-  needs: [docker-image]
+  needs:
+    - job: build-webapp
+    - job: docker-image
   script:
     - >
-      curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp", "tag": "$CI_COMMIT_REF_SLUG"}'
-    - echo $CI_COMMIT_REF_SLUG
+      curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp", "tag": "develop"}'
   only:
     - develop
