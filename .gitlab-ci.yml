@@ -30,10 +30,10 @@ build-webapp:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
     - export
-    #- ant xar -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
-  #artifacts:
-   # paths:
-    #  - hendi-pkg-webapp/HenDi-WebApp-*.xar
+    - ant xar -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
+  artifacts:
+    paths:
+      - hendi-pkg-webapp/HenDi-WebApp-*.xar
   only:
     refs:
       - merge_requests
@@ -48,10 +48,9 @@ docker-image:
   dependencies:
     - build-webapp
   script:
-  #  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  #  - docker build --network host --build-arg CI_JOB_TOKEN=$CI_JOB_TOKEN -t $IMAGE_TAG .
-  #  - docker push $IMAGE_TAG
-  - export
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build --network host --build-arg CI_JOB_TOKEN=$CI_JOB_TOKEN -t $IMAGE_TAG .
+    - docker push $IMAGE_TAG
   only:
     - merge_requests
     - develop
@@ -64,7 +63,7 @@ deploy:
     - job: docker-image
   script:
     #- >
-    #  curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp", "tag": "${CI_COMMIT_REF_SLUG}"}'
-    - export
+    #  curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp", "tag": "develop"}'
+    - echo "$CI_COMMIT_REF_SLUG"
   only:
     - develop
