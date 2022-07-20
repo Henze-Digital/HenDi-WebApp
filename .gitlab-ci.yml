@@ -57,9 +57,9 @@ docker-image:
 deploy:
   stage: deploy
   image: curlimages/curl
-  needs: [docker-image]
-  dependencies:
-    - ocker-image
+  #needs: [docker-image]
+  #dependencies:
+  #  - docker-image
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
