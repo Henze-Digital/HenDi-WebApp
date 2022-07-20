@@ -29,10 +29,11 @@ build-webapp:
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
-    - ant xar -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
-  artifacts:
-    paths:
-      - hendi-pkg-webapp/HenDi-WebApp-*.xar
+    - echo "Job build-webapp"
+    #- ant xar -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
+  #artifacts:
+   # paths:
+    #  - hendi-pkg-webapp/HenDi-WebApp-*.xar
   only:
     refs:
       - merge_requests
@@ -47,9 +48,10 @@ docker-image:
   dependencies:
     - build-webapp
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build --network host --build-arg CI_JOB_TOKEN=$CI_JOB_TOKEN -t $IMAGE_TAG .
-    - docker push $IMAGE_TAG
+  #  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  #  - docker build --network host --build-arg CI_JOB_TOKEN=$CI_JOB_TOKEN -t $IMAGE_TAG .
+  #  - docker push $IMAGE_TAG
+  - echo "Job docker-image"
   only:
     - merge_requests
     - develop
