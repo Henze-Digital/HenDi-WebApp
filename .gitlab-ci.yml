@@ -61,6 +61,11 @@ deploy:
   needs:
     - job: build-webapp
     - job: docker-image
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+      when: always
+    - if: '$cronUpdatePortalIntern == "true"'
+      when: always
   script:
     - >
       curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp", "tag": "develop"}'
