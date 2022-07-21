@@ -3,7 +3,7 @@ variables:
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
   DOCKER_HOST: tcp://localhost:2375
-  IMAGE_TAG: $CI_REGISTRY_IMAGE:develop
+  IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
   IMAGE_TAG_MULTI: ${IMAGE_TAG}_multi
 
 stages:
