@@ -72,7 +72,7 @@
 		</move>
 		<echo>Create CSS files via sass</echo>
 		<mkdir dir="${WeGA-WebApp.basedir}/resources/css"/>
-		<exec executable="${sass.path}">
+		<exec executable="${sass.path}" failonerror="yes">
 			<arg line="${WeGA-WebApp.basedir}/resources/sass/main.scss ${WeGA-WebApp.basedir}/resources/css/styles.css"/>
 		</exec>
 	</target>
