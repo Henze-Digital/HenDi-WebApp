@@ -2,9 +2,7 @@
 variables:
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
-  DOCKER_HOST: tcp://localhost:2375
   IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-  IMAGE_TAG_MULTI: ${IMAGE_TAG}_multi
 
 stages:
   - build-app
@@ -15,7 +13,6 @@ stages:
   image: ubuntu
   before_script:
     - apt update -y
-    #- apt upgrade -y
     - apt install -y gnupg2 curl
     - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
     - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
@@ -41,16 +38,17 @@ build-webapp:
 
 docker-image:
   stage: build-docker
-  image: docker:19.03.1
+  image: docker:20.10
   services:
-    - docker:19.03.1-dind
+    - docker:20.10-dind
   needs: [build-webapp]
   dependencies:
     - build-webapp
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build --network host --build-arg CI_JOB_TOKEN=$CI_JOB_TOKEN -t $IMAGE_TAG .
-    - docker push $IMAGE_TAG
+    - docker run --privileged --rm tonistiigi/binfmt --install all
+    - docker buildx create --name mybuilder --use
+    - docker buildx build --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN} --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG} .
   only:
     - merge_requests
     - develop
@@ -68,4 +66,4 @@ deploy:
       when: always
   script:
     - >
-      curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp", "tag": "develop"}'
+      curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "'${CI_REGISTRY_IMAGE}'", "tag": "'${CI_COMMIT_REF_SLUG}'"}'
