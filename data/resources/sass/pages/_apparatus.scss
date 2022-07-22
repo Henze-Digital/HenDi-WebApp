@@ -32,7 +32,8 @@ span.tei_lemma {
     }
 
 .apparatus span.tei_lemma:after {
-    content: " &#x2013; ";
+    font-family:"FontAwesome";
+    content: "\2002\2014\2002";
 }
 
 ul.apparatus > li {
