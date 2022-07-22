@@ -182,8 +182,7 @@
     
     <xsl:template match="tei:fw">
         <xsl:element name="p">
-            <xsl:attribute name="class">d-flex border-top border-bottom border-secondary</xsl:attribute>
-            <xsl:attribute name="style">margin-right: 1em; margin-left: 1em;</xsl:attribute>
+            <xsl:attribute name="class">d-flex border-top border-bottom border-secondary tei_fw</xsl:attribute>
             <xsl:apply-templates/>
         </xsl:element>
     </xsl:template>
