@@ -33,7 +33,7 @@ span.tei_lemma {
 
 .apparatus span.tei_lemma:after {
     font-family:"FontAwesome";
-    content: "\2002\2014\2002";
+    content: "\2002\2013\2002";
 }
 
 ul.apparatus > li {
@@ -58,4 +58,22 @@ ul.apparatus > li {
         word-wrap:normal; /* overwrite the default to force no line break on Safari */
         font-size: ceil(($font-size-base * 0.9));
     }
+}
+
+.tei_handShift:after {
+    content:"\21B7";
+    color: green;
+}
+
+.tei_del_overtyped {
+    width: max-content;
+    font-family: Monaco;
+    display: inline-block;
+}
+
+.tei_del_overtyping {
+    position:absolute;
+    transform:translate(0%,-100%);
+    font-family:Monaco;
+    color:red;
 }
