@@ -648,12 +648,12 @@
     <entry xml:id="color.ocher">ocher</entry>
     
     <!-- medium -->
-    <entry xml:id="pencil">pencil</entry>
-    <entry xml:id="pencil.colored">colored pencil</entry>
-    <entry xml:id="pencil.ink">ink pencil</entry>
-    <entry xml:id="pen">pen</entry>
-    <entry xml:id="pen.felt">felt pen</entry>
-    <entry xml:id="pen.fine">fineliner</entry>
-    <entry xml:id="pen.ball">ball pen</entry>
-    <entry xml:id="ribbon">ribbon</entry>
+    <entry xml:id="medium.pencil">pencil</entry>
+    <entry xml:id="medium.pencil.colored">colored pencil</entry>
+    <entry xml:id="medium.pencil.ink">ink pencil</entry>
+    <entry xml:id="medium.pen">pen</entry>
+    <entry xml:id="medium.pen.felt">felt pen</entry>
+    <entry xml:id="medium.pen.fine">fineliner</entry>
+    <entry xml:id="medium.pen.ball">ball pen</entry>
+    <entry xml:id="medium.ribbon">ribbon</entry>
 </dictionary>
