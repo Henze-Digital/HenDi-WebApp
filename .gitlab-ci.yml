@@ -11,11 +11,11 @@ stages:
 
 build-webapp:
   stage: build-app
-  image: ubuntu #registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image:develop
+  image: registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image:develop
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
-    - export #ant xar -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
+    - ant xar -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   artifacts:
     paths:
       - hendi-pkg-webapp/HenDi-WebApp-*.xar
