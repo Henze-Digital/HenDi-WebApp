@@ -152,6 +152,7 @@
     <entry xml:id="substDelOverwritten">overwritten with</entry>
     <entry xml:id="substDelOvertyped">overtyped with</entry>
     <entry xml:id="delErased">erased</entry>
+    <entry xml:id="delOrthoRealised">Redemption orthographically realised</entry>
     <entry xml:id="choiceCorr">in the copy text</entry>
     <entry xml:id="choiceUnclear">further possible transcriptions</entry>
     <entry xml:id="popoverTitle.choiceAbbr">Abbreviation</entry>

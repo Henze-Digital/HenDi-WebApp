@@ -247,6 +247,13 @@
                   <xsl:text> </xsl:text>
                   <xsl:value-of select="wega:getLanguageString('delErased', $lang)"/>
                </xsl:when>
+               <xsl:when test="tei:del">
+                  <xsl:sequence select="wega:enquote($processedDel)"/>
+                  <xsl:text> </xsl:text>
+                  <xsl:value-of select="wega:getLanguageString('substDel', $lang)"/>
+                  <xsl:text> </xsl:text>
+                  <xsl:sequence select="wega:enquote($lemma)"/>
+               </xsl:when>
             </xsl:choose>
          </xsl:with-param>
       </xsl:call-template>
@@ -656,9 +663,12 @@
                <xsl:when test="@rend='erased'">
                   <xsl:value-of select="wega:getLanguageString('delErased', $lang)"/>
                </xsl:when>
-               <xsl:otherwise>
-                  <xsl:value-of select="@rend"/>
-               </xsl:otherwise>
+               <xsl:when test="@rend">
+                    <xsl:value-of select="@rend"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="wega:getLanguageString('delOrthoRealised', $lang)"/>
+                </xsl:otherwise>
             </xsl:choose>
          </xsl:with-param>
       </xsl:call-template>
@@ -678,7 +688,7 @@
          <xsl:with-param name="title" select="wega:getLanguageString('popoverTitle.handshift',$lang)"/>
          <xsl:with-param name="explanation">
             <xsl:value-of select="wega:getLanguageString('further', $lang)"/>
-            <xsl:text>&#160;</xsl:text>
+            <xsl:text> </xsl:text>
             <xsl:choose>
                <xsl:when test="@script='manuscript'">
                   <xsl:value-of select="wega:getLanguageString('handshiftManuscript', $lang)"/>

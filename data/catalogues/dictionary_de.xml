@@ -152,6 +152,7 @@
     <entry xml:id="substDelStrikethrough">durchgestrichen und ersetzt mit</entry>
     <entry xml:id="substDelOvertyped">maschinell überschrieben mit</entry>
     <entry xml:id="delErased">gelöscht</entry>
+    <entry xml:id="delOrthoRealised">Tilgung orthographisch realisiert</entry>
     <entry xml:id="choiceCorr">in der Vorlage</entry>
     <entry xml:id="choiceUnclear">weitere mögliche Lesungen</entry>
     <entry xml:id="choiceAbbr">Abk. von</entry>
