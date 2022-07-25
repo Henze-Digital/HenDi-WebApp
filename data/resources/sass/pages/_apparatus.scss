@@ -60,11 +60,6 @@ ul.apparatus > li {
     }
 }
 
-.tei_handShift:after {
-    content:"\21B7";
-    color: green;
-}
-
 .tei_del_overtyped {
     width: max-content;
     font-family: Monaco;
