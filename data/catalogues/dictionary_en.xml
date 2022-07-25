@@ -625,4 +625,35 @@
     <entry xml:id="fr">French</entry>
     
     <entry xml:id="further">Furthermore</entry>
+    
+    <!-- colors -->
+    <entry xml:id="color.blue">blue</entry>
+    <entry xml:id="color.blue.light">light blue</entry>
+    <entry xml:id="color.blue.dark">dark blue</entry>
+    <entry xml:id="color.dark">dark</entry>
+    <entry xml:id="color.black">black</entry>
+    <entry xml:id="color.pink">pink</entry>
+    <entry xml:id="color.red">red</entry>
+    <entry xml:id="color.red.light">light red</entry>
+    <entry xml:id="color.red.dark">dark red</entry>
+    <entry xml:id="color.orange">orange</entry>
+    <entry xml:id="color.green">green</entry>
+    <entry xml:id="color.green.light">light green</entry>
+    <entry xml:id="color.green.dark">dark green</entry>
+    <entry xml:id="color.turquoise">turquoise (cyan)</entry>
+    <entry xml:id="color.turquoise-green">turquoise green</entry>
+    <entry xml:id="color.turquoise-green.dark">dark turquoise green</entry>
+    <entry xml:id="color.violet">violet</entry>
+    <entry xml:id="color.lilac">lilac</entry>
+    <entry xml:id="color.ocher">ocher</entry>
+    
+    <!-- medium -->
+    <entry xml:id="pencil">pencil</entry>
+    <entry xml:id="pencil.colored">colored pencil</entry>
+    <entry xml:id="pencil.ink">ink pencil</entry>
+    <entry xml:id="pen">pen</entry>
+    <entry xml:id="pen.felt">felt pen</entry>
+    <entry xml:id="pen.fine">fineliner</entry>
+    <entry xml:id="pen.ball">ball pen</entry>
+    <entry xml:id="ribbon">ribbon</entry>
 </dictionary>
