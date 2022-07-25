@@ -663,6 +663,38 @@
          </xsl:with-param>
       </xsl:call-template>
    </xsl:template>
+   
+   <xsl:template match="tei:handShift">
+      <xsl:element name="span">
+         <xsl:apply-templates select="@xml:id"/>
+         <xsl:attribute name="class" select="concat('tei_', local-name())"/>
+         <xsl:apply-templates mode="#current"/>
+      </xsl:element>
+      <xsl:call-template name="popover"/>
+   </xsl:template>
+   
+   <xsl:template match="tei:handShift" mode="apparatus">
+      <xsl:call-template name="apparatusEntry">
+         <xsl:with-param name="title" select="wega:getLanguageString('popoverTitle.handshift',$lang)"/>
+         <xsl:with-param name="lemma">
+            <xsl:apply-templates mode="lemma"/>
+         </xsl:with-param>
+         <xsl:with-param name="explanation">
+            <xsl:choose>
+               <xsl:when test="@script='manuscript'">
+                  <xsl:value-of select="wega:getLanguageString('handshiftManuscript', $lang)"/>
+               </xsl:when>
+               <xsl:when test="@script='typescript'">
+                  <xsl:value-of select="wega:getLanguageString('handshiftTypescript', $lang)"/>
+               </xsl:when>
+               <xsl:otherwise>
+                  <xsl:value-of select="@script"/>
+               </xsl:otherwise>
+            </xsl:choose>
+         </xsl:with-param>
+      </xsl:call-template>
+   </xsl:template>
+  
     
    <xsl:template match="tei:note" mode="lemma"/>
    <xsl:template match="tei:lb" mode="lemma">
