@@ -160,8 +160,8 @@
     <entry xml:id="unclearDefault">uncertain transcription</entry>
     <entry xml:id="gapDefault">illegible text</entry>
     <entry xml:id="outofScope">beyond edition scope</entry>
-    <entry xml:id="handshiftManuscript">Manuscript</entry>
-    <entry xml:id="handshiftTypescript">Typescript</entry>
+    <entry xml:id="handshiftManuscript">handwritten</entry>
+    <entry xml:id="handshiftTypescript">typewritten</entry>
     <!--  doc_singleView  -->
     <entry xml:id="docSingleViewTitle">Document view of %1</entry>
     <entry xml:id="textOfDoc">Text of document</entry>
@@ -621,4 +621,6 @@
     <entry xml:id="da">Danish</entry>
     <entry xml:id="it">Italian</entry>
     <entry xml:id="fr">French</entry>
+    
+    <entry xml:id="further">Furthermore</entry>
 </dictionary>
