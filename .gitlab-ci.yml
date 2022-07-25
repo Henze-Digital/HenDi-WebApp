@@ -16,7 +16,9 @@ stages:
 build-webapp:
   stage: build-app
   extends: .prepare
-  image: registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image
+  image: 
+    repository: registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image
+    tag: develop
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
