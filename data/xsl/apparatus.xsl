@@ -235,6 +235,13 @@
                   <xsl:text> </xsl:text>
                   <xsl:sequence select="wega:enquote($lemma)"/>
                </xsl:when>
+               <xsl:when test="tei:del[@rend='overtyped']">
+                  <xsl:sequence select="wega:enquote($processedDel)"/>
+                  <xsl:text> </xsl:text>
+                  <xsl:value-of select="wega:getLanguageString('substDelOvertyped', $lang)"/>
+                  <xsl:text> </xsl:text>
+                  <xsl:sequence select="wega:enquote($lemma)"/>
+               </xsl:when>
                <xsl:when test="tei:del[@rend='erased']">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
@@ -574,11 +581,26 @@
       </xsl:element>
    </xsl:template>
 
-   <xsl:template match="tei:sic[not(parent::tei:choice)] | tei:del[not(parent::tei:subst)]">
+   <xsl:template match="tei:sic[not(parent::tei:choice)] | tei:del[not(parent::tei:subst) and not(@rend='overtyped')]">
       <xsl:element name="span">
          <xsl:apply-templates select="@xml:id"/>
          <xsl:attribute name="class" select="concat('tei_', local-name())"/>
          <xsl:apply-templates mode="#current"/>
+      </xsl:element>
+      <xsl:call-template name="popover"/>
+   </xsl:template>
+   
+   <xsl:template match="tei:del[not(parent::tei:subst) and @rend='overtyped']">
+      <xsl:element name="span">
+         <xsl:apply-templates select="@xml:id"/>
+         <xsl:attribute name="class" select="concat('tei_', local-name(), '_overtyped')"/>
+         <xsl:variable name="delLength" as="xs:integer" select="string-length(text())"/>
+         <xsl:apply-templates mode="#current"/>
+         <xsl:element name="br"/>
+         <xsl:element name="span">
+            <xsl:attribute name="class">tei_del_overtyping</xsl:attribute>
+            <xsl:value-of select="string-join(for $x in 1 to $delLength return 'x','')"/>
+         </xsl:element>
       </xsl:element>
       <xsl:call-template name="popover"/>
    </xsl:template>
@@ -627,6 +649,9 @@
                </xsl:when>
                <xsl:when test="@rend='overwritten'">
                   <xsl:value-of select="wega:getLanguageString('delOverwritten', $lang)"/>
+               </xsl:when>
+               <xsl:when test="@rend='overtyped'">
+                  <xsl:value-of select="wega:getLanguageString('delOvertyped', $lang)"/>
                </xsl:when>
                <xsl:when test="@rend='erased'">
                   <xsl:value-of select="wega:getLanguageString('delErased', $lang)"/>
