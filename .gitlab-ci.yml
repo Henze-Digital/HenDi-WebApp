@@ -22,7 +22,8 @@ stages:
 
 build-webapp:
   stage: build-app
-  extends: .install_dependencies
+  image: registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image
+  #extends: .install_dependencies
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
@@ -50,7 +51,7 @@ docker-image:
     - docker buildx build --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN} --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG} .
   only:
     - merge_requests
-    - develop
+    #- develop
 
 deploy:
   stage: deploy
