@@ -51,6 +51,13 @@ build-webapp-docker-image:
   needs: [build-webapp]
   dependencies:
     - build-webapp
+  rules:
+    - if: '$cronBuildBaseImage == "true"'
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+    - if: $CI_COMMIT_BRANCH == "develop"
+      when: always
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker run --privileged --rm tonistiigi/binfmt --install all
@@ -62,6 +69,8 @@ deploy-webapp:
   image: curlimages/curl
   needs: [build-webapp-docker-image]
   rules:
+    - if: '$cronBuildBaseImage == "true"'
+      when: never
     - if: '$CI_COMMIT_BRANCH == "develop" && $CI_COMMIT_MESSAGE  =~ /\(ready\)/'
       when: always
     - if: '$cronUpdatePortalIntern == "true"'
