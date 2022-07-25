@@ -699,19 +699,19 @@
         </xsl:variable>
         <xsl:variable name="hsMedium">
             <xsl:if test="@medium">
-                <xsl:value-of select="wega:getLanguageString(@medium/string(), $lang)"/>
+                <xsl:value-of select="wega:getLanguageString(concat('medium.',@medium/string()), $lang)"/>
             </xsl:if>
         </xsl:variable>
         <xsl:variable name="hsColor">
             <xsl:if test="@color">
-                <xsl:value-of select="wega:getLanguageString(@color/string(), $lang)"/>
+                <xsl:value-of select="wega:getLanguageString(concat('color.',@color/string()), $lang)"/>
             </xsl:if>
         </xsl:variable>
       <xsl:call-template name="apparatusEntry">
          <xsl:with-param name="title" select="wega:getLanguageString('popoverTitle.handshift',$lang)"/>
          <xsl:with-param name="explanation">
             <xsl:value-of select="concat(wega:getLanguageString('further', $lang), ' ', $hsScript)"/>
-            <xsl:if test="$hsMedium or $hsColor">
+            <xsl:if test="$hsMedium !='' or $hsColor !=''">
                 <xsl:text> (</xsl:text>
                 <xsl:value-of select="string-join(($hsMedium, $hsColor),', ')"/>
                 <xsl:text>)</xsl:text>
