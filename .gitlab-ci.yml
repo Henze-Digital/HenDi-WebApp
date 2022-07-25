@@ -1,7 +1,6 @@
 # GitLab CI configuration for the "HenDi-WebApp"
 variables:
   DOCKER_DRIVER: overlay2
-  DOCKER_HOST: tcp://localhost:2375
   DOCKER_TLS_CERTDIR: ""
   IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
 
@@ -12,11 +11,11 @@ stages:
 
 build-webapp:
   stage: build-app
-  image: registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image:develop
+  image: ubuntu #registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image:develop
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
-    - ant xar -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
+    - export #ant xar -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   artifacts:
     paths:
       - hendi-pkg-webapp/HenDi-WebApp-*.xar
