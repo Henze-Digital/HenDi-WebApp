@@ -39,8 +39,8 @@ build-webapp:
       - merge_requests
       - develop
 
-docker-image:
-  stage: build-docker
+build-webapp-docker-image:
+  stage: build
   image: docker:20.10
   services:
     - docker:20.10-dind
@@ -54,12 +54,12 @@ docker-image:
     - docker buildx build --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN} --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG} .
   only:
     - merge_requests
-    #- develop
+    - develop
 
-deploy:
+deploy-webapp:
   stage: deploy
   image: curlimages/curl
-  needs: [docker-image]
+  needs: [build-webapp-docker-image]
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop" && $CI_COMMIT_MESSAGE  =~ /\(ready\)/'
       when: always
