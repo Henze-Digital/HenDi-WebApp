@@ -3,7 +3,7 @@ variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
     IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-    IMAGE_TAG_BASE: $CI_REGISTRY_IMAGE/base-image/hendi-webapp-base-image:$CI_COMMIT_REF_SLUG
+    IMAGE_TAG_BASE: $CI_REGISTRY_IMAGE/hendi-webapp-base-image:$CI_COMMIT_REF_SLUG
 
 stages:
   - build
