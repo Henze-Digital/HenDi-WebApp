@@ -11,7 +11,7 @@ stages:
 
 .prepare:
   script: 
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image
 
 build-webapp:
   stage: build-app
