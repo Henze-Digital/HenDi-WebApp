@@ -136,7 +136,8 @@
     <entry xml:id="addDefault">added</entry>
     <entry xml:id="popoverTitle.add">Addition</entry>
     <entry xml:id="popoverTitle.subst">Substitution</entry>
-    <!--<entry xml:id="substInline">Substitution in the line</entry>
+    <entry xml:id="popoverTitle.handshift">Hand shift</entry>
+    <!--<entry xml:id="substInline">Substitution in the line</entry>1
     <entry xml:id="substAbove">Substitution above the line</entry>
     <entry xml:id="substBelow">Substitution below the line</entry>
     <entry xml:id="substMargin">Substitution in the margin</entry>
@@ -145,9 +146,13 @@
     <entry xml:id="delGap">deleted text illegible</entry>
     <entry xml:id="delStrikethrough">crossed out</entry>
     <entry xml:id="delOverwritten">overwritten</entry>
+    <entry xml:id="delOvertyped">overtyped</entry>
+    <entry xml:id="substDel">replaced with</entry>
     <entry xml:id="substDelStrikethrough">crossed out and replaced with</entry>
     <entry xml:id="substDelOverwritten">overwritten with</entry>
+    <entry xml:id="substDelOvertyped">overtyped with</entry>
     <entry xml:id="delErased">erased</entry>
+    <entry xml:id="delOrthoRealised">Redemption orthographically realised</entry>
     <entry xml:id="choiceCorr">in the copy text</entry>
     <entry xml:id="choiceUnclear">further possible transcriptions</entry>
     <entry xml:id="popoverTitle.choiceAbbr">Abbreviation</entry>
@@ -157,6 +162,8 @@
     <entry xml:id="unclearDefault">uncertain transcription</entry>
     <entry xml:id="gapDefault">illegible text</entry>
     <entry xml:id="outofScope">beyond edition scope</entry>
+    <entry xml:id="handshiftManuscript">handwritten</entry>
+    <entry xml:id="handshiftTypescript">typewritten</entry>
     <!--  doc_singleView  -->
     <entry xml:id="docSingleViewTitle">Document view of %1</entry>
     <entry xml:id="textOfDoc">Text of document</entry>
@@ -616,4 +623,37 @@
     <entry xml:id="da">Danish</entry>
     <entry xml:id="it">Italian</entry>
     <entry xml:id="fr">French</entry>
+    
+    <entry xml:id="further">Furthermore</entry>
+    
+    <!-- colors -->
+    <entry xml:id="color.blue">blue</entry>
+    <entry xml:id="color.blue.light">light blue</entry>
+    <entry xml:id="color.blue.dark">dark blue</entry>
+    <entry xml:id="color.dark">dark</entry>
+    <entry xml:id="color.black">black</entry>
+    <entry xml:id="color.pink">pink</entry>
+    <entry xml:id="color.red">red</entry>
+    <entry xml:id="color.red.light">light red</entry>
+    <entry xml:id="color.red.dark">dark red</entry>
+    <entry xml:id="color.orange">orange</entry>
+    <entry xml:id="color.green">green</entry>
+    <entry xml:id="color.green.light">light green</entry>
+    <entry xml:id="color.green.dark">dark green</entry>
+    <entry xml:id="color.turquoise">turquoise (cyan)</entry>
+    <entry xml:id="color.turquoise-green">turquoise green</entry>
+    <entry xml:id="color.turquoise-green.dark">dark turquoise green</entry>
+    <entry xml:id="color.violet">violet</entry>
+    <entry xml:id="color.lilac">lilac</entry>
+    <entry xml:id="color.ocher">ocher</entry>
+    
+    <!-- medium -->
+    <entry xml:id="medium.pencil">pencil</entry>
+    <entry xml:id="medium.pencil.colored">colored pencil</entry>
+    <entry xml:id="medium.pencil.ink">ink pencil</entry>
+    <entry xml:id="medium.pen">pen</entry>
+    <entry xml:id="medium.pen.felt">felt pen</entry>
+    <entry xml:id="medium.pen.fine">fineliner</entry>
+    <entry xml:id="medium.pen.ball">ball pen</entry>
+    <entry xml:id="medium.ribbon">ribbon</entry>
 </dictionary>
