@@ -685,10 +685,7 @@
    
    <xsl:template match="tei:handShift" mode="apparatus">
       <xsl:call-template name="apparatusEntry">
-         <xsl:with-param name="title" select="wega:getLanguageString('popoverTitle.handshift',$lang)"/>
-         <xsl:with-param name="explanation">
-            <xsl:value-of select="wega:getLanguageString('further', $lang)"/>
-            <xsl:text> </xsl:text>
+        <xsl:variable name="hsScript">
             <xsl:choose>
                <xsl:when test="@script='manuscript'">
                   <xsl:value-of select="wega:getLanguageString('handshiftManuscript', $lang)"/>
@@ -700,6 +697,21 @@
                   <xsl:value-of select="@script"/>
                </xsl:otherwise>
             </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="hsMedium" select="@medium/string()">
+            <xsl:value-of select="wega:getLanguageString($medium, $lang)"/>
+        </xsl:variable>
+        <xsl:variable name="hsColor" select="@color/string()">
+            <xsl:value-of select="wega:getLanguageString($color, $lang)"/>
+        </xsl:variable>
+         <xsl:with-param name="title" select="wega:getLanguageString('popoverTitle.handshift',$lang)"/>
+         <xsl:with-param name="explanation">
+            <xsl:value-of select="concat(wega:getLanguageString('further', $lang), ' ', $hsScript)"/>
+            <xsl:if test="$hsMedium or $hsColor">
+                <xsl:text> (</xsl:text>
+                <xsl:value-of select="string-join(($hsMedium, $hsColor),', ')"/>
+                <xsl:text>)</xsl:text>
+            </xsl:if>
          </xsl:with-param>
       </xsl:call-template>
    </xsl:template>
