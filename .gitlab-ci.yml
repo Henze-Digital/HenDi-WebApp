@@ -1,22 +1,24 @@
 # GitLab CI configuration for the "HenDi-WebApp"
 variables:
-  DOCKER_DRIVER: overlay2
-  DOCKER_TLS_CERTDIR: ""
-  IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+
+default:
+  image: registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image:develop
 
 stages:
   - build-app
   - build-docker
   - deploy
 
-.prepare:
-  script: 
-    - docker login -u $CI_REGISTRY_USER -p $HENDI_CI_DOCKER_IMAGE_READ_REGISTRY $CI_REGISTRY
+#.prepare:
+#  script: 
+#    - docker login -u $CI_REGISTRY_USER -p $HENDI_CI_DOCKER_IMAGE_READ_REGISTRY $CI_REGISTRY
 
 build-webapp:
   stage: build-app
-  extends: .prepare
-  image: registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image:develop
+  #extends: .prepare
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
