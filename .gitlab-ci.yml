@@ -30,15 +30,18 @@ build-webapp:
   image: $IMAGE_TAG_BASE
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
+  rules:
+    - if: '$cronBuildBaseImage == "true"'
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+    - if: $CI_COMMIT_BRANCH == "develop"
+      when: always
   script:
     - ant xar -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   artifacts:
     paths:
       - hendi-pkg-webapp/HenDi-WebApp-*.xar
-  only:
-    refs:
-      - merge_requests
-      - develop
 
 build-webapp-docker-image:
   stage: build
@@ -53,9 +56,6 @@ build-webapp-docker-image:
     - docker run --privileged --rm tonistiigi/binfmt --install all
     - docker buildx create --name mybuilder --use
     - docker buildx build --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN} --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG} .
-  only:
-    - merge_requests
-    - develop
 
 deploy-webapp:
   stage: deploy
