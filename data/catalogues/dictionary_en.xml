@@ -136,7 +136,8 @@
     <entry xml:id="addDefault">added</entry>
     <entry xml:id="popoverTitle.add">Addition</entry>
     <entry xml:id="popoverTitle.subst">Substitution</entry>
-    <!--<entry xml:id="substInline">Substitution in the line</entry>
+    <entry xml:id="popoverTitle.handshift">Hand shift</entry>
+    <!--<entry xml:id="substInline">Substitution in the line</entry>1
     <entry xml:id="substAbove">Substitution above the line</entry>
     <entry xml:id="substBelow">Substitution below the line</entry>
     <entry xml:id="substMargin">Substitution in the margin</entry>
@@ -145,8 +146,10 @@
     <entry xml:id="delGap">deleted text illegible</entry>
     <entry xml:id="delStrikethrough">crossed out</entry>
     <entry xml:id="delOverwritten">overwritten</entry>
+    <entry xml:id="delOvertyped">overtyped</entry>
     <entry xml:id="substDelStrikethrough">crossed out and replaced with</entry>
     <entry xml:id="substDelOverwritten">overwritten with</entry>
+    <entry xml:id="substDelOvertyped">overtyped with</entry>
     <entry xml:id="delErased">erased</entry>
     <entry xml:id="choiceCorr">in the copy text</entry>
     <entry xml:id="choiceUnclear">further possible transcriptions</entry>
@@ -157,6 +160,8 @@
     <entry xml:id="unclearDefault">uncertain transcription</entry>
     <entry xml:id="gapDefault">illegible text</entry>
     <entry xml:id="outofScope">beyond edition scope</entry>
+    <entry xml:id="handshiftManuscript">Manuscript</entry>
+    <entry xml:id="handshiftTypescript">Typescript</entry>
     <!--  doc_singleView  -->
     <entry xml:id="docSingleViewTitle">Document view of %1</entry>
     <entry xml:id="textOfDoc">Text of document</entry>
