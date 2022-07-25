@@ -3,21 +3,11 @@ variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
     IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+    IMAGE_TAG_BASE: $CI_REGISTRY_IMAGE/base-image/hendi-webapp-base-image:$CI_COMMIT_REF_SLUG
 
 stages:
   - build
-  - build-app
-  - deploy
     
-prepare:
-  stage: prepare
-  image: docker:20.10
-  services:
-    - docker:20.10-dind
-  script: 
-    - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
-    #$HENDI_CI_DOCKER_IMAGE_READ_REGISTRY
-
 build-base-image:
   stage: build
   image: docker:20.10
@@ -32,13 +22,11 @@ build-base-image:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker run --privileged --rm tonistiigi/binfmt --install all
     - docker buildx create --name mybuilder --use
-    - docker buildx build --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN} --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG} -f Dockerfile.baseImage .
-  
+    - docker buildx build --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN} --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG_BASE} -f Dockerfile.baseImage .
 
 build-webapp:
-  stage: build-app
-  needs: [prepare]
-  image: $CI_REGISTRY/vife/henze-digital/hendi-ci-docker-image:develop
+  stage: build
+  image: $IMAGE_TAG_BASE
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
