@@ -30,15 +30,15 @@ build-webapp:
   image: $IMAGE_TAG_BASE
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
-  rules:
-    - if: '$cronBuildBaseImage == "true"'
-      when: never
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: always
-    - if: $CI_COMMIT_BRANCH == "develop"
-      when: always
   script:
     - ant xar -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
+  only:
+    refs:
+      - merge_requests
+      - develop
+  except:
+    variables:
+      - $cronBuildBaseImage == "true"
   artifacts:
     paths:
       - hendi-pkg-webapp/HenDi-WebApp-*.xar
@@ -51,30 +51,31 @@ build-webapp-docker-image:
   needs: [build-webapp]
   dependencies:
     - build-webapp
-  rules:
-    - if: '$cronBuildBaseImage == "true"'
-      when: never
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: always
-    - if: $CI_COMMIT_BRANCH == "develop"
-      when: always
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker run --privileged --rm tonistiigi/binfmt --install all
     - docker buildx create --name mybuilder --use
     - docker buildx build --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN} --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG} .
+  only:
+    refs:
+      - merge_requests
+      - develop
+  except:
+    variables:
+      - $cronBuildBaseImage == "true"
 
 deploy-webapp:
   stage: deploy
   image: curlimages/curl
   needs: [build-webapp-docker-image]
-  rules:
-    - if: '$cronBuildBaseImage == "true"'
-      when: never
-    - if: '$CI_COMMIT_BRANCH == "develop" && $CI_COMMIT_MESSAGE  =~ /\(ready\)/'
-      when: always
-    - if: '$cronUpdatePortalIntern == "true"'
-      when: always
   script:
     - >
       curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "'${CI_REGISTRY_IMAGE}'", "tag": "'${CI_COMMIT_REF_SLUG}'"}'
+  only:
+    refs:
+      - develop
+    variables:
+      - ($cronUpdatePortalIntern == "true" || $CI_COMMIT_MESSAGE  =~ /\(ready\)/ )
+  except:
+    variables:
+      - $cronBuildBaseImage == "true"
