@@ -147,6 +147,7 @@
     <entry xml:id="delStrikethrough">crossed out</entry>
     <entry xml:id="delOverwritten">overwritten</entry>
     <entry xml:id="delOvertyped">overtyped</entry>
+    <entry xml:id="substDel">replaced with</entry>
     <entry xml:id="substDelStrikethrough">crossed out and replaced with</entry>
     <entry xml:id="substDelOverwritten">overwritten with</entry>
     <entry xml:id="substDelOvertyped">overtyped with</entry>
