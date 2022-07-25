@@ -697,25 +697,26 @@
                </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <xsl:variable name="hsMedium">
-            <xsl:if test="@medium">
-                <xsl:value-of select="wega:getLanguageString(concat('medium.',@medium/string()), $lang)"/>
-            </xsl:if>
+        <xsl:variable name="hsSpecs">
+            <xsl:choose>
+                <xsl:when test="@medium and @color">
+                    <xsl:value-of select="concat(' (', wega:getLanguageString(concat('medium.',@medium/string()), $lang), ', ', wega:getLanguageString(concat('color.',@color/string()), $lang), ')')"/>
+                </xsl:when>
+                <xsl:when test="@medium">
+                    <xsl:value-of select="concat(' (', wega:getLanguageString(concat('medium.',@medium/string()), $lang), ')')"/>
+                </xsl:when>
+                <xsl:when test="@color">
+                    <xsl:value-of select="concat(' (', wega:getLanguageString(concat('color.',@color/string()), $lang), ')')"/>
+                </xsl:when>
+            </xsl:choose>
         </xsl:variable>
-        <xsl:variable name="hsColor">
-            <xsl:if test="@color">
-                <xsl:value-of select="wega:getLanguageString(concat('color.',@color/string()), $lang)"/>
-            </xsl:if>
+        <xsl:variable name="explanationText">
+            <xsl:value-of select="concat(wega:getLanguageString('further', $lang), ' ', $hsScript, $hsSpecs)"/>
         </xsl:variable>
       <xsl:call-template name="apparatusEntry">
          <xsl:with-param name="title" select="wega:getLanguageString('popoverTitle.handshift',$lang)"/>
          <xsl:with-param name="explanation">
-            <xsl:value-of select="concat(wega:getLanguageString('further', $lang), ' ', $hsScript)"/>
-            <xsl:if test="$hsMedium !='' or $hsColor !=''">
-                <xsl:text> (</xsl:text>
-                <xsl:value-of select="string-join(($hsMedium, $hsColor),', ')"/>
-                <xsl:text>)</xsl:text>
-            </xsl:if>
+            <xsl:value-of select="string-join($explanationText,'')"/>
          </xsl:with-param>
       </xsl:call-template>
    </xsl:template>
