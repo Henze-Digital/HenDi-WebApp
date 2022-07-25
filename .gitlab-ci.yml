@@ -9,10 +9,14 @@ stages:
   - build-docker
   - deploy
 
+.prepare:
+  script: 
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
 build-webapp:
   stage: build-app
+  extends: .prepare
   image: registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image
-  #extends: .install_dependencies
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
