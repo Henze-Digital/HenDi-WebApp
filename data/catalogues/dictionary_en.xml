@@ -656,4 +656,33 @@
     <entry xml:id="medium.pen.fine">fineliner</entry>
     <entry xml:id="medium.pen.ball">ball pen</entry>
     <entry xml:id="medium.ribbon">ribbon</entry>
+    
+    <!-- physical description -->
+    <entry xml:id="physDesc.material">Material</entry>
+    <entry xml:id="physDesc.extent">Extent</entry>
+    <entry xml:id="physDesc.layout">Layout</entry>
+    <entry xml:id="physDesc.condition">Condition</entry>
+    <entry xml:id="physDesc.noConditionAvailable">No description available</entry>
+    <entry xml:id="physDesc.dimensions">Dimensions</entry>
+    <entry xml:id="physDesc.height.short">H</entry>
+    <entry xml:id="physDesc.width.short">W</entry>
+    <entry xml:id="physDesc.written.page">written page</entry>
+    <entry xml:id="physDesc.written.pages">written pages</entry>
+    <entry xml:id="physDesc.folio">folio</entry>
+    <entry xml:id="physDesc.folios">folios</entry>
+    
+    <!-- objectDesc form types -->
+    <entry xml:id="physDesc.objectDesc.form">Document type</entry>
+    <entry xml:id="physDesc.objectDesc.form.card.business">Business card</entry>
+    <entry xml:id="physDesc.objectDesc.form.card.letter">Letter card/christmas card/congratulations card/greeting card</entry>
+    <entry xml:id="physDesc.objectDesc.form.card.postal">Postal card/art card/view card/picture postcard</entry>
+    <entry xml:id="physDesc.objectDesc.form.contract">Contract</entry>
+    <entry xml:id="physDesc.objectDesc.form.document">Document</entry>
+    <entry xml:id="physDesc.objectDesc.form.envelope">Envelope</entry>
+    <entry xml:id="physDesc.objectDesc.form.formCommitment">Commitment form</entry>
+    <entry xml:id="physDesc.objectDesc.form.letter">Letter</entry>
+    <entry xml:id="physDesc.objectDesc.form.statement">Statement</entry>
+    <entry xml:id="physDesc.objectDesc.form.statement.fee">Fee statement</entry>
+    <entry xml:id="physDesc.objectDesc.form.telegram">Telegram</entry>
+    <entry xml:id="physDesc.objectDesc.form.unknown">Unknown</entry>
 </dictionary>

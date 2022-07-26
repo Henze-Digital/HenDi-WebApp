@@ -667,4 +667,33 @@
     <entry xml:id="medium.pen.fine">Fineliner</entry>
     <entry xml:id="medium.pen.ball">Kugelschreiber</entry>
     <entry xml:id="medium.ribbon">Farbband (Schreibmaschine)</entry>
+    
+    <!-- physical description -->
+    <entry xml:id="physDesc.material">Material</entry>
+    <entry xml:id="physDesc.extent">Umfang</entry>
+    <entry xml:id="physDesc.layout">Layout</entry>
+    <entry xml:id="physDesc.condition">Zustand</entry>
+    <entry xml:id="physDesc.noConditionAvailable">Keine Beschreibung verfügbar</entry>
+    <entry xml:id="physDesc.dimensions">Abmessungen</entry>
+    <entry xml:id="physDesc.height.short">H</entry>
+    <entry xml:id="physDesc.width.short">B</entry>
+    <entry xml:id="physDesc.written.page">beschriebene Seite</entry>
+    <entry xml:id="physDesc.written.pages">beschriebene Seiten</entry>
+    <entry xml:id="physDesc.folio">Blatt</entry>
+    <entry xml:id="physDesc.folios">Blätter</entry>
+    
+    <!-- objectDesc form types -->
+    <entry xml:id="physDesc.objectDesc.form">Dokumenttyp</entry>
+    <entry xml:id="physDesc.objectDesc.form.card.business">Visitenkarte</entry>
+    <entry xml:id="physDesc.objectDesc.form.card.letter">Briefkarte/Weihnachtskarte/Glückwunschkarte/Grußkarte</entry>
+    <entry xml:id="physDesc.objectDesc.form.card.postal">Postkarte/Kunstkarte/Ansichtskarte/Bildkarte</entry>
+    <entry xml:id="physDesc.objectDesc.form.contract">Vertrag</entry>
+    <entry xml:id="physDesc.objectDesc.form.document">Dokument</entry>
+    <entry xml:id="physDesc.objectDesc.form.envelope">Umschlag</entry>
+    <entry xml:id="physDesc.objectDesc.form.formCommitment">Verpflichtungsschein</entry>
+    <entry xml:id="physDesc.objectDesc.form.letter">Brief</entry>
+    <entry xml:id="physDesc.objectDesc.form.statement">Abrechnung</entry>
+    <entry xml:id="physDesc.objectDesc.form.statement.fee">Honorar-Abrechnung</entry>
+    <entry xml:id="physDesc.objectDesc.form.telegram">Telegramm</entry>
+    <entry xml:id="physDesc.objectDesc.form.unknown">Unbekannt</entry>
 </dictionary>
