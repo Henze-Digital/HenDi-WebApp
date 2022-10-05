@@ -135,16 +135,24 @@
         </xsl:element>
         </xsl:if>
         <xsl:if test="tei:objectDesc">
-        <xsl:element name="ul">
-            <xsl:if test="tei:objectDesc/@form">
-                <xsl:element name="li">
-                    <xsl:value-of select="wega:getLanguageString('physDesc.objectDesc.form', $lang)"/>    
-                    <xsl:text>: </xsl:text>
-                    <xsl:value-of select="wega:getLanguageString(concat('physDesc.objectDesc.form.', tei:objectDesc/@form), $lang)"/>
+            <xsl:variable name="objectDescN" select="count(tei:objectDesc)"/>
+            <xsl:for-each select="tei:objectDesc">
+                <xsl:element name="ul">
+                    <xsl:if test="@form">
+                        <xsl:element name="li">
+                            <xsl:value-of select="wega:getLanguageString('physDesc.objectDesc.form', $lang)"/>
+                            <xsl:if test="$objectDescN > 1">
+                                <xsl:text> (</xsl:text>
+                                <xsl:value-of select="position()"/>
+                                <xsl:text>)</xsl:text>
+                            </xsl:if>
+                            <xsl:text>: </xsl:text>
+                            <xsl:value-of select="wega:getLanguageString(concat('physDesc.objectDesc.form.', @form), $lang)"/>
+                        </xsl:element>
+                    </xsl:if>
+                    <xsl:apply-templates select="tei:objectDesc"/>
                 </xsl:element>
-            </xsl:if>
-            <xsl:apply-templates select="tei:objectDesc"/>
-        </xsl:element>
+            </xsl:for-each>
         </xsl:if>
         <xsl:if test="tei:accMat">
             <xsl:element name="h4">
