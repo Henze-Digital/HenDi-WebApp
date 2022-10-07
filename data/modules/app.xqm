@@ -1995,7 +1995,6 @@ let $references :=
     
     return
         <div>
-        <h1>Anzahl der Datensätze: {count($referencesDistinct)}</h1>
             { (: Schleife zum Sortieren :)
             let $prefixes := for $each in distinct-values($referencesDistinct) return substring($each, 1,3)
             for $prefix in distinct-values($prefixes)
@@ -2010,5 +2009,6 @@ let $references :=
                         		$ref}
                     </div>
             }
+            <h1>Derzeit sind {count($referencesDistinct)} Datensätze anzureichern</h1>
         </div>
 };
