@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://jenkins.tei-c.org/job/TEIP5-dev/lastStableBuild/artifact/P5/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+<div xmlns="http://www.tei-c.org/ns/1.0" xml:id="chap-writingHabits-kallman" xml:lang="de">
+    <head>Kallman, Chester</head>
+    <div xml:id="WR-CK-case">
+        <head>Groß- und Kleinschreibung</head>
+        <p></p>
+    </div>
+    <div xml:id="WR-CK-spelling">
+        <head>Getrennt- und Zusammenschreibung</head>
+        <p></p>
+    </div>
+    <div xml:id="WR-CK-spelling">
+        <head>Laufweite und Lücken</head>
+        <p></p>
+    </div>
+    <!--<div xml:id="WR-CK-drawings">
+        <head>Zeichnungen</head>
+        <p></p>
+    </div>-->
+    <div xml:id="WR-CK-layout">
+        <head>Zum Layout der Korrespondenz-Dokumente</head>
+        <p></p>
+    </div>
+</div>

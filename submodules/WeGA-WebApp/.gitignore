@@ -1,0 +1,13 @@
+.DS_Store
+.sass-cache
+.idea/
+build/
+expath-pkg.xml
+tmp/
+dist/
+resources/css/styles.css
+local.build.properties
+node_modules/
+libs/
+*.xpr
+guidelines/

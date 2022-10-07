@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="xar" name="WeGA-WebApp" basedir="." xmlns:unless="ant:unless">
+    <dirname property="WeGA-WebApp.basedir" file="${ant.file.WeGA-WebApp}"/>
+    
+    <!-- import default properties from file -->
+    <property file="${WeGA-WebApp.basedir}/local.build.properties"/>
+    <property file="${WeGA-WebApp.basedir}/build.properties"/>
+    
+    <!-- import ANT file for tests -->
+    <import file="testing/ant-testing.xml"/>
+    
+    <target name="all" depends="xar"/>
+    <target name="rebuild" depends="clean,all"/>
+    
+    <target name="clean">
+        <delete dir="${tmp.dir}"/>
+        <delete dir="${dist.dir}"/>
+        <delete file="expath-pkg.xml"/>
+    </target>
+    
+    <target name="clean-all" depends="clean">
+        <delete dir="${frontend_libs.dir}"/>
+        <delete dir="${build.dir}"/>
+    </target>
+    
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${tmp.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+    </target>
+    
+    <target name="test">
+        <description>Run the regression test, i.e. diffing HTML pages against expected results</description>
+        <parallel threadCount="5" failonany="yes">
+            <regressiontest doctype="addenda"/>
+            <regressiontest doctype="news"/>
+            <regressiontest doctype="works"/>
+            <regressiontest doctype="letters"/>
+            <regressiontest doctype="persons"/>
+            <regressiontest doctype="orgs"/>
+            <regressiontest doctype="diaries"/>
+            <regressiontest doctype="documents"/>
+            <regressiontest doctype="thematicCommentaries"/>
+            <regressiontest doctype="var"/>
+            <regressiontest doctype="writings"/>
+            <regressiontest doctype="places"/>
+        </parallel>
+    </target>
+    
+    <target name="yarn" depends="init">
+        <description>Update javascript libraries via yarn</description>
+        <exec executable="${yarn.cmd}" failonerror="yes">
+            <arg value="install"/>
+        </exec>
+    </target>
+    
+    <target name="sass" depends="init">
+        <description>Create CSS files via sass</description>
+        <exec executable="${sass.cmd}">
+            <arg line="resources/sass/main.scss ${dist.dir}/resources/css/styles.css"/>
+        </exec>
+        <!-- <exec executable="${sass.cmd}">
+            <arg line="resources/sass/swagger.scss ${dist.dir}/resources/css/swagger.css"/>
+            </exec> -->
+    </target>
+    
+    <target name="dist" depends="init, yarn, sass">
+        <copy file="expath-pkg.xml.tmpl" tofile="${dist.dir}/expath-pkg.xml" filtering="true" overwrite="true">
+            <filterset>
+                <filter token="project.version" value="${project.version}"/>
+                <filter token="project.name" value="${project.name}"/>
+                <filter token="project.app" value="${project.app}"/>
+            </filterset>
+        </copy>
+        <!-- Copy everything from base.dir -->
+        <copy todir="${dist.dir}">
+            <fileset dir=".">
+                <include name="*.*"/>
+                <include name="api/**"/>
+                <include name="modules/**"/>
+                <include name="resources/**"/>
+                <include name="catalogues/**"/>
+                <include name="indices/**"/>
+                <include name="templates/**"/>
+                <include name="xsl/**"/>
+                <exclude name="build.xml"/>
+                <exclude name="*build.properties"/>
+                <exclude name=".git*"/>
+                <exclude name="*.tmpl"/>
+                <exclude name="*.txt"/>
+                <exclude name="*.xpr"/>
+                <exclude name="package.json"/>
+                <exclude name="yarn.lock"/>
+                <exclude name=".dockerignore"/>
+                <exclude name=".travis.yml"/>
+                <exclude name="**/less/**"/>
+                <exclude name="**/sass/**"/>
+            </fileset>
+        </copy>
+        
+        <!-- Copy additional fonts -->
+        <copy todir="${dist.dir}/resources/fonts" failonerror="false">
+            <fileset dir="${frontend_libs.dir}/bravura/redist/woff/">
+                <include name="Bravura.*"/>
+            </fileset>
+            <fileset dir="${frontend_libs.dir}/bravura/redist/otf/">
+                <include name="Bravura.*"/>
+            </fileset>
+            <fileset dir="${frontend_libs.dir}/bravura/redist/svg/">
+                <include name="Bravura.*"/>
+            </fileset>
+            <fileset dir="${wega.fonts.dir}">
+                <include name="2B*.*"/>
+            </fileset>
+            <fileset dir="${frontend_libs.dir}/font-awesome/fonts/">
+                <include name="*"/>
+            </fileset>
+            <fileset dir="${frontend_libs.dir}/Junicode-New/webfiles/">
+                <include name="*.woff2"/>
+            </fileset>
+        </copy>
+        <!-- Copy additional images -->
+        <copy todir="${dist.dir}/resources/img" failonerror="false">
+            <fileset dir="${wega.img.dir}">
+                <include name="*.*"/>
+            </fileset>
+        </copy>
+        
+        <!-- Copy libs from ${frontend_libs.dir} -->
+        <copy todir="${dist.dir}/resources/lib">
+            <fileset dir="${frontend_libs.dir}">
+                <include name="**/*.js"/>
+                <include name="**/*.css"/>
+                <include name="**/*.gif"/>
+                <include name="**/*.png"/>
+                <include name="**/*.jpg"/>
+                <include name="**/*.xsl"/>
+                <include name="**/*.xml"/>
+                <!-- exclude unnecessary directories -->
+                <exclude name="bootstrap-vue/"/>
+                <exclude name="bravura/"/>
+                <exclude name="core-js/"/>
+                <exclude name="@fortawesome/"/>
+                <exclude name="prettydiff/"/>
+                <exclude name="less/"/>
+                <exclude name="sass/"/>
+                <exclude name="lodash/"/>
+                <exclude name="minify/"/>
+                <exclude name="rx/"/>
+                <exclude name="vnu/"/>
+                <exclude name="vnu-jar/"/>
+                <exclude name="vue/"/>
+                <exclude name="yuicompressor/"/>
+                <!-- exclude html files. non-well-formed html makes eXist choke -->
+                <exclude name="**/*.html"/>
+                <!-- exclude tests to reduce file size -->
+                <exclude name="**/test/**"/>
+                <exclude name="**/tests.js"/>
+                <exclude name="**/docs/**"/>
+                <exclude name="json-*/**"/>
+            </fileset>
+        </copy>
+        
+        <!-- Copy compiled TEI Guidelines from ${frontend_libs.dir} -->
+        <!-- TODO: include p5subset.xml as a reference -->
+        <copy todir="${dist.dir}/guidelines">
+            <fileset dir="${frontend_libs.dir}/WeGA-ODD/compiled-ODD">
+                <include name="*.xml"/>
+            </fileset>
+        </copy>
+    </target>
+    
+    <target name="minify" depends="dist">
+        <echo>Run minify on CSS files</echo>
+        <apply executable="${dev_libs.dir}/minify/bin/minify.js" parallel="false">
+            <fileset dir="${dist.dir}/resources/css" includes="*.css" excludes="*min.css"/>
+            <redirector>
+                <outputmapper type="glob" from="*.css" to="${dist.dir}/resources/css/*-min.css"/>
+            </redirector>
+        </apply>
+        <echo>Run minify on JS files</echo>
+        <apply executable="${dev_libs.dir}/minify/bin/minify.js" parallel="false">
+            <fileset dir="${dist.dir}/resources/js" includes="*.js" excludes="*min.js"/>
+            <redirector>
+                <outputmapper type="glob" from="*.js" to="${dist.dir}/resources/js/*-min.js"/>
+            </redirector>
+        </apply>
+        <echo>Run minify on datepicker.js</echo>
+        <apply executable="${dev_libs.dir}/minify/bin/minify.js" parallel="false">
+            <fileset dir="${dist.dir}/resources/lib/jquery-ui/ui/widgets" includes="datepicker.js" excludes="*min.js"/>
+            <redirector>
+                <outputmapper type="glob" from="*.js" to="${dist.dir}/resources/lib/jquery-ui/ui/widgets/*-min.js"/>
+            </redirector>
+        </apply>
+    </target>
+    
+    <target name="xar" depends="init, dist, minify">
+        <zip destfile="${build.dir}/${project.app}-${project.version}.xar">
+            <fileset dir="${dist.dir}"/>
+        </zip>
+    </target>
+    
+    <target name="deploy" depends="clean, xar">
+        <path id="classpath.core">
+            <fileset dir="${exist.home}/lib/core" erroronmissingdir="no">
+                <include name="*.jar"/>
+            </fileset>
+            <pathelement path="${exist.home}/exist.jar"/>
+            <pathelement path="${exist.home}/exist-optional.jar"/>
+        </path>
+        <path id="classpath.eXist5">
+            <fileset dir="${exist5.libs}" erroronmissingdir="no">
+                <include name="*.jar"/>
+            </fileset>
+        </path>
+        <typedef resource="org/exist/ant/antlib.xml" uri="http://exist-db.org/ant">
+            <classpath refid="classpath.core"/>
+            <classpath refid="classpath.eXist5"/>
+        </typedef>
+        
+        <!-- store xar-file in eXist-db -->
+        <xdb:store xmlns:xdb="http://exist-db.org/ant"
+            uri="${exist.db}/tmp"
+            createcollection="true"
+            createsubcollections="true"
+            user="${exist.user}"
+            password="${exist.pass}"
+            failonerror="true">
+            <fileset file="${build.dir}/${project.app}-${project.version}.xar"/>
+        </xdb:store>
+        
+        <!-- Deploy the xar -->
+        <xdb:xquery  xmlns:xdb="http://exist-db.org/ant"
+            uri="${exist.db}"
+            user="${exist.user}"
+            password="${exist.pass}">
+            (
+            if("${project.name}" = repo:list()) then (
+                repo:undeploy("${project.name}"),
+                repo:remove("${project.name}")
+            )
+            else (),
+            repo:install-and-deploy-from-db("/db/tmp/${project.app}-${project.version}.xar")
+            )
+        </xdb:xquery>
+    </target>
+    
+</project>

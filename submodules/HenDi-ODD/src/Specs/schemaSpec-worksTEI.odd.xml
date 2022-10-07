@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://jenkins.tei-c.org/job/TEIP5-dev/lastStableBuild/artifact/P5/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+<schemaSpec ident="hwhWorksTEI" xml:lang="en" start="TEI" source="../../../WeGA-ODD/compiled-ODD/guidelines-de-wegaWritings.compiled.xml"
+    xmlns="http://www.tei-c.org/ns/1.0" 
+    xmlns:rng="http://relaxng.org/ns/structure/1.0"
+    xmlns:sch="http://purl.oclc.org/dsdl/schematron">
+    <moduleRef key="core"/>
+    <moduleRef key="tei"/>
+    <moduleRef key="header"/>
+    <moduleRef key="textstructure"/>
+    <moduleRef key="namesdates"/>
+    <elementRef key="listEvent" source="tei:4.3.0"/>
+    <elementRef key="event" source="tei:4.3.0"/>
+    
+    <moduleRef key="figures"/>
+    <moduleRef key="transcr"/>
+    <moduleRef key="msdescription"/>
+    <moduleRef key="linking"/>
+    <moduleRef key="textcrit"/>
+    <moduleRef key="gaiji"/>
+    
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-patterns"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-lists"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-classes"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-element-additions"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-common-constraints"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-styleguides"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-styleguides"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-common-atts"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-tei-atts"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-core"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-header"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-textstructure"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-namesdates"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-figures"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-transcr"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-msdescription"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-linking"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-textcrit"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-gaiji"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-tei-macros"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-datatypes"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-biblStruct"/>
+    
+    <elementSpec ident="TEI" mode="change" module="textstructure">
+        <gloss versionDate="2013-11-11" xml:lang="en">TEI document</gloss>
+        <desc versionDate="2013-11-11" xml:lang="en">contains a single TEI-conformant document, comprising a TEI header and a text, either in isolation or as part of a <gi>teiCorpus</gi> element.</desc>
+        <gloss versionDate="2013-11-11" xml:lang="de">TEI Dokument</gloss>
+        <desc versionDate="2013-11-11" xml:lang="de">enthält ein einzelnes TEI-konformes Dokument, TEI header und text einschließend, entweder einzeln oder als Teile des <gi>teiCorpus</gi> Elements.</desc>
+        <classes mode="change">
+            <memberOf key="att.global" mode="delete"/>
+        </classes>
+        <content>
+            <rng:choice>
+                <!--   Ordentlicher Eintrag   -->
+                <rng:group>
+                    <rng:ref name="teiHeader"/>
+                    <rng:choice>
+                        <rng:group>
+                            <rng:oneOrMore>
+                                <rng:ref name="model.resource"/>
+                            </rng:oneOrMore>
+                            <rng:optional>
+                                <rng:ref name="text"/>
+                            </rng:optional>
+                        </rng:group>
+                        <rng:ref name="text"/>
+                    </rng:choice>
+                </rng:group>
+                <!--  Dubletten  -->
+                <rng:element name="ref">
+                    <rng:attribute name="type">
+                        <rng:value>duplicate</rng:value>
+                    </rng:attribute>
+                    <rng:attribute name="target">
+                        <rng:ref name="hwh.works.pointer"/>
+                    </rng:attribute>
+                    <rng:empty/>
+                </rng:element>
+            </rng:choice>
+        </content>
+        <attList>
+            <attDef ident="status" usage="req" mode="add">
+                <datatype>
+                    <dataRef key="hwh_docStatus.list"/>
+                </datatype>
+            </attDef>
+            <attDef ident="source" usage="req" mode="add">
+                <valList type="closed" mode="change">
+                    <valItem ident="HWH" mode="add">
+                        <desc versionDate="2021-10-20" xml:lang="en">persons from the database of the Henze-Digital project (HWH).</desc>
+                        <desc versionDate="2021-10-20" xml:lang="de">Personen aus dem Datenbestand des Projektes Henze-Digital (HWH).</desc>
+                    </valItem>
+                </valList>
+            </attDef>
+            <attDef ident="xml:id" mode="change" usage="req">
+                <gloss versionDate="2022-01-24" xml:lang="en">identifier</gloss>
+                <desc versionDate="2022-01-24" xml:lang="en">provides a unique identifier for the element bearing the attribute.</desc>
+                <gloss versionDate="2022-01-24" xml:lang="de">Bezeichner</gloss>
+                <desc versionDate="2022-01-24" xml:lang="de">liefert einen eindeutigen Bezeichner für das Element mit dem Attribut.</desc>
+                <datatype>
+                    <dataRef key="hwh.works.pointer"/>
+                </datatype>
+            </attDef>
+        </attList>
+    </elementSpec>
+    
+    <elementSpec ident="teiHeader" module="header" mode="change">
+        <content>
+            <sequence>
+                <elementRef key="fileDesc"/>
+                <elementRef key="encodingDesc"/>
+                <elementRef key="profileDesc"/>
+                <elementRef key="revisionDesc"/>
+            </sequence>
+        </content>
+        <constraintSpec scheme="schematron" ident="seriesTitle" mode="change">
+            <constraint>
+                <sch:rule context="tei:fileDesc/tei:titleStmt/tei:title[@level='s']">
+                    <sch:assert test=".='Henze-Digital, literarische Werke, Digitale Edition'">The series title must be 
+                        "Henze-Digital, literarische Werke, Digitale Edition".</sch:assert>
+                </sch:rule>
+            </constraint>
+        </constraintSpec>
+    </elementSpec>
+    
+    <!--<elementSpec ident="sourceDesc" module="header" mode="change">
+        <content>
+<!-\-            <alternate>-\->
+                <!-\-<elementRef key="biblStruct" minOccurs="1" maxOccurs="1"/>-\->
+                <elementRef key="listEvent" minOccurs="0" maxOccurs="1"/>
+            <!-\-</alternate>-\->
+        </content>
+    </elementSpec>-->
+    
+    <elementSpec ident="listEvent" module="namesdates" mode="change">
+        <content>
+            <elementRef key="event" minOccurs="1" maxOccurs="unbounded"/>
+        </content>
+    </elementSpec>
+    
+    <elementSpec ident="event" module="namesdates" mode="change">
+        <content>
+            <sequence>
+                <alternate minOccurs="0" maxOccurs="unbounded">
+                    <elementRef key="desc"/>
+                    <elementRef key="date"/>
+                    <elementRef key="settlement"/>
+                </alternate>
+                <alternate minOccurs="0" maxOccurs="unbounded">
+                    <classRef key="model.noteLike"/>
+                    <classRef key="model.biblLike"/>
+                </alternate>
+                <!--<elementRef key="event" minOccurs="0"
+                    maxOccurs="unbounded"/>-->
+            </sequence>
+        </content>
+        <attList>
+        <attDef ident="type" mode="change">
+            <valList type="closed" mode="add">
+                <valItem ident="ua">
+                    <gloss versionDate="2022-01-24" xml:lang="en">world's premiere</gloss>
+                    <desc versionDate="2022-01-24" xml:lang="en">contains information about the world's premiere.</desc>
+                    <gloss versionDate="2022-01-24" xml:lang="de">Uraufführung</gloss>
+                    <desc versionDate="2022-01-24" xml:lang="de">Enthält Informationen zur Uraufführung.</desc>
+                </valItem>
+                <valItem ident="ea">
+                    <gloss versionDate="2022-01-24" xml:lang="en">premiere</gloss>
+                    <desc versionDate="2022-01-24" xml:lang="en">contains information about the premiere on a certain place.</desc>
+                    <gloss versionDate="2022-01-24" xml:lang="de">Erstaufführung</gloss>
+                    <desc versionDate="2022-01-24" xml:lang="de">Enthält Informationen zur Erstaufführung an einem bestimmten Ort.</desc>
+                </valItem>
+                <valItem ident="pa">
+                    <gloss versionDate="2022-01-24" xml:lang="en">private performance</gloss>
+                    <desc versionDate="2022-01-24" xml:lang="en">contains information about a private performance.</desc>
+                    <gloss versionDate="2022-01-24" xml:lang="de">Privataufführung</gloss>
+                    <desc versionDate="2022-01-24" xml:lang="de">Enthält Informationen über eine Privataufführung.</desc>
+                </valItem>
+            </valList>
+        </attDef>
+        </attList>
+    </elementSpec>
+    
+    <elementSpec ident="text" mode="change" module="textstructure">
+        <desc versionDate="2022-01-24" xml:lang="en">contains the text of the recorded literary work.</desc>
+        <desc versionDate="2022-01-24" xml:lang="de">enthält den Text des erfassten literarischen Werkes.</desc>
+        <attList>
+            <attDef ident="type" mode="delete"/>
+        </attList>
+    </elementSpec>
+    
+    <!--<elementSpec ident="idno" mode="change" module="header">
+        <gloss versionDate="2013-11-11" xml:lang="en">identifier</gloss>
+        <desc versionDate="2013-11-11" xml:lang="en">supplies any form of identifier used to identify some object, such as a bibliographic item, a person, a title, an organization, etc. in a standardized way.</desc>
+        <gloss versionDate="2013-11-11" xml:lang="de">Bezeichner</gloss>
+        <desc versionDate="2013-11-11" xml:lang="de">lieferte jegliche Form eines Bezeichners in einer standardisierten Form, der benutzt werden kann um Objekte zu identifiziert, wie etwa ein bibliographisches Element, eine Organisation, usw.</desc>
+        <classes mode="change">
+            <memberOf key="att.global" mode="delete"/>
+        </classes>
+        <attList>
+            <attDef ident="type" mode="replace" usage="opt">
+                <desc versionDate="2013-11-11" xml:lang="en">characterizes the element in some sense, using any convenient classification scheme or typology.</desc>
+                <desc versionDate="2013-11-11" xml:lang="de">charakterisiert das Element in einem gewissen Sinne, wobei irgendeine zweckmäßige Systematik oder Typologie angwendet wird.</desc>
+                <valList type="closed">
+                    <valItem ident="WeGA">
+                        <desc versionDate="2013-11-11" xml:lang="en">The document identifier of the Carl-Maria-von-Weber-Gesamtausgabe (WeGA).</desc>
+                        <desc versionDate="2013-11-11" xml:lang="de">Der Dokument-Bezeichner der Carl-Maria-von-Weber-Gesamtausgabe (WeGA).</desc>
+                    </valItem>
+                    <valItem ident="KS">
+                        <desc versionDate="2013-11-11" xml:lang="en">The document identifier from Georg Kaiser's 'Sämtliche Schriften von Carl Maria von Weber' (Schuster &amp; Löffler 1908).</desc>
+                        <desc versionDate="2013-11-11" xml:lang="en">Der Dokument-Bezeichner von Georg Kaiser's "Sämtliche Schriften von Carl Maria von Weber" (Schuster &amp; Löffler 1908).</desc> 
+                    </valItem>
+                </valList>
+            </attDef>
+            <attDef ident="n" mode="add" usage="opt">
+                <gloss versionDate="2013-11-11" xml:lang="en">number</gloss>
+                <desc versionDate="2013-11-11" xml:lang="en">gives a number (or other label) for an element, which is not necessarily unique within the document.</desc>
+                <gloss versionDate="2018-03-29" xml:lang="de">Nummer</gloss>
+                <desc versionDate="2013-11-11" xml:lang="de">gibt dem Element eine Nummer (oder eine andere Bezeichnung), die nicht unbedingt eindeutig im Dokument ist.</desc>
+                <datatype>
+                    <rng:choice>
+                        <rng:ref name="WeS.pattern"/>
+                        <rng:ref name="KS.pattern"/>
+                    </rng:choice>
+                </datatype>
+            </attDef>
+        </attList>
+    </elementSpec>-->
+    
+    <elementSpec ident="title" mode="replace" module="core">
+        <desc versionDate="2022-01-24" xml:lang="en">contains a title for any kind of work</desc>
+        <desc versionDate="2022-01-24" xml:lang="de">enthält einen Titel für jegliche Art von Werk</desc>
+        <content>
+            <rng:ref name="macro.paraContent"/>
+        </content>
+        <constraintSpec scheme="schematron" ident="title-level-req">
+            <desc versionDate="2022-01-24" xml:lang="en">checks for the occurence of <att>level</att> at <gi>title</gi> elements (on <gi>fileDesc</gi> level)</desc>
+            <desc versionDate="2022-01-24" xml:lang="de">prüft das Vorkommen von <att>level</att> Attributen in <gi>title</gi> Elementen (auf der Ebene der <gi>fileDesc</gi></desc>
+            <constraint>
+                <sch:rule context="tei:fileDesc/tei:titleStmt/tei:title[1]">
+                    <sch:assert test="@level = 's'">The first title in titleStmt should be a series statement.</sch:assert>
+                </sch:rule>
+                <sch:rule context="tei:fileDesc//tei:title[position() > 1]">
+                    <sch:report test="@level = 's'">Only the first title in titleStmt should be a series statement.</sch:report>
+                </sch:rule>
+            </constraint>
+        </constraintSpec>
+        <!--<constraintSpec scheme="schematron" ident="duplicate-title">
+            <desc versionDate="2022-01-24" xml:lang="en">checks for the occurence of identical <gi>title</gi> elements (with the same bibliographic level and language)</desc>
+            <desc versionDate="2022-01-24" xml:lang="de">überprüft auf identische <gi>title</gi> Elemente (gleiche bibliographische Ebene und Sprache)</desc>
+            <constraint>
+                <sch:rule context="tei:title[following-sibling::tei:title]">
+                    <sch:let name="level" value="@level"/>
+                    <sch:let name="type" value="string(@type)"/> <!-\- use string values so comparing non-existing attributes will return true -\->
+                    <sch:let name="lang" value="string(@xml:lang)"/>
+                    <sch:report test="following-sibling::tei:title[@level = $level][string(@xml:lang) = $lang][string(@type) = $type]">Following title without differing @type or xml:lang attribute</sch:report>
+                </sch:rule>
+            </constraint>
+        </constraintSpec>-->
+        <constraintSpec scheme="schematron" ident="duplicate-title">
+            <desc versionDate="2022-01-24" xml:lang="en">checks for the occurence of identical <gi>title</gi> elements (with the same bibliographic level and language)</desc>
+            <desc versionDate="2022-01-24" xml:lang="de">überprüft auf identische <gi>title</gi> Elemente (gleiche bibliographische Ebene und Sprache)</desc>
+            <constraint>
+                <sch:rule context="tei:title[following-sibling::tei:title]">
+                    <sch:let name="level" value="@level"/>
+                    <sch:let name="type" value="string(@type)"/> <!-- use string values so comparing non-existing attributes will return true -->
+                    <sch:let name="lang" value="string(@xml:lang)"/>
+                    <sch:report test="following-sibling::tei:title[@level = $level][string(@xml:lang) = $lang][string(@type) = $type]">Following title without differing @type or xml:lang attribute</sch:report>
+                </sch:rule>
+            </constraint>
+        </constraintSpec>
+        <constraintSpec scheme="schematron" ident="punctuation-mark">
+            <desc versionDate="2014-11-24" xml:lang="en">reports when there is a punctuation mark at the end of the title (punctuation will be added automatically during rendering)</desc>
+            <desc versionDate="2014-11-24" xml:lang="de">warnt bei Satzendezeichen am Ende des Titels (denn Interpunktion wird beim Rendern automatisch hinzugefügt)</desc>
+            <constraint>
+                <sch:report test="matches(normalize-space(self::tei:title), '[\.,;]$') and not(matches(normalize-space(self::tei:title), '((\p{Lu})|(\setc)|(\sal)|([\s\.]a)|(\sBl)|(\sAufl))\.$'))">Found a non-valid punctuation mark at the end of <sch:name/> </sch:report>
+            </constraint>
+        </constraintSpec>
+        <constraintSpec scheme="schematron" ident="report-leading-zeros">
+            <desc versionDate="2020-09-14" xml:lang="en">report leading zeros in dates</desc>
+            <desc versionDate="2020-09-14" xml:lang="de">warnt bei führenden Nullen in Datumsangaben</desc>
+            <constraint>
+                <sch:report test="matches(., '\s0\d+\.')">please do not prefix numbers with a zero</sch:report>
+            </constraint>
+        </constraintSpec>
+        <constraintSpec scheme="schematron" ident="report-quotation-marks">
+            <desc versionDate="2020-09-14" xml:lang="en">report literal quotation marks which should be replaced by tags</desc>
+            <desc versionDate="2020-09-14" xml:lang="de">weist auf Anführungszeichen hin die durch Tags ersetzt werden sollten</desc>
+            <constraint>
+                <sch:report test="matches(., '&quot;“„')">please replace literal quotation marks with q-tags</sch:report>
+            </constraint>
+        </constraintSpec>
+        <constraintSpec scheme="schematron" ident="biblstruct-title-lang">
+            <desc versionDate="2022-01-24" xml:lang="en">checks for the occurence of <att>xml:lang</att> at <gi>title</gi> within a <gi>biblStruct</gi> section.</desc>
+            <desc versionDate="2022-01-24" xml:lang="de">überprüft das Vorkommen von <att>xml:lang</att> in <gi>title</gi> Elementen in einer <gi>biblStruct</gi> Sektion.</desc>
+            <constraint>
+                <sch:rule context="tei:title[not(ancestor::tei:biblStruct)]">
+                    <sch:report test="@xml:lang" role="error">The attribute xml:lang is not for use here!</sch:report>
+                </sch:rule>
+                <sch:rule context="tei:biblStruct//tei:title[1]">
+                    <sch:report test="@xml:lang" role="warn">The attribute xml:lang is for indicate the language of a translation here. It is not for use to definde the language of the origianl title.</sch:report>
+                </sch:rule>
+                <!--<sch:rule context="tei:biblStruct//tei:title[1]">
+                    <sch:report test="@xml:lang" role="warn">The attribute xml:lang is for indicate the language of a translation here. It is not for use to definde the language of the origianl title.</sch:report>
+                </sch:rule>-->
+            </constraint>
+        </constraintSpec>
+        <attList>
+            <attDef ident="xml:lang" mode="add" usage="opt">
+                <desc versionDate="2022-01-24" xml:lang="en">indicates the language in which the title was translated.</desc>
+                <desc versionDate="2022-01-24" xml:lang="de">zeigt die Sprache an, in die der Titel übersetzt wurde.</desc>
+                <datatype>
+                    <dataRef key="teidata.language"/>
+                </datatype>
+            </attDef>
+            <attDef ident="level" mode="add" usage="rec">
+                <desc versionDate="2013-11-11" xml:lang="en">indicates the bibliographic level for a title, that is, whether it identifies an article, book, journal, series, or unpublished material.</desc>
+                <desc versionDate="2013-11-11" xml:lang="de">zeigt die bibliographische Ebene für einen Titel ein, also ob es einen Artikel, Buch, Zeitschrift, Serie, oder unveröffentlichtes Material identifiziert.</desc>
+                <valList type="closed" mode="add">
+                    <valItem ident="a">
+                        <gloss versionDate="2022-01-24" xml:lang="en">analytic</gloss>
+                        <desc versionDate="2022-01-24" xml:lang="en">the title applies to an analytic item, such as an article, poem, or other work published as part of a larger item.</desc>
+                        <gloss versionDate="2022-01-24" xml:lang="de">Artikel</gloss>
+                        <desc versionDate="2022-01-24" xml:lang="de">der Titel bezieht sich auf einen analytischen Artikel, z. B. einen Artikel, ein Gedicht oder ein anderes Werk, das als Teil eines größeren Artikels veröffentlicht wurde.</desc>
+                    </valItem>
+                    <valItem ident="m">
+                        <gloss versionDate="2022-01-24" xml:lang="en">monographic</gloss>
+                        <desc versionDate="2022-01-24" xml:lang="en">the title applies to a monograph such as a book or other item considered to be a distinct publication, including single volumes of multi-volume works.</desc>
+                        <gloss versionDate="2022-01-24" xml:lang="de">Monographie</gloss>
+                        <desc versionDate="2022-01-24" xml:lang="de">der Titel bezieht sich auf eine Monografie wie ein Buch oder einen anderen Gegenstand, der als eigenständige Veröffentlichung gilt, einschließlich einzelner Bände von mehrbändigen Werken.</desc>
+                    </valItem>
+                    <valItem ident="j">
+                        <gloss versionDate="2022-01-24" xml:lang="en">journal</gloss>
+                        <desc versionDate="2022-01-24" xml:lang="en">the title applies to any serial or periodical publication such as a journal, magazine, or newspaper.</desc>
+                        <gloss versionDate="2022-01-24" xml:lang="de">Periodikum</gloss>
+                        <desc versionDate="2022-01-24" xml:lang="de">der Titel bezieht sich auf jede fortlaufende oder periodische Veröffentlichung wie eine Zeitschrift, ein Magazin oder eine Zeitung.</desc>
+                    </valItem>
+                    <valItem ident="s">
+                        <gloss versionDate="2022-01-24" xml:lang="en">series</gloss>
+                        <desc versionDate="2022-01-24" xml:lang="en">the title applies to a series of otherwise distinct publications such as a collection.</desc>
+                        <gloss versionDate="2022-01-24" xml:lang="de">Serie</gloss>
+                        <desc versionDate="2022-01-24" xml:lang="de">der Titel bezieht sich auf eine Reihe von ansonsten getrennten Veröffentlichungen, z. B. eine Sammlung.</desc>
+                    </valItem>
+                    <valItem ident="u">
+                        <gloss versionDate="2022-01-24" xml:lang="en">unpublished</gloss>
+                        <desc versionDate="2022-01-24" xml:lang="en">the title applies to any unpublished material (including theses and dissertations unless published by a commercial press).</desc>
+                        <gloss versionDate="2022-01-24" xml:lang="de">unveröffentlicht</gloss>
+                        <desc versionDate="2022-01-24" xml:lang="de">der Titel gilt für unveröffentlichtes Material (einschließlich Dissertationen und Diplomarbeiten, sofern sie nicht von einem kommerziellen Verlag veröffentlicht wurden).</desc>
+                    </valItem>
+                </valList>
+            </attDef>
+        </attList>
+    </elementSpec>
+    
+    <elementSpec ident="bibl" module="core" mode="change">
+        <content>
+            <sequence>
+                <elementRef key="title" minOccurs="0" maxOccurs="unbounded"/>
+                <elementRef key="biblScope" minOccurs="0" maxOccurs="unbounded"/>
+            </sequence>
+        </content>
+        <attList>
+            <attDef ident="xml:id" mode="replace" usage="rec">
+                <datatype>
+                    <dataRef key="hwh.work.pointer"/>
+                </datatype>
+            </attDef>
+        </attList>
+    </elementSpec>
+    
+</schemaSpec>

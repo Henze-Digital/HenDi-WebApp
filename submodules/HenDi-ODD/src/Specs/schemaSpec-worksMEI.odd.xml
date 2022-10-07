@@ -1,0 +1,1709 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://jenkins.tei-c.org/job/TEIP5-dev/lastStableBuild/artifact/P5/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+<schemaSpec ident="hwhWorksMEI" xml:lang="en" start="mei" source="../../../WeGA-ODD/compiled-ODD/guidelines-de-wegaWorks.compiled.xml" xmlns="http://www.tei-c.org/ns/1.0" ns="http://www.music-encoding.org/ns/mei" xmlns:mei="http://www.music-encoding.org/ns/mei" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:sch="http://purl.oclc.org/dsdl/schematron">
+    
+    <desc>This is the customization for encoding works at Henze-Digital</desc>
+    
+    <moduleRef key="MEI"/>
+    <moduleRef key="MEI.edittrans"/>
+    <moduleRef key="MEI.frbr"/>
+    <elementRef key="expressionList" source="../../../../static/music-encoding-4.0.1/source/mei-source.xml"/>
+    
+    <moduleRef key="MEI.header"/>
+    <elementRef key="perfDuration" source="../../../../static/music-encoding-4.0.1/source/mei-source.xml"/>
+    <elementRef key="contents" source="../../../../static/music-encoding-4.0.1/source/mei-source.xml"/>
+    <elementRef key="contentItem" source="../../../../static/music-encoding-4.0.1/source/mei-source.xml"/>
+    
+    <moduleRef key="MEI.namesdates"/>
+    <moduleRef key="MEI.ptrref"/>
+    <moduleRef key="MEI.shared"/>
+    <elementRef key="composer" source="../../../../static/music-encoding-4.0.1/source/mei-source.xml"/>
+    <elementRef key="arranger" source="../../../../static/music-encoding-4.0.1/source/mei-source.xml"/>
+    <elementRef key="author" source="../../../../static/music-encoding-4.0.1/source/mei-source.xml"/>
+    <elementRef key="editor" source="../../../../static/music-encoding-4.0.1/source/mei-source.xml"/>
+    <elementRef key="librettist" source="../../../../static/music-encoding-4.0.1/source/mei-source.xml"/>
+    <elementRef key="lyricist" source="../../../../static/music-encoding-4.0.1/source/mei-source.xml"/>
+    <elementRef key="biblList" source="../../../../static/music-encoding-4.0.1/source/mei-source.xml"/>
+    <elementRef key="bibl" source="../../../../static/music-encoding-4.0.1/source/mei-source.xml"/>
+    <elementRef key="castList" source="../../../../static/music-encoding-4.0.1/source/mei-source.xml"/>
+<!--    <elementRef key="castGrp" source="../../../../static/music-encoding-4.0.1/source/mei-source.xml"/>-->
+    <elementRef key="castItem" source="../../../../static/music-encoding-4.0.1/source/mei-source.xml"/>
+    <elementRef key="roleDesc" source="../../../../static/music-encoding-4.0.1/source/mei-source.xml"/>
+    <elementRef key="role" source="../../../../static/music-encoding-4.0.1/source/mei-source.xml"/>
+    <elementRef key="desc" source="../../../../static/music-encoding-4.0.1/source/mei-source.xml"/>
+    <elementRef key="body" source="../../../../static/music-encoding-4.0.1/source/mei-source.xml"/>
+    <elementRef key="mdiv" source="../../../../static/music-encoding-4.0.1/source/mei-source.xml"/>
+    <elementRef key="titlePart" source="../../../../static/music-encoding-4.0.1/source/mei-source.xml"/>
+    
+    <moduleRef key="MEI.text"/>
+    <elementRef key="list" source="../../../../static/music-encoding-4.0.1/source/mei-source.xml"/>
+    
+    <moduleRef key="MEI.analytical"/>
+    
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-patterns"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-styleguides"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-lists"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-common-atts"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-common-constraints"/>
+    
+    <constraintSpec ident="set_ns" scheme="isoschematron" mode="add">
+        <constraint>
+            <sch:ns xmlns:sch="http://purl.oclc.org/dsdl/schematron" prefix="mei" uri="http://www.music-encoding.org/ns/mei"/>
+            <!--<sch:ns xmlns:sch="http://purl.oclc.org/dsdl/schematron" prefix="xlink"
+                uri="http://www.w3.org/1999/xlink"/>-->
+        </constraint>
+    </constraintSpec>
+    
+    <macroSpec ident="data.ISODATE" module="MEI" mode="change">
+        <content>
+            <rng:ref name="hwh.data.temporal.iso"/>
+        </content>
+    </macroSpec>
+    
+    <macroSpec ident="macro.musicPart" module="MEI.shared" mode="change">
+        <desc versionDate="2022-01-26" xml:lang="en">Groups elements that may appear as part of the music element.</desc>
+        <content>
+             <rng:ref name="body"/>
+        </content>
+    </macroSpec>
+    
+    <elementSpec ident="mei" module="MEI.shared" mode="change" ns="http://www.music-encoding.org/ns/mei">
+        <desc versionDate="2013-11-11" xml:lang="en">contains a single MEI-conformant document, consisting of an MEI header and a musical text, either in isolation or as part of an meiCorpus element. </desc>
+        <desc versionDate="2013-11-11" xml:lang="de">enthält ein einzelenes MEI-konformes Dokument, dass aus einem MEI header und muskialischem Text, entweder alleinstehend oder als Teil eines meiCorpus Elements, besteht.</desc>
+        <content>
+            <rng:choice>
+                <rng:group>
+                    <rng:ref name="meiHead"/>
+                    <rng:ref name="music"/>
+                </rng:group>
+                <!--  Dubletten  -->
+                <rng:element name="ref">
+                    <rng:attribute name="type">
+                        <rng:choice>
+                            <rng:value>duplicate</rng:value>
+                            <rng:value>deletion</rng:value>
+                        </rng:choice>
+                    </rng:attribute>
+                    <rng:attribute name="target">
+                        <rng:choice>
+                            <rng:ref name="hwh.works.pointer"/>
+                        </rng:choice>
+                    </rng:attribute>
+                    <rng:empty/>
+                </rng:element>
+            </rng:choice>
+        </content>
+        <attList>
+            <attDef ident="xml:id" mode="replace" usage="req">
+                <datatype>
+                    <rng:ref name="hwh.works.pointer"/>
+                </datatype>
+            </attDef>
+            <attDef ident="status" usage="req" mode="add">
+                <datatype>
+                    <dataRef key="hwh_docStatus.list"/>
+                </datatype>
+            </attDef>
+            <attDef ident="source" usage="req" mode="add">
+                <valList type="closed" mode="add">
+                    <valItem ident="HWH" mode="add">
+                        <desc versionDate="2021-10-20" xml:lang="en">works from the database of the Henze-Digital project (HWH).</desc>
+                        <desc versionDate="2021-10-20" xml:lang="de">Werke aus dem Datenbestand des Projektes Henze-Digital (HWH).</desc>
+                    </valItem>
+                </valList>
+            </attDef>
+        </attList>
+    </elementSpec>
+    
+    <!--<elementSpec ident="meiHead" module="MEI.header" mode="change" ns="http://www.music-encoding.org/ns/mei">
+        <content>
+            <rng:zeroOrMore>
+                <rng:ref name="altId"/>
+            </rng:zeroOrMore>
+            <rng:ref name="fileDesc"/>
+            <rng:ref name="workList"/>
+            <rng:ref name="revisionDesc"/>                            
+        </content>
+    </elementSpec>-->
+    
+    <elementSpec ident="work" module="MEI.header" mode="change" ns="http://www.music-encoding.org/ns/mei">
+        <content>
+            <rng:choice>
+                <rng:group>
+                    <rng:oneOrMore>
+                        <rng:ref name="title"/>
+                    </rng:oneOrMore>
+                    <rng:zeroOrMore>
+                        <rng:ref name="model.respLikePart" />
+                    </rng:zeroOrMore>
+                    <rng:optional>
+                        <rng:ref name="creation"/>
+                    </rng:optional>
+                    <rng:optional>
+                        <rng:ref name="eventList"/>
+                    </rng:optional>
+                    <rng:optional>
+                        <rng:ref name="history"/>
+                    </rng:optional>
+                    <rng:optional>
+                        <rng:ref name="langUsage"/>
+                    </rng:optional>
+                    <rng:optional>
+                        <rng:ref name="perfMedium"/>
+                    </rng:optional>
+                    <rng:optional>
+                        <rng:ref name="perfDuration"/>
+                    </rng:optional>
+                    <rng:optional>
+                        <rng:ref name="contents"/>
+                    </rng:optional>
+                    <rng:zeroOrMore>
+                        <rng:ref name="biblList"/>
+                    </rng:zeroOrMore>
+                    <rng:optional>
+                        <rng:ref name="notesStmt"/>
+                    </rng:optional>
+                    <rng:optional>
+                        <rng:ref name="classification"/>
+                    </rng:optional>
+                    <rng:optional>
+                        <rng:ref name="expressionList"/>
+                    </rng:optional>
+                    <rng:optional>
+                        <rng:ref name="componentList"/>
+                    </rng:optional>
+                    <rng:optional>
+                        <rng:ref name="relationList"/>
+                    </rng:optional>
+                </rng:group>
+                <rng:element name="ref">
+                    <rng:attribute name="type">
+                        <rng:choice>
+                            <rng:value>duplicate</rng:value>
+                            <rng:value>deletion</rng:value>
+                        </rng:choice>
+                    </rng:attribute>
+                    <rng:attribute name="target">
+                        <rng:choice>
+                            <rng:ref name="hwh.works.pointer"/>
+                        </rng:choice>
+                    </rng:attribute>
+                    <rng:empty/>
+                </rng:element>
+            </rng:choice>
+        </content>
+        <constraintSpec scheme="schematron" ident="lyrAndLibrPresent">
+            <desc versionDate="2021-12-09" xml:lang="en">Indicates the simultaneous use of lyricist and librettist.</desc>
+            <desc versionDate="2021-12-09" xml:lang="de">Weist auf die gleichzeitige Verwendung von lyricist und librettist hin.</desc>
+            <constraint>
+                <sch:rule context="mei:work | mei:expression">
+                    <sch:report test="mei:lyricist and mei:librettist" role="info">This work has a lyricist AND a librettist.</sch:report>
+                </sch:rule>
+            </constraint>
+        </constraintSpec>
+        <constraintSpec scheme="schematron" ident="mei-work-status">
+            <constraint>
+                <sch:rule context="mei:mei|mei:work[not(parent::mei:componentList) and not(parent::mei:workList)]">
+                    <sch:assert test="@status">@status is missing.</sch:assert>
+                </sch:rule>
+                <sch:rule context="mei:work[parent::mei:componentList or parent::mei:workList]">
+                    <sch:report test="@status">@status is only for use at the root element.</sch:report>
+                </sch:rule>
+            </constraint>
+        </constraintSpec>
+        <constraintSpec scheme="schematron" ident="mei-work-source">
+            <constraint>
+                <sch:rule context="mei:mei|mei:work[not(parent::mei:componentList) and not(parent::mei:workList)]">
+                    <sch:assert test="@source">@source is missing.</sch:assert>
+                </sch:rule>
+                <sch:rule context="mei:work[parent::mei:componentList or parent::mei:workList]">
+                    <sch:report test="@source">@source is only for use at the root element.</sch:report>
+                </sch:rule>
+            </constraint>
+        </constraintSpec>
+        <attList>
+            <attDef ident="status" usage="rec" mode="add">
+                <datatype>
+                    <dataRef key="hwh_docStatus.list"/>
+                </datatype>
+            </attDef>
+            <attDef ident="source" usage="rec" mode="add">
+                <valList type="closed" mode="change">
+                    <valItem ident="HWH" mode="add">
+                        <desc versionDate="2021-10-20" xml:lang="en">works from the database of the Henze-Digital project (HWH).</desc>
+                        <desc versionDate="2021-10-20" xml:lang="de">Werke aus dem Datenbestand des Projektes Henze-Digital (HWH).</desc>
+                    </valItem>
+                </valList>
+            </attDef>
+        </attList>
+    </elementSpec>
+    
+    <elementSpec ident="expression" module="MEI.frbr" mode="change" ns="http://www.music-encoding.org/ns/mei">
+        <content>
+            <rng:zeroOrMore>
+                <rng:ref name="model.headLike" />
+            </rng:zeroOrMore>
+            <rng:zeroOrMore>
+                <rng:ref name="model.identifierLike" />
+            </rng:zeroOrMore>
+            <rng:ref name="title" />
+            <rng:optional>
+                <rng:ref name="desc" />
+            </rng:optional>
+            <rng:zeroOrMore>
+                <rng:ref name="arranger" />
+            </rng:zeroOrMore>
+            <rng:zeroOrMore>
+                <rng:ref name="editor" />
+            </rng:zeroOrMore>
+            <rng:zeroOrMore>
+                <rng:ref name="model.workIdent" />
+            </rng:zeroOrMore>
+            <rng:optional>
+                <rng:ref name="creation" />
+            </rng:optional>
+            <rng:optional>
+                <rng:ref name="eventList"/>
+            </rng:optional>
+            <rng:optional>
+                <rng:ref name="history" />
+            </rng:optional>
+            <rng:optional>
+                <rng:ref name="langUsage" />
+            </rng:optional>
+            <rng:optional>
+                <rng:ref name="perfMedium" />
+            </rng:optional>
+            <rng:optional>
+                <rng:ref name="perfDuration" />
+            </rng:optional>
+            <rng:optional>
+                <rng:ref name="contents" />
+            </rng:optional>
+            <rng:zeroOrMore>
+                <rng:ref name="biblList" />
+            </rng:zeroOrMore>
+            <rng:optional>
+                <rng:ref name="notesStmt" />
+            </rng:optional>
+            <rng:optional>
+                <rng:ref name="componentList" />
+            </rng:optional>
+            <rng:optional>
+                <rng:ref name="relationList" />
+            </rng:optional>
+        </content>
+    </elementSpec>
+    
+    <elementSpec ident="persName" module="MEI.namesdates" mode="change" ns="http://www.music-encoding.org/ns/mei">
+        <constraintSpec scheme="schematron" ident="persname-role-values-respstmt">
+        <constraint>
+            <sch:rule context="mei:persName[ancestor::mei:titleStmt]">
+                <sch:let name="legalValues" value="'(arr)|(aut)|(cmp)|(edt)|(editorial_assistant)|(dte)|(lbt)|(lyr)|(trc)|(trl)'"/>
+                <sch:assert test="matches(@role, $legalValues)">On this level only following roles are allowed: <sch:value-of select="$legalValues"/>.</sch:assert>
+            </sch:rule>
+        </constraint>
+        </constraintSpec>
+        <attList>
+            <attDef ident="label" mode="add" usage="opt">
+                <desc versionDate="2022-01-25" xml:lang="en"></desc>
+                <desc versionDate="2022-01-25" xml:lang="de">.</desc>
+                <datatype>
+                    <rng:ref name="teidata.language"/>
+                </datatype>
+            </attDef>
+        </attList>
+    </elementSpec>
+    <!--<elementSpec ident="manifestation" module="MEI.frbr" mode="change" ns="http://www.music-encoding.org/ns/mei">
+        <content>
+            <rng:zeroOrMore>
+                <rng:ref name="model.identifierLike"/>
+            </rng:zeroOrMore>
+            <rng:optional>
+                <rng:ref name="titleStmt"/>
+            </rng:optional>
+            <rng:ref name="macro.bibldescPart"/>
+            <rng:optional>
+                <rng:ref name="creation"/>
+            </rng:optional>
+            <rng:optional>
+                <rng:ref name="history"/>
+            </rng:optional>
+            <rng:optional>
+                <rng:ref name="langUsage"/>
+            </rng:optional>
+            <rng:optional>
+                <rng:ref name="contents"/>
+            </rng:optional>
+            <rng:optional>
+                <rng:ref name="notesStmt"/>
+            </rng:optional>
+            <rng:optional>
+                <rng:ref name="classification"/>
+            </rng:optional>
+            <rng:optional>
+                <rng:ref name="itemList"/>
+            </rng:optional>
+            <rng:optional>
+                <rng:ref name="componentList"/>
+            </rng:optional>
+            <rng:optional>
+                <rng:ref name="relationList"/>
+            </rng:optional>
+        </content>
+        <constraintSpec scheme="schematron" ident="id-check">
+            <constraint>
+                <sch:rule context="mei:manifestation">
+                    <sch:assert test="@xml:id or ancestor::mei:manifestation">
+                        Am Wurzelelement muss eine XML-ID angegeben sein.
+                    </sch:assert>
+                </sch:rule>
+            </constraint>
+        </constraintSpec>
+        <attList>
+            <attDef ident="xml:id" mode="change" usage="opt">
+                <datatype>
+                    <rng:ref name="wega.sources.pointer"/>
+                </datatype>
+            </attDef>
+        </attList>
+    </elementSpec>-->
+    
+    <elementSpec ident="title" module="MEI.shared" mode="change" ns="http://www.music-encoding.org/ns/mei">
+        <desc versionDate="2021-12-08" xml:lang="de">Markiert einen Titel.</desc>
+        <desc versionDate="2021-12-08" xml:lang="en">marks a title.</desc>
+        <content>
+            <rng:zeroOrMore>
+                <rng:choice>
+                    <rng:mixed>
+                        <rng:zeroOrMore>
+                            <rng:ref name="q"/>
+                        </rng:zeroOrMore>
+                    </rng:mixed>
+                    <rng:ref name="titlePart" />
+                </rng:choice>
+            </rng:zeroOrMore>
+        </content>
+<!--        <constraintSpec scheme="schematron" ident="work-subtitles-map-xmllang" mode="delete"/>-->
+        
+        <constraintSpec scheme="schematron" ident="work-titles-work">
+            <constraint>
+                <sch:rule context="mei:title[parent::mei:work]">
+                    <sch:report test="@type">The attribute type is not recommended for titles on work level.</sch:report>
+                </sch:rule>
+            </constraint>
+        </constraintSpec>
+        <attList>
+            <attDef ident="type" mode="change" usage="rec">
+                <valList mode="change" type="closed">
+                    <valItem ident="div" mode="delete"/>
+                </valList>
+            </attDef>
+        </attList>
+    </elementSpec>
+    
+    <elementSpec ident="titlePart" module="MEI.shared" mode="change" ns="http://www.music-encoding.org/ns/mei">
+        <desc versionDate="2021-12-08" xml:lang="de">Markiert einen Abschnitt eines Titels.</desc>
+        <desc versionDate="2021-12-08" xml:lang="en">marks a part of a title.</desc>
+        <classes>
+            <memberOf key="att.authorized" mode="delete"/>
+            <memberOf key="att.basic" mode="delete"/>
+            <memberOf key="att.bibl" mode="delete"/>
+            <memberOf key="att.classed" mode="delete"/>
+            <memberOf key="att.facsimile" mode="delete"/>
+            <memberOf key="att.filing" mode="delete"/>
+            <memberOf key="att.labelled" mode="delete"/>
+            <memberOf key="att.lang"/>
+            <memberOf key="att.linking" mode="delete"/>
+            <memberOf key="att.nInteger" mode="delete"/>
+            <memberOf key="att.responsibility" mode="delete"/>
+            <memberOf key="model.titlePagePart" mode="delete"/>
+        </classes>
+        <content>
+            <rng:mixed>
+                <rng:zeroOrMore>
+                    <rng:ref name="q"/>
+                </rng:zeroOrMore>
+            </rng:mixed>
+        </content>
+        <!--<constraintSpec scheme="schematron" ident="work-subtitles-" mode="add">
+            <constraint>
+                <sch:rule context="mei:title[@type='sub'][parent::mei:titleStmt]">
+                    <sch:assert test="string(@xml:lang) = preceding-sibling::mei:title/string(@xml:lang)">Make sure that this subtitle has a proper xml:lang attribute matching a preceding title's xml:lang</sch:assert>
+                </sch:rule>
+            </constraint>
+        </constraintSpec>-->
+        <attList>
+            <attDef ident="type" mode="change" usage="req">
+                <valList type="closed">
+                    <valItem ident="main" mode="add">
+                        <gloss versionDate="2021-12-08" xml:lang="de">haupt</gloss>
+                        <gloss versionDate="2021-12-08" xml:lang="en">main</gloss>
+                        <desc versionDate="2021-12-08" xml:lang="de">Markiert einen (Haupt-)Titel.</desc>
+                        <desc versionDate="2021-12-08" xml:lang="en">marks a (main) title.</desc>
+                    </valItem>
+                    <valItem ident="sub" mode="add">
+                        <gloss versionDate="2021-12-08" xml:lang="de">untergeordnet</gloss>
+                        <gloss versionDate="2021-12-08" xml:lang="en">subordinate</gloss>
+                        <desc versionDate="2021-12-08" xml:lang="de">Markiert einen Untertitel.</desc>
+                        <desc versionDate="2021-12-08" xml:lang="en">marks a subtitle.</desc>
+                    </valItem>
+                    <valItem ident="desc" mode="add">
+                        <gloss versionDate="2021-12-08" xml:lang="de">beschreibend</gloss>
+                        <gloss versionDate="2021-12-08" xml:lang="en">descriptive</gloss>
+                        <desc versionDate="2021-12-08" xml:lang="de">Markiert einen beschreibenden Teil des Titels. (z.B. für Männerchor)</desc>
+                        <desc versionDate="2021-12-08" xml:lang="en">marks a regularized title. (e.g., for string quartet)</desc>
+                    </valItem>
+                </valList>
+            </attDef>
+        </attList>
+    </elementSpec>
+    
+    <elementSpec ident="annot" module="MEI.shared" mode="change" ns="http://www.music-encoding.org/ns/mei">
+        <constraintSpec scheme="schematron" ident="annot-in-works" mode="delete"/>
+        <attList>
+            <attDef ident="type" mode="change" usage="req">
+                <valList mode="change" type="closed">
+                    <!-- aktuelle Attributwerte bei sources -->
+                    <!--<valItem ident="Kurzbeschreibung"/>-->
+                    <valItem ident="Anzeigen" mode="delete"/>
+                    <!--<valItem ident="Anmerkungen"/>
+                    <valItem ident="no-ordinary-record"/>
+                    <valItem ident="Verweise"/>-->
+                    <valItem ident="Literatur" mode="delete"/>
+                    <valItem ident="Faksimile" mode="delete"/>
+                    <valItem ident="werkfremderInhalt" mode="delete"/>
+                    <valItem ident="pageSchott" mode="add"/>
+                </valList>
+            </attDef>
+        </attList>
+    </elementSpec>
+
+    <elementSpec ident="list" module="MEI.text" mode="change" ns="http://www.music-encoding.org/ns/mei">
+        <desc versionDate="2022-01-25" xml:lang="en"><!--A formatting element that contains a series of items separated from one another and arranged in a linear, often vertical, sequence. Or -->A wrapper for persNames or corpNames</desc>
+        <content>
+            <!--<rng:zeroOrMore>
+                <rng:optional>
+                    <rng:ref name="label" />
+                </rng:optional>
+                <rng:ref name="li" />
+            </rng:zeroOrMore>-->
+            <rng:zeroOrMore>
+                <rng:ref name="persName"/>
+            </rng:zeroOrMore>
+            <rng:zeroOrMore>
+                <rng:ref name="corpName"/>
+            </rng:zeroOrMore>
+        </content>
+    </elementSpec>
+    
+    <elementSpec ident="music" module="MEI.shared" mode="change" ns="http://www.music-encoding.org/ns/mei">
+        <desc versionDate="2022-01-26" xml:lang="en">Contains a single musical text of any kind, whether unitary or composite, for example, an etude, opera, song cycle, symphony, or anthology of piano solos.</desc>
+        <desc versionDate="2022-01-26" xml:lang="de">Enthält einen einzelnen musikalischen Text jeglicher Art, sei er einheitlich oder zusammengesetzt, z. B. eine Etüde, eine Oper, einen Liederzyklus, eine Sinfonie oder eine Anthologie von Klaviersolos.</desc>
+        <classes>
+            <memberOf key="att.common" mode="delete"/>
+            <memberOf key="att.meiVersion" mode="delete"/>
+            <memberOf key="att.metadataPointing" mode="delete"/>
+        </classes>
+        <content>
+            <rng:ref name="macro.musicPart"/>
+        </content>
+    </elementSpec>
+    
+    <elementSpec ident="body" module="MEI.shared" mode="change" ns="http://www.music-encoding.org/ns/mei">
+        <desc versionDate="2022-01-26" xml:lang="en">Contains the whole of a single musical text, excluding any front or back matter.</desc>
+        <classes>
+            <memberOf key="att.common" mode="delete"/>
+            <memberOf key="att.metadataPointing" mode="delete"/>
+        </classes>
+        <content>
+            <rng:zeroOrMore>
+                <rng:ref name="mdiv"/>
+            </rng:zeroOrMore>
+        </content>
+    </elementSpec>
+    
+    <elementSpec ident="mdiv" module="MEI.shared" mode="change" ns="http://www.music-encoding.org/ns/mei">
+        <gloss versionDate="2022-01-26" xml:lang="en">musical division</gloss>
+        <desc versionDate="2022-01-26" xml:lang="en">Contains a subdivision of the body of a musical text.</desc>
+        <gloss versionDate="2022-01-26" xml:lang="de">musikalischer Abschnitt</gloss>
+        <desc versionDate="2022-01-26" xml:lang="de">Enthält einen Unterabschnitt aus dem <gi>body</gi> eines musikalischen Textes.</desc>
+        <classes>
+            <memberOf key="att.common"/>
+            <memberOf key="model.mdivLike"/>
+        </classes>
+        <content>
+            <rng:zeroOrMore>
+                <rng:ref name="mdiv"/>
+            </rng:zeroOrMore>
+        </content>
+        <attList>
+            <attDef ident="xml:base" mode="delete"/>
+            <attDef ident="type" mode="change">
+                <gloss versionDate="2022-01-26" xml:lang="en">type</gloss>
+                <desc versionDate="2022-01-26" xml:lang="en">Gives the kind the musical division is of.</desc>
+                <gloss versionDate="2022-01-26" xml:lang="de">Art</gloss>
+                <desc versionDate="2022-01-26" xml:lang="de">Gibt die Art eines musikalischen Abschnitts an.</desc>
+                <valList type="closed" mode="add">
+                    <valItem ident="act">
+                        <gloss versionDate="2022-01-26" xml:lang="en">act</gloss>
+                        <desc versionDate="2022-01-26" xml:lang="en">e.g. x-th act of an opera.</desc>
+                        <gloss versionDate="2022-01-26" xml:lang="de">Akt</gloss>
+                        <desc versionDate="2022-01-26" xml:lang="de">Z.B. n-ter Akt einer Oper.</desc>
+                    </valItem>
+                    <valItem ident="prt">
+                        <gloss versionDate="2022-01-26" xml:lang="en">part</gloss>
+                        <desc versionDate="2022-01-26" xml:lang="en">e.g. x-th part of an oratorio.</desc>
+                        <gloss versionDate="2022-01-26" xml:lang="de">Teil</gloss>
+                        <desc versionDate="2022-01-26" xml:lang="de">Z.B. n-ter Teil eines Oratoriums</desc>
+                    </valItem>
+                    <valItem ident="scn">
+                        <gloss versionDate="2022-01-26" xml:lang="en">scene</gloss>
+                        <desc versionDate="2022-01-26" xml:lang="en">e.g. x-th scene (of an act) of an opera.</desc>
+                        <gloss versionDate="2022-01-26" xml:lang="de">Szene/Bild</gloss>
+                        <desc versionDate="2022-01-26" xml:lang="de">Z.B. n-te Szene/Bild (eines Akt) einer Oper.</desc>
+                    </valItem>
+                    <valItem ident="no">
+                        <gloss versionDate="2022-01-26" xml:lang="en">number</gloss>
+                        <desc versionDate="2022-01-26" xml:lang="en">e.g. x-th number of an (stage) work.</desc>
+                        <gloss versionDate="2022-01-26" xml:lang="de">Nummer</gloss>
+                        <desc versionDate="2022-01-26" xml:lang="de">Z.B. n-te Nummer eines (Bühnen-)Werkes.</desc>
+                    </valItem>
+                    <valItem ident="mvmnt">
+                        <gloss versionDate="2022-01-26" xml:lang="en">movement</gloss>
+                        <desc versionDate="2022-01-26" xml:lang="en">e.g. x-th movement of a(n instrumental) work.</desc>
+                        <gloss versionDate="2022-01-26" xml:lang="de">Satz</gloss>
+                        <desc versionDate="2022-01-26" xml:lang="de">Z.B. n-ter Satz eines (Instrumental-)Werkes</desc>
+                    </valItem>
+                </valList>
+            </attDef>
+            <attDef ident="n" mode="change">
+                <datatype>
+                    <dataRef name="string" restriction="[1-9]{1}[0-9]{0,2}"/>
+                </datatype>
+            </attDef>
+        </attList>
+    </elementSpec>
+    
+    <elementSpec ident="language" module="MEI.header" mode="change" ns="http://www.music-encoding.org/ns/mei">
+        <content>
+             <valList type="closed" mode="add">
+                 <valItem ident="aa">
+                     <desc versionDate="2022-01-26" xml:lang="en">Afar</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Danakil-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">afar</desc>
+                 </valItem>
+                 <valItem ident="ab">
+                     <desc versionDate="2022-01-26" xml:lang="en">Abkhazian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Abchasisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">abkhaze</desc>
+                 </valItem>
+                 <valItem ident="ae">
+                     <desc versionDate="2022-01-26" xml:lang="en">Avestan</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Avestisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">avestique</desc>
+                 </valItem>
+                 <valItem ident="af">
+                     <desc versionDate="2022-01-26" xml:lang="en">Afrikaans</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Afrikaans</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">afrikaans</desc>
+                 </valItem>
+                 <valItem ident="ak">
+                     <desc versionDate="2022-01-26" xml:lang="en">Akan</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Akan-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">akan</desc>
+                 </valItem>
+                 <valItem ident="am">
+                     <desc versionDate="2022-01-26" xml:lang="en">Amharic</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Amharisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">amharique</desc>
+                 </valItem>
+                 <valItem ident="an">
+                     <desc versionDate="2022-01-26" xml:lang="en">Aragonese</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Aragonesisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">aragonais</desc>
+                 </valItem>
+                 <valItem ident="ar">
+                     <desc versionDate="2022-01-26" xml:lang="en">Arabic</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Arabisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">arabe</desc>
+                 </valItem>
+                 <valItem ident="as">
+                     <desc versionDate="2022-01-26" xml:lang="en">Assamese</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Assamesisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">assamais</desc>
+                 </valItem>
+                 <valItem ident="av">
+                     <desc versionDate="2022-01-26" xml:lang="en">Avaric</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Awarisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">avar</desc>
+                 </valItem>
+                 <valItem ident="ay">
+                     <desc versionDate="2022-01-26" xml:lang="en">Aymara</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Aymará-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">aymara</desc>
+                 </valItem>
+                 <valItem ident="az">
+                     <desc versionDate="2022-01-26" xml:lang="en">Azerbaijani</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Aserbeidschanisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">azéri</desc>
+                 </valItem>
+                 <valItem ident="ba">
+                     <desc versionDate="2022-01-26" xml:lang="en">Bashkir</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Baschkirisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">bachkir</desc>
+                 </valItem>
+                 <valItem ident="be">
+                     <desc versionDate="2022-01-26" xml:lang="en">Belarusian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Weißrussisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">biélorusse</desc>
+                 </valItem>
+                 <valItem ident="bg">
+                     <desc versionDate="2022-01-26" xml:lang="en">Bulgarian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Bulgarisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">bulgare</desc>
+                 </valItem>
+                 <valItem ident="bh">
+                     <desc versionDate="2022-01-26" xml:lang="en">Bihari languages</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Bihari (Andere)</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">langues biharis</desc>
+                 </valItem>
+                 <valItem ident="bi">
+                     <desc versionDate="2022-01-26" xml:lang="en">Bislama</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Beach-la-mar</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">bichlamar</desc>
+                 </valItem>
+                 <valItem ident="bm">
+                     <desc versionDate="2022-01-26" xml:lang="en">Bambara</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Bambara-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">bambara</desc>
+                 </valItem>
+                 <valItem ident="bn">
+                     <desc versionDate="2022-01-26" xml:lang="en">Bengali</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Bengali</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">bengali</desc>
+                 </valItem>
+                 <valItem ident="bo">
+                     <desc versionDate="2022-01-26" xml:lang="en">Tibetan</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Tibetisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">tibétain</desc>
+                 </valItem>
+                 <valItem ident="bo">
+                     <desc versionDate="2022-01-26" xml:lang="en">Tibetan</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Tibetisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">tibétain</desc>
+                 </valItem>
+                 <valItem ident="br">
+                     <desc versionDate="2022-01-26" xml:lang="en">Breton</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Bretonisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">breton</desc>
+                 </valItem>
+                 <valItem ident="bs">
+                     <desc versionDate="2022-01-26" xml:lang="en">Bosnian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Bosnisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">bosniaque</desc>
+                 </valItem>
+                 <valItem ident="ca">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Catalan</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">"catalan</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Valencian"</desc>
+                 </valItem>
+                 <valItem ident="ce">
+                     <desc versionDate="2022-01-26" xml:lang="en">Chechen</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Tschetschenisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">tchétchène</desc>
+                 </valItem>
+                 <valItem ident="ch">
+                     <desc versionDate="2022-01-26" xml:lang="en">Chamorro</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Chamorro-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">chamorro</desc>
+                 </valItem>
+                 <valItem ident="co">
+                     <desc versionDate="2022-01-26" xml:lang="en">Corsican</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Korsisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">corse</desc>
+                 </valItem>
+                 <valItem ident="cr">
+                     <desc versionDate="2022-01-26" xml:lang="en">Cree</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Cree-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">cree</desc>
+                 </valItem>
+                 <valItem ident="cs">
+                     <desc versionDate="2022-01-26" xml:lang="en">Czech</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Tschechisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">tchèque</desc>
+                 </valItem>
+                 <valItem ident="cs">
+                     <desc versionDate="2022-01-26" xml:lang="en">Czech</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Tschechisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">tchèque</desc>
+                 </valItem>
+                 <valItem ident="cu">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Church Slavic</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Church Slavonic</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Old Slavonic</desc>
+                 </valItem>
+                 <valItem ident="cv">
+                     <desc versionDate="2022-01-26" xml:lang="en">Chuvash</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Tschuwaschisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">tchouvache</desc>
+                 </valItem>
+                 <valItem ident="cy">
+                     <desc versionDate="2022-01-26" xml:lang="en">Welsh</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Kymrisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">gallois</desc>
+                 </valItem>
+                 <valItem ident="cy">
+                     <desc versionDate="2022-01-26" xml:lang="en">Welsh</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Kymrisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">gallois</desc>
+                 </valItem>
+                 <valItem ident="da">
+                     <desc versionDate="2022-01-26" xml:lang="en">Danish</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Dänisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">danois</desc>
+                 </valItem>
+                 <valItem ident="de">
+                     <desc versionDate="2022-01-26" xml:lang="en">German</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Deutsch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">allemand</desc>
+                 </valItem>
+                 <valItem ident="de">
+                     <desc versionDate="2022-01-26" xml:lang="en">German</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Deutsch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">allemand</desc>
+                 </valItem>
+                 <valItem ident="dv">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Divehi</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Maldivian"</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Dhivehi</desc>
+                 </valItem>
+                 <valItem ident="dz">
+                     <desc versionDate="2022-01-26" xml:lang="en">Dzongkha</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Dzongkha</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">dzongkha</desc>
+                 </valItem>
+                 <valItem ident="ee">
+                     <desc versionDate="2022-01-26" xml:lang="en">Ewe</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Ewe-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">éwé</desc>
+                 </valItem>
+                 <valItem ident="el">
+                     <desc versionDate="2022-01-26" xml:lang="en">Greek, Modern (1453-)</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Neugriechisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">grec moderne (après 1453)</desc>
+                 </valItem>
+                 <valItem ident="el">
+                     <desc versionDate="2022-01-26" xml:lang="en">Greek, Modern (1453-)</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Neugriechisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">grec moderne (après 1453)</desc>
+                 </valItem>
+                 <valItem ident="en">
+                     <desc versionDate="2022-01-26" xml:lang="en">English</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Englisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">anglais</desc>
+                 </valItem>
+                 <valItem ident="eo">
+                     <desc versionDate="2022-01-26" xml:lang="en">Esperanto</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Esperanto</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">espéranto</desc>
+                 </valItem>
+                 <valItem ident="es">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Spanish</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">"espagnol</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Castilian"</desc>
+                 </valItem>
+                 <valItem ident="et">
+                     <desc versionDate="2022-01-26" xml:lang="en">Estonian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Estnisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">estonien</desc>
+                 </valItem>
+                 <valItem ident="eu">
+                     <desc versionDate="2022-01-26" xml:lang="en">Basque</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Baskisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">basque</desc>
+                 </valItem>
+                 <valItem ident="eu">
+                     <desc versionDate="2022-01-26" xml:lang="en">Basque</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Baskisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">basque</desc>
+                 </valItem>
+                 <valItem ident="fa">
+                     <desc versionDate="2022-01-26" xml:lang="en">Persian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Persisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">persan</desc>
+                 </valItem>
+                 <valItem ident="fa">
+                     <desc versionDate="2022-01-26" xml:lang="en">Persian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Persisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">persan</desc>
+                 </valItem>
+                 <valItem ident="ff">
+                     <desc versionDate="2022-01-26" xml:lang="en">Fulah</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Ful</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">peul</desc>
+                 </valItem>
+                 <valItem ident="fi">
+                     <desc versionDate="2022-01-26" xml:lang="en">Finnish</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Finnisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">finnois</desc>
+                 </valItem>
+                 <valItem ident="fj">
+                     <desc versionDate="2022-01-26" xml:lang="en">Fijian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Fidschi-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">fidjien</desc>
+                 </valItem>
+                 <valItem ident="fo">
+                     <desc versionDate="2022-01-26" xml:lang="en">Faroese</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Färöisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">féroïen</desc>
+                 </valItem>
+                 <valItem ident="fr">
+                     <desc versionDate="2022-01-26" xml:lang="en">French</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Französisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">français</desc>
+                 </valItem>
+                 <valItem ident="fr">
+                     <desc versionDate="2022-01-26" xml:lang="en">French</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Französisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">français</desc>
+                 </valItem>
+                 <valItem ident="fy">
+                     <desc versionDate="2022-01-26" xml:lang="en">Western Frisian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Friesisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">frison occidental</desc>
+                 </valItem>
+                 <valItem ident="ga">
+                     <desc versionDate="2022-01-26" xml:lang="en">Irish</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Irisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">irlandais</desc>
+                 </valItem>
+                 <valItem ident="gd">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Gaelic</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">"gaélique</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Scottish Gaelic"</desc>
+                 </valItem>
+                 <valItem ident="gl">
+                     <desc versionDate="2022-01-26" xml:lang="en">Galician</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Galicisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">galicien</desc>
+                 </valItem>
+                 <valItem ident="gn">
+                     <desc versionDate="2022-01-26" xml:lang="en">Guarani</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Guaraní-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">guarani</desc>
+                 </valItem>
+                 <valItem ident="gu">
+                     <desc versionDate="2022-01-26" xml:lang="en">Gujarati</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Gujarati-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">goudjrati</desc>
+                 </valItem>
+                 <valItem ident="gv">
+                     <desc versionDate="2022-01-26" xml:lang="en">Manx</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">mannois"</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">"manx</desc>
+                 </valItem>
+                 <valItem ident="ha">
+                     <desc versionDate="2022-01-26" xml:lang="en">Hausa</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Haussa-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">haoussa</desc>
+                 </valItem>
+                 <valItem ident="he">
+                     <desc versionDate="2022-01-26" xml:lang="en">Hebrew</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Hebräisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">hébreu</desc>
+                 </valItem>
+                 <valItem ident="hi">
+                     <desc versionDate="2022-01-26" xml:lang="en">Hindi</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Hindi</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">hindi</desc>
+                 </valItem>
+                 <valItem ident="ho">
+                     <desc versionDate="2022-01-26" xml:lang="en">Hiri Motu</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Hiri-Motu</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">hiri motu</desc>
+                 </valItem>
+                 <valItem ident="hr">
+                     <desc versionDate="2022-01-26" xml:lang="en">Croatian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Kroatisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">croate</desc>
+                 </valItem>
+                 <valItem ident="ht">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Haitian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">"haïtien</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Haitian Creole"</desc>
+                 </valItem>
+                 <valItem ident="hu">
+                     <desc versionDate="2022-01-26" xml:lang="en">Hungarian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Ungarisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">hongrois</desc>
+                 </valItem>
+                 <valItem ident="hy">
+                     <desc versionDate="2022-01-26" xml:lang="en">Armenian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Armenisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">arménien</desc>
+                 </valItem>
+                 <valItem ident="hy">
+                     <desc versionDate="2022-01-26" xml:lang="en">Armenian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Armenisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">arménien</desc>
+                 </valItem>
+                 <valItem ident="hz">
+                     <desc versionDate="2022-01-26" xml:lang="en">Herero</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Herero-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">herero</desc>
+                 </valItem>
+                 <valItem ident="ia">
+                     <desc versionDate="2022-01-26" xml:lang="en">Interlingua (International Auxiliary Language Association)</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Interlingua</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">interlingua (langue auxiliaire internationale)</desc>
+                 </valItem>
+                 <valItem ident="id">
+                     <desc versionDate="2022-01-26" xml:lang="en">Indonesian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Bahasa Indonesia</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">indonésien</desc>
+                 </valItem>
+                 <valItem ident="ie">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Interlingue</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">interlingue</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Occidental"</desc>
+                 </valItem>
+                 <valItem ident="ig">
+                     <desc versionDate="2022-01-26" xml:lang="en">Igbo</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Ibo-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">igbo</desc>
+                 </valItem>
+                 <valItem ident="ii">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Sichuan Yi</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">yi de Sichuan</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Nuosu"</desc>
+                 </valItem>
+                 <valItem ident="ik">
+                     <desc versionDate="2022-01-26" xml:lang="en">Inupiaq</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Inupik</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">inupiaq</desc>
+                 </valItem>
+                 <valItem ident="io">
+                     <desc versionDate="2022-01-26" xml:lang="en">Ido</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Ido</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">ido</desc>
+                 </valItem>
+                 <valItem ident="is">
+                     <desc versionDate="2022-01-26" xml:lang="en">Icelandic</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Isländisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">islandais</desc>
+                 </valItem>
+                 <valItem ident="is">
+                     <desc versionDate="2022-01-26" xml:lang="en">Icelandic</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Isländisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">islandais</desc>
+                 </valItem>
+                 <valItem ident="it">
+                     <desc versionDate="2022-01-26" xml:lang="en">Italian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Italienisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">italien</desc>
+                 </valItem>
+                 <valItem ident="iu">
+                     <desc versionDate="2022-01-26" xml:lang="en">Inuktitut</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Inuktitut</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">inuktitut</desc>
+                 </valItem>
+                 <valItem ident="ja">
+                     <desc versionDate="2022-01-26" xml:lang="en">Japanese</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Japanisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">japonais</desc>
+                 </valItem>
+                 <valItem ident="jv">
+                     <desc versionDate="2022-01-26" xml:lang="en">Javanese</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Javanisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">javanais</desc>
+                 </valItem>
+                 <valItem ident="ka">
+                     <desc versionDate="2022-01-26" xml:lang="en">Georgian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Georgisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">géorgien</desc>
+                 </valItem>
+                 <valItem ident="ka">
+                     <desc versionDate="2022-01-26" xml:lang="en">Georgian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Georgisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">géorgien</desc>
+                 </valItem>
+                 <valItem ident="kg">
+                     <desc versionDate="2022-01-26" xml:lang="en">Kongo</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Kongo-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">kongo</desc>
+                 </valItem>
+                 <valItem ident="ki">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Kikuyu</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">kikuyu</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Gikuyu"</desc>
+                 </valItem>
+                 <valItem ident="kj">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Kuanyama</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">"kuanyama</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Kwanyama"</desc>
+                 </valItem>
+                 <valItem ident="kk">
+                     <desc versionDate="2022-01-26" xml:lang="en">Kazakh</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Kasachisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">kazakh</desc>
+                 </valItem>
+                 <valItem ident="kl">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Kalaallisut</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">groenlandais</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Greenlandic"</desc>
+                 </valItem>
+                 <valItem ident="km">
+                     <desc versionDate="2022-01-26" xml:lang="en">Central Khmer</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Kambodschanisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">khmer central</desc>
+                 </valItem>
+                 <valItem ident="kn">
+                     <desc versionDate="2022-01-26" xml:lang="en">Kannada</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Kannada</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">kannada</desc>
+                 </valItem>
+                 <valItem ident="ko">
+                     <desc versionDate="2022-01-26" xml:lang="en">Korean</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Koreanisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">coréen</desc>
+                 </valItem>
+                 <valItem ident="kr">
+                     <desc versionDate="2022-01-26" xml:lang="en">Kanuri</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Kanuri-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">kanouri</desc>
+                 </valItem>
+                 <valItem ident="ks">
+                     <desc versionDate="2022-01-26" xml:lang="en">Kashmiri</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Kaschmiri</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">kashmiri</desc>
+                 </valItem>
+                 <valItem ident="ku">
+                     <desc versionDate="2022-01-26" xml:lang="en">Kurdish</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Kurdisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">kurde</desc>
+                 </valItem>
+                 <valItem ident="kv">
+                     <desc versionDate="2022-01-26" xml:lang="en">Komi</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Komi-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">kom</desc>
+                 </valItem>
+                 <valItem ident="kw">
+                     <desc versionDate="2022-01-26" xml:lang="en">Cornish</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Kornisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">cornique</desc>
+                 </valItem>
+                 <valItem ident="ky">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Kirghiz</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">kirghiz</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Kyrgyz"</desc>
+                 </valItem>
+                 <valItem ident="la">
+                     <desc versionDate="2022-01-26" xml:lang="en">Latin</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Latein</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">latin</desc>
+                 </valItem>
+                 <valItem ident="lb">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Luxembourgish</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">luxembourgeois</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Letzeburgesch"</desc>
+                 </valItem>
+                 <valItem ident="lg">
+                     <desc versionDate="2022-01-26" xml:lang="en">Ganda</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Ganda-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">ganda</desc>
+                 </valItem>
+                 <valItem ident="li">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Limburgan</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Limburgish"</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Limburger</desc>
+                 </valItem>
+                 <valItem ident="ln">
+                     <desc versionDate="2022-01-26" xml:lang="en">Lingala</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Lingala</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">lingala</desc>
+                 </valItem>
+                 <valItem ident="lo">
+                     <desc versionDate="2022-01-26" xml:lang="en">Lao</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Laotisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">lao</desc>
+                 </valItem>
+                 <valItem ident="lt">
+                     <desc versionDate="2022-01-26" xml:lang="en">Lithuanian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Litauisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">lituanien</desc>
+                 </valItem>
+                 <valItem ident="lu">
+                     <desc versionDate="2022-01-26" xml:lang="en">Luba-Katanga</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Luba-Katanga-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">luba-katanga</desc>
+                 </valItem>
+                 <valItem ident="lv">
+                     <desc versionDate="2022-01-26" xml:lang="en">Latvian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Lettisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">letton</desc>
+                 </valItem>
+                 <valItem ident="mg">
+                     <desc versionDate="2022-01-26" xml:lang="en">Malagasy</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Malagassi-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">malgache</desc>
+                 </valItem>
+                 <valItem ident="mh">
+                     <desc versionDate="2022-01-26" xml:lang="en">Marshallese</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Marschallesisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">marshall</desc>
+                 </valItem>
+                 <valItem ident="mi">
+                     <desc versionDate="2022-01-26" xml:lang="en">Maori</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Maori-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">maori</desc>
+                 </valItem>
+                 <valItem ident="mi">
+                     <desc versionDate="2022-01-26" xml:lang="en">Maori</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Maori-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">maori</desc>
+                 </valItem>
+                 <valItem ident="mk">
+                     <desc versionDate="2022-01-26" xml:lang="en">Macedonian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Makedonisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">macédonien</desc>
+                 </valItem>
+                 <valItem ident="mk">
+                     <desc versionDate="2022-01-26" xml:lang="en">Macedonian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Makedonisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">macédonien</desc>
+                 </valItem>
+                 <valItem ident="ml">
+                     <desc versionDate="2022-01-26" xml:lang="en">Malayalam</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Malayalam</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">malayalam</desc>
+                 </valItem>
+                 <valItem ident="mn">
+                     <desc versionDate="2022-01-26" xml:lang="en">Mongolian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Mongolisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">mongol</desc>
+                 </valItem>
+                 <valItem ident="mr">
+                     <desc versionDate="2022-01-26" xml:lang="en">Marathi</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Marathi</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">marathe</desc>
+                 </valItem>
+                 <valItem ident="ms">
+                     <desc versionDate="2022-01-26" xml:lang="en">Malay</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Malaiisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">malais</desc>
+                 </valItem>
+                 <valItem ident="ms">
+                     <desc versionDate="2022-01-26" xml:lang="en">Malay</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Malaiisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">malais</desc>
+                 </valItem>
+                 <valItem ident="mt">
+                     <desc versionDate="2022-01-26" xml:lang="en">Maltese</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Maltesisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">maltais</desc>
+                 </valItem>
+                 <valItem ident="my">
+                     <desc versionDate="2022-01-26" xml:lang="en">Burmese</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Birmanisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">birman</desc>
+                 </valItem>
+                 <valItem ident="my">
+                     <desc versionDate="2022-01-26" xml:lang="en">Burmese</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Birmanisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">birman</desc>
+                 </valItem>
+                 <valItem ident="na">
+                     <desc versionDate="2022-01-26" xml:lang="en">Nauru</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Nauruanisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">nauruan</desc>
+                 </valItem>
+                 <valItem ident="nb">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Bokmål, Norwegian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">norvégien bokmål</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Norwegian Bokmål"</desc>
+                 </valItem>
+                 <valItem ident="nd">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Ndebele, North</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">ndébélé du Nord</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">North Ndebele"</desc>
+                 </valItem>
+                 <valItem ident="ne">
+                     <desc versionDate="2022-01-26" xml:lang="en">Nepali</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Nepali</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">népalais</desc>
+                 </valItem>
+                 <valItem ident="ng">
+                     <desc versionDate="2022-01-26" xml:lang="en">Ndonga</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Ndonga</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">ndonga</desc>
+                 </valItem>
+                 <valItem ident="nl">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Dutch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">"néerlandais</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Flemish"</desc>
+                 </valItem>
+                 <valItem ident="nl">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Dutch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">"néerlandais</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Flemish"</desc>
+                 </valItem>
+                 <valItem ident="nn">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Norwegian Nynorsk</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">"norvégien nynorsk</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Nynorsk, Norwegian"</desc>
+                 </valItem>
+                 <valItem ident="no">
+                     <desc versionDate="2022-01-26" xml:lang="en">Norwegian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Norwegisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">norvégien</desc>
+                 </valItem>
+                 <valItem ident="nr">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Ndebele, South</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">ndébélé du Sud</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">South Ndebele"</desc>
+                 </valItem>
+                 <valItem ident="nv">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Navajo</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">navaho</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Navaho"</desc>
+                 </valItem>
+                 <valItem ident="ny">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Chichewa</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Nyanja"</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Chewa</desc>
+                 </valItem>
+                 <valItem ident="oc">
+                     <desc versionDate="2022-01-26" xml:lang="en">Occitan (post 1500)</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Okzitanisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">occitan (après 1500)</desc>
+                 </valItem>
+                 <valItem ident="oj">
+                     <desc versionDate="2022-01-26" xml:lang="en">Ojibwa</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Ojibwa-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">ojibwa</desc>
+                 </valItem>
+                 <valItem ident="om">
+                     <desc versionDate="2022-01-26" xml:lang="en">Oromo</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Galla-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">galla</desc>
+                 </valItem>
+                 <valItem ident="or">
+                     <desc versionDate="2022-01-26" xml:lang="en">Oriya</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Oriya-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">oriya</desc>
+                 </valItem>
+                 <valItem ident="os">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Ossetian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">ossète</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Ossetic"</desc>
+                 </valItem>
+                 <valItem ident="pa">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Panjabi</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">pendjabi</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Punjabi"</desc>
+                 </valItem>
+                 <valItem ident="pi">
+                     <desc versionDate="2022-01-26" xml:lang="en">Pali</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Pali</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">pali</desc>
+                 </valItem>
+                 <valItem ident="pl">
+                     <desc versionDate="2022-01-26" xml:lang="en">Polish</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Polnisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">polonais</desc>
+                 </valItem>
+                 <valItem ident="ps">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Pushto</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">pachto</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Pashto"</desc>
+                 </valItem>
+                 <valItem ident="pt">
+                     <desc versionDate="2022-01-26" xml:lang="en">Portuguese</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Portugiesisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">portugais</desc>
+                 </valItem>
+                 <valItem ident="qu">
+                     <desc versionDate="2022-01-26" xml:lang="en">Quechua</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Quechua-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">quechua</desc>
+                 </valItem>
+                 <valItem ident="rm">
+                     <desc versionDate="2022-01-26" xml:lang="en">Romansh</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Rätoromanisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">romanche</desc>
+                 </valItem>
+                 <valItem ident="rn">
+                     <desc versionDate="2022-01-26" xml:lang="en">Rundi</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Rundi-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">rundi</desc>
+                 </valItem>
+                 <valItem ident="ro">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Romanian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Moldovan"</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Moldavian</desc>
+                 </valItem>
+                 <valItem ident="ro">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Romanian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Moldovan"</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Moldavian</desc>
+                 </valItem>
+                 <valItem ident="ru">
+                     <desc versionDate="2022-01-26" xml:lang="en">Russian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Russisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">russe</desc>
+                 </valItem>
+                 <valItem ident="rw">
+                     <desc versionDate="2022-01-26" xml:lang="en">Kinyarwanda</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Rwanda-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">rwanda</desc>
+                 </valItem>
+                 <valItem ident="sa">
+                     <desc versionDate="2022-01-26" xml:lang="en">Sanskrit</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Sanskrit</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">sanskrit</desc>
+                 </valItem>
+                 <valItem ident="sc">
+                     <desc versionDate="2022-01-26" xml:lang="en">Sardinian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Sardisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">sarde</desc>
+                 </valItem>
+                 <valItem ident="sd">
+                     <desc versionDate="2022-01-26" xml:lang="en">Sindhi</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Sindhi-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">sindhi</desc>
+                 </valItem>
+                 <valItem ident="se">
+                     <desc versionDate="2022-01-26" xml:lang="en">Northern Sami</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Nordsaamisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">sami du Nord</desc>
+                 </valItem>
+                 <valItem ident="sg">
+                     <desc versionDate="2022-01-26" xml:lang="en">Sango</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Sango-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">sango</desc>
+                 </valItem>
+                 <valItem ident="si">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Sinhala</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">singhalais</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Sinhalese"</desc>
+                 </valItem>
+                 <valItem ident="sk">
+                     <desc versionDate="2022-01-26" xml:lang="en">Slovak</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Slowakisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">slovaque</desc>
+                 </valItem>
+                 <valItem ident="sk">
+                     <desc versionDate="2022-01-26" xml:lang="en">Slovak</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Slowakisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">slovaque</desc>
+                 </valItem>
+                 <valItem ident="sl">
+                     <desc versionDate="2022-01-26" xml:lang="en">Slovenian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Slowenisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">slovène</desc>
+                 </valItem>
+                 <valItem ident="sm">
+                     <desc versionDate="2022-01-26" xml:lang="en">Samoan</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Samoanisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">samoan</desc>
+                 </valItem>
+                 <valItem ident="sn">
+                     <desc versionDate="2022-01-26" xml:lang="en">Shona</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Schona-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">shona</desc>
+                 </valItem>
+                 <valItem ident="so">
+                     <desc versionDate="2022-01-26" xml:lang="en">Somali</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Somali</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">somali</desc>
+                 </valItem>
+                 <valItem ident="sq">
+                     <desc versionDate="2022-01-26" xml:lang="en">Albanian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Albanisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">albanais</desc>
+                 </valItem>
+                 <valItem ident="sq">
+                     <desc versionDate="2022-01-26" xml:lang="en">Albanian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Albanisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">albanais</desc>
+                 </valItem>
+                 <valItem ident="sr">
+                     <desc versionDate="2022-01-26" xml:lang="en">Serbian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Serbisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">serbe</desc>
+                 </valItem>
+                 <valItem ident="ss">
+                     <desc versionDate="2022-01-26" xml:lang="en">Swati</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Swasi-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">swati</desc>
+                 </valItem>
+                 <valItem ident="st">
+                     <desc versionDate="2022-01-26" xml:lang="en">Sotho, Southern</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Süd-Sotho-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">sotho du Sud</desc>
+                 </valItem>
+                 <valItem ident="su">
+                     <desc versionDate="2022-01-26" xml:lang="en">Sundanese</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Sundanesisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">soundanais</desc>
+                 </valItem>
+                 <valItem ident="sv">
+                     <desc versionDate="2022-01-26" xml:lang="en">Swedish</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Schwedisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">suédois</desc>
+                 </valItem>
+                 <valItem ident="sw">
+                     <desc versionDate="2022-01-26" xml:lang="en">Swahili</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Swahili</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">swahili</desc>
+                 </valItem>
+                 <valItem ident="ta">
+                     <desc versionDate="2022-01-26" xml:lang="en">Tamil</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Tamil</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">tamoul</desc>
+                 </valItem>
+                 <valItem ident="te">
+                     <desc versionDate="2022-01-26" xml:lang="en">Telugu</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Telugu-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">télougou</desc>
+                 </valItem>
+                 <valItem ident="tg">
+                     <desc versionDate="2022-01-26" xml:lang="en">Tajik</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Tadschikisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">tadjik</desc>
+                 </valItem>
+                 <valItem ident="th">
+                     <desc versionDate="2022-01-26" xml:lang="en">Thai</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Thailändisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">thaï</desc>
+                 </valItem>
+                 <valItem ident="ti">
+                     <desc versionDate="2022-01-26" xml:lang="en">Tigrinya</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Tigrinja-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">tigrigna</desc>
+                 </valItem>
+                 <valItem ident="tk">
+                     <desc versionDate="2022-01-26" xml:lang="en">Turkmen</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Turkmenisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">turkmène</desc>
+                 </valItem>
+                 <valItem ident="tl">
+                     <desc versionDate="2022-01-26" xml:lang="en">Tagalog</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Tagalog</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">tagalog</desc>
+                 </valItem>
+                 <valItem ident="tn">
+                     <desc versionDate="2022-01-26" xml:lang="en">Tswana</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Tswana-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">tswana</desc>
+                 </valItem>
+                 <valItem ident="to">
+                     <desc versionDate="2022-01-26" xml:lang="en">Tonga (Tonga Islands)</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Tongaisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">tongan (Îles Tonga)</desc>
+                 </valItem>
+                 <valItem ident="tr">
+                     <desc versionDate="2022-01-26" xml:lang="en">Turkish</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Türkisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">turc</desc>
+                 </valItem>
+                 <valItem ident="ts">
+                     <desc versionDate="2022-01-26" xml:lang="en">Tsonga</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Tsonga-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">tsonga</desc>
+                 </valItem>
+                 <valItem ident="tt">
+                     <desc versionDate="2022-01-26" xml:lang="en">Tatar</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Tatarisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">tatar</desc>
+                 </valItem>
+                 <valItem ident="tw">
+                     <desc versionDate="2022-01-26" xml:lang="en">Twi</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Twi-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">twi</desc>
+                 </valItem>
+                 <valItem ident="ty">
+                     <desc versionDate="2022-01-26" xml:lang="en">Tahitian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Tahitisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">tahitien</desc>
+                 </valItem>
+                 <valItem ident="ug">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Uighur</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">ouïgour</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Uyghur"</desc>
+                 </valItem>
+                 <valItem ident="uk">
+                     <desc versionDate="2022-01-26" xml:lang="en">Ukrainian</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Ukrainisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">ukrainien</desc>
+                 </valItem>
+                 <valItem ident="ur">
+                     <desc versionDate="2022-01-26" xml:lang="en">Urdu</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Urdu</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">ourdou</desc>
+                 </valItem>
+                 <valItem ident="uz">
+                     <desc versionDate="2022-01-26" xml:lang="en">Uzbek</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Usbekisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">ouszbek</desc>
+                 </valItem>
+                 <valItem ident="ve">
+                     <desc versionDate="2022-01-26" xml:lang="en">Venda</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Venda-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">venda</desc>
+                 </valItem>
+                 <valItem ident="vi">
+                     <desc versionDate="2022-01-26" xml:lang="en">Vietnamese</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Vietnamesisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">vietnamien</desc>
+                 </valItem>
+                 <valItem ident="vo">
+                     <desc versionDate="2022-01-26" xml:lang="en">Volapük</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Volapük</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">volapük</desc>
+                 </valItem>
+                 <valItem ident="wa">
+                     <desc versionDate="2022-01-26" xml:lang="en">Walloon</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Wallonisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">wallon</desc>
+                 </valItem>
+                 <valItem ident="wo">
+                     <desc versionDate="2022-01-26" xml:lang="en">Wolof</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Wolof-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">wolof</desc>
+                 </valItem>
+                 <valItem ident="xh">
+                     <desc versionDate="2022-01-26" xml:lang="en">Xhosa</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Xhosa-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">xhosa</desc>
+                 </valItem>
+                 <valItem ident="yi">
+                     <desc versionDate="2022-01-26" xml:lang="en">Yiddish</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Jiddisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">yiddish</desc>
+                 </valItem>
+                 <valItem ident="yo">
+                     <desc versionDate="2022-01-26" xml:lang="en">Yoruba</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Yoruba-Sprache</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">yoruba</desc>
+                 </valItem>
+                 <valItem ident="za">
+                     <desc versionDate="2022-01-26" xml:lang="en">"Zhuang</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">"zhuang</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">Chuang"</desc>
+                 </valItem>
+                 <valItem ident="zh">
+                     <desc versionDate="2022-01-26" xml:lang="en">Chinese</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Chinesisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">chinois</desc>
+                 </valItem>
+                 <valItem ident="zh">
+                     <desc versionDate="2022-01-26" xml:lang="en">Chinese</desc>
+                     <desc versionDate="2022-01-26" xml:lang="de">Chinesisch</desc>
+                     <desc versionDate="2022-01-26" xml:lang="fr">chinois</desc>
+                 </valItem>
+             </valList>
+        </content>
+        <attList>
+            <attDef ident="auth" mode="change">
+                <valList type="closed" mode="add">
+                    <valItem ident="ISO 639-1 Code">
+                        <desc versionDate="2022-01-26" xml:lang="en">Name of the used standard.</desc>
+                        <desc versionDate="2022-01-26" xml:lang="de">Bezeichnung des verwendeten Standards.</desc>
+                    </valItem>
+                </valList>
+            </attDef>
+            <attDef ident="auth.uri" mode="change">
+                <valList type="closed" mode="add">
+                    <valItem ident="https://www.loc.gov/standards/iso639-2/php/code_list.php">
+                        <desc versionDate="2022-01-26" xml:lang="en">URL to the definition of the used standard.</desc>
+                        <desc versionDate="2022-01-26" xml:lang="de">URL zur Definition des verwendeten Standards.</desc>
+                    </valItem>
+                </valList>
+            </attDef>
+        </attList>
+    </elementSpec>
+    
+    
+    <elementSpec ident="event" module="MEI.shared" mode="change" ns="http://www.music-encoding.org/ns/mei">
+        <desc versionDate="2022-01-27" xml:lang="en">Contains information concerning an event.</desc>
+        <desc versionDate="2022-01-27" xml:lang="de">Enthält Informationen ein Ereignis betreffend.</desc>
+        <classes>
+            <memberOf key="att.common"/>
+            <memberOf key="att.bibl"/>
+            <memberOf key="att.calendared" mode="delete"/>
+            <memberOf key="att.datable"/>
+            <memberOf key="att.edit" mode="delete"/>
+            <memberOf key="att.facsimile" mode="delete"/>
+            <memberOf key="att.lang"/>
+        </classes>
+        <content>
+            <rng:zeroOrMore>
+                <rng:ref name="date"/>
+            </rng:zeroOrMore>
+            <rng:interleave>
+                <rng:zeroOrMore>
+                    <rng:ref name="geogName"/>
+                </rng:zeroOrMore>
+                <rng:zeroOrMore>
+                    <rng:ref name="settlement"/>
+                </rng:zeroOrMore>
+            </rng:interleave>
+            <rng:interleave>
+                <rng:zeroOrMore>
+                    <rng:ref name="persName"/>
+                </rng:zeroOrMore>
+                <rng:zeroOrMore>
+                    <rng:ref name="corpName"/>
+                </rng:zeroOrMore>
+            </rng:interleave>
+            <rng:zeroOrMore>
+                <rng:ref name="model.pLike"/>
+            </rng:zeroOrMore>
+            <rng:zeroOrMore>
+                <rng:ref name="biblList"/>
+            </rng:zeroOrMore>
+        </content>
+        <attList>
+            <attDef ident="type" mode="change">
+                <valList type="closed" mode="add">
+                    <valItem ident="ua">
+                        <gloss versionDate="2022-01-27" xml:lang="en">world's premiere</gloss>
+                        <desc versionDate="2022-01-27" xml:lang="en">contains information about the world's premiere.</desc>
+                        <gloss versionDate="2022-01-27" xml:lang="de">Uraufführung</gloss>
+                        <desc versionDate="2022-01-27" xml:lang="de">Enthält Informationen zur Uraufführung.</desc>
+                    </valItem>
+                    <valItem ident="ea">
+                        <gloss versionDate="2022-01-27" xml:lang="en">premiere</gloss>
+                        <desc versionDate="2022-01-27" xml:lang="en">contains information about the premiere on a certain place.</desc>
+                        <gloss versionDate="2022-01-27" xml:lang="de">Erstaufführung</gloss>
+                        <desc versionDate="2022-01-27" xml:lang="de">Enthält Informationen zur Erstaufführung an einem bestimmten Ort.</desc>
+                    </valItem>
+                    <valItem ident="pa">
+                        <gloss versionDate="2022-01-27" xml:lang="en">private performance</gloss>
+                        <desc versionDate="2022-01-27" xml:lang="en">contains information about a private performance.</desc>
+                        <gloss versionDate="2022-01-27" xml:lang="de">Privataufführung</gloss>
+                        <desc versionDate="2022-01-27" xml:lang="de">Enthält Informationen über eine Privataufführung.</desc>
+                    </valItem>
+                </valList>
+            </attDef>
+        </attList>
+    </elementSpec>
+    
+    <elementSpec ident="geogName" module="MEI.namesdates" mode="change" ns="http://www.music-encoding.org/ns/mei">
+        <attList>
+            <attDef ident="type" mode="replace" usage="req">
+                <datatype>
+                    <dataRef key="hwh.place.type"/>
+                </datatype>
+            </attDef>
+            <attDef ident="codedval" mode="replace" usage="rec">
+                <datatype>
+                    <dataRef key="hwh.places.pointer"/>
+                </datatype>
+            </attDef>
+        </attList>
+    </elementSpec>
+    
+</schemaSpec>

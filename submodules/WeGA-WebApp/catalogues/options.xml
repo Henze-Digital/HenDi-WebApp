@@ -1,0 +1,72 @@
+<dictionary xml:id="wegaOptions">
+    <div xml:id="htmlOptions">
+        <!-- where to make the sitemap files accesible from the outside -->
+        <entry xml:id="html_sitemapDir" type="xs:string">sitemap</entry>
+        <!-- the max height for inline figures; can be overwritten by @rend='maxSize' on tei:figure -->
+        <entry xml:id="figureHeight" type="xs:int">75</entry>
+    </div>
+    <div xml:id="dbPaths">
+        <!-- where to store the temporary files -->
+        <!--<entry xml:id="tmpDir" type="xs:string">/db/apps/WeGA-WebApp/tmp/</entry>-->
+        <entry xml:id="dataCollectionPath" type="xs:string">/db/apps/WeGA-data</entry>
+    </div>
+    <div xml:id="various">
+        <entry xml:id="anonymusID">A007979</entry>
+        <entry xml:id="errorLogFile">wega.webapp</entry>
+        <entry xml:id="bugEmail">bugs [@] weber-gesamtausgabe.de</entry>
+        <entry xml:id="permaLinkPrefix">http://weber-gesamtausgabe.de</entry>
+        <entry xml:id="environment">development</entry>
+        <entry xml:id="iiifPresentationApi">https://weber-gesamtausgabe.de/IIIF/</entry><!-- trailing slashes are important! -->
+        <entry xml:id="iiifImageApi">https://weber-gesamtausgabe.de/Scaler/IIIF/</entry><!-- trailing slashes are important! -->
+        <entry xml:id="facsimileGreenList">D-B D-Hs CZ-Pk D-LUs S-LI</entry>
+        <entry xml:id="maxNews">2</entry>
+        <entry xml:id="googleWebsiteMetatag">EAO5d_GiQPkJeTGACYYOFahJm2HRNvJUWwIkyw4j0Ys</entry>
+        <entry xml:id="microsoftBingWebsiteMetatag">AE39DA5613844228642EE48196AAA94A</entry>
+        <entry xml:id="ODDversion">4.5.0</entry><!-- Versionsnummer der WeGA-ODD Schemata -->
+        <entry xml:id="versionNews">A050346</entry>
+        <entry xml:id="versionDate">2022-01-26</entry>
+        <entry xml:id="entriesPerPage">10</entry>
+        <entry xml:id="cmifID">e4c10c66-9b0b-4f2e-810c-669b0b2f2e20</entry>
+    </div>
+    <div xml:id="externalPNDResources">
+        <entry xml:id="lease-duration">P7D</entry><!-- xs:dayTimeDuration -->
+<!--        <entry xml:id="wikipedia">http://tools.wmflabs.org/persondata/redirect/gnd/</entry>-->
+        <entry xml:id="portraitindex">http://www.portraitindex.de/dokumente/pnd/</entry>
+        <entry xml:id="tripota">http://www.tripota.uni-trier.de/beacon.php?ID=</entry>
+        <entry xml:id="munich-stadtmuseum">https://stadtmuseum.bayerische-landesbibliothek-online.de/pnd/</entry>
+        <entry xml:id="adb">http://tools.wmflabs.org/persondata/redirect/gnd/ws-adb/</entry>
+        <entry xml:id="dnb">http://d-nb.info/gnd/</entry>
+        <entry xml:id="beacon">http://beacon.findbuch.de/seealso/pnd-aks?format=seealso&amp;id=</entry>
+        <entry xml:id="gnd-beacon">http://beacon.findbuch.de/seemore/gnd-aks?format=seealso&amp;id=</entry>
+    </div>
+    <div xml:id="beaconFileURIs">
+        <entry xml:id="adbBeacon">http://www.historische-kommission-muenchen-editionen.de/beacon_adb.txt</entry>
+        <entry xml:id="ndbBeacon">http://www.historische-kommission-muenchen-editionen.de/beacon_ndb.txt</entry>
+        <entry xml:id="tripotaBeacon">http://www.tripota.uni-trier.de/beacon_tripota.txt</entry>
+        <entry xml:id="portraitindexBeacon">http://www.portraitindex.de/pnd_beacon_portrait.txt</entry>
+        <entry xml:id="munich-stadtmuseumBeacon">http://www.historische-kommission-muenchen-editionen.de/beacond/beacon_portraet_stadtmus_muenchen.txt</entry>
+    </div>
+    <div xml:id="wdt">
+        <entry xml:id="generalIdPattern">A[0-9A-F]{6}</entry>
+        <!-- The first three counts of the regex will be extracted as prefix    -->
+        <!-- except: personsPlusIdPattern. So make all other prefixes explicit. -->
+        <entry xml:id="orgsIdPattern">A08\d{4}</entry>
+        <entry xml:id="personsIdPattern">A00[0-9A-F]{4}</entry>
+        <entry xml:id="personsPlusIdPattern">A0[08][0-9A-F]{4}</entry>
+        <entry xml:id="lettersIdPattern">A04[0-9A-F]{4}</entry>
+        <entry xml:id="writingsIdPattern">A03[0-9A-F]{4}</entry>
+        <entry xml:id="worksIdPattern">A02[0-9A-F]{4}</entry>
+        <entry xml:id="diariesIdPattern">A06[0-9A-F]{4}</entry>
+        <entry xml:id="newsIdPattern">A05[0-9A-F]{4}</entry>
+        <entry xml:id="iconographyIdPattern">A01[0-9A-F]{4}</entry>
+        <entry xml:id="varIdPattern">A07[0-9A-F]{4}</entry>
+        <entry xml:id="biblioIdPattern">A11[0-9A-F]{4}</entry>
+        <entry xml:id="placesIdPattern">A13[0-9A-F]{4}</entry>
+        <entry xml:id="sourcesIdPattern">A22[0-9A-F]{4}</entry>
+        <entry xml:id="thematicCommentariesIdPattern">A09[0-9A-F]{4}</entry>
+        <entry xml:id="documentsIdPattern">A10[0-9A-F]{4}</entry>
+        <entry xml:id="addendaIdPattern">A12[0-9A-F]{4}</entry>
+        <!-- insert textType values as whitespace seperated list -->
+        <entry xml:id="textTypes">albumblatt letter guestbookEntry dedication eingabe vortrag weisung</entry>
+    </div>
+</dictionary>

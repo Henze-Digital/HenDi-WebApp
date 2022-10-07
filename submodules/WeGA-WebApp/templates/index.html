@@ -1,0 +1,189 @@
+<div xmlns="http://www.w3.org/1999/xhtml" data-template="templates:surround" data-template-with="templates/page.html" data-template-at="content">
+    <div class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12" data-template="app:word-of-the-day">
+                    <h1 class="home" data-template="app-shared:print" data-template-key="wordOfTheDay">„MIT HILFE DER GÖTTLICHEN <br/> TONKUNST LÄSST SICH MEHR <br/>
+                        AUSDRÜCKEN UND AUSRICHTEN ALS MIT WORTEN.“ </h1>
+                    <h3 class="unterschriftweber">
+                        <a href="index.html#" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="wordOfTheDayURL">
+                            <span data-template="lang:translate">gotoletter</span> <i class="fa fa-arrow-right"/>
+                        </a> <img src="$resources/img/unterschrift-weber.png"/>
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="colored borderBottom">
+        <div class="container">
+            <form role="form" class="form-inline" action="$link/search">
+                <div class="row paddingTopIcon paddingBottomIcon">
+                    <div class="col-12 form-group">
+                        <div class="input-group searchform">
+                            <div class="input-group-btn dropdown docType-search-filter">
+                                <select class="input-group-prepend bootstrap-select form-control prettyselect" name="d" id="search-select">
+                                    <option value="all" data-template="app:search-options">all</option>
+                                    <!--<option value="personsPlus" data-template="lang:translate">personsPlus</option>
+                                    <option value="letters" data-template="lang:translate">correspondence</option>
+                                    <option value="diaries" data-template="lang:translate">diaries</option>
+                                    <option value="writings" data-template="lang:translate">writings</option>
+                                    <option value="works" data-template="lang:translate">works</option>
+                                    <option value="news" data-template="lang:translate">news</option>
+                                    <option value="biblio" data-template="lang:translate">bibliography</option>-->
+                                </select>
+                            </div>
+                            <input type="text" class="query-input form-control" name="q" id="query-input" data-template="app:search-input"/>
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-primary" data-template="lang:translate">suchen</button>
+                            </span>
+                        </div>
+                    </div>
+                    <!--<div class="col-md-6">
+                        <a class="advancedSearch" href="#">Zur erweiterten Suche <i class="fa fa-arrow-right"/></a>
+                    </div>-->
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="colored borderBottom" data-template="app-shared:if-matches" data-template-key="environment" data-template-value="development">
+        <div class="container">
+            <form role="form" class="form-inline">
+                <div class="row paddingTopIcon paddingBottomIcon history">
+                    <div class="col-sm-12"><h3>Development Tools</h3></div>
+                    <div class="col-sm-4" data-template="dev-app:ant-log">
+                        <h4>Subversion Commit Status</h4>
+                        <p data-template="app-shared:if-exists" data-template-key="ant-log-rev">
+                            <a data-template="app-shared:set-attr" data-template-attr="href" data-template-key="ant-log-url">Revision <span class="currentRevision" data-template="app-shared:print" data-template-key="ant-log-rev"> 9500 </span> <i class="fa fa-check-circle-o fa-lg" data-template="app-shared:if-matches" data-template-key="ant-log-success" data-template-value="true"/> <i class="fa fa-exclamation-triangle fa-lg" data-template="app-shared:if-matches" data-template-key="ant-log-success" data-template-value="false"/></a>
+                        </p>
+                        <p data-template="app-shared:if-not-exists" data-template-key="ant-log-rev">
+                            Keine Log-Datei verfügbar.
+                        </p>
+                    </div>
+                    <div class="col-sm-4">
+                        <h4>Neue ID</h4>
+                        <div class="input-group">
+                            <div class="input-group-btn dropdown">
+                                <select class="input-group-prepend bootstrap-select form-control prettyselect" name="newID-d" id="newID-select" data-template="dev-app:newID-docTypes">
+                                    <option value="persons" data-template="app-shared:each" data-template-from="newID-docTypes" data-template-to="newID-docType" data-template-callback="newID-option" data-template-callbackNamespace="http://xquery.weber-gesamtausgabe.de/modules/dev/dev-app">persons</option>
+                                </select>
+                            </div>
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-primary" id="create-newID" data-template="app:inject-api-base">
+                                    <i class="fa fa-arrow-right"/>
+                                </button>
+                            </div>
+                            <div id="newID-result">
+                                <span style="display:none;" class="copy-to-clipboard" title="Copy to clipboard">A001234</span>
+                                <i class="fa fa-cog fa-spin fa-2x spinner" style="display:none;"/>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="col-md-3">
+                        <h4>Codesharing</h4>
+                        <a href="https://euryanthe.de/wega/apps/codesharing/index.htm">Codesharing WeGA-data</a>
+                    </div>-->
+                    <div class="col-sm-4" data-template="dev-app:app-status">
+                        <h4>WebApp Status</h4>
+                        <p>Deployed: <span data-template="app-shared:print" data-template-key="deployment-date">31. August 2016</span></p>
+                        <!--<p>Version: <a href="#">71737434</a></p>-->
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="borderBottom">
+        <div class="container">
+            <div class="row paddingTopIcon paddingBottomIcon">
+                <div class="col-md-3 col-sm-6">
+                    <a class="teaser wega"> </a>
+                    <h2>
+                        <a href="#" data-template="lang:translate">projectWeGA</a>
+                    </h2>
+                    <ul data-template="app-shared:order-list-items">
+                        <li><a href="$link/project/projectDescription.html"><span data-template="lang:translate">projectDescription</span> <i class="fa fa-arrow-right"/></a></li>
+                        <li><a href="$link/project/editorialGuidelines-music.html"><span data-template="lang:translate">editorialGuidelines-music</span> <i class="fa fa-arrow-right"/></a></li>
+                        <li><a href="$link/project/editorialGuidelines-text.html"><span data-template="lang:translate">editorialGuidelines-text</span> <i class="fa fa-arrow-right"/></a></li>
+                        <li><a href="$link/project/bibliography"><span data-template="lang:translate">bibliography</span> <i class="fa fa-arrow-right"/></a></li>
+                        <li><a href="$link/project/news"><span data-template="lang:translate">news</span> <i class="fa fa-arrow-right"/></a></li>
+                        <li><a href="$link/project/contact.html"><span data-template="lang:translate">contact</span> <i class="fa fa-arrow-right"/></a></li>
+                        <li><a href="$link/project/volContents.html"><span data-template="lang:translate">volContents</span> <i class="fa fa-arrow-right"/></a></li>
+                        <!--<li><a href="$link/project/credits.html"><span data-template="lang:translate">credits</span> <i class="fa fa-arrow-right"/></a></li>-->
+                    </ul>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <a href="$link/A002068.html" class="teaser weber"> </a>
+                    <h2>
+                        <a href="$link/A002068.html">Carl Maria von Weber</a>
+                    </h2>
+                    <ul data-template="app-shared:order-list-items">
+                        <li><a href="$link/A002068.html"><span data-template="lang:translate">webers_person</span> <i class="fa fa-arrow-right"/></a></li>
+                        <li><a href="$link/A002068.html#documents"><span data-template="lang:translate">webers_documents</span> <i class="fa fa-arrow-right"/></a></li>
+                        <li><a href="$link/A002068.html#correspondence"><span data-template="lang:translate">webers_correspondence</span> <i class="fa fa-arrow-right"/></a></li>
+                        <li><a href="$link/A002068.html#diaries"><span data-template="lang:translate">webers_diaries</span> <i class="fa fa-arrow-right"/></a></li>
+                        <li><a href="$link/A002068.html#writings"><span data-template="lang:translate">webers_writings</span> <i class="fa fa-arrow-right"/></a></li>
+                        <li><a href="$link/A002068.html#works"><span data-template="lang:translate">webers_works</span> <i class="fa fa-arrow-right"/></a></li>
+                    </ul>
+                </div>
+                <div class="clearfix d-none d-sm-block d-md-none"><!-- break and clearfix for small devices (tablets, 768px and up) --></div>
+                <div class="col-md-3 col-sm-6">
+                    <a href="$link/indices" class="teaser register"> </a>
+                    <h2>
+                        <a href="$link/indices" data-template="lang:translate">complete_indices</a>
+                    </h2>
+                    <ul data-template="app-shared:order-list-items">
+                        <li><a href="$link/indices/persons"><span data-template="lang:translate">all_persons</span> <i class="fa fa-arrow-right"/></a></li>
+                        <li><a href="$link/indices/letters"><span data-template="lang:translate">all_letters</span> <i class="fa fa-arrow-right"/></a></li>
+                        <li><a href="$link/indices/documents"><span data-template="lang:translate">all_documents</span> <i class="fa fa-arrow-right"/></a></li>
+                        <li><a href="$link/indices/writings"><span data-template="lang:translate">all_writings</span> <i class="fa fa-arrow-right"/></a></li>
+                        <li><a href="$link/indices/diaries"><span data-template="lang:translate">all_diaries</span> <i class="fa fa-arrow-right"/></a></li>
+                        <li><a href="$link/indices/works"><span data-template="lang:translate">all_works</span> <i class="fa fa-arrow-right"/></a></li>
+                        <li><a href="$link/indices/places"><span data-template="lang:translate">all_places</span> <i class="fa fa-arrow-right"/></a></li>
+                        <li><a href="$link/indices/thematicCommentaries"><span data-template="lang:translate">all_thematicCommentaries</span> <i class="fa fa-arrow-right"/></a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 col-sm-6 noMargin" data-template="app:index-news-items">
+                    <a href="$link/project/news" class="teaser aktuelles"> </a>
+                    <h2>
+                        <a href="$link/project/news" data-template="lang:translate">newsAboutTheProject</a>
+                    </h2>
+                    <div data-template="app-shared:each" data-template-from="news" data-template-to="newsItem" class="noMargin">
+                        <div data-template="app:index-news-item">
+                            <p data-template="app-shared:print" data-template-key="date">13. September 2018</p>
+                            <p>
+                                <a href="singleAktuelles.php.html" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="url">
+                                    <span data-template="app-shared:output" data-template-key="title">Digitale Edition Version 1.1.8
+                                    veröffentlicht</span> <i class="fa fa-arrow-right"/>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="colored">
+        <div id="otd" data-target="../ajax/otd.html">
+            <div class="container" data-template="app:lookup-todays-events">
+                <div class="row paddingTopIcon">
+                    <div class="col-12 ">
+                        <h2 data-template="app:print-events-title">Was geschah am 9. April?</h2>
+                    </div>
+                </div>
+                <div class="row paddingBottomIcon history">
+                    <div class="col-sm-6">
+                        <p data-template="app-shared:each" data-template-from="events1" data-template-to="event">
+                            <span data-template="app:print-event"/>
+                        </p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p data-template="app-shared:each" data-template-from="events2" data-template-to="event">
+                            <span data-template="app:print-event"/>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

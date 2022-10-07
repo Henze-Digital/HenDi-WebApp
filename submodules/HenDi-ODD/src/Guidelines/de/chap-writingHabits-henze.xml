@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://jenkins.tei-c.org/job/TEIP5-dev/lastStableBuild/artifact/P5/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+<div xmlns="http://www.tei-c.org/ns/1.0" xml:id="chap-writingHabits-henze" xml:lang="de">
+    <head>Henze, Hans Werner</head>
+    <div xml:id="WR-HWH-general">
+        <head>allgemeine Beschreibung</head>
+        <p>Hans Werner Henze bevorzugt in seinen Korrespondenzen die Handschrift. Schon am 2. November 1960 schreibt er an Hans Magnus Enzensberger: <q>denn mir vergehen Stunden und Stunden langsamen Zweifingertippens, Stunden, die ich durch zehnfingrige Entagrammausfüllung im Augenblick dringender ausfüllen müsste.</q> Diese ungeübte, langsame Nutzung der Schreibmaschine scheint Henze nie abgelegt zu haben – einen Teil der offiziellen Korresponenz ließ Henze ja später durch Sekretäre erledigen, so dass sich für ihn wohl keine Notwendigket zur Nutzung der Maschine ergab. Achtung: es gibt einige typoskripte aus Neapel 1959</p>
+        <p>Henze schrieb anfangs vor allem mit Tinte, später auch mit unterschiedlich farbigem Filzstift oder Kugelschreiber. Er bevorzugte ab ??? die Kleinschreibung, anfangs (vgl. die frühen Briefe an Jockisch/Weil) schrieb er Namen und die Anreden Du/Sie noch groß. Bei Erstkontakten mit Personen verwendet Henze auch "normale" Groß- und Kleinschreibung (vgl. Hitzer 12. 8. 1969) Achtung: das Phänomen der Kleinschreibung muss ich noch einmal beobachten. Ist wohl auch ein "sozialistisches" Phänomen.</p>
+        <p>Henze verwendete als Schreibmaterial für Briefe meist "normales" Papier. Seit er seinen Wohnsitz nach La Leprara verlegt hatte, benutzte er persönliches Briefpapier (Kategorisierung vgl. ???). Achtung: erstes Briefpapier aus Neapel 1957?, 1959 (Dieser Brief ist maschinenschriftlich!!)</p>
+        <p></p>
+    </div>
+    <div xml:id="WR-HWH-case">
+        <head>Groß- und Kleinschreibung</head>
+        <p>[Problem: l L</p>
+    </div>
+    <div xml:id="WR-HWH-spelling">
+        <head>Getrennt- und Zusammenschreibung</head>
+        <p>Henze schreibt seit ??? quasi in Druckschrift, wobei die Buchstaben recht weit auseinander stehen. Auch die Abstände zwischen den Worten sind groß. Dennoch kann es gelegentlich zu Problemen bei der Getrennt- oder Zusammenschreibung kommen.</p>
+    </div>
+    <div xml:id="WR-HWH-quotes">
+        <head>Anführungszeichen und Zitate</head>
+        <p>Problem: Anführungszeichen (oben, unten)</p>
+    </div>
+    <div xml:id="WR-HWH-spaces">
+        <head>Laufweite und Lücken</head>
+        <p></p>
+    </div>
+    <div xml:id="WR-HWH-drawings">
+        <head>Zeichnungen</head>
+        <p></p>
+    </div>
+    <div xml:id="WR-HWH-abbrevs">
+        <head>Kürzel</head>
+        <p>in späterer Zeit? für "und" ein Kürzel, dass nur aus u und d besteht</p>
+    </div>
+</div>

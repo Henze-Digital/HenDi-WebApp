@@ -1,0 +1,43 @@
+<div xmlns="http://www.w3.org/1999/xhtml" class="row" data-template="search:results" data-template-docType="writings">
+    <div class="col-md-3 order-2 side-col">
+        <h2><a href="#allFilter" class="collapseSingle" aria-expanded="true" data-toggle="collapse"><span data-template="lang:translate">filter</span></a></h2>
+        <!-- Facetten Filter-->
+        <div class="allFilter panel-collapse collapse show" id="allFilter">
+            <h4 data-template="lang:translate">chronology</h4>
+            <input type="text" class="rangeSlider" name="chronology-slider" data-template="app:set-slider-range"/>
+            
+            <div class="input-group facet-group checkbox">
+                <input type="checkbox" name="undated" id="undatedWritings" data-template="app:set-facet-checkbox" data-template-key="undated"/>
+                <label for="undatedWritings" data-template="lang:translate">showUnpublishedDocuments</label>
+            </div>
+            
+            <h4 data-template="lang:translate">authors</h4>
+            <select multiple="multiple" data-template="facets:select" name="authors"/>
+
+            <h4 data-template="lang:translate">persons_mentioned</h4>
+            <select multiple="multiple" data-template="facets:select" name="persons"/>
+            
+            <h4 data-template="lang:translate">works_mentioned</h4>
+            <select multiple="multiple" data-template="facets:select" name="works"/>
+            
+            <h4 data-template="lang:translate">places_mentioned</h4>
+            <select multiple="multiple" data-template="facets:select" name="places"/>
+            
+            <h4 data-template="lang:translate">journals</h4>
+            <select multiple="multiple" data-template="facets:select" name="journals"/>
+            
+            <h4 data-template="lang:translate">docType</h4>
+            <select multiple="multiple" data-template="facets:select" name="docTypeSubClass"/>
+            
+            <h4 data-template="lang:translate">facsimile</h4>
+            <select multiple="multiple" data-template="facets:select" name="facsimile"/>
+            
+            <h4 data-template="lang:translate">docLang</h4>
+            <select multiple="multiple" data-template="facets:select" name="docLang"/>
+            
+            <h4 data-template="lang:translate">docStatus</h4>
+            <select multiple="multiple" data-template="facets:select" name="docStatus"/>
+        </div>
+    </div>
+	<div data-template="templates:include" data-template-path="templates/includes/search-results.html"/>
+</div>

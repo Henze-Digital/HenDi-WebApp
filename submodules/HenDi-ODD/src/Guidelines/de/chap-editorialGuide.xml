@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://jenkins.tei-c.org/job/TEIP5-dev/lastStableBuild/artifact/P5/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+<div xmlns="http://www.tei-c.org/ns/1.0" xml:id="chap-editorialGuide" xml:lang="de">
+    <head>Typoskripte</head>
+    <p>Ungefähr die Hälfte der Briefe dieser Edition wurden mit der Schreibmaschine geschrieben (zur Vorliebe der Autoren vgl. die Beschreibung ihrer Schreibgewohnheiten) und kommt es hierdurch gelegentlich zu Doppelüberlieferungen, da an der einen Stelle der abgeschickte Brief erhalten ist und an anderer Stelle der ev. aufgehobene Durchschlag. Zum Verhältnis von Originalbrief und Durchschlag vgl. ???</p>
+    <p>Das Medium "Schreibmaschine" hat einige Besonderheiten, auf die hier verwiesen werden muss.</p>
+    <p>Zeilenabstand: Der Zeilenabstand konnte fest eingestellt werden von halbem bis 2,5fachen (?) Zeilenabstand, also in 5 Stufen. Hierbei hat der sog. einfache Abstand bereits zwei Stufen. Um den Text eindeutig lesen zu können, war mindestens ein einzeiliger Abstand notwendig, doch wurde gelegentlich auch manuell der halbe Abstand eingestellt. Dies wurde einerseits dazu genutzt, Absätze von einander zu trennen (hier sind also nicht nur die sonst im Dokument genutzten Leerzeilen sondern auch Zwischenstufen möglich), andererseits um vergessene Worte mit der Maschine nachzutragen. Dies wurde vor allem genutzt, wenn der Grundzeilenabstand größer als 1,5 war, da dann durch die halbzeilige Versetzung ein anderes Wort leserlich eingefügt werden konnte.</p>
+    <p>Durch das Einspannen des Blatt Papiers entsteht oben und unten ein Rand von ca. 2cm, da das Blatt sonst nicht fest auf der Walze hielt. Oben wurde von diesem Rand selten abgewichen, doch konnte es vorkommen, dass der Schreiber nicht merkte, dass das Blatt unten zu Ende ging und noch einmal eine Zeilenschaltung machte. Die dann entstehende Zeile war in der Regel nicht mehr gerade, sondern das Blatt rutschte immer weiter nach oben, so dass die letzte Zeile immer weiter nach unten geriet. Diese typographische Besonderheit wird nicht wiedergegeben, sondern nur in der <g>layoutDesc</g> beschrieben.</p>
+    <p>Streichungen: Um Worte zu tilgen hat sich bei der Schreibmaschine nicht der Bindestrich durchgesetzt, sondern wurde der Buchstabe x verwendet. Diese Form wird mit dem Attribut @typedthrough gekennzeichnet. Gelegentlich kommt es vor allem bei Streichungen von einzelnen Buchstaben vor, dass diese mit einem Schrägstrich / getilgt sind. <!-- geben wir das an? --></p>
+    <p>Autorkorrekturen: kleine Fehler wie ein oder zwei falsche Buchstaben wurden häufig einfach überschrieben. Dies wird mit <g>subst</g> codiert ohne noch einmal die ausdrücklich Angabe, dass die Buchstaben overtyped sind. </p>
+    <p>Buchstabenzusätze wie Akzente: als Type waren auf den Maschinen der accent aigu ´und der accent grave ` vorhanden, aus diesen wurde der accent circonflexe zusammengesetzt. Weitere Zeichen waren auf deutschen Maschinen nicht vorhanden und wurden deshalb weggelassen oder später handschriftlich ergänzt. Für die im Spanischen häufige Tilde wurde gelegentlich ein accent circonflexe gesetzt und für den Strich im c ein Komma in das c geschrieben. Weitere Probleme: umgekehrte ¡ ! und ¿ ?, ... </p>
+    <p>auf der Tastatur fehlende Zeichen: Gegenüber heutigen Tastaturen fehlen auf Schreibmaschinen einige Zeichen. Besonders auffällig ist das Fehlen der Null 0, die durch ein O ersetzt wurde, wobei häufig ein kleines o verwendet wird. Dies wird diplomatisch wiedergegeben. </p>
+    <p>Leerstellen: Da bei Schreibmaschinen die Buchstabenabstände eine feste Breite haben (Festbreitenschrift), lassen sich Lücken sehr genau bestimmen. Die diplomatische Übertragung gibt deshalb fehlende und doppelte Leerzeichen wieder. Entsteht eine Lücke von mehr als drei Zeichen wird diese als <g>space</g> codiert und die Zahl der Leerzeichen mit @n angegeben.</p>
+    <p>Farbband: Zweifarbigkeit</p>
+
+
+	<div xml:id="eG-transcription-general">
+    	<head>Grundsätze der Textübertragung und -auszeichnung</head>
+    	<p>Grundsätzlich werden alle Texte <hi rend="bold">diplomatisch</hi> wiedergegeben (unter Einschluss der originalen Orthographie und Zeichensetzung).</p>
+		<p>Einen Sonderfall stellen die Telegramme dar, die ihre Inhalte stets in Großbuchstaben wiedergeben. Dieser Umstand ist historisch-technisch bedingt. In diesen Fällen, also dass Groß- und Kleinschreibung aufgrund äußerer Einflüsse historisch nicht beachtet werden konnte, werden die Inhalte entsprechend der heute üblichen Groß- und Kleinschreibung übertragen. Damit diese Änderung transparent bleibt, sind sämtliche übertragende Abschnitte mit deinem entsprechenden Markup ausgezeichnet. Eine respektive Anpassung von 'ss' zu 'ß', für welches bis 2020 im Deutschen kein Großbuchstabe exisitierte, wird jedoch nicht vollzogen. Diese Schritte dienen der Lesbarkeit und sind aus Vermittlungsgründen in die Edition eingeführt worden.</p>
+		<egXML xmlns="http://www.tei-c.org/ns/Examples">
+			<hi rend="capital">Dieser Text war in Grossbuchstaben abgedruckt</hi>
+		</egXML>
+	</div>
+    <div xml:id="eG-characters">
+        <head>Zeichenebene</head>
+
+        <div xml:id="eG-lb">
+            <head>Zeilenfall, Trennstriche</head>
+            <p> Der Zeilenfall wird mit lb kodiert. Damit ergibt sich die Möglichkeit eine Lesefassung zu erzeugen. Ein "normaler" Zeilenumbruch wird durch lb dargestellt. Ein Zeilenumbruch, der innerhalb eines Wortes vorlommt und durch einen Trennstrich orthographisch realisiert ist, wird mit lb break="no" kodiert. -> Vergessener Bindestrich = <tag>lb break="no" rend="noHyphen"</tag>! </p>
+        </div>
+        <div xml:id="eG-dashes">
+            <!-- ID ändern -->
+            <head>Abkürzungen</head>
+            <p>Abkürzungen, die unverständlich bleiben und sich nicht durch bloße Ergänzung auflösen lassen, werden in ihrer originalen Form und zusätzlich als wahlweise aufzurufende Vollform wiedergegeben: <!-- Beispiele -->
+                <choice>
+                    <abbr>bzgl.</abbr>
+                    <expan>bezüglich</expan>
+                </choice>
+                <choice><abbr>Sal:</abbr><expan resp="editor">Salzburg</expan></choice> … bringe bitte <choice><abbr>br.</abbr><expan resp="editor">bringe</expan></choice> was mit… </p>
+            <div xml:id="eG-space">
+                <head>Abstände und Leerzeichen</head>
+                <p>In Typoskripten werden (Zeilen-)Abstände abweichend von 1,0 in der <tag>layoutDesc</tag> beschrieben. In allen Dokumenten werden Standard-Einrückungen (erste Zeile eines Absatzes) in der <tag>layoutDesc</tag> angemerkt. Von der Regel abweichende Einschübe werden als <tag>space</tag> kodiert.</p>
+                <p> In Typoskripten ist die Behandlung von Leerzeichen differenziert. Fehlende Leerzeichen (nach Satzzeichen), werden nicht ergänzt sondern diplomatisch wiedergegeben. Die wiedergabe zusätzlicher Leerzeichen erfolgt durch entsprechende Kodierung: <tag>space unit="char" n="1"</tag> (ein zusätzliches Zeichen). <egXML xmlns="http://www.tei-c.org/ns/Examples" source="A040C8D9">
+                        <!-- Einzug von vier Leerzeichen unt ein doppeltes -->
+                        <p><space unit="chars" quantity="4"/>Dieser Absatz beginnt mit einem Einzug. Später folgt eine Lücke mit einem zusätzliche <space unit="chars" quantity="1"/>Leerzeichen.</p>
+                    </egXML>
+                </p>
+            </div>
+            <div xml:id="eG-langTypes">
+                <head>Zeichen anderer Sprachen auf der deutschen Schreibmaschinentastatur</head>
+                <p>Spanisches Alphabet: Tilde, ¿?, ¡!, ñÑ</p>
+                <p>Französisches Alphabet: ^, ç</p>
+            </div>
+
+            <div xml:id="eG-sic">
+                <head>Schreibversehen</head>
+                <p>Schreibversehen (wie z. B. versehentliche Wortwiederholungen) werden in der Regel so übernommen und durch das Element <sic/> markiert, um eine spätere irrtümliche Korrektur durch einen Editor zu verhindern. Dort, wo solche Schreibversehen zu Leseschwierigkeitn führen, kann in einem <choice/>-Element neben der originalen Schreibung (<sic/> oder <orig/>) eine vom Editor angebotene Korrektur angeboten werden (mit <corr resp="XY"/>.</p>
+            </div>
+            <div xml:id="eG-foreign">
+                <!-- korrekt? -->
+                <head>fremdsprachliche Textteile</head>
+                <p>Die Korrespondenz von Henze und seinen Partnern verwendet sehr unterschiedliche Sprachen und fügt immer wieder Worte oder Satzteile in anderen Sprachen ein. Die Grundsprache eines Briefes wird in den Metadaten angegeben, hiervon abweichende Sprachen werden mit <g>foreign</g> gekennzeichnet. Wenn es sich um Einfügungen in anderen Sprachen als deutsch und englisch handelt, wird eine Übersetzung in <g><!-- Übersetzung --></g> ergänzt. <!-- Noch ein Wort zur Darstellung --></p>
+            </div>
+            <div xml:id="eG-lb">
+                <head>Zeilenfall</head>
+                <p>Der Zeilenfall wird diplomatisch wiedergegeben.</p>
+            </div>
+            <div xml:id="eG-case">
+                <head>Groß- und Kleinschreibung</head>
+                <p>Die Groß- und Kleinschreibung wird diplomatisch nach der Vorlage übernommen. Zu den Eigenheiten der einzelnen Briefschreiber vgl. die entsprechende Sektion zu deren Schreibgewohnheiten:</p>
+                <list>
+                    <item><ref target="#chap-writingHabits-auden">Auden, Wystan Hugh</ref></item>
+                    <item><ref target="#chap-writingHabits-enzensberger">Enzensberger, Hans Magnus</ref></item>
+                    <item><ref target="#chap-writingHabits-henze">Henze, Hans Werner</ref></item>
+                    <item><ref target="#chap-writingHabits-kallman">Kallman, Chester</ref></item>
+                </list>
+            </div>
+            <div xml:id="eG-punct">
+                <head>Satzzeichen</head>
+                <p/>
+            </div>
+        	<div xml:id="eG-punct">
+        		<head>Anführungszeichen</head>
+        		<p>Die Verwendung von Anführungszeichen zur Hervorhebung einer Phrase ist von einem Zitat zu unterscheiden. Während das Element <gi>q</gi> lediglich die Anführungszeichen repräsentiert, markiert das Element <gi>quote</gi> ein Zitat. Im Rahmen der Edition werden Anführungzeichen durch die Verwendung dieser beiden Elemente ersetzt, sodass im codierten Text keine Anführungszeichen enthalten sind. Damit aus inhaltlicher Sicht kein Defizit entsteht, werden Abweichungen "von der Norm" codiert.</p>
+        		<p>Diese anzulegende Norm wird in mehreren Schritten definiert:</p>
+        		<list>
+        			<item>Sprache des Dokumentes</item>
+        			<item>Schreibeigenheiten des Autors</item>
+        			<item>Eigenheiten des Dokumentes</item>
+        		</list>
+        		<p>Finden sich keine weiteren Angaben, so ist die Sprache des Dokumentes maßgebend. Das heißt, dass <gi>q</gi> oder <gi>quote</gi> doppelte Anführungszeichen in der definierten Sprache des Dokumentes darstellen. Sind Schreibeigenheiten des Autors bekannt, die durch die Häufigkeit ihrer Verwendung eine Art Norm bilden, so haben diese Vorrang vor der Sprache des Dokumentes. Weist ein Dokument jedoch Eigenheiten auf, die innerhalb des Dokumentes als Standard anzusehen sind (bspw. die konsequente Verwendung von Sternchen als Anführungszeichen) haben diese die oberste Priorität.</p>
+        		<p>Codiert werden immer nur Abweichungen von der jeweils geltenden Norm!</p>
+        		<p>Die unterstützen Zeichen sind:</p>
+        		<list>
+        			<item>„[...]“ und ,[...]‘ (deutsch)</item>
+        			<item>“[...]” und ‘[...]’ (englisch)</item>
+        			<item>«[...]» und ‹[...]› (französisch)</item>
+        		</list>
+        		<p>Werden also keine näheren Angaben gemacht, werden stehen die Elemente <gi>q</gi> und <gi>quote</gi> stellvertretend für doppelte Anführungszeichen in der definierten Sprache des Dokumentes.</p>
+        		<egXML xmlns="http://www.tei-c.org/ns/Examples">
+        			<p>Dieser deutsche Satz <q>enthält</q> doppelte Zeichen.</p>
+        			<!-- Dieser deutsche Satz „enthält“ doppelte Zeichen. -->
+        		</egXML>
+        		<p>Handelt es sich um einfache Anführungszeichen, so ist das entsprechend zu kodieren:</p>
+        		<egXML xmlns="http://www.tei-c.org/ns/Examples">
+        			<p>Dieser deutsche Satz <q rend="single">enthält</q> einfache Zeichen.</p>
+        			<!-- Dieser deutsche Satz ,enthält‘ einfache Zeichen. -->
+        		</egXML>
+        		<p>Im Falle, dass Anführungszeichen einer anderen Sprache verwendet werden, dient das Attribut <att>xml:lang</att> dazu diese Sprache zu definieren.</p>
+        		
+        		<egXML xmlns="http://www.tei-c.org/ns/Examples">
+        			<p>Dieser deutsche Satz <q xml:lang="fr">enthält</q> französische Zeichen.</p>
+        			<!-- Dieser deutsche Satz «enthält» französische Zeichen. -->
+        		</egXML>
+        		<p>Im Falle, dass die Zeichen ungleichmäßig voneinander abweichen, kann dies über eigens dafür definierte Attribute (<att>rendLeft</att>, <att>rendRight</att>) angegeben werden.</p>
+        		<egXML xmlns="http://www.tei-c.org/ns/Examples">
+        			<p>Dieser deutsche Satz <q rendRight="single">enthält</q> solche Abweichungen.</p>
+        			<!-- Dieser deutsche Satz „enthält‘ solche Abweichungen. -->
+        		</egXML>
+        		<p>Auch der Fall, dass eines der beiden Zeichen oder beide fehlen kann auf diese Art kodiert werden. Für ein Fehlen wird der Wert <val>none</val> verwendet. Durch dne Umstand, dass bei der Verwendung der Elemente <gi>q</gi> und <gi>quote</gi> ein Anfangs- und Endpunkt zwangsläufig definiert werden muss, kommt diese form der Codierung einer editorischen Ergänzung gleich.</p>
+        		<egXML xmlns="http://www.tei-c.org/ns/Examples">
+        			<p>In diesem deutschen Satz <q rendRight="none">fehlt</q> etwas.</p>
+        			<!-- In diesem deutschen Satz „fehlt[“] etwas. -->
+        		</egXML>
+        		<p>Zum Hintergrund dieses Modells: Ziel der Edition ist es den Inhalt im Code adäquat abzubilden. Gleichzeitig ist auch die Vermittlung der Forschungsdaten ein wichtiger Aspekt. Ersteres ließe sich auch dadurch realisieren, dass die Anführungszeichen als Textzeichen in die Dateien eingegeben werden. Ein solches Vorgehen verwehrt jedoch die Möglichkeit eine Lesefassung anzubieten, in der z.B. sämtliche Zeichen normalisiert sein könnten. Um also eine Steuerung dieser Zeichen in der späteren Anzeige zu ermöglichen ist es notwendig diese ansteuerbar zu machen. Gleichzeitig soll der Inhalt aber nicht dadurch defizitär werden, dass Rückschlüsse auf das Original (Diplomatik) nicht mehr möglich sind. Aus diesen Gründen werden die Anführungszeichen entsprechend auskodiert. Das Modell der Norm-Hierarchie bringt zwar eine weitere Ebene hinein, durch welche die Komplexität weiter steigt, jedoch müssen dadurch nur wenige Stellen explizit kodiert werden, nämlich die Abweichungen. In der Konstitution komlex, erleichtert dieses Modell die Erarbeitung der Edition.</p>
+        	</div>
+            <div xml:id="eG-apos">
+                <head>Apostroph</head>
+                <p/>
+            </div>
+            <div xml:id="eG-ndash">
+                <head>Gedankenstrich</head>
+                <p/>
+            </div>
+            <div xml:id="eG-ss">
+                <head>Problematik: ss/ß</head>
+                <p/>
+            </div>
+        </div>
+
+
+
+        <div xml:id="eG-currency">
+            <head>Währungssymbole, Längemaße etc.</head>
+            <p/>
+        </div>
+        <div xml:id="eG-notatedmusic">
+            <head>Musiknotation</head>
+        </div>
+        <div xml:id="eG-symbols">
+            <head>Sonstige Symbole und Grafiken</head>
+            <p>Spezielle graphische Zeichen bzw. Zeichenfolgen Henzes und ihre Erläuterung:</p>
+            <table>
+                <row>
+                    <cell/>
+                    <cell/>
+                </row>
+            </table>
+        </div>
+        <div xml:id="eG-textstructure">
+            <head>Textstruktur</head>
+            <p>Die Struktur der Texte kann mit folgenden Elementen untergliedert werden: <specList>
+                    <specDesc key="div"/>
+                    <specDesc key="p"/>
+                    <specDesc key="l"/>
+                    <specDesc key="pb"/>
+                    <specDesc key="cb"/>
+                    <specDesc key="lb"/>
+                    <specDesc key="ab"/>
+                    <specDesc key="seg"/>
+                    <specDesc key="measure"/>
+                    <specDesc key="footNote"/>
+                    <specDesc key="table"/>
+                    <specDesc key="list"/>
+                    <specDesc key="item"/>
+                </specList>
+            </p>
+        </div>
+        <div xml:id="eG-hi">
+            <head>Texthervorhebungen</head>
+            <p>Texthervorhebungen wie Unterstreichungen, Hochstellung, etc. im laufenden Text werden mit dem Element <gi>hi</gi> gekennzeichnet. <!--Mögliche Werte für das Attribut <att>rend</att> sind:-->
+                <specList>
+                    <specDesc key="hi" atts="rend"/>
+                </specList>
+            </p>
+            <p>Unterstreichungen: Einfache, doppelte oder mehrfache Unterstreichungen werden mit dem Element <hi/> (highlighted) im Text vermerkt. Als Attribute werden dabei einerseits die Tatsache der Unterstreichung und die Zahl der Striche angegeben. @rend="underline" n="3". Sofern zusätzliche Binnenunterstreichungen<!-- haben wir das? --> gesetzt sind, werden diese geschachtelt angegeben und zur grundsätzlich vorhandenen Zahl der Striche addiert, d. h. ein innerhalb einer Doppelunterstreichung dreifach unterstrichenes Wort erhält zusätzlich die Binnenangabe @rend="underline" n="1". Die Wiedergabe im angezeigten Text erfolgt zur Zeit nur mit einer Zahl von bis zu zwei Strichen. </p>
+        </div>
+        <div xml:id="eG-textconst">
+            <head>Textkonstitution</head>
+            <p>Textkonstitutionelle Merkmale im Text werden mit den folgenden Elementen erfasst und beschrieben: <specList>
+                    <specDesc key="del"/>
+                    <specDesc key="add"/>
+                    <specDesc key="subst"/>
+                    <specDesc key="space"/>
+                    <specDesc key="damage"/>
+                    <specDesc key="gap"/>
+                    <specDesc key="unclear"/>
+                </specList>
+            </p>
+
+            <div xml:id="eG-deletions">
+                <head>Streichungen des Autors</head>
+                <p>Das einfache Streichen von Worten oder Absätzen wird durch das Element <del/> (deleted) gekennzeichnet, die Form der Streichung sollte dabei durch das Attribut @rend (rendition) angegeben werden (in der Regel als <del rend="strikethrough"/>). Geschieht das Streichen und Ersetzen als ad-hoc-Korrektur in der Zeile, genügt diese Kennzeichnung und es muss kein Substitutionsvorgang bezeichnet werden. </p>
+            </div>
+            <div xml:id="eG-additions">
+                <head>Ergänzungen des Autors</head>
+                <p>Einfügungen, die der Autor (Schreiber) nachträglich oder im Schreibvorgang vorgenommen hat, werden (sofern es sich nicht um Korrekturen durch Eingriffe in die ursprüngliche Substanz) handelt, mit dem Element <add/> (addition) vermerkt. Dabei sollte der Ort der Einfügung mit Hilfe des Attributs @place bezeichnet werden. Als Attributwerte kommen dabei in Frage: „inline“, „margin“, „above“ (the line), „below“ (the line) oder „mixed“. Stammen solche Einfügungen von anderer Hand, kann dies im Attribut @hand ausgewiesen werden. Hinweis: Einfügungen und Zusätze des Herausgebers werden nie mit <add/>, sondern mit <corr/> oder <subst/> vorgenommen! </p>
+            </div>
+
+            <div xml:id="eG-corrections">
+                <head>Korrekturen des Autors</head>
+                <p>(siehe auch: Einfügungen des Autors): Korrekturen, die der Autor (Schreiber) in seinem Text vorgenommen hat, werden als Substitutionsprozess innerhalb des Elements <subst/> dargestellt. Dieser Prozess besteht in der Regel aus zwei Teilen: dem Löschungsvorgang (durch Streichen, Überschreiben o. ä.) und der Ergänzung des neuen Textes (durch Einfügen, Überschreiben o. a.). Der Vorgang ist sowohl hinsichtlich der Art des Löschvorgangs als auch des Ortes, an dem der Ersatztext zu finden ist, näher zu beschreiben. Hinweis: Die Art und Weise der Streichung wird am Element <del/> festgehalten, nicht an <subst/>. Ist der ersetzte Text nicht zu entziffern, so wird innerhalb des Elements <del/> ein Element <gap/> angegeben (das durch @unit und @quantity näher charakterisiert sein kann).<!-- machen wir das? --> Ein Ersetzungsvorgang, bei dem das Wort „wollte“ durch „musste“ überschrieben wurde, sieht daher in der Codierung wie folgt aus: <subst>
+                        <del rend="overwritten">wollte</del>
+                        <add place="inline">musste</add>
+                    </subst></p>
+            </div>
+            <div xml:id="eG-illegible">
+                <head>Unleserliches</head>
+                <p>Hier sind zwei Möglichkeiten zu unterscheiden: 1. Wenn durch Wasserschäden, Siegelloch oder sonstige äußere Einwirkungen (nicht aktives Eingreifen des Schreibers in den Text!) Teile nicht lesbar sind, wird dies durch das Element <damage/> gekennzeichnet. Dabei wird die Ursache der Lesebeeinträchtigung durch das Attribut @agent angegeben. Die Auszeichnung kann als bloße Kennzeichnung der „Schadenstatsache“ erfolgen oder aber unklare bzw. vom Herausgeber ergänzte Lesungen kennzeichnen (Bsp.: An die<damage agent="water"><unclear>ser roten</unclear></damage> Stelle war etwas beschädigt"). Wenn die Ergänzung auf den Hg. zurückgeht und, wie im vorstehenden Falle, etwas „nicht Selbstverständliches“ (zu letzterem gehören Ergänzungen einzelner Buchstaben) umfasst, sollte sich der Hg. als Verantwortlicher eintragen: @resp="JV". Komplett unlesbare Bereiche werde durch das Element <gap/> gekennzeichnet, wobei der Vollständigkeit halber der Umfang mit den Attributen @unit und @quantity notiert werden kann (als Werte kommen z. B. „characters“ in Frage), die Entzifferungsprobleme können zusätzlich durch das Attribut @reason="illegible" vermerkt sein.</p>
+            </div>
+            <div xml:id="eG-unclear???">
+                <head>Unsichere Lesung</head>
+                <p>Alle nur aus Leseschwierigkeiten der Handschrift resultierenden Unklarheiten werden in das Element <unclear/> eingeschlossen. Sofern mehrere Deutungsmöglichkeiten vorhanden sind, werden diese innerhalb des Elements <choice/> zur Auswahl gestellt. In diesem Falle sollte bei den Einzellesungen das Element <unclear/> durch ein Attribut @cert (certainty) ergänzt werden. Als Werte kommen dafür „high“, „medium“, „low“ oder „unknown“ in Frage. Durch das hinzugefügte Attribut @resp ist dabei der für diese Einschätzung verantwortliche Editor erkennbar.</p>
+            </div>
+        </div>
+        <div xml:id="eG-app">
+            <head>Lesarten</head>
+            <p>Für Apparateinträge stehen folgende Elemente zur Verfügung: <specList>
+                    <specDesc key="app"/>
+                    <specDesc key="lem"/>
+                    <specDesc key="rdg"/>
+                </specList>
+            </p>
+        </div>
+        <div xml:id="eG-supplied">
+            <head>Herausgeberergänzungen</head>
+            <p> Gelegentlich kann es vorkommen, dass der Autor zum besseren Textverständnis einzelne fehlende Zeichen oder auch Zeichenfolgen bzw. Worte ergänzen muss/möchte (wenn dies die Folge von Textverlusten ist, vgl. allerdings die Rubrik „Unleserliches 1“). Diese Ergänzungen werden mit dem Attribut @resp innerhalb eines Elements <supplied/> (supplied) vorgenommen (Bsp.: heute kam Friedr<supplied resp="editor">i</supplied>ch). Alle auf diese Weise vorgenommenen Ergänzungen erscheinen z.Zt. im Text in eckigen Klammern; Ausnahme bilden ergänzte Währungsangaben im Tagebuch, diese werden in der Darstellung im Grausatz wiedergegeben. <specList>
+                    <specDesc key="supplied"/>
+                    <specDesc key="choice"/>
+                    <specDesc key="sic"/>
+                    <specDesc key="corr"/>
+                    <specDesc key="abbr"/>
+                    <specDesc key="expan"/>
+                    <specDesc key="note"/>
+                    <!-- editorial, summary, commentary, themCom  -->
+                </specList>
+            </p>
+            <div xml:id="eG-Hg-Korrekturen">
+                <head>Herausgeberkorrekturen</head>
+                <p>(sofern für das Verständnis zwingend): Es kommt vor, dass ganz offensichtlich Falsches zu Missverständnissen führt und besser korrigiert werden sollte (in den früheren Richtlinien war an solchen Stellen die Einfügung eines „[recte:]“ oder „[vielmehr:]“ vorgesehen). Zur Kennzeichnung der originalen Schreibung wird nun ein <sic/>-Element verwendet (das auch eingetragen werden kann, um die Tatsache eigenartiger Schreibungen hervorzuheben, damit in späteren Korrekturgängen an dieser Stelle nicht fälschlich ein Verschreiber des Übertragenden angenommen wird). Die Korrektur selbst kann dann durch <corr/> angegeben werden und der der Urheber sollte sich als Verantwortlicher (@resp="EB") eintragen (liegt eine zweite Quelle für diese Änderung vor, kann sie sogar mit einem zusätzlichen Attribut @source angegeben werden). Das Ganze wird in ein <choice/>-Element eingeschlossen, um eine wahlweise Darstellung zu ermöglichen. </p>
+            </div>
+            <div xml:id="eG-commentary">
+                <head>Herausgeberkommentare</head>
+                <p/>
+                <table>
+                    <row>
+                        <cell>
+                            <tag>note @attribut</tag>
+                        </cell>
+                        <cell> </cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <att>textConst</att>
+                        </cell>
+                        <cell><mentioned>text-Constitution</mentioned> (Textkonstitution): </cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <att>definition</att>
+                        </cell>
+                        <cell><mentioned>Definition</mentioned>: </cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <att>part</att>
+                        </cell>
+                        <cell/>
+                    </row>
+                    <row>
+                        <cell>
+                            <att>commentary</att>
+                        </cell>
+                        <cell><mentioned>Commentary</mentioned> (Einzelstellenkommentar)</cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <att>editorial</att>
+                        </cell>
+                        <cell/>
+                    </row>
+                    <row>
+                        <cell>
+                            <att>summary</att>
+                        </cell>
+                        <cell/>
+                    </row>
+
+                    <row>
+                        <cell>
+                            <att>thematicCom</att>
+                        </cell>
+                        <cell><mentioned>thematic Commentary</mentioned> (Themenkommentar):</cell>
+                    </row>
+                </table>
+            </div>
+
+        </div>
+        <div xml:id="eG-sources">
+            <head>Quellenangaben/Textzeugen</head>
+            <p>
+                <specList>
+                    <specDesc key="sourceDesc"/>
+                    <specDesc key="witness"/>
+                    <specDesc key="biblStruct"/>
+                    <specDesc key="physDesc"/>
+                    <specDesc key="facsimile"/>
+                </specList>
+            </p>
+        </div>
+        <div xml:id="eG-related">
+            <head>Beziehungen zwischen Texten/Dokumenten</head>
+            <p>Briefkontexte, Entwürfe, mehrteilige Schriften, floatingText</p>
+        </div>
+        <div xml:id="eG-semantics">
+            <head>Inhaltliche Auszeichnung</head>
+            <p>
+                <specList>
+                    <specDesc key="persName"/>
+                    <specDesc key="workName"/>
+                    <specDesc key="placeName"/>
+                    <specDesc key="rs"/>
+                    <specDesc key="date"/>
+                </specList>
+            </p>
+        </div>
+    </div>
+</div>

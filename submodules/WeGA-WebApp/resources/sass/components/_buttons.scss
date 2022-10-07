@@ -1,0 +1,86 @@
+label input, .btn input {
+    display:none;
+}
+
+.btn.btn-primary
+{    border-radius:0;
+     padding: 9px 20px;
+     &:hover { 
+        background-color: $blue-light;
+        border-color: $blue-light;
+     }
+}
+
+.btn.btn-checkbox {
+    margin-bottom: 0px;
+    a {
+        display: none;
+        float:right; 
+        }
+        &:hover a {
+        display: inline;
+    }
+}
+
+.btn-group {
+    display: block;
+    .btn, label {
+        color: $body-color!important;
+        font-size: 16px!important;
+        line-height: 19px!important;
+        /*         padding: 14px 20px; */
+        margin-left: 0px!important ;
+        text-align: left; 
+    }
+    input {
+        color: $body-color!important;
+        font-size: 16px!important;
+        line-height: 19px!important; 
+    }
+    
+}
+
+/*.btn-group.primary .btn.gradient-light.active
+{
+    background-color: $primary!important;
+    color: #fff!important;
+}*/
+
+
+.gradient-light
+{
+    background-color: $gray-lightest;
+    &:hover {
+        background-color:$gray-lighter!important;
+    }
+    a {
+        margin:0;
+        border:0;
+        border-left: 4px solid $gray-lighter;
+        box-shadow:none;
+        &:hover {
+            border-color:$blue-light;
+        }
+    }
+    > a.active {
+        background-color: $gray-lighter!important;
+        color: $body-color!important;
+        font-size: 16px!important;
+        line-height: 20px!important;
+        cursor: pointer;
+        width: 100%;
+        border-left: 4px solid $primary!important;
+    }
+    &.active {
+        background-color: $gray-lighter;
+    }
+}
+
+li.nav-item.gradient-light > .active, btn.gradient-light.active {
+    background-color: $gray-lighter;
+}
+
+li.nav-item.gradient-light > .nav-link {
+    border-left:4px solid $gray-light;
+}
+

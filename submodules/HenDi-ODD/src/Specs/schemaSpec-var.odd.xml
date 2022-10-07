@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://jenkins.tei-c.org/job/TEIP5-dev/lastStableBuild/artifact/P5/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+<schemaSpec ident="hwhVar" xml:lang="en" start="TEI" source="../../../WeGA-ODD/compiled-ODD/guidelines-de-wegaVar.compiled.xml"
+    xmlns="http://www.tei-c.org/ns/1.0" 
+    xmlns:rng="http://relaxng.org/ns/structure/1.0"
+    xmlns:sch="http://purl.oclc.org/dsdl/schematron">
+    <moduleRef key="core"/>
+    <moduleRef key="tei"/>
+    <moduleRef key="header"/>
+    <moduleRef key="textstructure"/>
+    <moduleRef key="namesdates"/>
+    <moduleRef key="figures"/>
+    <moduleRef key="tagdocs"/>
+    <moduleRef key="linking"/>
+    <moduleRef key="transcr"/>
+    <moduleRef key="gaiji"/>
+    
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-patterns"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-styleguides"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-lists"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-classes"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-common-atts"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-element-additions"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-common-constraints"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-core"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-header"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-textstructure"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-namesdates"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-figures"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-linking"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-transcr"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-tei-macros"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-datatypes"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-biblStruct"/>
+    
+    <dataSpec ident="hwh.varOrAddenda.pointer">
+        <desc xml:lang="de" versionDate="2017-08-29">fasst die potentiellen internen Verweise zu Varia und Addenda zusammen</desc>
+        <desc xml:lang="en" versionDate="2017-08-29">groups together the possible internal pointers to varia and addenda documents</desc>
+        <content>
+            <alternate>
+                <dataRef key="hwh.var.pointer"/>
+                <dataRef key="hwh.addenda.pointer"/>
+            </alternate>
+        </content>
+    </dataSpec>
+    
+    <elementSpec ident="TEI" mode="change" module="textstructure">
+        <attList>
+            <attDef ident="status" usage="rec" mode="add">
+                <datatype>
+                    <dataRef key="hwh_docStatus.list"/>
+                </datatype>
+            </attDef>
+            <attDef ident="source" mode="add" usage="rec">
+                <valList type="closed">
+                    <valItem ident="HWH" mode="add">
+                        <desc versionDate="2021-10-20" xml:lang="en">organizations from the database of
+                            the Henze-Digital project (HWH).</desc>
+                        <desc versionDate="2021-10-20" xml:lang="de">Organisationen aus dem Datenbestand
+                            des Projektes Henze-Digital (HWH).</desc>
+                    </valItem>
+                </valList>
+            </attDef>
+            <attDef ident="xml:id" mode="change" usage="req">
+                <gloss versionDate="2013-11-11" xml:lang="en">identifier</gloss>
+                <desc versionDate="2013-11-11" xml:lang="en">provides a unique identifier for the element bearing the attribute.</desc>
+                <gloss versionDate="2013-11-11" xml:lang="de">Bezeichner</gloss>
+                <desc versionDate="2013-11-11" xml:lang="de">liefert einen eindeutigen Bezeichner für das Element mit dem Attribut.</desc>
+                <datatype>
+                    <dataRef key="hwh.varOrAddenda.pointer"/>
+                </datatype>
+            </attDef>
+        </attList>
+    </elementSpec>
+    
+    <elementSpec ident="title" mode="change" module="core">
+        <attList>
+            <attDef ident="xml:lang" mode="add" usage="opt">
+                <datatype>
+                    <dataRef key="teidata.language"/>
+                </datatype>
+            </attDef>
+        </attList>
+    </elementSpec>
+
+    <elementSpec ident="keywords" mode="change" module="header">
+        <desc versionDate="2013-11-11" xml:lang="en">contains a list of keywords or phrases identifying the topic or nature of a text.</desc>
+        <desc versionDate="2013-11-11" xml:lang="de">enthält eine Liste von Schlüsselworten oder Phrasen, die den Gegenstand oder die Art eines Textes identifzieren.</desc>
+        <content>
+            <rng:oneOrMore>
+                <rng:ref name="term"/>
+            </rng:oneOrMore>
+        </content>
+        <attList>
+            <attList>
+                <attDef ident="scheme" mode="change" usage="req">
+                    <desc versionDate="2013-11-11" xml:lang="en">identifies the controlled vocabulary within which the set of keywords concerned is defined.</desc>
+                    <desc versionDate="2013-11-11" xml:lang="de">bezeichnet kontrolliert strukturiertes Vokabular, in dem die entsprechenden Keywords definiert sind.</desc>
+                    <valList type="closed" mode="replace">
+                        <valItem ident="hwh_cat"/>
+                    </valList>
+                </attDef>
+            </attList>
+        </attList>
+    </elementSpec>
+    
+    <elementSpec ident="term" mode="change" module="core">
+        <content>
+            <rng:ref name="hwh_keywords.list"/>
+        </content>
+    </elementSpec>
+    
+</schemaSpec>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://jenkins.tei-c.org/job/TEIP5-dev/lastStableBuild/artifact/P5/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+<schemaSpec ident="hwhReviews" xml:lang="en" start="TEI" source="../../../WeGA-ODD/compiled-ODD/guidelines-de-wegaWritings.compiled.xml" xmlns="http://www.tei-c.org/ns/1.0" xmlns:rng="http://relaxng.org/ns/structure/1.0"
+    xmlns:sch="http://purl.oclc.org/dsdl/schematron">
+    
+    <moduleRef key="core"/>
+    <moduleRef key="tei"/>
+    <moduleRef key="header"/>
+    <moduleRef key="textstructure"/>
+    <moduleRef key="namesdates"/>
+    <moduleRef key="figures"/>
+    <moduleRef key="transcr"/>
+    <moduleRef key="msdescription"/>
+    <moduleRef key="linking"/>
+    <moduleRef key="textcrit"/>
+    <moduleRef key="gaiji"/>
+    
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-patterns"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-lists"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-classes"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-element-additions"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-common-constraints"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-styleguides"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-styleguides"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-common-atts"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-tei-atts"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-core"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-header"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-textstructure"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-namesdates"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-figures"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-transcr"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-msdescription"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-linking"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-textcrit"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-gaiji"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-tei-macros"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-datatypes"/>
+    <specGrpRef target="../Specs/common-specs.odd.xml#hwh-biblStruct"/>
+    
+    <elementSpec ident="TEI" mode="change" module="textstructure">
+        <content>
+            <rng:choice>
+                <!--   Ordentlicher Eintrag   -->
+                <rng:group>
+                    <rng:ref name="teiHeader"/>
+                    <rng:choice>
+                        <rng:group>
+                            <rng:oneOrMore>
+                                <rng:ref name="model.resource"/>
+                            </rng:oneOrMore>
+                            <rng:optional>
+                                <rng:ref name="text"/>
+                            </rng:optional>
+                        </rng:group>
+                        <rng:ref name="text"/>
+                    </rng:choice>
+                </rng:group>
+                <!--  Dubletten  -->
+                <rng:element name="ref">
+                    <rng:attribute name="type">
+                        <rng:value>duplicate</rng:value>
+                    </rng:attribute>
+                    <rng:attribute name="target">
+                        <alternate>
+                            <dataRef key="hwh.writings.pointer"/>
+                            <dataRef key="hwh.letters.pointer"/>
+                            <dataRef key="hwh.documents.pointer"/>
+                        </alternate>
+                    </rng:attribute>
+                    <rng:empty/>
+                </rng:element>
+            </rng:choice>
+        </content>
+        <attList>
+            <attDef ident="status" usage="req" mode="add">
+                <datatype>
+                    <dataRef key="hwh_docStatus.list"/>
+                </datatype>
+            </attDef>
+            <attDef ident="xml:id" mode="change" usage="req">
+                <datatype>
+                    <dataRef key="hwh.writings.pointer"/>
+                </datatype>
+            </attDef>
+        </attList>
+    </elementSpec>
+    
+</schemaSpec>
