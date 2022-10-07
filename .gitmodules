@@ -4,5 +4,5 @@
 	ignore = all
 [submodule "submodules/HenDi-ODD"]
 	path = submodules/HenDi-ODD
-	url = https://git.uni-paderborn.de/vife/henze-digital/HenDi-ODD.git
+	url = ../HenDi-ODD.git
 	ignore = all
