@@ -1,9 +1,0 @@
-build
-tmp
-.git
-dist
-local.build.properties
-node_modules
-libs
-.github
-**/.DS_Store
