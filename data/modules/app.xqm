@@ -1975,6 +1975,12 @@ let $references :=
 	                            let $refRecord := $collRef/id($key)
 	                            (: finde Status des Datensatzes heraus :)
 	                            let $refStatus := $refRecord/string(@status)
+	                            (: werfe einen Titel aus :)
+	                            let $refLabel := if(not(starts-with($key, ('A00', 'A08', 'A13'))))
+	                                             then(($refRecord//*:title)[1]//text() => string-join(' ') => normalize-space())
+	                                             else if (starts-with($key, ('A00', 'A08', 'A13')))
+	                                             then($refRecord//(tei:orgName | tei:persName | tei:placeName)[@type="reg"]//text() => string-join('') => normalize-space())
+	                                             else('no title found')
 	                            
 	                            where $refStatus = 'proposed'
 	                            return
