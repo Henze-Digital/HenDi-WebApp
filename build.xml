@@ -7,7 +7,7 @@
 	<property file="${HenDi-WebApp.basedir}/local.build.properties" prefix="hendi"/>
 	<property file="${HenDi-WebApp.basedir}/build.properties" prefix="hendi"/>
 	
-	<import file="WeGA-WebApp/build.xml" as="wega" prefixseparator=":"/>
+	<import file="submodules/WeGA-WebApp/build.xml" as="wega" prefixseparator=":"/>
 	<property file="${WeGA-WebApp.basedir}/local.build.properties" prefix="wega"/>
 	<property file="${WeGA-WebApp.basedir}/build.properties" prefix="wega"/>
 	
@@ -206,7 +206,7 @@
 		<delete dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib/WeGA-ODD"/>
 		<mkdir dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib/WeGA-ODD"/>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib/WeGA-ODD" overwrite="yes">
-			<fileset dir="HenDi-ODD">
+			<fileset dir="submodules/HenDi-ODD">
 				<!--<include name="**/*.*"/>-->
 				<include name="compiled-ODD/*.xml"/>
 				<include name="src/**/*.xml"/>
@@ -216,7 +216,7 @@
 		<delete dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/guidelines"/>
 		<mkdir dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/guidelines"/>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/guidelines" overwrite="yes">
-			<fileset dir="HenDi-ODD/guidelines-html">
+			<fileset dir="submodules/HenDi-ODD/guidelines-html">
 				<include name="*.html"/>
 			</fileset>
 		</copy>
