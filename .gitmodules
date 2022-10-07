@@ -1,0 +1,3 @@
+[submodule "submodules/WeGA-WebApp"]
+	path = submodules/WeGA-WebApp
+	url = https://github.com/Henze-Digital/WeGA-WebApp.git
