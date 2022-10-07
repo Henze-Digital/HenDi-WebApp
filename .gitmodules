@@ -1,8 +1,8 @@
 [submodule "HenDi-ODD"]
-	path = HenDi-ODD
-	url = ../HenDi-ODD.git
-	ignore = dirty
+	path = submodules/HenDi-ODD
+	url = https://git.uni-paderborn.de/vife/henze-digital/HenDi-ODD.git
+	ignore = all
 [submodule "WeGA-WebApp"]
-	path = WeGA-WebApp
+	path = submodules/WeGA-WebApp
 	url = https://github.com/Henze-Digital/WeGA-WebApp.git
-	ignore = dirty
+	ignore = all
