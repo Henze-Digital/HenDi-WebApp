@@ -1984,7 +1984,11 @@ let $references :=
 	                            
 	                            where $refStatus = 'proposed'
 	                            return
-	                                <p id="{$refRecord/string(@xml:id)}">{$refRecord/string(@xml:id)}</p>
+	                                <tr id="{$refRecord/string(@xml:id)}">
+      	                                <td><a href="/{$refRecord/string(@xml:id)}">{$refRecord/string(@xml:id)}</a></td>
+      	                                <td>{$refLabel}</td>
+      	                                <td>{$refStatus}</td>
+	                                </tr>
         
         (:Rückgabe Wert der Schleife:)
         return
@@ -1995,20 +1999,42 @@ let $references :=
     
     return
         <div>
-            { (: Schleife zum Sortieren :)
-            let $prefixes := for $each in distinct-values($referencesDistinct) return substring($each, 1,3)
-            for $prefix in distinct-values($prefixes)
-                let $refs := $referencesDistinct[starts-with(@id, $prefix)]
-                order by $prefix
-                return
-                    <div name="group" prefix="{$prefix}">
-                        <h1>{$prefix}</h1>
-                        {for $ref in $refs
-                        	order by $ref/@id
-                        	return
-                        		$ref}
-                    </div>
-            }
             <h1>Derzeit sind {count($referencesDistinct)} Datensätze anzureichern</h1>
+            <div class="accordion" id="accordEnrichResults">
+                { (: Schleife zum Sortieren :)
+                let $prefixes := for $each in distinct-values($referencesDistinct) return substring($each, 1,3)
+                for $prefix at $i in distinct-values($prefixes)
+                    let $refs := $referencesDistinct[starts-with(@id, $prefix)]
+                    order by $prefix
+                    return
+                        <div name="group" prefix="{$prefix}">
+                             <div class="card">
+                                <div class="card-header" id="heading-{$i}">
+                                  <h2 class="mb-0">
+                                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse-{$i}" aria-expanded="true" aria-controls="collapse-{$i}">
+                                      {$prefix} ({count($refs)} Datensätze)
+                                    </button>
+                                  </h2>
+                                </div>
+                                <div id="collapse-{$i}" class="collapse" aria-labelledby="heading-{$i}" data-parent="#accordEnrichResults">
+                                    <div class="card-body">
+                                        <table style="width: 100%;">
+                                            <tr>
+                                              <th>ID</th>
+                                              <th>Title</th> 
+                                              <th>Status</th>
+                                            </tr>
+                                            {for $ref in $refs
+                                        	   order by $ref/@id
+                                        	   return
+                                        	       $ref
+                                            }
+                                        </table>
+                                    </div>
+                                </div>
+                             </div>
+                        </div>
+                }
+            </div>
         </div>
 };
