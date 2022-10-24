@@ -104,3 +104,20 @@ deploy-webapp:
   except:
     variables:
       - $cronBuildBaseImage == "true"
+
+deploy-webapp-staging:
+  stage: deploy
+  image: curlimages/curl
+  needs: [build-webapp-docker-image-staging]
+  script:
+    echo "$BUILD_PORTAL_STAGING filled with ${$BUILD_PORTAL_STAGING}"
+#    - >
+#      curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "'${CI_REGISTRY_IMAGE}'", "tag": "'${CI_COMMIT_REF_SLUG}-staging'"}'
+  only:
+    refs:
+      - develop
+    variables:
+      - ($cronUpdatePortalIntern == "true" || $CI_COMMIT_MESSAGE  =~ /\(staging\)/ || $BUILD_PORTAL_STAGING == "true")
+  except:
+    variables:
+      - $cronBuildBaseImage == "true"
