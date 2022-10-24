@@ -110,7 +110,7 @@ deploy-webapp-staging:
   image: curlimages/curl
   needs: [build-webapp-docker-image-staging]
   script:
-    echo "$BUILD_PORTAL_STAGING filled with ${$BUILD_PORTAL_STAGING}"
+    echo "$BUILD_PORTAL_STAGING filled with ${BUILD_PORTAL_STAGING}"
 #    - >
 #      curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "'${CI_REGISTRY_IMAGE}'", "tag": "'${CI_COMMIT_REF_SLUG}-staging'"}'
   only:
