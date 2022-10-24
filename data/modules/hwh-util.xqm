@@ -93,7 +93,8 @@ declare function hwh-util:any-equals-any($args as xs:string*, $searchStrings as 
 
 (:~
  : @author  Dennis Ried
- : @param   $results a sequence of nodes to be iterated and ordered 
+ : @param   $results a sequence of nodes to be iterated and ordered
+ : @param   $sortParam (optional) a node that should be used for ordering
 :)
 declare function hwh-util:iterateResults($results as node()*, $sortParam as node()?) as node()* {
     for $result in $results
