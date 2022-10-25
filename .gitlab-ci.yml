@@ -38,6 +38,8 @@ build-webapp:
     refs:
       - merge_requests
       - develop
+    variables:
+      - ($cronUpdatePortalIntern == "true" || $BUILD_PORTAL_STAGING == "true")
   except:
     variables:
       - $cronBuildBaseImage == "true"
@@ -62,6 +64,8 @@ build-webapp-docker-image:
     refs:
       - merge_requests
       - develop
+    variables:
+      - ($cronUpdatePortalIntern == "true" || $BUILD_PORTAL_STAGING == "true")
   except:
     variables:
       - $cronBuildBaseImage == "true"
@@ -116,7 +120,7 @@ deploy-webapp-staging:
     refs:
       - develop
     variables:
-      - ($cronUpdatePortalIntern == "true" || $CI_COMMIT_MESSAGE  =~ /\(staging\)/ || $BUILD_PORTAL_STAGING == "true")
+      - ($CI_COMMIT_MESSAGE  =~ /\(staging\)/ || $BUILD_PORTAL_STAGING == "true")
   except:
     variables:
       - $cronBuildBaseImage == "true"
