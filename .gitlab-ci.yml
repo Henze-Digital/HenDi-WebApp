@@ -68,7 +68,7 @@ build-webapp-docker-image:
       - ($cronUpdatePortalIntern == "true" || $BUILD_PORTAL_STAGING == "true")
   except:
     variables:
-      - $cronBuildBaseImage == "true"
+      - ($cronBuildBaseImage == "true" || $BUILD_PORTAL_STAGING == "true")
 
 build-webapp-docker-image-staging:
   stage: build
@@ -107,7 +107,7 @@ deploy-webapp:
       - ($cronUpdatePortalIntern == "true" || $CI_COMMIT_MESSAGE  =~ /\(ready\)/ )
   except:
     variables:
-      - $cronBuildBaseImage == "true"
+      - ($cronBuildBaseImage == "true" || $BUILD_PORTAL_STAGING == "true")
 
 deploy-webapp-staging:
   stage: deploy
