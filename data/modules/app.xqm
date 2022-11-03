@@ -2004,6 +2004,12 @@ let $references :=
                 { (: Schleife zum Sortieren :)
                 let $prefixes := for $each in distinct-values($referencesDistinct) return substring($each, 1,3)
                 for $prefix at $i in distinct-values($prefixes)
+                    let $prefixResolved := switch ($prefix)
+                                           case 'A00' return 'Persons'
+                                           case 'A02' return 'Works'
+                                           case 'A08' return 'Orgs'
+                                           case 'A13' return 'Places'
+                                           default return $prefix
                     let $refs := $referencesDistinct[starts-with(@id, $prefix)]
                     order by $prefix
                     return
@@ -2012,7 +2018,7 @@ let $references :=
                                 <div class="card-header" id="heading-{$i}">
                                   <h2 class="mb-0">
                                     <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse-{$i}" aria-expanded="true" aria-controls="collapse-{$i}">
-                                      {$prefix} ({count($refs)} Datensätze)
+                                      {$prefix} | {$prefixResolved} ({count($refs)} Datensätze)
                                     </button>
                                   </h2>
                                 </div>
