@@ -2044,3 +2044,27 @@ let $references :=
             </div>
         </div>
 };
+
+declare function app:guidelines-preview($node as node(), $model as map(*))  {
+
+let $targets := for $each in xmldb:get-child-resources('/db/apps/HenDi-WebApp/guidelines/')
+                    return
+                        substring-before(substring-after($each, 'guidelines-de-'), '.html')
+
+let $links := for $target in $targets
+                return
+                    <li xmlns="http://www.w3.org/1999/xhtml">
+                        <a target="_blank" href="/guidelines/guidelines-de-{$target}.html">{replace($target, 'hendi','')}</a>
+                    </li>
+return
+    (<h1 xmlns="http://www.w3.org/1999/xhtml">Dokumentation</h1>,
+     <ul style="list-style: square;" xmlns="http://www.w3.org/1999/xhtml">
+        {for $link in $links
+            let $linkName := $link//xhtml:a/text()
+            order by $linkName
+            return
+                $link
+        }
+     </ul>
+    )
+};
