@@ -7,9 +7,36 @@ variables:
     GIT_SUBMODULE_STRATEGY: recursive
 
 stages:
+  - update
   - build
   - deploy
-    
+
+update-submodules:
+  stage: update
+  image: $IMAGE_TAG_BASE
+  script:
+    - git config user.email "${GITLAB_USER_EMAIL}"
+    - git config user.name "${GITLAB_USER_NAME}"
+    - git config pull.rebase true
+    - git remote set-url origin https://${HENDI_DATA_CI_TOKEN_NAME}:${HENDI_DATA_CI_TOKEN}@git.uni-paderborn.de/vife/henze-digital/henze-digital.git
+    - git pull origin ${CI_COMMIT_REF_NAME} #--allow-unrelated-histories
+    - cd submodules/HenDi-ODD
+    - git checkout develop
+    - git pull
+    - cd ../../
+    - |- 
+      if [[ -z $(git status -s) ]];
+      then
+        echo "No changes detected. Nothing to commit."
+      else
+        git add submodules/HenDi-ODD
+        git commit -m "auto update submodule"
+        git push origin HEAD:${CI_COMMIT_REF_NAME} -o ci.skip
+      fi
+  only:
+    variables:
+      - $TRIGGER_UPDATE_SUBMODULE == "true"
+
 build-base-image:
   stage: build
   image: docker:20.10
