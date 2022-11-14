@@ -6,3 +6,5 @@
 [submodule "submodules/HenDi-ODD"]
 	path = submodules/HenDi-ODD
 	url = git@git.uni-paderborn.de:vife/henze-digital/HenDi-ODD.git
+	ignore = all
+	shallow = true
