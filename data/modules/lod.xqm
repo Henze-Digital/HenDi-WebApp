@@ -86,13 +86,13 @@ declare function lod:jsonld($model as map(*), $lang as xs:string) as map(*) {
         'description': lod:DC.description($model, $lang)
     }
     let $publisher := map {
-        'name':'Carl-Maria-von-Weber-Gesamtausgabe',
-        'url':'http://weber-gesamtausgabe.de',
+        'name':'Henze-Digital',
+        'url':'https://henze-digital.zenmem.de',
         '@type':'Organization'
     }
     let $funder := map {
-        'name':'Akademie der Wissenschaften und der Literatur, Mainz',
-        'url':'http://adwmainz.de',
+        'name':'Deutsche Forschungsgemeinschaft, Bonn',
+        'url':'https://www.dfg.de',
         '@type':'Organization'
     }
     let $mentions := () 
