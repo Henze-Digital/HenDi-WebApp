@@ -235,7 +235,7 @@ declare %private function lod:page-title($model as map(*), $lang as xs:string) a
         default return gl:chapter-heading(<a/>, $model)
     else
         switch($model('docID'))
-        case 'indices' return 'Carl-Maria-von-Weber-Gesamtausgabe – ' || lang:get-language-string('metaTitleIndex-' || $model('docType'), $lang)
+        case 'indices' return 'Henze-Digital – ' || lang:get-language-string('metaTitleIndex-' || $model('docType'), $lang)
         case 'home' return lang:get-language-string('metaTitleIndex-home', $lang)
         case 'search' return lang:get-language-string('metaTitleIndex-search', $lang)
         default return  
@@ -277,8 +277,8 @@ declare %private function lod:DC.subject($model as map(*), $lang as xs:string) a
  : Helper function for collecting creator information
 ~:)
 declare %private function lod:DC.creator($model as map(*)) as xs:string? {
-    if($model('docID') = ('indices', 'home', 'search')) then 'Carl-Maria-von-Weber-Gesamtausgabe'
-    else if($model?specID or $model?chapID) then 'Carl-Maria-von-Weber-Gesamtausgabe'
+    if($model('docID') = ('indices', 'home', 'search')) then 'Henze-Digital'
+    else if($model?specID or $model?chapID) then 'Henze-Digital'
     else if(config:get-doctype-by-id($model('docID'))) then map:get(config:get-svn-props($model('docID')), 'author')
     else ()
 };
