@@ -2053,18 +2053,14 @@ let $targets := for $each in xmldb:get-child-resources('/db/apps/HenDi-WebApp/gu
 
 let $links := for $target in $targets
                 return
-                    <li xmlns="http://www.w3.org/1999/xhtml">
-                        <a target="_blank" href="/guidelines/guidelines-de-{$target}.html">{replace($target, 'hendi','')}</a>
-                    </li>
+                    <a xmlns="http://www.w3.org/1999/xhtml" class="btn btn-secondary" target="_blank" href="/guidelines/guidelines-de-{$target}.html" style="padding: 1em; margin-right: 0.6em;">{replace($target, 'hendi','')}</a>
 return
-    (<h1 xmlns="http://www.w3.org/1999/xhtml">Dokumentation</h1>,
-     <ul style="list-style: square;" xmlns="http://www.w3.org/1999/xhtml">
+    <div xmlns="http://www.w3.org/1999/xhtml">
         {for $link in $links
-            let $linkName := $link//xhtml:a/text()
+            let $linkName := $link/text()
             order by $linkName
             return
                 $link
         }
-     </ul>
-    )
+     </div>
 };
