@@ -195,6 +195,7 @@
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/favicons" overwrite="yes" failonerror="no">
 			<fileset dir="hendi-secrets/wega-app/">
 				<include name="favicon*.png"/>
+				<include name="apple-touch-icon-*.png"/>
 			</fileset>
 		</copy>
 		<echo>Add fonts.</echo>
