@@ -192,10 +192,21 @@
 			</fileset>
 		</copy>
 		<echo>Add favicons.</echo>
+		<delete>
+			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/favicons">
+				<include name="apple-touch-*.png"/>
+				<include name="android-chrome*.png"/>
+				<include name="mstile-*.png"/>
+				<include name="safari-pinned-tab.svg"/>
+			</fileset>
+		</delete>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/favicons" overwrite="yes" failonerror="no">
 			<fileset dir="hendi-secrets/wega-app/">
+				<include name="favicon.ico"/>
 				<include name="favicon*.png"/>
 				<include name="apple-touch-icon-*.png"/>
+				<include name="android-chrome-*.png"/>
+				<include name="manifest.json"/>
 			</fileset>
 		</copy>
 		<echo>Add fonts.</echo>
