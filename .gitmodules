@@ -3,3 +3,6 @@
 	url = https://github.com/Henze-Digital/WeGA-WebApp.git
 	ignore = all
 	shallow = true
+[submodule "submodules/HenDi-ODD"]
+	path = submodules/HenDi-ODD
+	url = git@git.uni-paderborn.de:vife/henze-digital/HenDi-ODD.git
