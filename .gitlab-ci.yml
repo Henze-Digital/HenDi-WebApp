@@ -18,7 +18,7 @@ update-submodules:
     - git config user.email "${GITLAB_USER_EMAIL}"
     - git config user.name "${GITLAB_USER_NAME}"
     - git config pull.rebase true
-    - git remote set-url origin https://${HENDI_DATA_CI_TOKEN_NAME}:${HENDI_DATA_CI_TOKEN}@git.uni-paderborn.de/vife/henze-digital/henze-digital.git
+    - git remote set-url origin https://${HENDI_DATA_CI_TOKEN_NAME}:${HENDI_DATA_CI_TOKEN}@git.uni-paderborn.de/vife/henze-digital/hwh-webapp.git
     - git pull origin ${CI_COMMIT_REF_NAME} #--allow-unrelated-histories
     - cd submodules/HenDi-ODD
     - git checkout develop
