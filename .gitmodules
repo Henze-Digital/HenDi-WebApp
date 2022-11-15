@@ -6,5 +6,4 @@
 [submodule "submodules/HenDi-ODD"]
 	path = submodules/HenDi-ODD
 	url = ../HenDi-ODD.git
-	ignore = all
 	shallow = true
