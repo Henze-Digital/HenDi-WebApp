@@ -65,7 +65,6 @@ build-webapp:
     refs:
       - merge_requests
       - develop
-      - stable
     variables:
       - ($cronUpdatePortalIntern == "true" || $BUILD_PORTAL_STAGING == "true")
   except:
