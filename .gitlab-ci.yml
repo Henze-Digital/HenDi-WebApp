@@ -80,7 +80,7 @@ build-webapp-stable:
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
-    - ant xar -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
+    - ant xar-stable -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   only:
     refs:
       - stable
