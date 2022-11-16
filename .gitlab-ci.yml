@@ -75,6 +75,23 @@ build-webapp:
     paths:
       - hendi-pkg-webapp/HenDi-WebApp-*.xar
 
+build-webapp-stable:
+  stage: build
+  image: $IMAGE_TAG_BASE
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+  script:
+    - ant xar -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
+  only:
+    refs:
+      - stable
+  except:
+    variables:
+      - $cronBuildBaseImage == "true"
+  artifacts:
+    paths:
+      - hendi-pkg-webapp-stable/HenDi-WebApp-*.xar
+
 build-webapp-docker-image:
   stage: build
   image: docker:20.10
@@ -126,9 +143,9 @@ build-webapp-docker-image-stable:
   image: docker:20.10
   services:
     - docker:20.10-dind
-  needs: [build-webapp]
+  needs: [build-webapp-stable]
   dependencies:
-    - build-webapp
+    - build-webapp-stable
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker run --privileged --rm tonistiigi/binfmt --install all
