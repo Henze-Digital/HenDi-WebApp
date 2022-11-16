@@ -152,10 +152,7 @@ build-webapp-docker-image-stable:
     - docker buildx build --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN} --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG}-staging -f Dockerfile.stable .
   only:
     refs:
-      - merge_requests
       - stable
-    variables:
-      - $BUILD_PORTAL_STABLE == "true"
   except:
     variables:
       - $cronBuildBaseImage == "true"
