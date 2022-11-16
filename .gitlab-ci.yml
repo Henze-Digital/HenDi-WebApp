@@ -65,6 +65,7 @@ build-webapp:
     refs:
       - merge_requests
       - develop
+      - stable
     variables:
       - ($cronUpdatePortalIntern == "true" || $BUILD_PORTAL_STAGING == "true")
   except:
@@ -119,6 +120,29 @@ build-webapp-docker-image-staging:
   except:
     variables:
       - $cronBuildBaseImage == "true"
+      
+build-webapp-docker-image-stable:
+  stage: build
+  image: docker:20.10
+  services:
+    - docker:20.10-dind
+  needs: [build-webapp]
+  dependencies:
+    - build-webapp
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker run --privileged --rm tonistiigi/binfmt --install all
+    - docker buildx create --name mybuilder --use
+    - docker buildx build --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN} --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG}-staging -f Dockerfile.stable .
+  only:
+    refs:
+      - merge_requests
+      - stable
+    variables:
+      - $BUILD_PORTAL_STABLE == "true"
+  except:
+    variables:
+      - $cronBuildBaseImage == "true"
 
 deploy-webapp:
   stage: deploy
@@ -148,6 +172,22 @@ deploy-webapp-staging:
       - develop
     variables:
       - ($CI_COMMIT_MESSAGE  =~ /\(staging\)/ || $BUILD_PORTAL_STAGING == "true")
+  except:
+    variables:
+      - $cronBuildBaseImage == "true"
+
+deploy-webapp-stable:
+  stage: deploy
+  image: curlimages/curl
+  needs: [build-webapp-docker-image-stable]
+  script:
+    - >
+      curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "'${CI_REGISTRY_IMAGE}'", "tag": "'${CI_COMMIT_REF_SLUG}-stable'"}'
+  only:
+    refs:
+      - stable
+    variables:
+      - ($CI_COMMIT_MESSAGE  =~ /\(stable\)/ || $BUILD_PORTAL_STABLE == "true")
   except:
     variables:
       - $cronBuildBaseImage == "true"
