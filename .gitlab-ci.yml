@@ -199,8 +199,8 @@ deploy-webapp-stable:
   only:
     refs:
       - stable
-    variables:
-      - ($CI_COMMIT_MESSAGE  =~ /\(stable\)/ || $BUILD_PORTAL_STABLE == "true")
+    #variables:
+    #  - ($CI_COMMIT_MESSAGE  =~ /\(stable\)/ || $BUILD_PORTAL_STABLE == "true")
   except:
     variables:
       - $cronBuildBaseImage == "true"
