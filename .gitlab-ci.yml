@@ -84,9 +84,11 @@ build-webapp-stable:
   only:
     refs:
       - stable
+    variables:
+      - $BUILD_PORTAL_STABLE == "true"
   except:
     variables:
-      - $cronBuildBaseImage == "true"
+      - ($cronBuildBaseImage == "true" || $cronUpdatePortalIntern == "true" || $BUILD_PORTAL_STAGING == "true")
   artifacts:
     paths:
       - hendi-pkg-webapp-stable/HenDi-WebApp-*.xar
@@ -129,7 +131,7 @@ build-webapp-docker-image-staging:
     - docker buildx build --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN} --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG}-staging -f Dockerfile.staging .
   only:
     refs:
-      #- merge_requests
+      - merge_requests
       - develop
     variables:
       - $BUILD_PORTAL_STAGING == "true"
@@ -153,9 +155,11 @@ build-webapp-docker-image-stable:
   only:
     refs:
       - stable
+    variables:
+      - $BUILD_PORTAL_STABLE == "true"
   except:
     variables:
-      - $cronBuildBaseImage == "true"
+      - ($cronBuildBaseImage == "true" || $cronUpdatePortalIntern == "true" || $BUILD_PORTAL_STAGING == "true")
 
 deploy-webapp:
   stage: deploy
@@ -199,8 +203,8 @@ deploy-webapp-stable:
   only:
     refs:
       - stable
-    #variables:
-    #  - ($CI_COMMIT_MESSAGE  =~ /\(stable\)/ || $BUILD_PORTAL_STABLE == "true")
+    variables:
+      - ($CI_COMMIT_MESSAGE  =~ /\(stable\)/ || $BUILD_PORTAL_STABLE == "true")
   except:
     variables:
       - $cronBuildBaseImage == "true"
