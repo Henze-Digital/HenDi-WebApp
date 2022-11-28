@@ -2070,41 +2070,43 @@ declare function app:letters-to-check($node as node(), $model as map(*))  {
 let $collPostals := core:getOrCreateColl('letters', 'indices', true())/tei:TEI[.//tei:text//tei:p]
 let $entries := for $letter at $n in $collPostals
 			        let $letterID := $letter/string(@xml:id)
-			        let $letterSentPers := $letter//tei:correspAction[@type='send']/tei:persName/text()
-			        let $letterSentDate := $letter//tei:correspAction[@type='send']/tei:date/text()
-			        let $letterTitle := wdt:lookup(config:get-doctype-by-id($letterID), $model('doc'))?title('html')
+			        let $letterSentPers := $letter//tei:correspAction[@type='sent']/tei:persName/text()/normalize-space() => string-join(' | ')
+			        let $letterSentDate := $letter//tei:correspAction[@type='sent']/tei:date[1]/text()
 			        let $hasComments := $letter//tei:text//comment()
-			        let $needsDimensions := $letter//tei:objectDesc//tei:dimensions
+			        let $needsHeight := $letter//tei:objectDesc//tei:dimensions/tei:height/@quantity/number() = 0
+			        let $needsWidth := $letter//tei:objectDesc//tei:dimensions/tei:width/@quantity/number() = 0
+			        let $needsDimensions := $needsHeight = true() or $needsWidth = true()
 			        let $message := if($hasComments and not($needsDimensions))
-			        				then('Enthält Kommentare')
+			        				then(<i><span style="color: green;">Enthält Kommentare</span></i>)
 			        				else if (not($hasComments) and $needsDimensions)
-			        				then ('Abmessungen fehlen')
-			        				else ('Enthält Kommentare, Abmessungen fehlen')
+			        				then (<i><span style="color: red;">Abmessungen fehlen</span></i>)
+			        				else (<i><span style="color: green;">Enthält Kommentare</span>, <span style="color: red;">Abmessungen fehlen</span></i>)
 			        				
 			        return
-			            <tr id="{$letterID}" sender="{$letterSentPers}">
+			            <tr id="{$letterID}" date="{$letterSentDate}" sender="{$letterSentPers}" xmlns="http://www.w3.org/1999/xhtml" style="vertical-align: top; border-bottom: dashed 1px;">
 			                  <td><a href="/{$letterID}">{$letterID}</a></td>
-			                  <td>{$letterSentDate || ' | ' || $letterSentPers}</td>
-			                  <td>{$letterTitle}</td>
-			                  <td>{$message}</td>
+			                  <td>{$letterSentDate}</td>
+			                  <td>{$letterSentPers}</td>
+			                  <td>{if($hasComments)
+			                       then($message, <ul>{for $comment in $hasComments return <li>{string($comment)}</li>}</ul>)
+			                       else($message)
+			                  }</td>
 			            </tr>
     
     return
-        <div>
-            <h1>Folgende Briefe enthalten noch Kommentare im Text</h1>
+        <div xmlns="http://www.w3.org/1999/xhtml">
+            <h1>Zu überprüfende Briefe</h1>
             <div class="accordion" id="accordEnrichResults">
-                { (: Schleife zum Sortieren :)
-                for $entry at $i in $entries
-                	let $sender := string($entry/@sender)
+                {for $sender at $i in distinct-values($entries/@sender)
+                    let $entryCount := count($entries[@sender = $sender])
                     order by $sender
-                    group by $sender
                     return
-                        <div name="group" sender="{$letterSentPers}">
+                        <div name="group" sender="{$sender}">
                              <div class="card">
                                 <div class="card-header" id="heading-{$i}">
                                   <h2 class="mb-0">
                                     <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse-{$i}" aria-expanded="true" aria-controls="collapse-{$i}">
-                                      {$sender} ({count($entry)} Datensätze)
+                                      {$sender} ({$entryCount} Datensätze)
                                     </button>
                                   </h2>
                                 </div>
@@ -2112,12 +2114,16 @@ let $entries := for $letter at $n in $collPostals
                                     <div class="card-body">
                                         <table style="width: 100%;">
                                             <tr>
-                                              <th>ID</th>
-                                              <th>Metadata</th>
-                                              <th>Title</th>
-                                              <th>Status</th>
+                                              <th style="width: 10%">ID</th>
+                                              <th style="width: 15%">Datum</th>
+                                              <th style="width: 15%">Absender</th>
+                                              <th>Bemerkung</th>
                                             </tr>
-                                            {$entry}
+                                            {for $entry in $entries[@sender = $sender]
+                                                order by $entry/@date
+                                                return
+                                                    $entry
+                                            }
                                         </table>
                                     </div>
                                 </div>
