@@ -2064,3 +2064,66 @@ return
         }
      </div>
 };
+
+declare function app:letters-to-check($node as node(), $model as map(*))  {
+
+let $collPostals := core:getOrCreateColl('letters', 'indices', true())/tei:TEI[.//tei:text//tei:p]
+let $entries := for $letter at $n in $collPostals
+			        let $letterID := $letter/string(@xml:id)
+			        let $letterSentPers := $letter//tei:correspAction[@type='send']/tei:persName/text()
+			        let $letterSentDate := $letter//tei:correspAction[@type='send']/tei:date/text()
+			        let $letterTitle := wdt:lookup(config:get-doctype-by-id($letterID), $model('doc'))?title('html')
+			        let $hasComments := $letter//tei:text//comment()
+			        let $needsDimensions := $letter//tei:objectDesc//tei:dimensions
+			        let $message := if($hasComments and not($needsDimensions))
+			        				then('Enthält Kommentare')
+			        				else if (not($hasComments) and $needsDimensions)
+			        				then ('Abmessungen fehlen')
+			        				else ('Enthält Kommentare, Abmessungen fehlen')
+			        				
+			        return
+			            <tr id="{$letterID}" sender="{$letterSentPers}">
+			                  <td><a href="/{$letterID}">{$letterID}</a></td>
+			                  <td>{$letterSentDate || ' | ' || $letterSentPers}</td>
+			                  <td>{$letterTitle}</td>
+			                  <td>{$message}</td>
+			            </tr>
+    
+    return
+        <div>
+            <h1>Folgende Briefe enthalten noch Kommentare im Text</h1>
+            <div class="accordion" id="accordEnrichResults">
+                { (: Schleife zum Sortieren :)
+                for $entry at $i in $entries
+                	let $sender := string($entry/@sender)
+                    order by $sender
+                    group by $sender
+                    return
+                        <div name="group" sender="{$letterSentPers}">
+                             <div class="card">
+                                <div class="card-header" id="heading-{$i}">
+                                  <h2 class="mb-0">
+                                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse-{$i}" aria-expanded="true" aria-controls="collapse-{$i}">
+                                      {$sender} ({count($entry)} Datensätze)
+                                    </button>
+                                  </h2>
+                                </div>
+                                <div id="collapse-{$i}" class="collapse" aria-labelledby="heading-{$i}" data-parent="#accordEnrichResults">
+                                    <div class="card-body">
+                                        <table style="width: 100%;">
+                                            <tr>
+                                              <th>ID</th>
+                                              <th>Metadata</th>
+                                              <th>Title</th>
+                                              <th>Status</th>
+                                            </tr>
+                                            {$entry}
+                                        </table>
+                                    </div>
+                                </div>
+                             </div>
+                        </div>
+                }
+            </div>
+        </div>
+};
