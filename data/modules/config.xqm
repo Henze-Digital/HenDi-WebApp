@@ -32,6 +32,8 @@ declare variable $config:app-root as xs:string :=
         if (starts-with($rawPath, "xmldb:exist://")) then
             if (starts-with($rawPath, "xmldb:exist://embedded-eXist-server")) then
                 substring($rawPath, 36)
+            else if (contains($rawPath, "/xmlrpc/")) then
+                substring-after($rawPath, "/xmlrpc")
             else
                 substring($rawPath, 15)
         else
@@ -165,16 +167,16 @@ declare function config:set-option($key as xs:string, $value as xs:string) as xs
     return
         if($old) then try {(
             update value $old with $value,
-            config:log('debug', 'set preference "' || $key || '" to "' || $value || '"'),
+            config:log('debug', 'set app preference "' || $key || '" to "' || $value || '"'),
             $value
             )}
-            catch * { config:log('error', 'failed to set preference "' || $key || '" to "' || $value || '". Error was ' || string-join(($err:code, $err:description), ' ;; ')) }
+            catch * { config:log('error', 'failed to set app preference "' || $key || '" to "' || $value || '". Error was ' || string-join(($err:code, $err:description), ' ;; ')) }
         else try {( 
             update insert <entry xml:id="{$key}">{$value}</entry> into $config:options-file/id('various'),
-            config:log('debug', 'added preference "' || $key || '" with value "' || $value || '"'),
+            config:log('debug', 'added app preference "' || $key || '" with value "' || $value || '"'),
             $value
             )}
-            catch * { config:log('error', 'failed to add preference "' || $key || '" with value "' || $value || '". Error was ' || string-join(($err:code, $err:description), ' ;; ')) }
+            catch * { config:log('error', 'failed to add app preference "' || $key || '" with value "' || $value || '". Error was ' || string-join(($err:code, $err:description), ' ;; ')) }
 };
 
 (:~
@@ -488,33 +490,71 @@ declare function config:get-xsl-params($params as map(*)?) as element(parameters
 };
 
 (:~
- : get (from URL parameter, or session, or options file) and set (to the session) the default entries per page
-~:)
+ : Get from URL parameter and set (to the session) the default entries per page (= limit parameter).
+ : This dedicated function is needed to update the "limit" preference which is not
+ : POSTed to the API by the frontend but set via GET parameter.
+ :)
 declare function config:entries-per-page() as xs:int {
     let $urlParam := if(request:exists()) then request:get-parameter('limit', ()) else ()
-    let $sessionParam := if(session:exists()) then session:get-attribute('limit') else ()
-    let $default-option := config:get-option('entriesPerPage')
     return
-        if($urlParam castable as xs:int and xs:int($urlParam) <= 50) then (xs:int($urlParam), session:set-attribute('limit', xs:int($urlParam)))
-        else if($sessionParam castable as xs:int) then $sessionParam
-        else if($default-option castable as xs:int) then xs:int($default-option)
-        else (10, config:log('error', 'Failed to get default "entriesPerPage" from options file. Falling back to "10"!'))
+        if($urlParam castable as xs:int and xs:int($urlParam) = (10,25,50))
+        then config:set-preferences(map { 'limit': xs:int($urlParam) })?limit
+        else config:get-preferences()?limit
 };
 
 (:~
- : get (from URL parameter, or session, or options file) and set (to the session) the line wrap preference of the user
-~:)
-declare function config:line-wrap() as xs:boolean {
-    let $urlParam := if(request:exists()) then request:get-parameter('line-wrap', ()) else ()
-    let $sessionParam := if(session:exists()) then session:get-attribute('line-wrap') else ()
-    let $default-option := true() (:config:get-option('line-wrap'):)
-    return
-        if($urlParam) then 
-            if($urlParam = ('true', '1', 'yes')) then (true(), session:set-attribute('line-wrap', true()))
-            else (false(), session:set-attribute('line-wrap', false()))
-        else if($sessionParam instance of xs:boolean) then $sessionParam
-        else if($default-option instance of xs:boolean) then $default-option
-        else (true(), config:log('error', 'Failed to get default "line-wrap" from options file. Falling back to "true"!'))
+ : Set user preferences and save to the current session.
+ : NB, no checks (for valid keys/values) are implemented here 
+ : but should be present in the calling function
+ :
+ : @param $settings the new settings as map
+ : @return a map object like `map {
+            'line-wrap': true(),
+            'limit': 10,
+            'rdg-marker': false(),
+            'textConst-marker': true(),
+            'supplied-marker': true(),
+            'note-marker': true(),
+            'thematicCommentaries-marker': true()
+        }` 
+ :)
+declare function config:set-preferences($settings as map(*)) as map(*) {
+    let $currentSettings := config:get-preferences()
+ let $mergedSettings := map:merge(($currentSettings, $settings))
+ return (
+    session:set-attribute('preferences', $mergedSettings),
+ $mergedSettings
+ )
+};
+
+(:~
+ : Get user preferences.
+ : The values are taken from a stored session object if possible, 
+ : or from default values otherwise.
+ :
+ : @return a map object like `map {
+            'line-wrap': true(),
+            'limit': 10,
+            'rdg-marker': false(),
+            'textConst-marker': true(),
+            'supplied-marker': true(),
+            'note-marker': true(),
+            'thematicCommentaries-marker': true()
+        }`
+ :)
+declare function config:get-preferences() as map(*) {
+    let $openapiPrefs := json-doc($config:openapi-config-path)?components?schemas?Preferences?properties
+    let        $defaultSettings := 
+            map:merge(
+ for $pref in map:keys($openapiPrefs)
+ return
+ map:entry($pref, $openapiPrefs?($pref)?default)
+ )
+            let $sessionSettings := if(session:exists()) then session:get-attribute('preferences')        else ()
+ return
+        if(exists($sessionSettings))
+ then $sessionSettings
+        else $defaultSettings
 };
 
 (:~
@@ -536,7 +576,7 @@ declare function config:api-base($openapi-config as map(*)?) as xs:string? {
 
 (:~
  : set/update object in openapi.json description.
- : NB: You have to be logged in as admin to be able to update preferences!
+ : NB: You have to be logged in as admin to be able to update app preferences!
  :
  : @param $key a sequence of keys navigating to the object; 
  :  e.g. the sequence ('foo', 'bar') will select the object 'bar' within the object 'foo'. 
