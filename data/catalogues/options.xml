@@ -48,9 +48,9 @@
 		<entry xml:id="munich-stadtmuseumBeacon">http://www.historische-kommission-muenchen-editionen.de/beacond/beacon_portraet_stadtmus_muenchen.txt</entry>
 	</div>
 	<div xml:id="wdt">
+		<entry xml:id="generalIdPattern">A[0-9A-F]{7}</entry>
 		<!-- The first three counts of the regex will be extracted as prefix    -->
 		<!-- except: personsPlusIdPattern. So make all other prefixes explicit. -->
-		<entry xml:id="generalIdPattern">A[0-9A-F]{7}</entry>
 		<entry xml:id="orgsIdPattern">A08[0-9A-F]{5}</entry>
 		<entry xml:id="personsIdPattern">A00[0-9A-F]{5}</entry>
 		<entry xml:id="personsPlusIdPattern">A0[08][0-9A-F]{5}</entry>
@@ -67,6 +67,7 @@
 		<entry xml:id="thematicCommentariesIdPattern">A09[0-9A-F]{5}</entry>
 		<entry xml:id="documentsIdPattern">A10[0-9A-F]{5}</entry>
 		<entry xml:id="addendaIdPattern">A12[0-9A-F]{5}</entry>
+		<!-- insert textType values as whitespace seperated list -->
 		<entry xml:id="textTypes">card.letter card.postal envelope letter telegram</entry>
 		<!--        <entry xml:id="textTypes">card.business card.letter card.postal contract document envelope formCommitment letter statement statement.fee telegram unknown</entry>-->
 	</div>
