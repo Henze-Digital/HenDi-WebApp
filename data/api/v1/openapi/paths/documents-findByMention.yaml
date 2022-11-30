@@ -13,7 +13,7 @@ get:
       required: true
       schema:
         type: string
-        default: A002068
+        default: A001000A
     - $ref: '../parameters/docType.yaml'
     - $ref: '../parameters/offset.yaml'
     - $ref: '../parameters/limit.yaml'

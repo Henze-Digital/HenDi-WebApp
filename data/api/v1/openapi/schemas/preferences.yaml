@@ -9,7 +9,7 @@ properties:
     type: integer
     format: int32
     description: Set the limit for list views
-    default: 10
+    default: 25
     enum:
       - 10
       - 25

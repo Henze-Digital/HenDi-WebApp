@@ -18,7 +18,7 @@ get:
       description: 'The scope of the result set, i.e. ''indices'' or a WeGA ID'
       required: true
       schema:
-        pattern: '^(indices)|(A[A-F0-9]{6})$'
+        pattern: '^(indices)|(A[A-F0-9]{7})$'
         type: string
     - name: term
       in: query

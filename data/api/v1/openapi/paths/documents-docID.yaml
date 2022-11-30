@@ -13,7 +13,7 @@ get:
       required: true
       schema:
         type: string
-        default: A002068
+        default: A001000A
   responses:
     '200':
       description: An array of documents

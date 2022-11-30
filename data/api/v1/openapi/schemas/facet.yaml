@@ -2,7 +2,7 @@
 type: object
 properties:
   value:
-    pattern: '^A[A-F0-9]{6}$'
+    pattern: '^A[A-F0-9]{7}$'
     type: string
     description: the WeGA ID
   label:
