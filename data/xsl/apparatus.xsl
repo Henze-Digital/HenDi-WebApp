@@ -121,7 +121,6 @@
       			<xsl:value-of select="wega:getLanguageString('note_internal', $lang)"/>
       		</xsl:element>
       	</xsl:if>
-      	<xsl:attribute name="class">apparatus commentary</xsl:attribute>
       	<xsl:element name="ul">
       		<xsl:for-each select="$internalNodes">
       			<xsl:element name="li">
