@@ -122,6 +122,7 @@
       		</xsl:element>
       	</xsl:if>
       	<xsl:element name="ul">
+      		<xsl:attribute name="class">apparatus commentary</xsl:attribute>
       		<xsl:for-each select="$internalNodes">
       			<xsl:element name="li">
       				<xsl:element name="div">
