@@ -160,9 +160,8 @@
       </xsl:choose>
    </xsl:template>
    
-   <xsl:template match="tei:note[@type=('definition', 'commentary', 'textConst')]">
-      <xsl:call-template name="popover"/>
    <xsl:template match="tei:note[@type=('definition', 'commentary', 'textConst', 'internal')]">
+      <xsl:call-template name="popover"/>
    </xsl:template>
    
    <xsl:template match="tei:note" mode="apparatus">
