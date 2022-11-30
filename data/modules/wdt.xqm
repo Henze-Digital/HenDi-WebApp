@@ -57,8 +57,8 @@ declare function wdt:orgs($item as item()*) as map(*) {
                 default return $item/root()/tei:org
             return
                 switch($serialization)
-                case 'txt' return str:normalize-space(($org/tei:orgName[@type = 'reg'])[1])
-                case 'html' return <span xmlns="http://www.w3.org/1999/xhtml">{str:normalize-space(($org/tei:orgName[@type = 'reg'])[1])}</span> 
+                case 'txt' return str:normalize-space($org/tei:orgName[@type = 'reg'])
+                case 'html' return <span xmlns="http://www.w3.org/1999/xhtml">{str:normalize-space($org/tei:orgName[@type = 'reg'])}</span> 
                 default return wega-util:log-to-file('error', 'wdt:orgs()("title"): unsupported serialization "' || $serialization || '"')
         },
         'label-facets' : function() as xs:string {
@@ -259,7 +259,7 @@ declare function wdt:personsPlus($item as item()*) as map(*) {
         },
         'init-sortIndex' : function() as item()* {
             sort:create-index-callback('personsPlus', wdt:personsPlus(())('init-collection')(), function($node) {
-                if(count($node/tei:org) > 0) then lower-case(str:normalize-space(($node//tei:orgName[@type = 'reg'])[1]))
+                if($node/tei:org) then lower-case(str:normalize-space($node//tei:orgName[@type = 'reg']))
                 else wdt:sort-key-person($node)
             }, ())
         },
@@ -707,7 +707,7 @@ declare function wdt:places($item as item()*) as map(*) {
             crud:data-collection('places')[descendant::tei:placeName]
         },
         'init-sortIndex' : function() as item()* {
-            sort:create-index-callback('places', wdt:places(())('init-collection')(), function($node) { str:normalize-space(($node//tei:placeName[@type='reg'])[1]) }, ())
+            sort:create-index-callback('places', wdt:places(())('init-collection')(), function($node) { str:normalize-space($node//tei:placeName[@type='reg']) }, ())
         },
         'title' : function($serialization as xs:string) as item()? {
             let $place := 
@@ -718,8 +718,8 @@ declare function wdt:places($item as item()*) as map(*) {
                 default return $item/root()/tei:place
             return
                 switch($serialization)
-                case 'txt' return str:normalize-space(($place/tei:placeName[@type = 'reg'])[1])
-                case 'html' return <span xmlns="http://www.w3.org/1999/xhtml">{str:normalize-space(($place/tei:placeName[@type = 'reg'])[1])}</span> 
+                case 'txt' return str:normalize-space($place/tei:placeName[@type = 'reg'])
+                case 'html' return <span xmlns="http://www.w3.org/1999/xhtml">{str:normalize-space($place/tei:placeName[@type = 'reg'])}</span> 
                 default return wega-util:log-to-file('error', 'wdt:places()("title"): unsupported serialization "' || $serialization || '"')
         },
         'memberOf' : ('unary-docTypes', 'search', 'indices'),

@@ -1,13 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml"
    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
    xmlns:tei="http://www.tei-c.org/ns/1.0"
    xmlns:xs="http://www.w3.org/2001/XMLSchema"
    xmlns:functx="http://www.functx.com"
    xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities"
-   exclude-result-prefixes="xs" version="2.0">
+   exclude-result-prefixes="xs" version="3.1">
 
    <xsl:variable name="doc" select="wega:doc($docID)"/>
-   <xsl:variable name="textConstitutionNodes" as="node()*" select=".//tei:subst | .//tei:add[not(parent::tei:subst)] | .//tei:gap[not(@reason='outOfScope' or parent::tei:del)] | .//tei:sic[not(parent::tei:choice)] | .//tei:del[not(parent::tei:subst)] | .//tei:unclear[not(parent::tei:choice)] | .//tei:note[@type='textConst'] | .//tei:handShift"/>
+	<xsl:variable name="textConstitutionNodes" as="node()*" select=".//tei:subst | .//tei:add[not(parent::tei:subst)] | .//tei:gap[not(@reason='outOfScope' or parent::tei:del)] | .//tei:sic[not(parent::tei:choice)] | .//tei:del[not(parent::tei:subst)] | .//tei:unclear[not(parent::tei:choice)] | .//tei:note[@type='textConst'] | .//tei:handShift | .//tei:supplied[parent::tei:damage]"/>
    <xsl:variable name="commentaryNodes" as="node()*" select=".//tei:note[@type=('commentary', 'definition')] | .//tei:choice"/>
 	<xsl:variable name="internalNodes" as="node()*" select=".//tei:note[@type='internal']"/>
    <xsl:variable name="rdgNodes" as="node()*" select=".//tei:app"/>
@@ -486,7 +487,18 @@
       </xsl:call-template>
    </xsl:template>
 
-   <!-- TODO: gap in damage, del, add und unclear?!? -->
+	<!--
+      whitespace is preserved for tei:damage via xsl:preserve-space;
+      we'll suppress it though when there's only one child element 
+   -->
+	<xsl:template match="tei:damage[count(*) eq 1]">
+		<xsl:element name="span">
+			<xsl:apply-templates select="@xml:id"/>
+			<xsl:attribute name="class">tei_damage</xsl:attribute>
+			<xsl:apply-templates select="*"/>
+		</xsl:element>
+	</xsl:template>
+	
    <xsl:template match="tei:gap">
       <xsl:element name="span">
          <xsl:text>[…]</xsl:text>
@@ -496,34 +508,27 @@
       </xsl:element>
    </xsl:template>
 
-   <!-- TODO: Beschreibung von gap noch etwas dürftig bzw. gedoppelt in Titel und Beschreibung -->
    <xsl:template match="tei:gap" mode="apparatus">
-      <xsl:variable name="id" select="wega:createID(.)"/>
-      <xsl:variable name="counter">
-         <xsl:number count="tei:subst | tei:add[not(parent::tei:subst)] | tei:gap[not(@reason='outOfScope' or parent::tei:del)] | tei:sic[not(parent::tei:choice)] | tei:del[not(parent::tei:subst)] | tei:unclear[not(parent::tei:choice)] | tei:note[@type='textConst'] | tei:handShift" level="any"/>
-      </xsl:variable>
-      <xsl:element name="div">
-         <xsl:attribute name="class">apparatusEntry col-11</xsl:attribute>
-         <xsl:attribute name="id" select="$id"/>
-         <xsl:attribute name="data-title">
-            <xsl:value-of select="wega:getLanguageString('gapDefault',$lang)"/>
-            <xsl:if test="@reason='outofScope'">
-               <xsl:text>: </xsl:text>
-               <xsl:value-of select="wega:getLanguageString('outofScope',$lang)"/>
-            </xsl:if>
-         </xsl:attribute>
-         <xsl:attribute name="data-counter"><xsl:value-of select="$counter"/></xsl:attribute>
-         <xsl:attribute name="data-href"><xsl:value-of select="concat('#',$id)"/></xsl:attribute>
-         <xsl:value-of select="wega:getLanguageString('gapDefault', $lang)"/>
-         <xsl:text> </xsl:text>
-         <xsl:if test="@unit and @quantity">
-            <xsl:text>(ca. </xsl:text>
-            <xsl:value-of select="@quantity"/>
+      <xsl:variable name="data-title" select="(ancestor::tei:damage/@agent, ancestor::tei:damage ! 'damageDefault', 'gapDefault')[1]" as="xs:string"/>
+      <xsl:variable name="text-desc" select="(@reason, 'gapDefault')[1]" as="xs:string"/>
+      <xsl:call-template name="apparatusEntry">
+         <xsl:with-param name="title" select="wega:getLanguageString($data-title, $lang)"/>
+         <xsl:with-param name="explanation">
+         <xsl:value-of select="wega:getLanguageString($text-desc, $lang)"/>
+            <xsl:if test="@unit and @quantity">
+               <xsl:text> (</xsl:text>
+               <xsl:value-of select="wega:getLanguageString('approx', $lang)"/>
             <xsl:text> </xsl:text>
-            <xsl:value-of select="@unit"/>
+         <xsl:value-of select="@quantity"/>
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="
+                  if(@quantity = 1) then wega:getLanguageString(@unit || 'Sg', $lang)
+                  else wega:getLanguageString(@unit, $lang)
+                  "/>
             <xsl:text>)</xsl:text>
          </xsl:if>
-      </xsl:element>
+      </xsl:with-param>
+      </xsl:call-template>
    </xsl:template>
 
    <xsl:template match="tei:choice">
@@ -646,22 +651,38 @@
       <xsl:call-template name="popover"/>
    </xsl:template>
 
-   <xsl:template match="tei:supplied">
-      <xsl:element name="span">
-         <xsl:attribute name="class" select="concat('tei_', local-name())"/>
-         <xsl:attribute name="id" select="wega:createID(.)"/>
-         <xsl:element name="span">
-            <xsl:attribute name="class">brackets_supplied</xsl:attribute>
-            <xsl:text>[</xsl:text>
-         </xsl:element>
-         <xsl:apply-templates mode="#current"/>
-         <xsl:element name="span">
-            <xsl:attribute name="class">brackets_supplied</xsl:attribute>
-            <xsl:text>]</xsl:text>
-         </xsl:element>
-      </xsl:element>
-   </xsl:template>
-
+	<xsl:template match="tei:supplied">
+		<xsl:element name="span">
+			<xsl:attribute name="class" select="concat('tei_', local-name())"/>
+			<!--         <xsl:attribute name="id" select="wega:createID(.)"/>-->
+			<xsl:element name="span">
+				<xsl:attribute name="class">brackets_supplied</xsl:attribute>
+				<xsl:text>[</xsl:text>
+			</xsl:element>
+			<xsl:apply-templates mode="#current"/>
+			<xsl:element name="span">
+				<xsl:attribute name="class">brackets_supplied</xsl:attribute>
+				<xsl:text>]</xsl:text>
+			</xsl:element>
+			<xsl:if test="parent::tei:damage">
+				<xsl:call-template name="popover"/>
+			</xsl:if>
+		</xsl:element>
+	</xsl:template>
+	
+	<xsl:template match="tei:supplied[parent::tei:damage]" mode="apparatus">
+		<xsl:variable name="data-title" select="(ancestor::tei:damage/@agent, 'damageDefault')[1]" as="xs:string"/>
+		<xsl:call-template name="apparatusEntry">
+			<xsl:with-param name="title" select="wega:getLanguageString($data-title,$lang)"/>
+			<xsl:with-param name="lemma">
+				<xsl:apply-templates mode="lemma"/>
+			</xsl:with-param>
+			<xsl:with-param name="explanation">
+				<xsl:value-of select="wega:getLanguageString('supplied',$lang)"/>
+			</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
    <xsl:template match="tei:sic[not(parent::tei:choice)]" mode="apparatus">
       <xsl:call-template name="apparatusEntry">
          <xsl:with-param name="title" select="local-name()"/>
@@ -801,7 +822,7 @@
                <xsl:number count="tei:note[@type=('commentary', 'definition')] | tei:choice" level="any"/>
             </xsl:when>
             <xsl:otherwise>
-            	<xsl:number count="tei:subst | tei:add[not(parent::tei:subst)] | tei:gap[not(@reason='outOfScope' or parent::tei:del)] | tei:sic[not(parent::tei:choice)] | tei:del[not(parent::tei:subst)] | tei:unclear[not(parent::tei:choice)] | tei:note[@type='textConst'] | tei:note[@type='internal'] | tei:handShift" level="any"/>
+            	<xsl:number count="tei:subst | tei:add[not(parent::tei:subst)] | tei:gap[not(@reason='outOfScope' or parent::tei:del)] | tei:sic[not(parent::tei:choice)] | tei:del[not(parent::tei:subst)] | tei:unclear[not(parent::tei:choice)] | tei:note[@type='textConst']  | tei:supplied[parent::tei:damage] | tei:note[@type='internal'] | tei:handShift" level="any"/>
             </xsl:otherwise>
          </xsl:choose>
       </xsl:variable>

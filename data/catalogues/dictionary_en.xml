@@ -162,6 +162,13 @@
     <entry xml:id="unclearDefault">uncertain transcription</entry>
     <entry xml:id="gapDefault">illegible text</entry>
     <entry xml:id="outofScope">beyond edition scope</entry>
+	<entry xml:id="paperloss">Paperloss</entry>
+	<entry xml:id="smoke">Damage due to smoke</entry>
+	<entry xml:id="seal">Damage due to seal</entry>
+	<entry xml:id="water">Damage due to water</entry>
+	<entry xml:id="ink">Damage due to ink</entry>
+	<entry xml:id="damageDefault">Damage</entry>
+	<entry xml:id="illegible">illegible</entry>
     <entry xml:id="handshiftManuscript">handwritten</entry>
     <entry xml:id="handshiftTypescript">typewritten</entry>
     <!--  doc_singleView  -->
@@ -385,7 +392,7 @@
     <entry xml:id="pseudonyme">Pen Names</entry>
     <entry xml:id="pseudonym">Pen Name</entry>
     <entry xml:id="altNames">Alternative Names</entry>
-    <entry xml:id="dateBetween">Between %1 and %2</entry>
+    <entry xml:id="dateBetween">between %1 and %2</entry>
     <entry xml:id="dateNotBefore">%1 at the earliest</entry>
     <entry xml:id="dateNotAfter">%1 at the latest</entry>
     <entry xml:id="BC">%1 BC</entry>
@@ -624,6 +631,31 @@
     <entry xml:id="da">Danish</entry>
     <entry xml:id="it">Italian</entry>
     <entry xml:id="fr">French</entry>
+    
+	<entry xml:id="persons_mentioned">Mentioned Persons</entry>
+	<entry xml:id="works_mentioned">Mentioned Works</entry>
+	<entry xml:id="places_mentioned">Mentioned Places</entry>
+	<entry xml:id="siglum">Siglum</entry>
+	<entry xml:id="team">Team</entry>
+	<entry xml:id="settings">Settings</entry>
+	<entry xml:id="supplied-marker">Editor's supplement</entry>
+	<entry xml:id="show_markers_paragraph">Show markers in text</entry>
+	<entry xml:id="chars">characters</entry>
+	<entry xml:id="words">words</entry>
+	<entry xml:id="lines">lines</entry>
+	<entry xml:id="charsSg">character</entry>
+	<entry xml:id="wordsSg">word</entry>
+	<entry xml:id="linesSg">line</entry>
+	<entry xml:id="approx">approx.</entry>
+	<entry xml:id="supplied">supplied by the editors</entry>
+	<entry xml:id="geonamesFeatureClass">Type of Place</entry>
+	<entry xml:id="geonamesFeatureClass_P">City, Village, …</entry>
+	<entry xml:id="geonamesFeatureClass_A">Country, State, Region, …</entry>
+	<entry xml:id="geonamesFeatureClass_H">Stream, Lake, …</entry>
+	<entry xml:id="geonamesFeatureClass_L">Parks, Area, …</entry>
+	<entry xml:id="geonamesFeatureClass_S">Spot, Building, Farm</entry>
+	<entry xml:id="geonamesFeatureClass_T">Mountain, Hill, Rock, …</entry>
+	<entry xml:id="geonamesFeatureClass_V">Forest, Heath, …</entry>
     
     <entry xml:id="further">Furthermore</entry>
     

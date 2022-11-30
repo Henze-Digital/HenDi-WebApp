@@ -24,7 +24,8 @@
     <!--  *********************************************  -->
     <xsl:template match="tei:persName | tei:author | tei:orgName | 
         mei:persName | tei:workName | tei:settlement | mei:settlement | 
-        mei:geogName | mei:corpName | mei:title[@codedval]" mode="#all">
+        mei:geogName | mei:corpName | mei:title[@codedval] | tei:placeName[@key]" 
+        mode="#all">
         <xsl:choose>
             <xsl:when test="@key or @codedval">
                 <xsl:call-template name="createLink"/>
@@ -89,10 +90,10 @@
     </xsl:template>
     
     <!--
-        dedicated rule for internal links (e.g. `<ref target='hendi:A090092'>`)
+        dedicated rule for internal links (e.g. `<ref target='wega:A090092'>`)
         which will be treated like other references with previews.
         NB: fragment identifiers are excluded since this is not implemented yet
-        for previews. Hence, links with fragment identifiers (e.g. `<ref target='hendi:A090092#chapter-links'>`)
+        for previews. Hence, links with fragment identifiers (e.g. `<ref target='wega:A090092#chapter-links'>`)
         will be transformed to simple links without preview popover
     -->
     <xsl:template match="tei:ref[contains(@target, 'hendi:')][not(contains(@target, '#'))] |

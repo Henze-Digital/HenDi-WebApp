@@ -129,12 +129,12 @@
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}" overwrite="yes">
 			<fileset dir="data">
 				<include name="*.*"/>
-				<include name="api/**"/>
 				<include name="catalogues/**"/>
 				<include name="modules/**"/>
 				<include name="resources/**"/>
 				<include name="templates/**"/>
 				<include name="xsl/**"/>
+				<exclude name="api/**"/>
 				<exclude name="resources/sass"/>
 			</fileset>
 		</copy>
@@ -179,10 +179,18 @@
 			</fileset>
 		</copy>
 		
+		<echo>Copy hendi data to api</echo>
+		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}" overwrite="yes" failonerror="no">
+			<fileset dir="data">
+				<include name="api/**/*.*"/>
+			</fileset>
+		</copy>
+		
 		<echo>Add icon.png</echo>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}" overwrite="yes" failonerror="no">
 			<file file="hendi-secrets/wega-app/img/icon.png"/>
 		</copy>
+		
 		<echo>Add image files to resources/img</echo>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/img/" overwrite="yes" failonerror="no">
 			<fileset dir="hendi-secrets/wega-app/img/">

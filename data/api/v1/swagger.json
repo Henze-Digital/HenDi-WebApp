@@ -109,7 +109,7 @@
                         "description": "The document identifier to search for",
                         "type": "string",
                         "required": true,
-                        "default": "A002068"
+                        "default": "A001000A"
                     }
                 ],
                 "responses": {
@@ -139,7 +139,7 @@
                         "in": "query",
                         "description": "The min date to search for",
                         "type": "string",
-                        "default": "1786-11-18",
+                        "default": "1900-01-01",
                         "format": "date",
                         "required": true
                     },
@@ -189,7 +189,7 @@
                         "description": "The document ID that is to be mentioned. Accepted ID formats are WeGA, e.g. A002068 or http://weber-gesamtausgabe.de/A002068, VIAF, e.g. http://viaf.org/viaf/14959938, or  GND, e.g. http://d-nb.info/gnd/118629662\n",
                         "type": "string",
                         "required": true,
-                        "default": "A002068"
+                        "default": "A001000A"
                     },
                     {"$ref": "#/parameters/docTypeParam"},
                     {"$ref": "#/parameters/offsetParam"},
@@ -229,7 +229,7 @@
                         "description": "The author ID to search for. Accepted ID formats are WeGA, e.g. A002068 or http://weber-gesamtausgabe.de/A002068, VIAF, e.g. http://viaf.org/viaf/14959938, or  GND, e.g. http://d-nb.info/gnd/118629662\n",
                         "type": "string",
                         "required": true,
-                        "default": "A002068"
+                        "default": "A001000A"
                     },
                     {"$ref": "#/parameters/docTypeParam"},
                     {"$ref": "#/parameters/offsetParam"},
@@ -386,8 +386,8 @@
                             "properties": {
                                 "docID": {
                                     "type": "string",
-                                    "pattern": "^A\\d{2}[A-F0-9]{5}$",
                                     "description": "The HenDi ID"
+                                    "pattern": "^A[A-F0-9]{7}$",
                                 },
                                 "docType": {
                                     "type": "string",
@@ -440,7 +440,7 @@
                         "in": "query",
                         "description": "The scope of the result set, i.e. 'indices' or a WeGA ID",
                         "type": "string",
-                        "pattern": "^(indices)|(A[A-F0-9]{6})$",
+                        "pattern": "^(indices)|(A[A-F0-9]{7})$",
                         "required": true
                     },
                     {
@@ -519,7 +519,7 @@
             "properties": {
                 "value": {
                     "type": "string",
-                    "pattern": "^A[A-F0-9]{6}$",
+                    "pattern": "^A[A-F0-9]{7}$",
                     "description": "the WeGA ID"
                 },
                 "label": {
@@ -593,7 +593,6 @@
                 "type": "string",
                 "enum": [
                     "biblio",
-                    "diaries",
                     "documents",
                     "letters",
                     "news",
@@ -611,7 +610,6 @@
             "items": {
                 "enum": [
                     "biblio",
-                    "diaries",
                     "documents",
                     "letters",
                     "news",

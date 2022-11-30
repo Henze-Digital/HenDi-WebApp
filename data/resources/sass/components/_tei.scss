@@ -81,7 +81,7 @@ $tei_list-indent: $font-size-base;
     margin-right: .5em;
 }
 
-/*  for development ... */
+/*  for development … */
 .tei_cssUndefined {
     border: 1px solid red;
     color: red;
@@ -90,7 +90,7 @@ $tei_list-indent: $font-size-base;
 
 
 .cert_medium:after, .cert_low:after, .cert_unknown:after{
-    content:" ?";
+    content:" ?"; /* ACHTUNG: hier &thinsp; ist aber im Editor nicht zu erkennen */
 }
 
 div.poem {

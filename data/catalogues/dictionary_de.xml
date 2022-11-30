@@ -160,10 +160,17 @@
     <entry xml:id="appRdgs">Lesarten</entry>
     <entry xml:id="noRdg">Text nicht vorhanden</entry>
     <entry xml:id="unclearDefault">unsichere Lesung</entry>
-    <entry xml:id="gapDefault">unleserliche Stelle</entry>
+    <entry xml:id="gapDefault">unleserliche Stelle</entry><!-- Übertragung nicht möglich -->
     <entry xml:id="outofScope">außerhalb des Editionsrahmens</entry>
     <entry xml:id="handshiftManuscript">handschriftlich</entry>
     <entry xml:id="handshiftTypescript">maschinenschriftlich</entry>
+	<entry xml:id="paperloss">Papierverlust</entry>
+	<entry xml:id="smoke">Beschädigung durch Rauch oder Feuer</entry>
+	<entry xml:id="seal">Beschädigung durch Siegel(einriss)</entry>
+	<entry xml:id="water">Wasserschaden</entry>
+	<entry xml:id="ink">Tintenfleck</entry>
+	<entry xml:id="damageDefault">Beschädigung</entry>
+	<entry xml:id="illegible">unleserliche Stelle</entry>
     <!--  doc_singleView  -->
     <entry xml:id="docSingleViewTitle">Dokumentansicht von %1</entry>
     <entry xml:id="textOfDoc">Dokumenttext</entry>
@@ -244,21 +251,21 @@
     <entry xml:id="noDataFound">Keine Angaben gefunden</entry>
     <entry xml:id="dateUnknown">Datum unbekannt</entry>
     <!--  Schlüsselwörter aus MARC Code List for Relators, siehe http://www.loc.gov/marc/relators/relaterm.html  -->
-    <entry xml:id="cmp">Komponist</entry>
-    <entry xml:id="dte">Widmungsempfänger</entry>
-    <entry xml:id="lbt">Librettist</entry>
-    <entry xml:id="edt">Herausgeber</entry>
-    <entry xml:id="editorial_assistant">Redakteur</entry>
-    <entry xml:id="lyr">Textdichter</entry>
-    <entry xml:id="trl">Übersetzer</entry>
-    <entry xml:id="aut">Autor</entry>
-    <entry xml:id="arr">Bearbeiter</entry>
-    <entry xml:id="chr">Choreograph</entry>
+    <entry xml:id="cmp">Komponiert von</entry>
+    <entry xml:id="dte">Widmung an</entry>
+    <entry xml:id="lbt">Libretto von</entry>
+    <entry xml:id="edt">Herausgegeben von</entry>
+    <entry xml:id="editorial_assistant">Redaktionsassistenz</entry>
+    <entry xml:id="lyr">Textdichtung von</entry>
+    <entry xml:id="trl">Übersetzung von</entry>
+    <entry xml:id="aut">Verfasst von</entry>
+    <entry xml:id="arr">Bearbeitung von</entry>
+    <entry xml:id="chr">Choreographiert von</entry>
     <!--  Facets  -->
     <entry xml:id="filter">Filter</entry>
-    <entry xml:id="dedicatees">Widmungsempfänger</entry>
-    <entry xml:id="librettists">Librettisten</entry>
-    <entry xml:id="lyricists">Textdichter</entry>
+    <entry xml:id="dedicatees">Widmung an</entry>
+    <entry xml:id="librettists">Libretto von</entry>
+    <entry xml:id="lyricists">Textdichtung von </entry>
     <entry xml:id="occupations">Tätigkeiten</entry>
     <entry xml:id="alphabetic">Alphabetisch</entry>
     <entry xml:id="chronoTo">bis</entry>
@@ -273,8 +280,8 @@
     <entry xml:id="approved">bearbeitet</entry>
     <entry xml:id="biblioType">Literaturtyp</entry>
     <entry xml:id="albumblatt">Albumblatt</entry>
-    <entry xml:id="authors">Autoren</entry>
-    <entry xml:id="editors">Herausgeber</entry>
+    <entry xml:id="authors">Verfasst von</entry>
+    <entry xml:id="editors">Herausgegeben von</entry>
     <entry xml:id="guestbookEntry">Gästebucheintrag</entry>
     <entry xml:id="dedication">Widmung</entry>
     <entry xml:id="weisung">Weisung</entry>
@@ -363,8 +370,7 @@
     <entry xml:id="documents">Dokumente</entry>
     <entry xml:id="document">Dokument</entry>
     <entry xml:id="persons">Personen</entry>
-    <entry xml:id="personsPlus">Personen</entry>
-    <!-- inkl. orgs, families -->
+    <entry xml:id="personsPlus">Personen</entry><!-- inkl. orgs, families -->
     <entry xml:id="letter">Brief</entry>
     <entry xml:id="letters">Briefe</entry>
     <!-- textType translation -->
@@ -396,9 +402,9 @@
     <entry xml:id="pseudonyme">Pseudonyme</entry>
     <entry xml:id="pseudonym">Pseudonym</entry>
     <entry xml:id="altNames">Weitere Namen</entry>
-    <entry xml:id="dateBetween">Zwischen %1 und %2</entry>
-    <entry xml:id="dateNotBefore">Frühestens am %1</entry>
-    <entry xml:id="dateNotAfter">Spätestens am %1</entry>
+    <entry xml:id="dateBetween">zwischen %1 und %2</entry>
+    <entry xml:id="dateNotBefore">frühestens am %1</entry>
+    <entry xml:id="dateNotAfter">spätestens am %1</entry>
     <entry xml:id="BC">%1 v. Chr.</entry>
     <entry xml:id="analysis">Auswertung</entry>
     <entry xml:id="birthName">Geburtsname</entry>
@@ -494,7 +500,7 @@
     <entry xml:id="project">Projekt</entry>
     <entry xml:id="biblio">Bibliographie</entry>
     <entry xml:id="complete_indices">Gesamtes Register</entry>
-    <entry xml:id="composers">Komponisten</entry>
+    <entry xml:id="composers">Komponiert/Verfasst von</entry>
     <entry xml:id="docSource">Datenherkunft</entry>
     <entry xml:id="infoFromGND">Angaben aus der GND</entry>
     <entry xml:id="notatedMusic">Notenbeispiel</entry>
@@ -635,7 +641,31 @@
     <entry xml:id="da">Dänisch</entry>
     <entry xml:id="it">Italienisch</entry>
     <entry xml:id="fr">Französisch</entry>
-    
+	<entry xml:id="persons_mentioned">Erwähnte Personen</entry>
+	<entry xml:id="works_mentioned">Erwähnte Werke</entry>
+	<entry xml:id="places_mentioned">Erwähnte Orte</entry>
+	<entry xml:id="siglum">Sigle</entry>
+	<entry xml:id="team">Team</entry>
+	<entry xml:id="settings">Einstellungen</entry>
+	<entry xml:id="supplied-marker">Herausgeberergänzungen</entry>
+	<entry xml:id="show_markers_paragraph">Zeige Markierungen im Text</entry>
+	<entry xml:id="chars">Zeichen</entry>
+	<entry xml:id="words">Wörter</entry>
+	<entry xml:id="lines">Zeilen</entry>
+	<entry xml:id="charsSg">Zeichen</entry>
+	<entry xml:id="wordsSg">Wort</entry>
+	<entry xml:id="linesSg">Zeile</entry>
+	<entry xml:id="approx">ca.</entry>
+	<entry xml:id="supplied">ergänzt von den Hg.</entry>
+	<entry xml:id="geonamesFeatureClass">Ortstyp</entry>
+	<entry xml:id="geonamesFeatureClass_P">Stadt, Ort, …</entry>
+	<entry xml:id="geonamesFeatureClass_A">Land, Staat, Region, …</entry>
+	<entry xml:id="geonamesFeatureClass_H">Fluss, See, …</entry>
+	<entry xml:id="geonamesFeatureClass_L">Park, Anlage, …</entry>
+	<entry xml:id="geonamesFeatureClass_S">Gebäude, Farm, …</entry>
+	<entry xml:id="geonamesFeatureClass_T">Berg, Hügel, …</entry>
+	<entry xml:id="geonamesFeatureClass_V">Wald, Heide, …</entry>
+	
     <entry xml:id="further">Im Weiteren</entry>
     
     <!-- colors -->

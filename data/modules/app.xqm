@@ -94,7 +94,7 @@ declare
         let $formatedDate := 
             try { date:format-date($date, $config:default-date-picture-string($lang), $lang) }
             catch * { wega-util:log-to-file('warn', 'Failed to get Subversion properties for ' || $model('docID') ) }
-        let $version := concat(config:expath-descriptor()/@version, if($config:isDevelopment) then 'dev' else '')
+        let $version := config:expath-descriptor()/@version => string()
         let $versionDate := date:format-date(xs:date(config:get-option('versionDate')), $config:default-date-picture-string($lang), $lang)
         return
             map {
@@ -140,18 +140,10 @@ declare
  : get and set line-wrap variable
  : (whether a user prefers code examples with or without wrapped lines)
  :)
-declare 
-    %templates:wrap
-    function app:line-wrap($node as node(), $model as map(*)) as map(*)? {
-        map {
-            'line-wrap' : config:line-wrap()
-        }
-};
-
 declare function app:set-line-wrap($node as node(), $model as map(*)) as element() {
     element {node-name($node)} {
-        if($model('line-wrap')) then ( 
-            $node/@*[not(name(.)='class')],
+        if(wega-util-shared:semantic-boolean($model?settings?('line-wrap'))) then ( 
+            $node/@* except $node/@class,
             attribute class {string-join(($node/@class, 'line-wrap'), ' ')}
         )
         else $node/@*,
@@ -700,28 +692,38 @@ declare function app:place-details($node as node(), $model as map(*)) as map(*) 
     let $geonames-id := str:normalize-space(($model?doc//tei:idno[@type='geonames'])[1])
     let $gnd := query:get-gnd($model('doc'))
     let $gn-doc := er:grabExternalResource('geonames', $geonames-id, '', ())
+    let $basic-data := app:place-basic-data($node, $model)
     return
-        map {
+        map:merge((
+            map {
             'gnd' : $gnd,
             'names' : $model?doc//tei:placeName[@type],
             'backlinks' : core:getOrCreateColl('backlinks', $model('docID'), true()),
             'xml-download-url' : replace(controller:create-url-for-doc($model('doc'), $model('lang')), '\.html', '.xml'),
-            'geonames_alternateNames' : 
+            'note' : exists($model?doc/tei:place/tei:note),
+                'geonames_alternateNames' : 
                 for $alternateName in $gn-doc//gn:alternateName 
                 group by $name := $alternateName/text()
                 order by $name 
                 return
                     ($name || ' (' || $alternateName/data(@xml:lang) => string-join(', ') || ')'),
             'geonames_parentCountry' : $gn-doc//gn:parentCountry/analyze-string(@rdf:resource, '/(\d+)/')//fn:group/text() ! query:get-geonames-name(.)
-        }
+        },
+            $basic-data
+        ))
 };
 
+(:
+ : Some additional data that is used in the preview and in the single view
+ :)
 declare 
     %templates:wrap
     function app:place-basic-data($node as node(), $model as map(*)) as map(*) {
         map {
             'geonames-id' : str:normalize-space(($model?doc//tei:idno[@type='geonames'])[1]),
-            'coordinates' : str:normalize-space($model?doc//tei:geo)
+            'coordinates' : str:normalize-space($model?doc//tei:geo),
+        'residences': $model('doc')//tei:label[.='Ort'][parent::tei:state]/following-sibling::tei:desc/tei:* ! str:normalize-space(.),
+            'geonamesFeatureCode': $model('doc')//tei:label[.='Kategorie'][parent::tei:state]/following-sibling::tei:desc ! str:normalize-space(.)
         }
 };
 
@@ -772,7 +774,7 @@ declare
         }
         return
         map {
-            'ids' : $model?doc//mei:altId[not(@type='gnd')],
+            'ids' : $model?doc//mei:altId[not(@type=('gnd', 'wikidata', 'dracor.einakter'))],
             'relators' : query:relators($model?doc),
             'workType' : $model?doc//mei:term/data(@class),
             'titles' : $print-titles($model?doc, false()),
@@ -846,9 +848,9 @@ declare
                 $model('doc')//tei:orgName[@type = 'alt'] ! string-join(str:txtFromTEI(., $lang), '')
                 ),
             'marriednames' : $model('doc')//tei:persName[@subtype = 'married'] ! string-join(str:txtFromTEI(., $lang), ''),
-            'birth' : exists($model('doc')//tei:birth[not(tei:date[@type])]),
+            'birth' : exists($model('doc')//tei:birth[not(tei:date) or tei:date[not(@type)]]),
             'baptism' : exists($model('doc')//tei:birth/tei:date[@type='baptism']),
-            'death' : exists($model('doc')//tei:death[not(tei:date[@type])]),
+            'death' : exists($model('doc')//tei:death[not(tei:date) or tei:date[not(@type)]]),
             'funeral' : exists($model('doc')//tei:death/tei:date[@type = 'funeral']),
             'occupations' : $model('doc')//tei:occupation | $model('doc')//tei:label[.='Art der Institution']/following-sibling::tei:desc,
             'residences' : $model('doc')//tei:residence | $model('doc')//tei:label[.='Ort']/following-sibling::tei:desc/tei:*,
@@ -906,7 +908,7 @@ declare
     %templates:default("lang", "en")
     function app:print-wega-bio($node as node(), $model as map(*), $lang as xs:string) as element(xhtml:div)* {
         let $query-result:= app:inject-query($model?doc/*)
-        let $bio := wega-util:transform($query-result//(tei:note[@type='bioSummary'] | tei:event[tei:head] | tei:note[parent::tei:org]), doc(concat($config:xsl-collection-path, '/persons.xsl')), config:get-xsl-params(()))
+        let $bio := wega-util:transform($query-result//(tei:note[@type='bioSummary'] | tei:event[tei:head] | tei:note[parent::tei:org] | tei:note[parent::tei:place]), doc(concat($config:xsl-collection-path, '/persons.xsl')), config:get-xsl-params(()))
         return
             if(some $i in $bio satisfies $i instance of element()) then $bio
             else 
@@ -1485,7 +1487,7 @@ declare
             if(exists($incipit) and (every $i in $incipit satisfies $i instance of element())) then $incipit ! element xhtml:p { app:enquote-html(./xhtml:p/node(), $lang) }
             else element xhtml:p {
                 if(exists($incipit)) then app:enquote-html($incipit, $lang)
-                else if(wega-util-shared:semantic-boolean($generate) and not(functx:all-whitespace(<node>{$model('doc')//tei:text/tei:body}</node>))) then app:enquote-html(app:compute-incipit($model?doc, $lang), $lang)
+                else if(wega-util-shared:semantic-boolean($generate) and not(functx:all-whitespace($model('doc')//tei:text/tei:body))) then app:enquote-html(app:compute-incipit($model?doc, $lang), $lang)
                 else '–'
             }
 };
@@ -1670,15 +1672,22 @@ declare
  : @return element html:p
  :)
 declare %private function app:get-news-foot($doc as document-node(), $lang as xs:string) as element(xhtml:p)? {
-    let $authorElem := query:get-author-element($doc)
+    let $authorElems := query:get-author-element($doc)
+    let $authorElemsCount := count($authorElems)
     let $dateFormat := 
         if ($lang = 'de') then '[FNn], [D]. [MNn] [Y]'
                           else '[FNn], [MNn] [D], [Y]'
     return 
-        if(count($authorElem) gt 0) then 
+        if($authorElemsCount gt 0) then 
             element xhtml:p {
                 attribute class {'authorDate'},
-                app:printCorrespondentName($authorElem, $lang, 'fs'),
+                for $authorElem at $count in $authorElems
+                return (
+                    app:printCorrespondentName($authorElem, $lang, 'fs'),
+                if($count le $authorElemsCount -2) then ', '
+                    else if($count eq $authorElemsCount -1) then ' ' || lang:get-language-string('and', $lang) || ' '
+                    else()
+                ),
                 concat(', ', date:format-date(xs:date($doc//tei:publicationStmt/tei:date/xs:dateTime(@when)), $dateFormat, $lang))
             }
         else()
@@ -1840,13 +1849,13 @@ declare
 declare 
     %templates:default("lang", "en")
     function app:preview-opus-no($node as node(), $model as map(*), $lang as xs:string) as element()? {
-        if(exists($model('doc')//mei:altId[@type != 'gnd'])) then 
+        if(count($model('doc')//mei:altId[not(@type=('gnd', 'wikidata', 'dracor.einakter'))]) gt 0) then 
             element {node-name($node)} {
                 $node/@*[not(name(.) = 'href')],
                 if($node[self::xhtml:a]) then attribute href {controller:create-url-for-doc($model('doc'), $lang)}
                 else (),
                 if(exists($model('doc')//mei:altId[@type='WeV'])) then concat('(WeV ', $model('doc')//mei:altId[@type='WeV'], ')') (: Weber-Werke :)
-                else concat('(', $model('doc')//(mei:altId[@type != 'gnd'])[1]/string(@type), ' ', $model('doc')//(mei:altId[@type != 'gnd'])[1], ')') (: Fremd-Werke :)
+                else concat('(', $model('doc')//(mei:altId[not(@type=('gnd', 'wikidata', 'dracor.einakter'))])[1]/string(@type), ' ', $model('doc')//(mei:altId[not(@type=('gnd', 'wikidata', 'dracor.einakter'))])[1], ')') (: Fremd-Werke :)
             }
         else()
 };
@@ -1945,6 +1954,20 @@ declare function app:inject-api-base($node as node(), $model as map(*))  {
         app-shared:set-attr($node, map:merge(($model, map {'api-base' : $api-base})), 'data-api-base', 'api-base')
 };
 
+(:~
+ : Set "checked" attribute for user preferences switches
+ : depending on the `$model?settings` property which is injected 
+ : in view-html.xql.
+ :)
+declare function app:init-custom-switch($node as node(), $model as map(*)) as element(xhtml:input) {
+    element {node-name($node)} {
+        $node/@* except $node/@checked,
+        if(wega-util-shared:semantic-boolean($model?settings($node/@id))) 
+        then attribute checked {'checked'} 
+        else (),
+        $node/*
+    }
+};
 
 declare function app:enrichtment-datasets($node as node(), $model as map(*))  {
 
