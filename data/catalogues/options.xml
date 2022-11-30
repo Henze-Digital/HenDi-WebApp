@@ -23,7 +23,7 @@
 		<entry xml:id="googleWebsiteMetatag">x</entry>
 		<entry xml:id="microsoftBingWebsiteMetatag">x</entry>
 		<entry xml:id="ODDversion">0.1.0</entry><!-- Versionsnummer der WeGA-ODD Schemata -->
-		<entry xml:id="versionNews">A0500000</entry>
+		<entry xml:id="versionNews">A05009FF</entry>
 		<entry xml:id="versionDate">2022-06-28</entry>
 		<entry xml:id="entriesPerPage">10</entry>
 		<entry xml:id="resourceImgPath">/resources/img/</entry>
