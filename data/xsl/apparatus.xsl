@@ -9,6 +9,7 @@
    <xsl:variable name="doc" select="wega:doc($docID)"/>
    <xsl:variable name="textConstitutionNodes" as="node()*" select=".//tei:subst | .//tei:add[not(parent::tei:subst)] | .//tei:gap[not(@reason='outOfScope' or parent::tei:del)] | .//tei:sic[not(parent::tei:choice)] | .//tei:del[not(parent::tei:subst)] | .//tei:unclear[not(parent::tei:choice)] | .//tei:note[@type='textConst'] | .//tei:handShift"/>
    <xsl:variable name="commentaryNodes" as="node()*" select=".//tei:note[@type=('commentary', 'definition')] | .//tei:choice"/>
+	<xsl:variable name="internalNodes" as="node()*" select=".//tei:note[@type='internal']"/>
    <xsl:variable name="rdgNodes" as="node()*" select=".//tei:app"/>
 
    <!--
@@ -114,6 +115,34 @@
                </xsl:element>
             </xsl:for-each>
          </xsl:element>
+      	<xsl:if test="$internalNodes">
+      		<xsl:element name="h3">
+      			<xsl:attribute name="class">media-heading</xsl:attribute>
+      			<xsl:value-of select="wega:getLanguageString('note_internal', $lang)"/>
+      		</xsl:element>
+      	</xsl:if>
+      	<xsl:attribute name="class">apparatus commentary</xsl:attribute>
+      	<xsl:element name="ul">
+      		<xsl:attribute name="class">apparatus commentary</xsl:attribute>
+      		<xsl:for-each select="$internalNodes">
+      			<xsl:element name="li">
+      				<xsl:element name="div">
+      					<xsl:attribute name="class">row</xsl:attribute>
+      					<xsl:element name="div">
+      						<xsl:attribute name="class">col-1 text-nowrap</xsl:attribute>
+      						<xsl:element name="a">
+      							<xsl:attribute name="href">#transcription</xsl:attribute>
+      							<xsl:attribute name="data-href"><xsl:value-of select="concat('#ref-',wega:createID(.))"/></xsl:attribute>
+      							<xsl:attribute name="class">apparatus-link</xsl:attribute>
+      							<xsl:number count="$internalNodes" level="any"/>
+      							<xsl:text>.</xsl:text>
+      						</xsl:element>
+      					</xsl:element>
+      					<xsl:apply-templates select="." mode="apparatus"/>
+      				</xsl:element>
+      			</xsl:element>
+      		</xsl:for-each>
+      	</xsl:element>
       </xsl:element>
    </xsl:template>
 
@@ -133,6 +162,7 @@
    
    <xsl:template match="tei:note[@type=('definition', 'commentary', 'textConst')]">
       <xsl:call-template name="popover"/>
+   <xsl:template match="tei:note[@type=('definition', 'commentary', 'textConst', 'internal')]">
    </xsl:template>
    
    <xsl:template match="tei:note" mode="apparatus">
@@ -767,7 +797,7 @@
                <xsl:number count="tei:note[@type=('commentary', 'definition')] | tei:choice" level="any"/>
             </xsl:when>
             <xsl:otherwise>
-                  <xsl:number count="tei:subst | tei:add[not(parent::tei:subst)] | tei:gap[not(@reason='outOfScope' or parent::tei:del)] | tei:sic[not(parent::tei:choice)] | tei:del[not(parent::tei:subst)] | tei:unclear[not(parent::tei:choice)] | tei:note[@type='textConst'] | tei:handShift" level="any"/>
+            	<xsl:number count="tei:subst | tei:add[not(parent::tei:subst)] | tei:gap[not(@reason='outOfScope' or parent::tei:del)] | tei:sic[not(parent::tei:choice)] | tei:del[not(parent::tei:subst)] | tei:unclear[not(parent::tei:choice)] | tei:note[@type='textConst'] | tei:note[@type='internal'] | tei:handShift" level="any"/>
             </xsl:otherwise>
          </xsl:choose>
       </xsl:variable>

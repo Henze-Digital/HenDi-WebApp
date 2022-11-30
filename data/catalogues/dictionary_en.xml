@@ -492,6 +492,7 @@
     <entry xml:id="note_commentary">Commentary</entry>
     <entry xml:id="note_definition">Definition</entry>
     <entry xml:id="note_textConst">Text Constitution</entry>
+    <entry xml:id="note_internal">Internal Notes</entry>
     <entry xml:id="apiDocumentation">API Documentation</entry>
     <entry xml:id="openapiDocumentation">Swagger OpenAPI Documentation</entry>
     <entry xml:id="faq">FAQ</entry>
