@@ -273,6 +273,13 @@
             <xsl:apply-templates mode="#current"/>
         </xsl:element>
     </xsl:template>
+	
+	<xsl:template match="tei:hi[@rend='capital']" mode="#all">
+		<xsl:element name="span">
+			<xsl:attribute name="class" select="'text-uppercase'"/>
+			<xsl:apply-templates mode="#current"/>
+		</xsl:element>
+	</xsl:template>
     
     <!--  Hier mit priority 0.5, da in Briefen und Tagebüchern unterschiedlich behandelt  -->
     <xsl:template match="tei:pb | tei:cb" priority="0.5">
