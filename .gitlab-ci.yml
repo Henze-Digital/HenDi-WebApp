@@ -152,7 +152,7 @@ deploy-webapp:
     refs:
       - develop
     variables:
-      - ($ç == "true" || $CI_COMMIT_MESSAGE  =~ /\(ready\)/ )
+      - ($BUILD_PORTAL_INTERN == "true" || $CI_COMMIT_MESSAGE  =~ /\(ready\)/ )
   except:
     variables:
       - ($BUILD_PORTAL_STAGING == "true" || $BUILD_PORTAL_STABLE == "true")
