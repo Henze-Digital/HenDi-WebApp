@@ -3,7 +3,7 @@ variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
     IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-    IMAGE_TAG_BASE: $CI_REGISTRY_IMAGE/hendi-webapp-base-image:develop
+    IMAGE_TAG_BASE: registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image:v1-0-0
     GIT_SUBMODULE_STRATEGY: recursive
 
 stages:
@@ -37,23 +37,6 @@ update-submodules:
     variables:
       - $TRIGGER_UPDATE_SUBMODULE == "true"
 
-build-base-image:
-  stage: build
-  image: docker:20.10
-  services:
-    - docker:20.10-dind
-  rules:
-    - if: '$cronBuildBaseImage == "true"'
-      changes:
-        - Dockerfile.baseImage
-      when: always
-    - when: never
-  script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker run --privileged --rm tonistiigi/binfmt --install all
-    - docker buildx create --name mybuilder --use
-    - docker buildx build --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN} --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG_BASE} -f Dockerfile.baseImage .
-
 build-webapp:
   stage: build
   image: $IMAGE_TAG_BASE
@@ -66,10 +49,7 @@ build-webapp:
       - merge_requests
       - develop
     variables:
-      - ($cronUpdatePortalIntern == "true" || $BUILD_PORTAL_STAGING == "true")
-  except:
-    variables:
-      - $cronBuildBaseImage == "true"
+      - ($cronUpdatePortalIntern == "true" || $BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true")
   artifacts:
     paths:
       - hendi-pkg-webapp/HenDi-WebApp-*.xar
@@ -88,7 +68,7 @@ build-webapp-stable:
       - $BUILD_PORTAL_STABLE == "true"
   except:
     variables:
-      - ($cronBuildBaseImage == "true" || $cronUpdatePortalIntern == "true" || $BUILD_PORTAL_STAGING == "true")
+      - ($cronBuildBaseImage == "true" || $BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true")
   artifacts:
     paths:
       - hendi-pkg-webapp-stable/HenDi-WebApp-*.xar
@@ -111,10 +91,10 @@ build-webapp-docker-image:
       - merge_requests
       - develop
     variables:
-      - ($cronUpdatePortalIntern == "true" || $BUILD_PORTAL_STAGING == "true")
+      - ($cronUpdatePortalIntern == "true" || $BUILD_PORTAL_INTERN == "true")
   except:
     variables:
-      - ($cronBuildBaseImage == "true" || $BUILD_PORTAL_STAGING == "true")
+      - ($BUILD_PORTAL_STAGING == "true" || $BUILD_PORTAL_STABLE == "true")
 
 build-webapp-docker-image-staging:
   stage: build
@@ -137,7 +117,7 @@ build-webapp-docker-image-staging:
       - $BUILD_PORTAL_STAGING == "true"
   except:
     variables:
-      - $cronBuildBaseImage == "true"
+      - ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STABLE == "true")
       
 build-webapp-docker-image-stable:
   stage: build
@@ -159,7 +139,7 @@ build-webapp-docker-image-stable:
       - $BUILD_PORTAL_STABLE == "true"
   except:
     variables:
-      - ($cronBuildBaseImage == "true" || $cronUpdatePortalIntern == "true" || $BUILD_PORTAL_STAGING == "true")
+      - ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true")
 
 deploy-webapp:
   stage: deploy
@@ -172,10 +152,10 @@ deploy-webapp:
     refs:
       - develop
     variables:
-      - ($cronUpdatePortalIntern == "true" || $CI_COMMIT_MESSAGE  =~ /\(ready\)/ )
+      - ($ç == "true" || $CI_COMMIT_MESSAGE  =~ /\(ready\)/ )
   except:
     variables:
-      - ($cronBuildBaseImage == "true" || $BUILD_PORTAL_STAGING == "true")
+      - ($BUILD_PORTAL_STAGING == "true" || $BUILD_PORTAL_STABLE == "true")
 
 deploy-webapp-staging:
   stage: deploy
@@ -191,7 +171,7 @@ deploy-webapp-staging:
       - ($CI_COMMIT_MESSAGE  =~ /\(staging\)/ || $BUILD_PORTAL_STAGING == "true")
   except:
     variables:
-      - $cronBuildBaseImage == "true"
+      - ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STABLE == "true")
 
 deploy-webapp-stable:
   stage: deploy
@@ -207,4 +187,4 @@ deploy-webapp-stable:
       - ($CI_COMMIT_MESSAGE  =~ /\(stable\)/ || $BUILD_PORTAL_STABLE == "true")
   except:
     variables:
-      - $cronBuildBaseImage == "true"
+      - ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true")
