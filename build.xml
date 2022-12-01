@@ -49,6 +49,12 @@
 	</target>
 	
 	<target name="webapp-wega-prepare-tasks" depends="get-hendi-secrets-for-ci, update-hendi-secrets-local">
+		<echo>Copy hendi data to api</echo>
+		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}" overwrite="yes" failonerror="no">
+			<fileset dir="data">
+				<include name="api/**/*.*"/>
+			</fileset>
+		</copy>
 		<echo>Execute yarn, initalizes also WeGA-WebApp</echo>
 		<antcall target="wega:yarn"/>
 		<echo>Update SASS files with ${hendi.project.app} data</echo>
@@ -101,7 +107,7 @@
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}">
 			<fileset dir="${WeGA-WebApp.basedir}">
 				<include name="*.*"/>
-				<include name="api/**"/>
+				<exclude name="api/**"/>
 				<include name="modules/**"/>
 				<include name="resources/**"/>
 				<include name="catalogues/**"/>
@@ -176,13 +182,6 @@
 				<exclude name="**/tests.js"/>
 				<exclude name="**/docs/**"/>
 				<exclude name="json-*/**"/>
-			</fileset>
-		</copy>
-		
-		<echo>Copy hendi data to api</echo>
-		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}" overwrite="yes" failonerror="no">
-			<fileset dir="data">
-				<include name="api/**/*.*"/>
 			</fileset>
 		</copy>
 		
