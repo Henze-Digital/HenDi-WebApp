@@ -49,7 +49,7 @@ build-webapp:
       - merge_requests
       - develop
     variables:
-      - ($cronUpdatePortalIntern == "true" || $BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true")
+      - ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true")
   artifacts:
     paths:
       - hendi-pkg-webapp/HenDi-WebApp-*.xar
@@ -68,7 +68,7 @@ build-webapp-stable:
       - $BUILD_PORTAL_STABLE == "true"
   except:
     variables:
-      - ($cronBuildBaseImage == "true" || $BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true")
+      - ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true")
   artifacts:
     paths:
       - hendi-pkg-webapp-stable/HenDi-WebApp-*.xar
@@ -91,7 +91,7 @@ build-webapp-docker-image:
       - merge_requests
       - develop
     variables:
-      - ($cronUpdatePortalIntern == "true" || $BUILD_PORTAL_INTERN == "true")
+      - ($BUILD_PORTAL_INTERN == "true")
   except:
     variables:
       - ($BUILD_PORTAL_STAGING == "true" || $BUILD_PORTAL_STABLE == "true")
@@ -152,7 +152,7 @@ deploy-webapp:
     refs:
       - develop
     variables:
-      - ($BUILD_PORTAL_INTERN == "true" || $CI_COMMIT_MESSAGE  =~ /\(ready\)/ )
+      - ($BUILD_PORTAL_INTERN == "true" || $CI_COMMIT_MESSAGE  =~ /deploy\:/ )
   except:
     variables:
       - ($BUILD_PORTAL_STAGING == "true" || $BUILD_PORTAL_STABLE == "true")
@@ -168,7 +168,7 @@ deploy-webapp-staging:
     refs:
       - develop
     variables:
-      - ($CI_COMMIT_MESSAGE  =~ /\(staging\)/ || $BUILD_PORTAL_STAGING == "true")
+      - ($CI_COMMIT_MESSAGE  =~ /deploy\:/ || $BUILD_PORTAL_STAGING == "true")
   except:
     variables:
       - ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STABLE == "true")
@@ -184,7 +184,7 @@ deploy-webapp-stable:
     refs:
       - stable
     variables:
-      - ($CI_COMMIT_MESSAGE  =~ /\(stable\)/ || $BUILD_PORTAL_STABLE == "true")
+      - ($CI_COMMIT_MESSAGE  =~ /deploy\:/ || $BUILD_PORTAL_STABLE == "true")
   except:
     variables:
       - ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true")
