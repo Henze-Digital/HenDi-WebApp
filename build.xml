@@ -165,7 +165,17 @@
 	</target>
 	
 	<target name="webapp-dist-data-hendi">
-		<echo>Overwrite data with specs for ${hendi.project.app}</echo>
+		<echo>Overwrite SASS files</echo>
+		<copy todir="${WeGA-WebApp.basedir}/resources/sass" overwrite="yes">
+			<fileset dir="${HenDi-WebApp.basedir}/data/resources/sass" includes="**"/>
+		</copy>
+		
+		<echo>Overwrite js files</echo>
+		<copy todir="${WeGA-WebApp.basedir}/resources/js" overwrite="yes" failonerror="no">
+			<fileset dir="${HenDi-WebApp.basedir}/data/resources/js" includes="**"/>
+		</copy>
+		
+		<echo>Overwrite data</echo>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}" overwrite="yes">
 			<fileset dir="${HenDi-WebApp.basedir}/data">
 				<include name="api/**"/>
