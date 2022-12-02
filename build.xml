@@ -244,6 +244,7 @@
 	</target>
 
 	<target name="webapp-dist">
+		<antcall target="hendi-package-files"/>
 		<antcall target="webapp-dist-libs"/>
 		<antcall target="webapp-dist-data-wega"/>
 		<antcall target="webapp-dist-data-hendi"/>
