@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project default="update-hendi-docker" name="HenDi-WebApp" basedir="submodules/WeGA-WebApp" xmlns:unless="ant:unless">
+<project default="update-hendi-docker" name="HenDi-WebApp" basedir="submodules/WeGA-WebApp">
 	
 	<dirname property="WeGA-WebApp" file="${ant.file.HenDi-WebApp}"/>
 	<property name="HenDi-WebApp.basedir" value="../../"/>
@@ -11,7 +11,7 @@
 	<import file="submodules/WeGA-WebApp/build.xml" as="wega" prefixseparator=":"/>
 	<property file="${WeGA-WebApp.basedir}/build.properties" prefix="wega"/>
 	
-	<target name="-set-properties" unless="${build.env}">
+	<target name="-set-properties" unless="${build.env.ci}">
 		<property name="sass.path" value="${WeGA-WebApp.basedir}/${wega.sass.cmd}"/>
 		<echo>sass.path: ${sass.path}</echo>
 		<property name="sass.utf8" value=""/>
@@ -20,18 +20,18 @@
 		<echo>minify.path: ${minify.path}</echo>
 	</target>
 	
-	<target name="-set-properties-for-ci" if="${build.env}">
+	<target name="-set-properties-for-ci" if="${build.env.ci}">
 		<property name="sass.utf8" value="-E UTF-8"/>
 		<echo>set sass option: ${sass.utf8}</echo>
 	</target>
 	
-	<target name="-check-secrets-available-local" unless="${build.env}">
+	<target name="-check-secrets-available-local" unless="${build.env.ci}">
 		<echo>The script is running locally. Checking if secrets are available</echo>
 		<available type="dir" file="${HenDi-WebApp.basedir}/hendi-secrets" property="secrets.available.local"/>
 		<echo>secrets.available.local: ${secrets.available.local}</echo>
 	</target>
 	
-	<target name="-get-hendi-secrets-for-ci" if="${build.env}">
+	<target name="-get-hendi-secrets-for-ci" if="${build.env.ci}">
 		<echo>Clone HenDi-secrets</echo>
 		<exec executable="git" dir="." failonerror="no">
 			<arg line="clone https://gitlab-ci-token:${CI_JOB_TOKEN}@git.uni-paderborn.de/vife/henze-digital/hwh-data-internal-only.git hendi-secrets"/>
@@ -63,14 +63,14 @@
 		<antcall target="update-hendi-secrets-local"/>
 	</target>
 	
-	<target name="run-sass-ci" if="${build.env}">
+	<target name="run-sass-ci" if="${build.env.ci}">
 		<echo>Run sass for ci environemnt.</echo>
 		<exec executable="${sass.path}" failonerror="yes">
 			<arg line="${WeGA-WebApp.basedir}/resources/sass/main.scss ${WeGA-WebApp.basedir}/resources/css/styles.css ${sass.utf8}"/>
 		</exec>
 	</target>
 	
-	<target name="run-sass-local" unless="${build.env}">
+	<target name="run-sass-local" unless="${build.env.ci}">
 		<echo>Run sass for local environemnt.</echo>
 		<antcall target="wega:sass"/>
 	</target>
