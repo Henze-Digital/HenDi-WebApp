@@ -386,8 +386,8 @@
                             "properties": {
                                 "docID": {
                                     "type": "string",
-                                    "description": "The HenDi ID"
                                     "pattern": "^A[A-F0-9]{7}$",
+                                    "description": "The HenDi ID"
                                 },
                                 "docType": {
                                     "type": "string",
