@@ -14,8 +14,15 @@
 	<target name="-set-properties" unless="${build.env}">
 		<property name="sass.path" value="${WeGA-WebApp.basedir}/${wega.sass.cmd}"/>
 		<echo>sass.path: ${sass.path}</echo>
+		<property name="sass.utf8" value=""/>
+		<echo>set sass option utf8 empty ${sass.utf8}</echo>
 		<property name="minify.path" value="${WeGA-WebApp.basedir}/${wega.dev_libs.dir}/minify/bin/minify.js"/>
 		<echo>minify.path: ${minify.path}</echo>
+	</target>
+	
+	<target name="-set-properties-for-ci" if="${build.env}">
+		<property name="sass.utf8" value="-E UTF-8"/>
+		<echo>set sass option: ${sass.utf8}</echo>
 	</target>
 	
 	<target name="-check-secrets-available-local" unless="${build.env}">
@@ -79,7 +86,7 @@
 		<echo>Create CSS files via sass</echo>
 		<mkdir dir="${WeGA-WebApp.basedir}/resources/css"/>
 		<exec executable="${sass.path}" failonerror="yes">
-			<arg line="${WeGA-WebApp.basedir}/resources/sass/main.scss ${WeGA-WebApp.basedir}/resources/css/styles.css -E UTF-8"/>
+			<arg line="${WeGA-WebApp.basedir}/resources/sass/main.scss ${WeGA-WebApp.basedir}/resources/css/styles.css ${sass.utf8}"/>
 		</exec>
 	</target>
 	
