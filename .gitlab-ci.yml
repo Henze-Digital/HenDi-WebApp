@@ -43,7 +43,7 @@ build-webapp:
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
-    - ant xar -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
+    - ant xar -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=ci -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   only:
     refs:
       - merge_requests
