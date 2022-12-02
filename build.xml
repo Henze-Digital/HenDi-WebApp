@@ -63,24 +63,6 @@
 		<antcall target="update-hendi-secrets-local"/>
 	</target>
 	
-	<target name="run-sass-ci" if="${build.env.ci}">
-		<echo>Run sass for ci environemnt.</echo>
-		<exec executable="${wega.sass.cmd}" failonerror="yes">
-			<arg line="${WeGA-WebApp.basedir}/resources/sass/main.scss ${WeGA-WebApp.basedir}/resources/css/styles.css ${sass.utf8}"/>
-		</exec>
-	</target>
-	
-	<target name="run-sass-local" unless="${build.env.ci}">
-		<echo>Run sass for local environemnt.</echo>
-		<antcall target="wega:sass"/>
-	</target>
-	
-	<target name="run-sass">
-		<echo>Compile CSS files via sass</echo>
-		<antcall target="run-sass-ci"/>
-		<antcall target="run-sass-local"/>
-	</target>
-	
 	<target name="hendi-package-files">
 		<echo>Create expath-pkg.xml</echo>
 		<copy file="${HenDi-WebApp.basedir}/data/expath-pkg.xml.tmpl" tofile="${WeGA-WebApp.basedir}/${wega.dist.dir}/expath-pkg.xml" filtering="true" overwrite="true">
@@ -270,7 +252,7 @@
 		<!-- Make dist (build preparation) -->
 		<antcall target="webapp-dist"/>
 		<!-- run sass -->
-		<antcall target="run-sass"/>
+		<antcall target="wega:sass"/>
 		<!--Compile openapi.json-->
 		<antcall target="wega:swagger-cli"/>
 	</target>
