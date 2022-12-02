@@ -4,7 +4,7 @@ properties:
   value:
     pattern: '^A[A-F0-9]{7}$'
     type: string
-    description: the WeGA ID
+    description: the HenDi ID
   label:
     type: string
     description: The name or title of the object

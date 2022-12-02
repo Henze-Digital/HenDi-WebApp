@@ -1,7 +1,0 @@
-# fromDate parameter
-name: fromDate
-in: query
-description: The earliest date
-schema:
-  type: string
-  format: date

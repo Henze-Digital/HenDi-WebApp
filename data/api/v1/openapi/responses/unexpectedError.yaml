@@ -1,6 +1,0 @@
-# Unexpected error response
-description: Unexpected error
-content:
-  application/json:
-    schema:
-      $ref: '../schemas/error.yaml'

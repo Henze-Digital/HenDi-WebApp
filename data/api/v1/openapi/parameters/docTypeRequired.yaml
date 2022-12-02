@@ -1,7 +1,7 @@
 # docType parameter
 name: docType
 in: query
-description: The WeGA document type
+description: The HenDi document type
 required: true
 style: form
 explode: false

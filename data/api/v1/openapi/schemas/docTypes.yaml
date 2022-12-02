@@ -1,4 +1,4 @@
-# WeGA docTypes schema
+# HenDi docTypes schema
 type: array
 items:
   type: string

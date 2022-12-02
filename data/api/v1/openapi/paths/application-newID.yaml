@@ -2,12 +2,12 @@
 get:
   tags:
     - Application
-  summary: Create a new WeGA ID
+  summary: Create a new HenDi ID
   parameters:
     - $ref: '../parameters/docTypeRequired.yaml'
   responses:
     200:
-      description: A single object with a fresh WeGA ID
+      description: A single object with a fresh HenDi ID
       content:
         application/json:
           schema:
@@ -16,10 +16,10 @@ get:
               docID:
                 pattern: '^A[A-F0-9]{7}$'
                 type: string
-                description: The WeGA ID
+                description: The HenDi ID
               docType:
                 type: string
-                description: The WeGA document type
+                description: The HenDi document type
     403:
       description: The creation of new IDs is only available in the development environment
       content:

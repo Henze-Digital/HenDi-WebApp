@@ -1,7 +1,0 @@
-# toDate parameter
-name: toDate
-in: query
-description: The latest date
-schema:
-  type: string
-  format: date

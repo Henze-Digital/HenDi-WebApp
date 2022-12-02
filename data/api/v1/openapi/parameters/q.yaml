@@ -1,6 +1,0 @@
-# q parameter
-name: q
-in: query
-description: The query string
-schema:
-  type: string
