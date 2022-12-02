@@ -24,7 +24,7 @@
 		</exec>
 	</target>
 	
-	<target name="-get-hendi-secrets-local" unless="${secrets.available.local}" depends="-check-secrets-available-local">
+	<target name="-get-hendi-secrets-local" unless="${secrets.available.local}">
 		<echo>Add HenDi-secrets to local repo</echo>
 		<copy todir="${HenDi-WebApp.basedir}/hendi-secrets" failonerror="no">
 			<fileset dir="${HenDi-WebApp.basedir}/../hendi-secrets">
