@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project default="update-hendi-docker" name="HenDi-WebApp" basedir="." xmlns:unless="ant:unless">
+<project default="update-hendi-docker" name="HenDi-WebApp" basedir="submodules/WeGA-WebApp" xmlns:unless="ant:unless">
 	
-	<dirname property="HenDi-WebApp.basedir" file="${ant.file.HenDi-WebApp}"/>
+	<dirname property="WeGA-WebApp" file="${ant.file.HenDi-WebApp}"/>
+	<property name="HenDi-WebApp.basedir" value="../../"/>
 	
 	<!-- import default properties from file -->
 	<property file="${HenDi-WebApp.basedir}/local.build.properties" prefix="hendi"/>
 	<property file="${HenDi-WebApp.basedir}/build.properties" prefix="hendi"/>
 	
 	<import file="submodules/WeGA-WebApp/build.xml" as="wega" prefixseparator=":"/>
-	<property file="${WeGA-WebApp.basedir}/local.build.properties" prefix="wega"/>
 	<property file="${WeGA-WebApp.basedir}/build.properties" prefix="wega"/>
 	
 	<target name="-set-properties" unless="${build.env}">
@@ -31,14 +31,14 @@
 		<echo>secrets.available.local: ${secrets.available.local}</echo>
 	</target>
 	
-	<target name="get-hendi-secrets-for-ci" if="${build.env}">
+	<target name="-get-hendi-secrets-for-ci" if="${build.env}">
 		<echo>Clone HenDi-secrets</echo>
 		<exec executable="git" dir="." failonerror="no">
 			<arg line="clone https://gitlab-ci-token:${CI_JOB_TOKEN}@git.uni-paderborn.de/vife/henze-digital/hwh-data-internal-only.git hendi-secrets"/>
 		</exec>
 	</target>
 	
-	<target name="get-hendi-secrets-local" unless="${secrets.available.local}" depends="-check-secrets-available-local">
+	<target name="-get-hendi-secrets-local" unless="${secrets.available.local}" depends="-check-secrets-available-local">
 		<echo>Add HenDi-secrets to local repo</echo>
 		<copy todir="${HenDi-WebApp.basedir}/hendi-secrets" failonerror="no">
 			<fileset dir="${HenDi-WebApp.basedir}/../hendi-secrets">
@@ -46,7 +46,8 @@
 			</fileset>
 		</copy>
 	</target>
-	<target name="update-hendi-secrets-local" depends="get-hendi-secrets-local">
+	
+	<target name="-update-hendi-secrets-local" depends="-get-hendi-secrets-local">
 		<echo>Update existing hendi-secrets in local repo</echo>
 		<copy todir="${HenDi-WebApp.basedir}/hendi-secrets" overwrite="yes" failonerror="no">
 			<fileset dir="${HenDi-WebApp.basedir}/../hendi-secrets">
@@ -55,26 +56,13 @@
 		</copy>
 	</target>
 	
-	<target name="webapp-wega-prepare-tasks" depends="get-hendi-secrets-for-ci, update-hendi-secrets-local">
-		<echo>Copy hendi data to api</echo>
-		<copy todir="${WeGA-WebApp.basedir}" overwrite="yes" failonerror="no">
-			<fileset dir="data">
-				<include name="api/**/*.*"/>
-			</fileset>
-		</copy>
-		<echo>Execute yarn, initalizes also WeGA-WebApp</echo>
-		<antcall target="wega:yarn"/>
-		<echo>Update SASS files with ${hendi.project.app} data</echo>
-		<antcall target="hendi-sass-compilation"/>
-		
-		<echo>Prepare package files</echo>
-		<antcall target="hendi-package-files"/>
-		
-		<echo>Get data for webapp build</echo>
-		<antcall target="webapp-get-data"/>
+	<target name="hendi:init">
+		<antcall target="-set-properties"/>
+		<antcall target="-set-properties-for-ci"/>
+		<antcall target="-update-hendi-secrets-local"/>
 	</target>
 	
-	<target name="hendi-sass-compilation" depends="-set-properties">
+	<target name="hendi-sass-compilation" depends="hendi:init">
 		<echo>Overwrite SASS files with HenDi data</echo>
 		<copy todir="${WeGA-WebApp.basedir}/resources/sass" overwrite="yes">
 			<fileset dir="data/resources/sass" includes="**"/>
@@ -92,7 +80,7 @@
 	
 	<target name="hendi-package-files">
 		<echo>Create expath-pkg.xml</echo>
-		<copy file="data/expath-pkg.xml.tmpl" tofile="${WeGA-WebApp.basedir}/${wega.dist.dir}/expath-pkg.xml" filtering="true" overwrite="true">
+		<copy file="${HenDi-WebApp.basedir}/data/expath-pkg.xml.tmpl" tofile="${WeGA-WebApp.basedir}/${wega.dist.dir}/expath-pkg.xml" filtering="true" overwrite="true">
 			<filterset>
 				<filter token="project.app" value="${hendi.project.app}"/>
 				<filter token="project.name" value="${hendi.project.name}"/>
@@ -100,7 +88,7 @@
 			</filterset>
 		</copy>
 		<echo>Create repo.xml</echo>
-		<copy file="data/repo.xml.tmpl" tofile="${WeGA-WebApp.basedir}/${wega.dist.dir}/repo.xml" filtering="true" overwrite="true">
+		<copy file="${HenDi-WebApp.basedir}/data/repo.xml.tmpl" tofile="${WeGA-WebApp.basedir}/${wega.dist.dir}/repo.xml" filtering="true" overwrite="true">
 			<filterset>
 				<filter token="project.app" value="${hendi.project.app}"/>
 				<filter token="project.author" value="${hendi.project.author}"/>
@@ -109,54 +97,7 @@
 		</copy>
 	</target>
 	
-	<target name="webapp-get-data-wega">
-		<echo>Get data files from WeGA-WebApp dist task </echo>
-		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}">
-			<fileset dir="${WeGA-WebApp.basedir}">
-				<include name="*.*"/>
-				<exclude name="api/**"/>
-				<include name="modules/**"/>
-				<include name="resources/**"/>
-				<include name="catalogues/**"/>
-				<include name="indices/**"/>
-				<include name="templates/**"/>
-				<include name="xsl/**"/>
-				<exclude name="build.xml"/>
-				<exclude name="*build.properties"/>
-				<exclude name=".git*"/>
-				<exclude name="*.tmpl"/>
-				<exclude name="*.txt"/>
-				<exclude name="*.xpr"/>
-				<exclude name="package.json"/>
-				<exclude name="yarn.lock"/>
-				<exclude name=".dockerignore"/>
-				<exclude name=".travis.yml"/>
-				<exclude name="**/less/**"/>
-				<exclude name="**/sass/**"/>
-			</fileset>
-		</copy>
-	</target>
-	
-	<target name="webapp-get-data-hendi">
-		<echo>Overwrite data with specs for ${hendi.project.app}</echo>
-		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}" overwrite="yes">
-			<fileset dir="data">
-				<include name="*.*"/>
-				<include name="catalogues/**"/>
-				<include name="modules/**"/>
-				<include name="resources/**"/>
-				<include name="templates/**"/>
-				<include name="xsl/**"/>
-				<exclude name="api/**"/>
-				<exclude name="resources/sass"/>
-			</fileset>
-		</copy>
-	</target>
-	
-	<target name="webapp-get-data">	
-		<antcall target="webapp-get-data-wega"/>
-		<antcall target="webapp-get-data-hendi"/>
-		
+	<target name="webapp-dist-libs">
 		<echo>Copy libs to ${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib</echo>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib">
 			<fileset dir="${wega.frontend_libs.dir}">
@@ -191,20 +132,67 @@
 				<exclude name="json-*/**"/>
 			</fileset>
 		</copy>
-		
+	</target>
+	
+	<target name="webapp-dist-data-wega">
+		<echo>Get data files from WeGA-WebApp dist task </echo>
+		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}">
+			<fileset dir="${WeGA-WebApp.basedir}">
+				<include name="*.*"/>
+				<include name="api/**"/>
+				<include name="modules/**"/>
+				<include name="resources/**"/>
+				<include name="catalogues/**"/>
+				<include name="indices/**"/>
+				<include name="templates/**"/>
+				<include name="xsl/**"/>
+				<exclude name="build.xml"/>
+				<exclude name="*build.properties"/>
+				<exclude name=".git*"/>
+				<exclude name="*.tmpl"/>
+				<exclude name="*.txt"/>
+				<exclude name="*.xpr"/>
+				<exclude name="package.json"/>
+				<exclude name="yarn.lock"/>
+				<exclude name=".dockerignore"/>
+				<exclude name=".travis.yml"/>
+				<exclude name="**/less/**"/>
+				<exclude name="**/sass/**"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="webapp-dist-data-hendi">
+		<echo>Overwrite data with specs for ${hendi.project.app}</echo>
+		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}" overwrite="yes">
+			<fileset dir="${HenDi-WebApp.basedir}/data">
+				<include name="api/**"/>
+				<include name="*.*"/>
+				<include name="catalogues/**"/>
+				<include name="modules/**"/>
+				<include name="resources/**"/>
+				<include name="templates/**"/>
+				<include name="xsl/**"/>
+				<exclude name="resources/sass"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="webapp-dist-img-fonts">
 		<echo>Add icon.png</echo>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}" overwrite="yes" failonerror="no">
-			<file file="hendi-secrets/wega-app/img/icon.png"/>
+			<file file="${HenDi-WebApp.basedir}/hendi-secrets/wega-app/img/icon.png"/>
 		</copy>
 		
 		<echo>Add image files to resources/img</echo>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/img/" overwrite="yes" failonerror="no">
-			<fileset dir="hendi-secrets/wega-app/img/">
+			<fileset dir="${HenDi-WebApp.basedir}/hendi-secrets/wega-app/img/">
 				<include name="*.png"/>
 				<include name="*.jpg"/>
 				<exclude name="icon.png"/>
 			</fileset>
 		</copy>
+		
 		<echo>Add favicons.</echo>
 		<delete>
 			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/favicons">
@@ -215,7 +203,7 @@
 			</fileset>
 		</delete>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/favicons" overwrite="yes" failonerror="no">
-			<fileset dir="hendi-secrets/wega-app/">
+			<fileset dir="${HenDi-WebApp.basedir}/hendi-secrets/wega-app/">
 				<include name="favicon.ico"/>
 				<include name="favicon*.png"/>
 				<include name="apple-touch-icon-*.png"/>
@@ -223,48 +211,80 @@
 				<include name="manifest.json"/>
 			</fileset>
 		</copy>
+		
 		<echo>Add fonts.</echo>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/fonts" failonerror="no">
-			<fileset dir="hendi-secrets/wega-app/fonts" includes="**"/>
+			<fileset dir="${HenDi-WebApp.basedir}/hendi-secrets/wega-app/fonts" includes="**"/>
 		</copy>
+	</target>
+
+	<target name="webapp-dist-odd-hendi">
 		<echo>Overwrite the WeGA-ODD with HenDi-ODD data</echo>
 		<!-- todo: improve behaviour, add compile ODD task? -->
 		<delete dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib/WeGA-ODD"/>
 		<mkdir dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib/WeGA-ODD"/>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib/WeGA-ODD" overwrite="yes">
-			<fileset dir="submodules/HenDi-ODD">
+			<fileset dir="${HenDi-WebApp.basedir}/submodules/HenDi-ODD">
 				<!--<include name="**/*.*"/>-->
 				<include name="compiled-ODD/*.xml"/>
 				<include name="src/**/*.xml"/>
 			</fileset>
 		</copy>
+	</target>
+	
+	<target name="webapp-dist-guidelines-hendi">
 		<echo>Overwrite the WeGA Guidelines with the Henze-Digital Guidelines</echo>
 		<delete dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/guidelines"/>
 		<mkdir dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/guidelines"/>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/guidelines" overwrite="yes">
-			<fileset dir="submodules/HenDi-ODD/guidelines-html">
+			<fileset dir="${HenDi-WebApp.basedir}/submodules/HenDi-ODD/guidelines-html">
 				<include name="*.html"/>
 			</fileset>
 		</copy>
 	</target>
+
+	<target name="webapp-dist">
+		<antcall target="webapp-dist-libs"/>
+		<antcall target="webapp-dist-data-wega"/>
+		<antcall target="webapp-dist-data-hendi"/>
+		<antcall target="webapp-dist-img-fonts"/>
+		<antcall target="webapp-dist-odd-hendi"/>
+		<antcall target="webapp-dist-guidelines-hendi"/>
+	</target>
 	
-	<target name="minify" depends="webapp-wega-prepare-tasks, -set-properties">
+	<target name="build-webapp" depends="hendi:init">
+		
+		<echo>Make dist (build preparation)</echo>
+		<antcall target="webapp-dist"/>
+		
+		<echo>Execute yarn, initalizes also WeGA-WebApp</echo>
+		<antcall target="wega:yarn"/>
+		
+		<echo>Update SASS files with ${hendi.project.app} data</echo>
+		<!--		<antcall target="hendi-sass-compilation"/>-->
+		<antcall target="wega:sass"/>
+		
+		<echo>Compile openapi.json</echo>
+		<antcall target="wega:swagger-cli"/>
+	</target>
+	
+	<target name="minify" depends="build-webapp">
 		<echo>Run minify on CSS files</echo>
-		<apply executable="${minify.path}" parallel="false">
+		<apply executable="${WeGA-WebApp.basedir}/${dev_libs.dir}/minify/bin/minify.js" parallel="false">
 			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/css" includes="*.css" excludes="*min.css"/>
 			<redirector>
 				<outputmapper type="glob" from="*.css" to="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/css/*-min.css"/>
 			</redirector>
 		</apply>
 		<echo>Run minify on JS files</echo>
-		<apply executable="${minify.path}" parallel="false">
+		<apply executable="${WeGA-WebApp.basedir}/${dev_libs.dir}/minify/bin/minify.js" parallel="false">
 			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/js" includes="*.js" excludes="*min.js"/>
 			<redirector>
 				<outputmapper type="glob" from="*.js" to="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/js/*-min.js"/>
 			</redirector>
 		</apply>
 		<echo>Run minify on datepicker.js</echo>
-		<apply executable="${minify.path}" parallel="false">
+		<apply executable="${WeGA-WebApp.basedir}/${dev_libs.dir}/minify/bin/minify.js" parallel="false">
 			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib/jquery-ui/ui/widgets" includes="datepicker.js" excludes="*min.js"/>
 			<redirector>
 				<outputmapper type="glob" from="*.js" to="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib/jquery-ui/ui/widgets/*-min.js"/>
@@ -276,7 +296,7 @@
 	
 	<target name="xar" depends="minify">
 		<echo>Creating the xar Package (zipping).</echo>
-		<zip destfile="${hendi.build.dir}/${project.xar.name}.xar">
+		<zip destfile="${HenDi-WebApp.basedir}/${hendi.build.dir}/${project.xar.name}.xar">
 			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}">
 				<exclude name="*.tmpl"/>
 				<exclude name="resources/sass"/>
@@ -288,8 +308,8 @@
 	</target>
 	
 	<target name="update-hendi-docker" depends="xar">
-		<delete file="../hendi-docker/autodeploy/HenDi-WebApp-*.xar"/>
-		<copy file="hendi-pkg-webapp/${project.xar.name}.xar" todir="../hendi-docker/autodeploy" overwrite="yes"/>
+		<delete file="${HenDi-WebApp.basedir}/../hendi-docker/autodeploy/HenDi-WebApp-*.xar"/>
+		<copy file="${HenDi-WebApp.basedir}/hendi-pkg-webapp/${project.xar.name}.xar" todir="${HenDi-WebApp.basedir}/../hendi-docker/autodeploy" overwrite="yes"/>
 	</target>
 	
 </project>
