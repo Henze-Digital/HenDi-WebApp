@@ -156,8 +156,11 @@ declare function wdt:letters($item as item()*) as map(*) {
         let $placeAddressee := 
             if(query:placeName-elements($TEI//tei:correspAction[@type='received'])/@key) then query:title((query:placeName-elements($TEI//tei:correspAction[@type='received'])/@key)[1])
             else str:normalize-space(query:placeName-elements($TEI//tei:correspAction[@type='received'])[1])
+        let $letterClasses := for $class in $TEI//tei:objectDesc/string(@form)
+                                        return lang:get-language-string(concat('physDesc.objectDesc.form.', $letterClass)
         return (
             element tei:title {
+                if($letterClass) then (string-join($letterClasses, ' | '),<tei:lb/>) else(),
                 concat($sender, ' ', lower-case(lang:get-language-string('to',$lang)), ' ', $addressee),
                 if($placeAddressee) then concat(' ', lower-case(lang:get-language-string('in',$lang)), ' ', $placeAddressee) else(),
                 <tei:lb/>,
