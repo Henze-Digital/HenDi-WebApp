@@ -11,17 +11,17 @@
 	<import file="submodules/WeGA-WebApp/build.xml" as="wega" prefixseparator=":"/>
 	<property file="${WeGA-WebApp.basedir}/build.properties" prefix="wega"/>
 	
-	<target name="-check-secrets-available-local" unless="${build.env.ci}">
-		<echo>The script is running locally. Checking if secrets are available</echo>
-		<available type="dir" file="${HenDi-WebApp.basedir}/hendi-secrets" property="secrets.available.local"/>
-		<echo>secrets.available.local: ${secrets.available.local}</echo>
-	</target>
-	
 	<target name="-get-hendi-secrets-for-ci" if="${build.env.ci}">
 		<echo>Clone HenDi-secrets</echo>
 		<exec executable="git" dir="${HenDi-WebApp.basedir}" failonerror="no">
 			<arg line="clone https://gitlab-ci-token:${CI_JOB_TOKEN}@git.uni-paderborn.de/vife/henze-digital/hwh-data-internal-only.git hendi-secrets"/>
 		</exec>
+	</target>
+	
+	<target name="-check-secrets-available-local" unless="${build.env.ci}">
+		<echo>The script is running locally. Checking if secrets are available</echo>
+		<available type="dir" file="${HenDi-WebApp.basedir}/hendi-secrets" property="secrets.available.local"/>
+		<echo>secrets.available.local: ${secrets.available.local}</echo>
 	</target>
 	
 	<target name="-get-hendi-secrets-local" unless="${secrets.available.local}">
