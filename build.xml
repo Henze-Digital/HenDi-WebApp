@@ -57,6 +57,8 @@
 	</target>
 	
 	<target name="hendi:init">
+		<antcall target="wega:clean"/>
+		<antcall target="wega:init"/>
 		<antcall target="-set-properties"/>
 		<antcall target="-set-properties-for-ci"/>
 		<antcall target="-update-hendi-secrets-local"/>
@@ -303,9 +305,7 @@
 				<exclude name="resources/sass"/>
 			</fileset>
 		</zip>
-		<delete dir="build"/>
-		<delete dir="dist"/>
-		<delete dir="tmp"/>
+<!--		<antcall target="wega:clean"/>-->
 	</target>
 	
 	<target name="update-hendi-docker" depends="xar">
