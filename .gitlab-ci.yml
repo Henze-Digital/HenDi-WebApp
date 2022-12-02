@@ -3,7 +3,7 @@ variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
     IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-    IMAGE_TAG_BASE: registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image:develop
+    IMAGE_TAG_BASE: registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image:v1-0-1
     GIT_SUBMODULE_STRATEGY: recursive
 
 stages:
