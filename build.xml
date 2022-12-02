@@ -19,7 +19,7 @@
 	
 	<target name="-get-hendi-secrets-for-ci" if="${build.env.ci}">
 		<echo>Clone HenDi-secrets</echo>
-		<exec executable="git" dir="." failonerror="no">
+		<exec executable="git" dir="${HenDi-WebApp.basedir}" failonerror="no">
 			<arg line="clone https://gitlab-ci-token:${CI_JOB_TOKEN}@git.uni-paderborn.de/vife/henze-digital/hwh-data-internal-only.git hendi-secrets"/>
 		</exec>
 	</target>
@@ -33,7 +33,7 @@
 		</copy>
 	</target>
 	
-	<target name="update-hendi-secrets-local" depends="-get-hendi-secrets-local">
+	<target name="update-hendi-secrets-local" depends="-get-hendi-secrets-local" unless="${build.env.ci}">
 		<echo>Update existing hendi-secrets in local repo</echo>
 		<copy todir="${HenDi-WebApp.basedir}/hendi-secrets" overwrite="yes" failonerror="no">
 			<fileset dir="${HenDi-WebApp.basedir}/../hendi-secrets">
