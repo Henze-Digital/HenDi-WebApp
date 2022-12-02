@@ -47,7 +47,7 @@
 		</copy>
 	</target>
 	
-	<target name="-update-hendi-secrets-local" depends="-get-hendi-secrets-local">
+	<target name="update-hendi-secrets-local" depends="-get-hendi-secrets-local">
 		<echo>Update existing hendi-secrets in local repo</echo>
 		<copy todir="${HenDi-WebApp.basedir}/hendi-secrets" overwrite="yes" failonerror="no">
 			<fileset dir="${HenDi-WebApp.basedir}/../hendi-secrets">
@@ -56,12 +56,11 @@
 		</copy>
 	</target>
 	
-	<target name="hendi:init">
+	<target name="hendi:init" depends="-set-properties, -set-properties-for-ci">
 		<antcall target="wega:clean"/>
 		<antcall target="wega:init"/>
-		<antcall target="-set-properties"/>
-		<antcall target="-set-properties-for-ci"/>
-		<antcall target="-update-hendi-secrets-local"/>
+		<antcall target="-get-hendi-secrets-for-ci"/>
+		<antcall target="update-hendi-secrets-local"/>
 	</target>
 	
 	<target name="run-sass-ci" if="${build.env}">
