@@ -2,7 +2,6 @@
 	path = submodules/WeGA-WebApp
 	url = https://github.com/Henze-Digital/WeGA-WebApp.git
 	shallow = true
-	ignore = dirty
 [submodule "submodules/HenDi-ODD"]
 	path = submodules/HenDi-ODD
 	url = ../HenDi-ODD.git
