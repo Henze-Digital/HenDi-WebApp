@@ -11,20 +11,6 @@
 	<import file="submodules/WeGA-WebApp/build.xml" as="wega" prefixseparator=":"/>
 	<property file="${WeGA-WebApp.basedir}/build.properties" prefix="wega"/>
 	
-	<target name="-set-properties" unless="${build.env.ci}">
-		<property name="sass.path" value="${WeGA-WebApp.basedir}/${wega.sass.cmd}"/>
-		<echo>sass.path: ${sass.path}</echo>
-		<property name="sass.utf8" value=""/>
-		<echo>set sass option utf8 empty ${sass.utf8}</echo>
-		<property name="minify.path" value="${WeGA-WebApp.basedir}/${wega.dev_libs.dir}/minify/bin/minify.js"/>
-		<echo>minify.path: ${minify.path}</echo>
-	</target>
-	
-	<target name="-set-properties-for-ci" if="${build.env.ci}">
-		<property name="sass.utf8" value="-E UTF-8"/>
-		<echo>set sass option: ${sass.utf8}</echo>
-	</target>
-	
 	<target name="-check-secrets-available-local" unless="${build.env.ci}">
 		<echo>The script is running locally. Checking if secrets are available</echo>
 		<available type="dir" file="${HenDi-WebApp.basedir}/hendi-secrets" property="secrets.available.local"/>
@@ -56,7 +42,7 @@
 		</copy>
 	</target>
 	
-	<target name="hendi:init" depends="-set-properties, -set-properties-for-ci">
+	<target name="hendi:init">
 		<antcall target="wega:clean"/>
 		<antcall target="wega:init"/>
 		<antcall target="-get-hendi-secrets-for-ci"/>
