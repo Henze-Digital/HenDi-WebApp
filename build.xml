@@ -65,7 +65,7 @@
 	
 	<target name="run-sass-ci" if="${build.env.ci}">
 		<echo>Run sass for ci environemnt.</echo>
-		<exec executable="which sass" failonerror="yes">
+		<exec executable="${wega.sass.cmd}" failonerror="yes">
 			<arg line="${WeGA-WebApp.basedir}/resources/sass/main.scss ${WeGA-WebApp.basedir}/resources/css/styles.css ${sass.utf8}"/>
 		</exec>
 	</target>
