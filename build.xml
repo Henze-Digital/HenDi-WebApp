@@ -64,20 +64,22 @@
 		<antcall target="-update-hendi-secrets-local"/>
 	</target>
 	
-	<target name="hendi-sass-compilation" depends="hendi:init">
-		<echo>Overwrite SASS files with HenDi data</echo>
-		<copy todir="${WeGA-WebApp.basedir}/resources/sass" overwrite="yes">
-			<fileset dir="data/resources/sass" includes="**"/>
-		</copy>
-		<echo>Add node_modules to ${WeGA-WebApp.basedir}</echo>
-		<move todir="${WeGA-WebApp.basedir}/node_modules">
-			<fileset dir="node_modules"/>
-		</move>
-		<echo>Create CSS files via sass</echo>
-		<mkdir dir="${WeGA-WebApp.basedir}/resources/css"/>
+	<target name="run-sass-ci" if="${build.env}">
+		<echo>Run sass for ci environemnt.</echo>
 		<exec executable="${sass.path}" failonerror="yes">
 			<arg line="${WeGA-WebApp.basedir}/resources/sass/main.scss ${WeGA-WebApp.basedir}/resources/css/styles.css ${sass.utf8}"/>
 		</exec>
+	</target>
+	
+	<target name="run-sass-local" unless="${build.env}">
+		<echo>Run sass for local environemnt.</echo>
+		<antcall target="wega:sass"/>
+	</target>
+	
+	<target name="run-sass">
+		<echo>Compile CSS files via sass</echo>
+		<antcall target="run-sass-ci"/>
+		<antcall target="run-sass-local"/>
 	</target>
 	
 	<target name="hendi-package-files">
@@ -266,18 +268,13 @@
 	</target>
 	
 	<target name="build-webapp" depends="hendi:init">
-		
-		<echo>Make dist (build preparation)</echo>
+		<!-- Make dist (build preparation) -->
 		<antcall target="webapp-dist"/>
-		
-		<echo>Execute yarn, initalizes also WeGA-WebApp</echo>
+		<!-- Execute yarn, initalizes also WeGA-WebApp -->
 		<antcall target="wega:yarn"/>
-		
-		<echo>Update SASS files with ${hendi.project.app} data</echo>
-		<!--		<antcall target="hendi-sass-compilation"/>-->
-		<antcall target="wega:sass"/>
-		
-		<echo>Compile openapi.json</echo>
+		<!-- run sass -->
+		<antcall target="run-sass"/>
+		<!--Compile openapi.json-->
 		<antcall target="wega:swagger-cli"/>
 	</target>
 	
