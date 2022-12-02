@@ -57,7 +57,7 @@
 	
 	<target name="webapp-wega-prepare-tasks" depends="get-hendi-secrets-for-ci, update-hendi-secrets-local">
 		<echo>Copy hendi data to api</echo>
-		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}" overwrite="yes" failonerror="no">
+		<copy todir="${WeGA-WebApp.basedir}" overwrite="yes" failonerror="no">
 			<fileset dir="data">
 				<include name="api/**/*.*"/>
 			</fileset>
