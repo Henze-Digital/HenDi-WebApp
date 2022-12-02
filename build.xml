@@ -100,7 +100,7 @@
 		</copy>
 	</target>
 	
-	<target name="webapp-dist-libs">
+	<target name="webapp-dist-libs" depends="wega:yarn">
 		<echo>Copy libs to ${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib</echo>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib">
 			<fileset dir="${wega.frontend_libs.dir}">
@@ -269,8 +269,6 @@
 	<target name="build-webapp" depends="hendi:init">
 		<!-- Make dist (build preparation) -->
 		<antcall target="webapp-dist"/>
-		<!-- Execute yarn, initalizes also WeGA-WebApp -->
-		<antcall target="wega:yarn"/>
 		<!-- run sass -->
 		<antcall target="run-sass"/>
 		<!--Compile openapi.json-->
