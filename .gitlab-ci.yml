@@ -44,12 +44,9 @@ build-webapp:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
     - ant xar -Dbuild.env.ci=true -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
-  only:
-    refs:
-      - merge_requests
-      - develop
-    variables:
-      - ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true")
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop" && ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true")
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   artifacts:
     paths:
       - hendi-pkg-webapp/HenDi-WebApp-*.xar
@@ -61,14 +58,8 @@ build-webapp-stable:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
     - ant xar-stable -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
-  only:
-    refs:
-      - stable
-    variables:
-      - $BUILD_PORTAL_STABLE == "true"
-  except:
-    variables:
-      - ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true")
+  rules:
+    - if: $CI_COMMIT_BRANCH == "stable" && $BUILD_PORTAL_STABLE == "true"
   artifacts:
     paths:
       - hendi-pkg-webapp-stable/HenDi-WebApp-*.xar
@@ -86,15 +77,9 @@ build-webapp-docker-image:
     - docker run --privileged --rm tonistiigi/binfmt --install all
     - docker buildx create --name mybuilder --use
     - docker buildx build --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN} --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG} .
-  only:
-    refs:
-      - merge_requests
-      - develop
-    variables:
-      - ($BUILD_PORTAL_INTERN == "true")
-  except:
-    variables:
-      - ($BUILD_PORTAL_STAGING == "true" || $BUILD_PORTAL_STABLE == "true")
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_INTERN == "true"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
 build-webapp-docker-image-staging:
   stage: build
@@ -109,15 +94,9 @@ build-webapp-docker-image-staging:
     - docker run --privileged --rm tonistiigi/binfmt --install all
     - docker buildx create --name mybuilder --use
     - docker buildx build --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN} --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG}-staging -f Dockerfile.staging .
-  only:
-    refs:
-      - merge_requests
-      - develop
-    variables:
-      - $BUILD_PORTAL_STAGING == "true"
-  except:
-    variables:
-      - ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STABLE == "true")
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_STAGING == "true"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       
 build-webapp-docker-image-stable:
   stage: build
@@ -132,14 +111,8 @@ build-webapp-docker-image-stable:
     - docker run --privileged --rm tonistiigi/binfmt --install all
     - docker buildx create --name mybuilder --use
     - docker buildx build --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN} --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG} -f Dockerfile.stable .
-  only:
-    refs:
-      - stable
-    variables:
-      - $BUILD_PORTAL_STABLE == "true"
-  except:
-    variables:
-      - ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true")
+  rules:
+    - if: $CI_COMMIT_BRANCH == "stable" && $BUILD_PORTAL_STABLE == "true"
 
 deploy-webapp:
   stage: deploy
