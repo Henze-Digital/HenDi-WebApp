@@ -121,14 +121,8 @@ deploy-webapp:
   script:
     - >
       curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "'${CI_REGISTRY_IMAGE}'", "tag": "'${CI_COMMIT_REF_SLUG}'"}'
-  only:
-    refs:
-      - develop
-    variables:
-      - ($BUILD_PORTAL_INTERN == "true" || $CI_COMMIT_MESSAGE  =~ /deploy\:/ )
-  except:
-    variables:
-      - ($BUILD_PORTAL_STAGING == "true" || $BUILD_PORTAL_STABLE == "true")
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_INTERN == "true"
 
 deploy-webapp-staging:
   stage: deploy
@@ -137,14 +131,8 @@ deploy-webapp-staging:
   script:
     - >
       curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "'${CI_REGISTRY_IMAGE}'", "tag": "'${CI_COMMIT_REF_SLUG}-staging'"}'
-  only:
-    refs:
-      - develop
-    variables:
-      - ($CI_COMMIT_MESSAGE  =~ /deploy\:/ || $BUILD_PORTAL_STAGING == "true")
-  except:
-    variables:
-      - ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STABLE == "true")
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_STAGING == "true"
 
 deploy-webapp-stable:
   stage: deploy
