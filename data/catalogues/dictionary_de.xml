@@ -716,8 +716,10 @@
     <!-- objectDesc form types -->
     <entry xml:id="physDesc.objectDesc.form">Dokumenttyp</entry>
     <entry xml:id="physDesc.objectDesc.form.card.business">Visitenkarte</entry>
-    <entry xml:id="physDesc.objectDesc.form.card.letter">Briefkarte/Weihnachtskarte/Glückwunschkarte/Grußkarte</entry>
-    <entry xml:id="physDesc.objectDesc.form.card.postal">Postkarte/Kunstkarte/Ansichtskarte/Bildkarte</entry>
+<!--    <entry xml:id="physDesc.objectDesc.form.card.letter">Briefkarte/Weihnachtskarte/Glückwunschkarte/Grußkarte</entry>-->
+    <entry xml:id="physDesc.objectDesc.form.card.letter">Briefkarte</entry>
+<!--    <entry xml:id="physDesc.objectDesc.form.card.postal">Postkarte/Kunstkarte/Ansichtskarte/Bildkarte</entry>-->
+    <entry xml:id="physDesc.objectDesc.form.card.postal">Post-/Ansichtskarte</entry>
     <entry xml:id="physDesc.objectDesc.form.contract">Vertrag</entry>
     <entry xml:id="physDesc.objectDesc.form.document">Dokument</entry>
     <entry xml:id="physDesc.objectDesc.form.envelope">Umschlag</entry>

@@ -707,8 +707,10 @@
     <!-- objectDesc form types -->
     <entry xml:id="physDesc.objectDesc.form">Document type</entry>
     <entry xml:id="physDesc.objectDesc.form.card.business">Business card</entry>
-    <entry xml:id="physDesc.objectDesc.form.card.letter">Letter card/christmas card/congratulations card/greeting card</entry>
-    <entry xml:id="physDesc.objectDesc.form.card.postal">Postal card/art card/view card/picture postcard</entry>
+<!--    <entry xml:id="physDesc.objectDesc.form.card.letter">Letter card/christmas card/congratulations card/greeting card</entry>-->
+    <entry xml:id="physDesc.objectDesc.form.card.letter">Letter card</entry>
+<!--    <entry xml:id="physDesc.objectDesc.form.card.postal">Postal card/art card/view card/picture postcard</entry>-->
+    <entry xml:id="physDesc.objectDesc.form.card.postal">Postal/view card</entry>
     <entry xml:id="physDesc.objectDesc.form.contract">Contract</entry>
     <entry xml:id="physDesc.objectDesc.form.document">Document</entry>
     <entry xml:id="physDesc.objectDesc.form.envelope">Envelope</entry>
