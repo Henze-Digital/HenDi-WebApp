@@ -1487,7 +1487,7 @@ declare
             if(exists($incipit) and (every $i in $incipit satisfies $i instance of element())) then $incipit ! element xhtml:p { app:enquote-html(./xhtml:p/node(), $lang) }
             else element xhtml:p {
                 if(exists($incipit)) then app:enquote-html($incipit, $lang)
-                else if(wega-util-shared:semantic-boolean($generate) and not(functx:all-whitespace($model('doc')//tei:text/tei:body))) then app:enquote-html(app:compute-incipit($model?doc, $lang), $lang)
+                else if(wega-util-shared:semantic-boolean($generate) and not(functx:all-whitespace($model('doc')//tei:text[1]/tei:body))) then app:enquote-html(app:compute-incipit($model?doc, $lang), $lang)
                 else '–'
             }
 };
@@ -1503,10 +1503,10 @@ declare
  :  @param $lang the current language (de|en)
  :)
 declare %private function app:compute-incipit($doc as document-node(), $lang as xs:string) as xs:string? {
-    let $myTextNodes := $doc//tei:text/tei:body/tei:div[not(@type='address')]/(* except tei:dateline except tei:opener except tei:head | text())
+    let $myTextNodes := $doc//tei:text[1]/tei:body/tei:div[not(@type='address')]/(* except tei:dateline except tei:opener except tei:head | text())
     return
         if(string-length(normalize-space(string-join($myTextNodes, ' '))) gt 20) then str:shorten-TEI($myTextNodes, 80, $lang)
-        else str:shorten-TEI($doc//tei:text/tei:body, 80, $lang)
+        else str:shorten-TEI($doc//tei:text[1]/tei:body, 80, $lang)
 };
 
 declare 
