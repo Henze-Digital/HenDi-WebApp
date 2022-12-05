@@ -16,14 +16,14 @@
         thus exclude all elements with the following child elements 
     -->
     <xsl:variable name="linkableElements" as="xs:string+" select="('persName', 'rs', 
-        'workName', 'characterName', 'orgName', 'sic', 'del', 'add', 'subst', 
+        'name', 'characterName', 'orgName', 'sic', 'del', 'add', 'subst', 
         'damage', 'choice', 'unclear', 'app', 'note', 'settlement')"/>
     
     <!--  *********************************************  -->
     <!--  *                  Templates                *  -->
     <!--  *********************************************  -->
     <xsl:template match="tei:persName | tei:author | tei:orgName | 
-        mei:persName | tei:workName | tei:settlement | mei:settlement | 
+        mei:persName | tei:name | tei:settlement | mei:settlement | 
         mei:geogName | mei:corpName | mei:title[@codedval] | tei:placeName[@key]" 
         mode="#all">
         <xsl:choose>
