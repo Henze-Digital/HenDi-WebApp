@@ -209,7 +209,7 @@
 		</copy>
 	</target>
 
-	<target name="webapp-dist">
+	<target name="webapp-prepare">
 		<antcall target="hendi-package-files"/>
 		<antcall target="webapp-dist-libs"/>
 		<antcall target="webapp-dist-data-wega"/>
@@ -220,11 +220,11 @@
 	</target>
 	
 	<target name="build-webapp" depends="hendi:init">
-		<!-- Make dist (build preparation) -->
-		<antcall target="webapp-dist"/>
+		<!-- HenDi-WebApp build preparation -->
+		<antcall target="webapp-prepare"/>
 		<!-- run sass -->
 		<antcall target="wega:sass"/>
-		<!--Compile openapi.json-->
+		<!-- compile openapi.json-->
 		<antcall target="wega:swagger-cli"/>
 	</target>
 	
