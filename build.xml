@@ -132,14 +132,21 @@
 		<echo>Overwrite data</echo>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}" overwrite="yes">
 			<fileset dir="${HenDi-WebApp.basedir}/data">
-				<include name="api/**"/>
 				<include name="*.*"/>
 				<include name="catalogues/**"/>
 				<include name="modules/**"/>
 				<include name="resources/**"/>
 				<include name="templates/**"/>
 				<include name="xsl/**"/>
+				<exclude name="api/**"/>
 				<exclude name="resources/sass"/>
+			</fileset>
+		</copy>
+		
+		<echo>Overwrite API</echo>
+		<copy todir="${WeGA-WebApp.basedir}" overwrite="yes">
+			<fileset dir="${HenDi-WebApp.basedir}/data">
+				<include name="api/**"/>
 			</fileset>
 		</copy>
 	</target>
