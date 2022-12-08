@@ -1,6 +1,7 @@
 FROM stadlerpeter/existdb:6
 
 ARG CI_JOB_TOKEN
+ENV EXIST_ENV=production
 
 RUN curl --output WeGA-WebApp-lib-1.8.0.xar --location "https://github.com/Edirom/WeGA-WebApp-lib/releases/download/v1.8.0/WeGA-WebApp-lib-1.8.0.xar" &&\
     mv WeGA-WebApp-lib-1.8.0.xar ${EXIST_HOME}/autodeploy
