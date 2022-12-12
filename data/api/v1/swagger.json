@@ -1,12 +1,12 @@
 {
     "swagger": "2.0",
     "info": {
-        "title": "WeGA API",
+        "title": "HenDi API",
         "description": "⚠️<b>DEPRECATION WARNING</b>⚠️<br/>This version of the WeGA API specification is outdated and superseded by [version 1.1.0](https://weber-gesamtausgabe.de/api/v1/openapi.json).  <br/> <br/> For feedback or requests about this API please contact stadler@weber-gesamtausgabe.de or start the discussion at https://github.com/Edirom/WeGA-WebApp",
         "version": "1.0.0"
     },
-    "host": "localhost:8080",
-    "schemes": ["http"],
+    "host": "",
+    "schemes": ["https"],
     "tags": [
         {
             "name": "Documents",
@@ -29,7 +29,7 @@
             "description": "Access to facets for filtering result sets"
         }
     ],
-    "basePath": "/exist/apps/HenDi-WebApp/api/v1",
+    "basePath": "/api/v1",
     "paths": {
         "/documents": {
             "get": {

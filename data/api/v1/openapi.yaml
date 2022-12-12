@@ -1,10 +1,10 @@
 openapi: 3.0.1
 info:
-  title: WeGA API
+  title: HenDi API
   description: 'The OpenAPI documentation for the RESTful interface of the Carl-Maria-von-Weber-Gesamtausgabe. <br/> (No registration, authentication, or API key is required) <br/> For feedback or requests about this API please contact stadler@weber-gesamtausgabe.de or start the discussion at https://github.com/Edirom/WeGA-WebApp'
   version: 1.1.0
 servers:
-  - url: 'http://localhost:8080/exist/apps/HenDi-WebApp/api/v1'
+  - url: '/api/v1'
 tags:
   - name: Documents
     description: Access to the documents of the WeGA digital edition
