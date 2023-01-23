@@ -253,4 +253,15 @@
 		</xsl:element>
 	</xsl:template>
 	
+	<xsl:template match="tei:p">
+		<xsl:element name="p">
+		<xsl:if test="@rend">
+			<xsl:attribute name="class">
+				<xsl:value-of select="concat('textAlign-',@rend)"/>
+			</xsl:attribute>
+		</xsl:if>
+			<xsl:apply-templates/>
+		</xsl:element>
+	</xsl:template>
+	
 </xsl:stylesheet>
