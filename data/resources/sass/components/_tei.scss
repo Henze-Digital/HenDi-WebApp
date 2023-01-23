@@ -149,7 +149,7 @@ li.listSubTitle {
 }
 
 .tei_list {
-    list-style: disc;
+    list-style: none;
     margin-left: $tei_list-indent;
     li.listTitle, li.listSubTitle {
         margin-left: -$tei_list-indent;
