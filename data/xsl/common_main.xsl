@@ -785,6 +785,14 @@
             <xsl:apply-templates/>
         </xsl:element>
     </xsl:template>
+	
+	<xsl:template match="tei:p[@rend='inline']" priority="0.5">
+		<xsl:element name="p">
+			<xsl:apply-templates select="@xml:id"/>
+			<xsl:attribute name="class" select="string-join((wega:getTextAlignment(@rend, 'left'), 'inlineStart'), ' ')"/>
+			<xsl:apply-templates/>
+		</xsl:element>
+	</xsl:template>
     
     <xsl:template match="tei:q|tei:quote|mei:q" priority="0.5" mode="#all">
         <xsl:choose>
