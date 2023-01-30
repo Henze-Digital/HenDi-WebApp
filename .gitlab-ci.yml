@@ -7,9 +7,18 @@ variables:
     GIT_SUBMODULE_STRATEGY: recursive
 
 stages:
+  - test
   - update
   - build
   - deploy
+
+test-vars:
+  stage: test
+  script:
+     - echo "$CI_REGISTRY_USER"
+     - echo "$CI_REGISTRY_PASSWORD"
+     - echo "$CI_REGISTRY"
+    
 
 update-submodules:
   stage: update
