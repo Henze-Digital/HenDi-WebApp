@@ -744,7 +744,12 @@
     <xsl:template match="tei:signed" priority="0.5">
         <xsl:element name="span">
             <xsl:apply-templates select="@xml:id"/>
-            <xsl:attribute name="class" select="'tei_signed'"/>
+        	<xsl:attribute name="class">
+        		<xsl:value-of select="'tei_signed'"/>
+        		<xsl:if test="@rend">
+        			<xsl:value-of select="concat('textAlign-',@rend)"/>
+        		</xsl:if>
+        	</xsl:attribute>
             <xsl:apply-templates/>
         </xsl:element>
     </xsl:template>
