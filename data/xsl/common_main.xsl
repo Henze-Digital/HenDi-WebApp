@@ -82,9 +82,14 @@
                 <xsl:when test="not($marker) and self::tei:app">
                     <xsl:text>Δ</xsl:text>
                 </xsl:when>
-                <xsl:when test="not($marker) and self::tei:handShift">
-                    <xsl:text>&#8631;</xsl:text>
-                </xsl:when>
+            	<xsl:when test="not($marker) and self::tei:handShift[@script='manuscript']">
+            		<!-- https://www.i2symbol.com/symbols/write -->
+            		<xsl:text>✍</xsl:text>
+            	</xsl:when>
+            	<xsl:when test="not($marker) and self::tei:handShift[@script='typescript']">
+            		<!-- https://www.i2symbol.com/symbols/write -->
+            		<xsl:text>⌨</xsl:text>
+            	</xsl:when>
                 <xsl:otherwise>
                     <xsl:text>‡</xsl:text> <!-- to be changed in apparatus.xsl too if necessary -->
                 </xsl:otherwise>
