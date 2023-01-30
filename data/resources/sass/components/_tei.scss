@@ -274,3 +274,10 @@ li.listSubTitle {
     margin-right: -0.5em;
     margin-left: -0.5em;
 }
+
+.tei_indent-space 
+{
+	display: inline-block;
+	content:"&#160;";
+	width: 3em;
+}

@@ -276,4 +276,12 @@
 		</xsl:element>
 	</xsl:template>
 	
+	<xsl:template match="tei:space[@unit='indent']">
+		<xsl:element name="span">
+			<xsl:for-each select="1 to @quantity">
+				<span class="tei_indent-space"/>
+			</xsl:for-each>
+		</xsl:element>
+	</xsl:template>
+	
 </xsl:stylesheet>
