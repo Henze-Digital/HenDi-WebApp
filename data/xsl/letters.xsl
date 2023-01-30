@@ -205,8 +205,20 @@
 	
 	<xsl:template match="tei:fw">
 		<xsl:element name="p">
-			<xsl:attribute name="class">d-flex border-top border-bottom border-secondary tei_fw</xsl:attribute>
-			<xsl:apply-templates/>
+			<xsl:attribute name="class">
+				<xsl:value-of select="'border-top border-bottom border-secondary tei_fw'"/>
+			</xsl:attribute>
+			<xsl:choose>
+				<xsl:when test="@rend">
+					<xsl:element name="span">
+						<xsl:attribute name="class"><xsl:value-of select="concat('textAlign-',@rend)"/></xsl:attribute>
+						<xsl:apply-templates/>
+					</xsl:element>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:apply-templates/>
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:element>
 	</xsl:template>
 	
