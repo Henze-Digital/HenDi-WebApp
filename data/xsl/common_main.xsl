@@ -739,12 +739,12 @@
     </xsl:template>
 
     <!--
-        Ein <signed> wird standardmäßig rechtsbündig gesetzt und in eine eigene Zeile (display:block)
+        Ein <signed> wird standardmäßig in eine eigene Zeile (display:block)
     -->
     <xsl:template match="tei:signed" priority="0.5">
         <xsl:element name="span">
             <xsl:apply-templates select="@xml:id"/>
-            <xsl:attribute name="class" select="string-join(('tei_signed', wega:getTextAlignment(@rend, 'right')), ' ')"/>
+            <xsl:attribute name="class" select="'tei_signed'"/>
             <xsl:apply-templates/>
         </xsl:element>
     </xsl:template>
