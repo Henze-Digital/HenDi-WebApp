@@ -11,18 +11,9 @@ variables:
     HENDI_WEBAPP_CI_REGISTRY: "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp" #$CI_REGISTRY
 
 stages:
-  - test
   - update
   - build
   - deploy
-
-test-vars:
-  stage: test
-  script:
-     - echo "$CI_REGISTRY_USER"
-     - echo "$CI_REGISTRY_PASSWORD"
-     - echo "$CI_REGISTRY"
-     - echo "$URL_CI_REGISTRY"
 
 update-submodules:
   stage: update
