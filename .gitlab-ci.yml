@@ -8,7 +8,7 @@ variables:
     URL_CI_REGISTRY: "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp"
     HENDI_WEBAPP_CI_REGISTRY_USER: $HENDI_WEBAPP_CI_REGISTRY_USER #$CI_REGISTRY_USER
     HENDI_WEBAPP_CI_REGISTRY_PASSWORD: $HENDI_WEBAPP_CI_REGISTRY_PASSWORD #$CI_REGISTRY_PASSWORD
-    HENDI_WEBAPP_CI_REGISTRY: $CI_REGISTRY #"registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp"
+    HENDI_WEBAPP_CI_REGISTRY: "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp" #$CI_REGISTRY
 
 stages:
   - test
