@@ -6,6 +6,9 @@ variables:
     IMAGE_TAG_BASE: registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image:v1-0-1
     GIT_SUBMODULE_STRATEGY: recursive
     URL_CI_REGISTRY: "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp"
+    HENDI_WEBAPP_CI_REGISTRY_USER: $HENDI_WEBAPP_CI_REGISTRY_USER #$CI_REGISTRY_USER
+    HENDI_WEBAPP_CI_REGISTRY_PASSWORD: $HENDI_WEBAPP_CI_REGISTRY_PASSWORD #$CI_REGISTRY_PASSWORD
+    HENDI_WEBAPP_CI_REGISTRY: $CI_REGISTRY #"registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp"
 
 stages:
   - test
@@ -83,8 +86,7 @@ build-webapp-docker-image:
   dependencies:
     - build-webapp
   script:
-    - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
-    #- docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $URL_CI_REGISTRY
+    - docker login -u ${HENDI_WEBAPP_CI_REGISTRY_USER} -p ${HENDI_WEBAPP_CI_REGISTRY_PASSWORD} ${HENDI_WEBAPP_CI_REGISTRY}
     - docker run --privileged --rm tonistiigi/binfmt --install all
     - docker buildx create --name mybuilder --use
     - docker buildx build --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN} --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG} .
