@@ -80,7 +80,7 @@ build-webapp-docker-image:
     - docker login -u ${HENDI_WEBAPP_CI_REGISTRY_USER} -p ${HENDI_WEBAPP_CI_REGISTRY_PASSWORD} ${HENDI_WEBAPP_CI_REGISTRY}
     - docker run --privileged --rm tonistiigi/binfmt --install all
     - docker buildx create --name mybuilder --use
-    - docker buildx build --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN} --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG} .
+    - docker buildx build --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN} --pull --push -t ${IMAGE_TAG} .
   rules:
     - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_INTERN == "true"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
