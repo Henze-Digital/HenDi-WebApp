@@ -89,7 +89,7 @@ hr.tei_pb-text {
     border-radius: 5px;
 }
 
-hr.tei_pb-text::before {
+hr.tei_pb-text:before {
     content: attr(data-content);
     display: inline-block;
     background: #fff;
