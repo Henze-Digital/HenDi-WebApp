@@ -24,7 +24,9 @@
 	<xsl:template match="tei:div[@type='row']">
 		<xsl:element name="div">
 			<xsl:attribute name="class" select="'row justify-content-center'"/>
-			<xsl:attribute name="style" select="'border: solid;'"/>
+			<xsl:if test="ancestor::tei:text/@type = 'telegram'">
+				<xsl:attribute name="style" select="'border: solid;'"/>
+			</xsl:if>
 			<xsl:apply-templates select="./tei:div"/>
 		</xsl:element>
 	</xsl:template>
@@ -39,7 +41,9 @@
 					<xsl:attribute name="class" select="'col'"/>
 				</xsl:otherwise>
 			</xsl:choose>
-			<xsl:attribute name="style" select="'border: 0.5pt dashed; overflow-x: scroll; white-space: nowrap;'"/>
+			<xsl:if test="ancestor::tei:text/@type = 'telegram'">
+				<xsl:attribute name="style" select="'border: 0.5pt dashed; overflow-x: scroll; white-space: nowrap;'"/>
+			</xsl:if>
 			<xsl:apply-templates/>
 		</xsl:element>
 	</xsl:template>
