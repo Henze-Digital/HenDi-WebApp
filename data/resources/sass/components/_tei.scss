@@ -70,15 +70,38 @@ $tei_list-indent: $font-size-base;
     text-decoration:line-through;
 }
 
-.tei_pb, .tei_cb {
+.tei_cb {
     cursor: help;
 }
 
-.tei_pb_block, .tei_cb_block {
-    @extend .tei_pb;
+.tei_cb_block {
+    @extend .tei_cb;
     float:left;
     display:block;
     margin-right: .5em;
+}
+
+hr.tei_pb-text {
+  position: relative;
+    border: none;
+    height: 3.5px;
+    background: #bbb;
+    border-radius: 5px;
+}
+
+hr.tei_pb-text::before {
+    content: attr(data-content);
+    display: inline-block;
+    background: #fff;
+    font-weight: bold;
+    font-size: 0.85rem;
+    color: #999;
+    border-radius: 30rem;
+    padding: 0.2rem 2rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 /*  for development … */
