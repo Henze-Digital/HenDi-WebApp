@@ -280,17 +280,15 @@
 	</xsl:template>
     
     <!--  Hier mit priority 0.5, da in Briefen und Tagebüchern unterschiedlich behandelt  -->
-    <xsl:template match="tei:pb | tei:cb" priority="0.5">
-        <xsl:variable name="division-sign" as="xs:string">
+    <xsl:template match="tei:pb" priority="0.5">
+        <xsl:variable name="pbTitleText">
             <xsl:choose>
-                <xsl:when test="self::tei:pb">
-                    <xsl:value-of select="' | '"/>
-                <!-- senkrechter Strich („|“) aka pipe -->
+                <xsl:when test="@n">
+                    <xsl:value-of select="concat(wega:getLanguageString('pageBreak', $lang), ' (', wega:getLanguageString('pp', $lang), ' ', @n, ')')"/>
                 </xsl:when>
-                <xsl:when test="self::tei:cb">
-                    <xsl:value-of select="' ¦ '"/>
-                <!-- in der Mitte unterbrochener („¦“) senkrechter Strich -->
-                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="wega:getLanguageString('pageBreak', $lang)"/>
+                </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
         <!-- breaks are not allowed within lists as they are in TEI. We need to workaround this … -->
@@ -304,54 +302,23 @@
                 </xsl:if>
             </xsl:attribute>
             <xsl:attribute name="title">
-                <xsl:choose>
-                    <xsl:when test="@n">
-                        <xsl:choose>
-                            <xsl:when test="self::tei:pb">
-                                <xsl:choose>
-                                    <xsl:when test="$docID eq 'A100000'">
-                                        <!-- Special treatment for the Notizenbuch where we decided to label the pages as numbers, sigh … -->
-                                        <xsl:value-of select="concat(wega:getLanguageString('pageBreakTo', $lang), ' Nr.&#160;', @n)"/>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <xsl:value-of select="concat(wega:getLanguageString('pageBreakTo', $lang), ' ', wega:getLanguageString('pp', $lang), '&#160;', @n)"/>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:when>
-                            <xsl:when test="self::tei:cb">
-                                <xsl:value-of select="concat(wega:getLanguageString('columnBreakTo', $lang), ' ', wega:getLanguageString('col', $lang), '&#160;', @n)"/>
-                            </xsl:when>
-                        </xsl:choose>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:choose>
-                            <xsl:when test="self::tei:pb">
-                                <xsl:value-of select="wega:getLanguageString('pageBreak', $lang)"/>
-                            </xsl:when>
-                            <xsl:when test="self::tei:cb">
-                                <xsl:value-of select="wega:getLanguageString('columnBreak', $lang)"/>
-                            </xsl:when>
-                        </xsl:choose>
-                    </xsl:otherwise>
-                </xsl:choose>
+                <xsl:value-of select="$pbTitleText"/>
             </xsl:attribute>
-            <xsl:if test="@facs">
-                <xsl:attribute name="data-facs" select="substring(@facs, 2)"/>
-            </xsl:if>
+<!--            <xsl:if test="@facs">-->
+<!--                <xsl:attribute name="data-facs" select="substring(@facs, 2)"/>-->
+<!--            </xsl:if>-->
             <xsl:choose>
                 <xsl:when test="@break='no' and not(@rend='noHyphen')">
-                    <xsl:value-of select="concat('-',normalize-space($division-sign))"/>
+                    <xsl:text>-</xsl:text>
                 </xsl:when>
                 <xsl:when test="@break='no' and @rend='noHyphen'">
-                    <xsl:value-of select="concat('[-]',normalize-space($division-sign))"/>
+                    <xsl:text>[-]</xsl:text>
                 </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="$division-sign"/>
-                </xsl:otherwise>
+                <xsl:otherwise/>
             </xsl:choose>
         </xsl:element>
         <xsl:if test="not(parent::tei:list)">
-            <xsl:element name="br"/>
+            <hr data-content="{$pbTitleText}" title="{$pbTitleText}" class="tei_pb-text" style="height: 3.5px; background: #bbb; border-radius: 5px;"/>
         </xsl:if>
     </xsl:template>
 
