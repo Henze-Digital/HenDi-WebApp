@@ -1,16 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-    xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" 
-    xmlns:tei="http://www.tei-c.org/ns/1.0" 
-    xmlns:xhtml="http://www.w3.org/1999/xhtml"
-    xmlns:rng="http://relaxng.org/ns/structure/1.0" 
-    xmlns:functx="http://www.functx.com" 
-    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-    xmlns:teix="http://www.tei-c.org/ns/Examples" 
-    xmlns:mei="http://www.music-encoding.org/ns/mei"
-    xmlns:exist="http://exist.sourceforge.net/NS/exist" 
-    version="2.0">
+<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mei="http://www.music-encoding.org/ns/mei" xmlns:exist="http://exist.sourceforge.net/NS/exist" xmlns:teix="http://www.tei-c.org/ns/Examples" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:functx="http://www.functx.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" xmlns:xhtml="http://www.w3.org/1999/xhtml" version="2.0">
     
     <xsl:output encoding="UTF-8" method="html" omit-xml-declaration="yes" indent="no"/>
 
@@ -100,7 +88,9 @@
     <xsl:template name="createEndnotes">
         <xsl:element name="div">
             <xsl:attribute name="id" select="'endNotes'"/>
-            <xsl:element name="h3"><xsl:value-of select="wega:getLanguageString('originalFootnotes', $lang)"/></xsl:element>
+            <xsl:element name="h3">
+                <xsl:value-of select="wega:getLanguageString('originalFootnotes', $lang)"/>
+            </xsl:element>
             <xsl:element name="ul">
                 <xsl:for-each select="//tei:note[@place='bottom']">
                     <xsl:element name="li">
@@ -431,7 +421,8 @@
                                         <xsl:sequence select="(1,7.5,1,.5)"/>
                                     </xsl:when>
                                     <xsl:otherwise>
-                                        <xsl:message>XSLT Warning: unsupported ammount of table cells <xsl:value-of select="$docID"/></xsl:message>
+                                        <xsl:message>XSLT Warning: unsupported ammount of table cells <xsl:value-of select="$docID"/>
+                                        </xsl:message>
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </xsl:when>
@@ -736,7 +727,8 @@
                     <xsl:apply-templates/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:message>XSLT Warning: template for `tei:g` failed to recognize glyph in document <xsl:value-of select="$docID"/></xsl:message>
+                    <xsl:message>XSLT Warning: template for `tei:g` failed to recognize glyph in document <xsl:value-of select="$docID"/>
+                    </xsl:message>
                     <xsl:apply-templates/>
                 </xsl:otherwise>
             </xsl:choose>
@@ -808,13 +800,7 @@
         <xsl:choose>
             <!-- Surround with quotation marks if current node is `<q>`, or `@rend` is set on `<quote>` -->
             <xsl:when test="@rend or self::tei:q or self::mei:q">
-                <xsl:variable name="doubleQuotes" select="
-                    (
-                    (count(ancestor::tei:q | ancestor::mei:q | ancestor::tei:quote[@rend]) mod 2) = 0
-                        or @rend='double-quotes'
-                    )
-                    and not(@rend='single-quotes')
-                    "/>
+                <xsl:variable name="doubleQuotes" select="                     (                     (count(ancestor::tei:q | ancestor::mei:q | ancestor::tei:quote[@rend]) mod 2) = 0                         or @rend='double-quotes'                     )                     and not(@rend='single-quotes')                     "/>
                 <xsl:call-template name="enquote">
                     <xsl:with-param name="double" select="$doubleQuotes"/>
                     <xsl:with-param name="lang">
