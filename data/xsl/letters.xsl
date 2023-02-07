@@ -64,13 +64,7 @@
 						</xsl:element>
 					</xsl:if>
 				</xsl:when>
-				<!--     Debugging Option       -->
 				<xsl:otherwise>
-					<!--<xsl:if test="wega:getOption('environment') eq 'development'">
-                        <xsl:attribute name="class">
-                            <xsl:value-of select="'tei_cssUndefined'"/>
-                        </xsl:attribute>
-                    </xsl:if>-->
 					<xsl:apply-templates/>
 				</xsl:otherwise>
 			</xsl:choose>
