@@ -1,16 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-    xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" 
-    xmlns:tei="http://www.tei-c.org/ns/1.0" 
-    xmlns:xhtml="http://www.w3.org/1999/xhtml"
-    xmlns:rng="http://relaxng.org/ns/structure/1.0" 
-    xmlns:functx="http://www.functx.com" 
-    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-    xmlns:teix="http://www.tei-c.org/ns/Examples" 
-    xmlns:mei="http://www.music-encoding.org/ns/mei"
-    xmlns:exist="http://exist.sourceforge.net/NS/exist" 
-    version="2.0">
+<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mei="http://www.music-encoding.org/ns/mei" xmlns:exist="http://exist.sourceforge.net/NS/exist" xmlns:teix="http://www.tei-c.org/ns/Examples" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:functx="http://www.functx.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" xmlns:xhtml="http://www.w3.org/1999/xhtml" version="2.0">
     
     <xsl:output encoding="UTF-8" method="html" omit-xml-declaration="yes" indent="no"/>
 
@@ -82,9 +70,14 @@
                 <xsl:when test="not($marker) and self::tei:app">
                     <xsl:text>Δ</xsl:text>
                 </xsl:when>
-                <xsl:when test="not($marker) and self::tei:handShift">
-                    <xsl:text>&#8631;</xsl:text>
-                </xsl:when>
+            	<xsl:when test="not($marker) and self::tei:handShift[@script='manuscript']">
+            		<!-- https://www.i2symbol.com/symbols/write -->
+            		<xsl:text>✍</xsl:text>
+            	</xsl:when>
+            	<xsl:when test="not($marker) and self::tei:handShift[@script='typescript']">
+            		<!-- https://www.i2symbol.com/symbols/write -->
+            		<xsl:text>⌨</xsl:text>
+            	</xsl:when>
                 <xsl:otherwise>
                     <xsl:text>‡</xsl:text> <!-- to be changed in apparatus.xsl too if necessary -->
                 </xsl:otherwise>
@@ -95,7 +88,9 @@
     <xsl:template name="createEndnotes">
         <xsl:element name="div">
             <xsl:attribute name="id" select="'endNotes'"/>
-            <xsl:element name="h3"><xsl:value-of select="wega:getLanguageString('originalFootnotes', $lang)"/></xsl:element>
+            <xsl:element name="h3">
+                <xsl:value-of select="wega:getLanguageString('originalFootnotes', $lang)"/>
+            </xsl:element>
             <xsl:element name="ul">
                 <xsl:for-each select="//tei:note[@place='bottom']">
                     <xsl:element name="li">
@@ -285,17 +280,15 @@
 	</xsl:template>
     
     <!--  Hier mit priority 0.5, da in Briefen und Tagebüchern unterschiedlich behandelt  -->
-    <xsl:template match="tei:pb | tei:cb" priority="0.5">
-        <xsl:variable name="division-sign" as="xs:string">
+    <xsl:template match="tei:pb" priority="0.5">
+        <xsl:variable name="pbTitleText">
             <xsl:choose>
-                <xsl:when test="self::tei:pb">
-                    <xsl:value-of select="' | '"/>
-                <!-- senkrechter Strich („|“) aka pipe -->
+                <xsl:when test="@n">
+                    <xsl:value-of select="concat(wega:getLanguageString('pageBreak', $lang), ' (', wega:getLanguageString('pp', $lang), ' ', @n, ')')"/>
                 </xsl:when>
-                <xsl:when test="self::tei:cb">
-                    <xsl:value-of select="' ¦ '"/>
-                <!-- in der Mitte unterbrochener („¦“) senkrechter Strich -->
-                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="wega:getLanguageString('pageBreak', $lang)"/>
+                </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
         <!-- breaks are not allowed within lists as they are in TEI. We need to workaround this … -->
@@ -309,54 +302,23 @@
                 </xsl:if>
             </xsl:attribute>
             <xsl:attribute name="title">
-                <xsl:choose>
-                    <xsl:when test="@n">
-                        <xsl:choose>
-                            <xsl:when test="self::tei:pb">
-                                <xsl:choose>
-                                    <xsl:when test="$docID eq 'A100000'">
-                                        <!-- Special treatment for the Notizenbuch where we decided to label the pages as numbers, sigh … -->
-                                        <xsl:value-of select="concat(wega:getLanguageString('pageBreakTo', $lang), ' Nr.&#160;', @n)"/>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <xsl:value-of select="concat(wega:getLanguageString('pageBreakTo', $lang), ' ', wega:getLanguageString('pp', $lang), '&#160;', @n)"/>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:when>
-                            <xsl:when test="self::tei:cb">
-                                <xsl:value-of select="concat(wega:getLanguageString('columnBreakTo', $lang), ' ', wega:getLanguageString('col', $lang), '&#160;', @n)"/>
-                            </xsl:when>
-                        </xsl:choose>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:choose>
-                            <xsl:when test="self::tei:pb">
-                                <xsl:value-of select="wega:getLanguageString('pageBreak', $lang)"/>
-                            </xsl:when>
-                            <xsl:when test="self::tei:cb">
-                                <xsl:value-of select="wega:getLanguageString('columnBreak', $lang)"/>
-                            </xsl:when>
-                        </xsl:choose>
-                    </xsl:otherwise>
-                </xsl:choose>
+                <xsl:value-of select="$pbTitleText"/>
             </xsl:attribute>
-            <xsl:if test="@facs">
-                <xsl:attribute name="data-facs" select="substring(@facs, 2)"/>
-            </xsl:if>
+<!--            <xsl:if test="@facs">-->
+<!--                <xsl:attribute name="data-facs" select="substring(@facs, 2)"/>-->
+<!--            </xsl:if>-->
             <xsl:choose>
                 <xsl:when test="@break='no' and not(@rend='noHyphen')">
-                    <xsl:value-of select="concat('-',normalize-space($division-sign))"/>
+                    <xsl:text>-</xsl:text>
                 </xsl:when>
                 <xsl:when test="@break='no' and @rend='noHyphen'">
-                    <xsl:value-of select="concat('[-]',normalize-space($division-sign))"/>
+                    <xsl:text>[-]</xsl:text>
                 </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="$division-sign"/>
-                </xsl:otherwise>
+                <xsl:otherwise/>
             </xsl:choose>
         </xsl:element>
         <xsl:if test="not(parent::tei:list)">
-            <xsl:element name="br"/>
+            <hr data-content="{$pbTitleText}" title="{$pbTitleText}" class="tei_pb-text" style="height: 3.5px; background: #bbb; border-radius: 5px;"/>
         </xsl:if>
     </xsl:template>
 
@@ -426,7 +388,8 @@
                                         <xsl:sequence select="(1,7.5,1,.5)"/>
                                     </xsl:when>
                                     <xsl:otherwise>
-                                        <xsl:message>XSLT Warning: unsupported ammount of table cells <xsl:value-of select="$docID"/></xsl:message>
+                                        <xsl:message>XSLT Warning: unsupported ammount of table cells <xsl:value-of select="$docID"/>
+                                        </xsl:message>
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </xsl:when>
@@ -731,7 +694,8 @@
                     <xsl:apply-templates/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:message>XSLT Warning: template for `tei:g` failed to recognize glyph in document <xsl:value-of select="$docID"/></xsl:message>
+                    <xsl:message>XSLT Warning: template for `tei:g` failed to recognize glyph in document <xsl:value-of select="$docID"/>
+                    </xsl:message>
                     <xsl:apply-templates/>
                 </xsl:otherwise>
             </xsl:choose>
@@ -739,12 +703,17 @@
     </xsl:template>
 
     <!--
-        Ein <signed> wird standardmäßig rechtsbündig gesetzt und in eine eigene Zeile (display:block)
+        Ein <signed> wird standardmäßig in eine eigene Zeile (display:block)
     -->
     <xsl:template match="tei:signed" priority="0.5">
         <xsl:element name="span">
             <xsl:apply-templates select="@xml:id"/>
-            <xsl:attribute name="class" select="string-join(('tei_signed', wega:getTextAlignment(@rend, 'right')), ' ')"/>
+        	<xsl:attribute name="class">
+        		<xsl:value-of select="'tei_signed'"/>
+        		<xsl:if test="@rend">
+        			<xsl:value-of select="concat('textAlign-',@rend)"/>
+        		</xsl:if>
+        	</xsl:attribute>
             <xsl:apply-templates/>
         </xsl:element>
     </xsl:template>
@@ -785,18 +754,20 @@
             <xsl:apply-templates/>
         </xsl:element>
     </xsl:template>
+	
+	<xsl:template match="tei:p[@rend='inline']" priority="0.5">
+		<xsl:element name="p">
+			<xsl:apply-templates select="@xml:id"/>
+			<xsl:attribute name="class" select="string-join((wega:getTextAlignment(@rend, 'left'), 'inlineStart'), ' ')"/>
+			<xsl:apply-templates/>
+		</xsl:element>
+	</xsl:template>
     
     <xsl:template match="tei:q|tei:quote|mei:q" priority="0.5" mode="#all">
         <xsl:choose>
             <!-- Surround with quotation marks if current node is `<q>`, or `@rend` is set on `<quote>` -->
             <xsl:when test="@rend or self::tei:q or self::mei:q">
-                <xsl:variable name="doubleQuotes" select="
-                    (
-                    (count(ancestor::tei:q | ancestor::mei:q | ancestor::tei:quote[@rend]) mod 2) = 0
-                        or @rend='double-quotes'
-                    )
-                    and not(@rend='single-quotes')
-                    "/>
+                <xsl:variable name="doubleQuotes" select="                     (                     (count(ancestor::tei:q | ancestor::mei:q | ancestor::tei:quote[@rend]) mod 2) = 0                         or @rend='double-quotes'                     )                     and not(@rend='single-quotes')                     "/>
                 <xsl:call-template name="enquote">
                     <xsl:with-param name="double" select="$doubleQuotes"/>
                     <xsl:with-param name="lang">

@@ -1,9 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tei="http://www.tei-c.org/ns/1.0"
-	xmlns:functx="http://www.functx.com" xmlns:rng="http://relaxng.org/ns/structure/1.0"
-	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" version="2.0">
+<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:functx="http://www.functx.com" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" version="2.0">
 	<xsl:output encoding="UTF-8" method="html" omit-xml-declaration="yes" indent="no"/>
 	<xsl:strip-space elements="*"/>
 	<xsl:preserve-space elements="tei:q tei:quote tei:item tei:cell tei:p tei:dateline tei:closer tei:opener tei:hi tei:addrLine tei:persName tei:rs tei:name tei:placeName tei:seg tei:l tei:head tei:salute tei:date tei:subst tei:add tei:note tei:orgName tei:lem tei:rdg tei:provenance tei:acquisition tei:damage"/>
@@ -29,7 +24,9 @@
 	<xsl:template match="tei:div[@type='row']">
 		<xsl:element name="div">
 			<xsl:attribute name="class" select="'row justify-content-center'"/>
-			<xsl:attribute name="style" select="'border: solid;'"/>
+			<xsl:if test="ancestor::tei:text/@type = 'telegram'">
+				<xsl:attribute name="style" select="'border: solid;'"/>
+			</xsl:if>
 			<xsl:apply-templates select="./tei:div"/>
 		</xsl:element>
 	</xsl:template>
@@ -44,7 +41,9 @@
 					<xsl:attribute name="class" select="'col'"/>
 				</xsl:otherwise>
 			</xsl:choose>
-			<xsl:attribute name="style" select="'border: 0.5pt dashed; overflow-x: scroll; white-space: nowrap;'"/>
+			<xsl:if test="ancestor::tei:text/@type = 'telegram'">
+				<xsl:attribute name="style" select="'border: 0.5pt dashed; overflow-x: scroll; white-space: nowrap;'"/>
+			</xsl:if>
 			<xsl:apply-templates/>
 		</xsl:element>
 	</xsl:template>
@@ -53,15 +52,6 @@
 		<xsl:element name="div">
 			<xsl:apply-templates select="@xml:id"/>
 			<xsl:choose>
-				<xsl:when test="@type='address'">
-					<xsl:attribute name="class" select="'teiLetter_address'"/>
-					<xsl:for-each select=".//tei:addrLine">
-						<xsl:element name="p">
-							<xsl:apply-templates/>
-						</xsl:element>
-						<xsl:element name="br"/>
-					</xsl:for-each>
-				</xsl:when>
 				<xsl:when test="@type='writingSession'">
 					<xsl:attribute name="class" select="'writingSession'"/>
 					<!--<xsl:if test="following-sibling::tei:div[1][@rend='inline'] or ./@rend='inline'">
@@ -74,13 +64,7 @@
 						</xsl:element>
 					</xsl:if>
 				</xsl:when>
-				<!--     Debugging Option       -->
 				<xsl:otherwise>
-					<!--<xsl:if test="wega:getOption('environment') eq 'development'">
-                        <xsl:attribute name="class">
-                            <xsl:value-of select="'tei_cssUndefined'"/>
-                        </xsl:attribute>
-                    </xsl:if>-->
 					<xsl:apply-templates/>
 				</xsl:otherwise>
 			</xsl:choose>
@@ -193,9 +177,7 @@
 	<xsl:template match="text()[parent::tei:title]">
 		<xsl:choose>
 			<xsl:when test="$lang eq 'en'">
-				<xsl:value-of
-					select="functx:replace-multi(., (' in ', ' an '), (lower-case(wega:getLanguageString('in', $lang)), lower-case(wega:getLanguageString('to', $lang))))"
-				/>
+				<xsl:value-of select="functx:replace-multi(., (' in ', ' an '), (lower-case(wega:getLanguageString('in', $lang)), lower-case(wega:getLanguageString('to', $lang))))"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="."/>
@@ -205,15 +187,28 @@
 	
 	<xsl:template match="tei:fw">
 		<xsl:element name="p">
-			<xsl:attribute name="class">d-flex border-top border-bottom border-secondary tei_fw</xsl:attribute>
-			<xsl:apply-templates/>
+			<xsl:attribute name="class">
+				<xsl:value-of select="'border-top border-bottom border-secondary tei_fw'"/>
+			</xsl:attribute>
+			<xsl:choose>
+				<xsl:when test="@rend">
+					<xsl:element name="span">
+						<xsl:attribute name="class">
+							<xsl:value-of select="concat('textAlign-',@rend)"/>
+						</xsl:attribute>
+						<xsl:apply-templates/>
+					</xsl:element>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:apply-templates/>
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:element>
 	</xsl:template>
 	
 	<xsl:template match="tei:address">
 		<xsl:element name="span">
 			<xsl:attribute name="class">
-				<xsl:text>container-fluid</xsl:text>
 				<xsl:choose>
 					<xsl:when test="@rend='right'">
 						<xsl:text> justify-content-end</xsl:text>
@@ -250,6 +245,25 @@
 				</xsl:choose>
 			</xsl:attribute>
 			<xsl:apply-templates/>
+		</xsl:element>
+	</xsl:template>
+	
+	<xsl:template match="tei:p">
+		<xsl:element name="p">
+			<xsl:if test="@rend">
+				<xsl:attribute name="class">
+					<xsl:value-of select="concat('textAlign-',@rend)"/>
+				</xsl:attribute>
+			</xsl:if>
+			<xsl:apply-templates/>
+		</xsl:element>
+	</xsl:template>
+	
+	<xsl:template match="tei:space[@unit='indent']">
+		<xsl:element name="span">
+			<xsl:for-each select="1 to @quantity">
+				<span class="tei_indent-space"/>
+			</xsl:for-each>
 		</xsl:element>
 	</xsl:template>
 	
