@@ -52,15 +52,6 @@
 		<xsl:element name="div">
 			<xsl:apply-templates select="@xml:id"/>
 			<xsl:choose>
-				<xsl:when test="@type='address'">
-					<xsl:attribute name="class" select="'teiLetter_address'"/>
-					<xsl:for-each select=".//tei:addrLine">
-						<xsl:element name="p">
-							<xsl:apply-templates/>
-						</xsl:element>
-						<xsl:element name="br"/>
-					</xsl:for-each>
-				</xsl:when>
 				<xsl:when test="@type='writingSession'">
 					<xsl:attribute name="class" select="'writingSession'"/>
 					<!--<xsl:if test="following-sibling::tei:div[1][@rend='inline'] or ./@rend='inline'">
