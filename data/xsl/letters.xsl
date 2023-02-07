@@ -215,7 +215,6 @@
 	<xsl:template match="tei:address">
 		<xsl:element name="span">
 			<xsl:attribute name="class">
-				<xsl:text>container-fluid</xsl:text>
 				<xsl:choose>
 					<xsl:when test="@rend='right'">
 						<xsl:text> justify-content-end</xsl:text>
