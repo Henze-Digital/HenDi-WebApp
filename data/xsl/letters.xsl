@@ -1,9 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tei="http://www.tei-c.org/ns/1.0"
-	xmlns:functx="http://www.functx.com" xmlns:rng="http://relaxng.org/ns/structure/1.0"
-	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" version="2.0">
+<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:functx="http://www.functx.com" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" version="2.0">
 	<xsl:output encoding="UTF-8" method="html" omit-xml-declaration="yes" indent="no"/>
 	<xsl:strip-space elements="*"/>
 	<xsl:preserve-space elements="tei:q tei:quote tei:item tei:cell tei:p tei:dateline tei:closer tei:opener tei:hi tei:addrLine tei:persName tei:rs tei:name tei:placeName tei:seg tei:l tei:head tei:salute tei:date tei:subst tei:add tei:note tei:orgName tei:lem tei:rdg tei:provenance tei:acquisition tei:damage"/>
@@ -193,9 +188,7 @@
 	<xsl:template match="text()[parent::tei:title]">
 		<xsl:choose>
 			<xsl:when test="$lang eq 'en'">
-				<xsl:value-of
-					select="functx:replace-multi(., (' in ', ' an '), (lower-case(wega:getLanguageString('in', $lang)), lower-case(wega:getLanguageString('to', $lang))))"
-				/>
+				<xsl:value-of select="functx:replace-multi(., (' in ', ' an '), (lower-case(wega:getLanguageString('in', $lang)), lower-case(wega:getLanguageString('to', $lang))))"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="."/>
@@ -211,7 +204,9 @@
 			<xsl:choose>
 				<xsl:when test="@rend">
 					<xsl:element name="span">
-						<xsl:attribute name="class"><xsl:value-of select="concat('textAlign-',@rend)"/></xsl:attribute>
+						<xsl:attribute name="class">
+							<xsl:value-of select="concat('textAlign-',@rend)"/>
+						</xsl:attribute>
 						<xsl:apply-templates/>
 					</xsl:element>
 				</xsl:when>
@@ -267,11 +262,11 @@
 	
 	<xsl:template match="tei:p">
 		<xsl:element name="p">
-		<xsl:if test="@rend">
-			<xsl:attribute name="class">
-				<xsl:value-of select="concat('textAlign-',@rend)"/>
-			</xsl:attribute>
-		</xsl:if>
+			<xsl:if test="@rend">
+				<xsl:attribute name="class">
+					<xsl:value-of select="concat('textAlign-',@rend)"/>
+				</xsl:attribute>
+			</xsl:if>
 			<xsl:apply-templates/>
 		</xsl:element>
 	</xsl:template>
