@@ -117,6 +117,23 @@ build-webapp-docker-image-stable:
   rules:
     - if: $CI_COMMIT_BRANCH == "stable" && $BUILD_PORTAL_STABLE == "true"
 
+build-webapp-docker-image-preview:
+  stage: build
+  image: docker:20.10
+  services:
+    - docker:20.10-dind
+  needs: [build-webapp]
+  dependencies:
+    - build-webapp
+  script:
+    - docker buildx create --driver=docker-container --name=buildkit-builder --use
+    - docker login -u ${HENDI_WEBAPP_CI_REGISTRY_USER} -p ${HENDI_WEBAPP_CI_REGISTRY_PASSWORD} $CI_REGISTRY
+    - docker buildx build --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN} --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG}-preview -f Dockerfile.preview .
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_PREVIEW == "true"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+
 deploy-webapp:
   stage: deploy
   image: curlimages/curl
@@ -152,3 +169,12 @@ deploy-webapp-stable:
   except:
     variables:
       - ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true")
+deploy-webapp-preview:
+  stage: deploy
+  image: curlimages/curl
+  needs: [build-webapp-docker-image-preview]
+  script:
+    - >
+      curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "'${CI_REGISTRY_IMAGE}'", "tag": "'${CI_COMMIT_REF_SLUG}-preview'"}'
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_PREVIEW == "true"
