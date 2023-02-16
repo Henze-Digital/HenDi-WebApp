@@ -1,0 +1,41 @@
+// Webfonts
+
+@font-face {
+    font-family: 'BrandonGrotesque-Black';
+    src: url('../fonts/2B4A81_0_0.eot');
+    src: url('../fonts/2B4A81_0_0.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/2B4A81_0_0.woff') format('woff'),
+        url('../fonts/2B4A81_0_0.ttf') format('truetype');
+        }
+
+@font-face {
+    font-family: 'CamingoDos-Bold';
+    src: url('../fonts/2B4A81_1_0.eot');
+    src: url('../fonts/2B4A81_1_0.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/2B4A81_1_0.woff') format('woff'),
+        url('../fonts/2B4A81_1_0.ttf') format('truetype');
+        }
+
+@font-face {
+    font-family: 'CamingoDos-Regular';
+    src: url('../fonts/2B4A81_2_0.eot');
+    src: url('../fonts/2B4A81_2_0.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/2B4A81_2_0.woff') format('woff'),
+        url('../fonts/2B4A81_2_0.ttf') format('truetype');
+        }
+
+@font-face {
+	font-family: "musical-symbols";
+	src: local("☺"),
+		url("../fonts/Bravura.woff") format("woff"),
+		url("../fonts/Bravura.otf") format("opentype"),
+		url("../fonts/Bravura.svg") format("svg");
+}
+
+@font-face {
+    font-family: "mufi-symbols";
+    src: url('../fonts/JuniusVF.woff2');
+    font-weight: 300 700;
+    font-stretch: 60% 100%;
+    font-style: normal;
+}
