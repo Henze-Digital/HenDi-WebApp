@@ -338,20 +338,22 @@
     </xsl:template>
     
     <xsl:template match="tei:condition">
+    	<xsl:if test=". != ''">
         <xsl:element name="h4">
             <xsl:attribute name="class">media-heading</xsl:attribute>
 <xsl:value-of select="wega:getLanguageString('physDesc.condition', $lang)"/>
         </xsl:element>
         <xsl:element name="li">
-            <xsl:if test=". != ''">
+<!--            <xsl:if test=". != ''">-->
                 <xsl:value-of select="./text()"/>
-            </xsl:if>
-            <xsl:if test=". = ''">
+<!--            </xsl:if>-->
+            <!--<xsl:if test=". = ''">
                 <xsl:element name="i">
                     <xsl:value-of select="wega:getLanguageString('physDesc.noConditionAvailable', $lang)"/>
                 </xsl:element>
-            </xsl:if>
+            </xsl:if>-->
         </xsl:element>
+    	</xsl:if>
     </xsl:template>
     
     <xsl:template match="tei:layoutDesc">
