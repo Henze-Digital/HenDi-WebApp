@@ -150,7 +150,7 @@
                             <xsl:value-of select="wega:getLanguageString(concat('physDesc.objectDesc.form.', @form), $lang)"/>
                         </xsl:element>
                     </xsl:if>
-                    <xsl:apply-templates select="tei:objectDesc"/>
+                    <xsl:apply-templates select="."/>
                 </xsl:element>
             </xsl:for-each>
         </xsl:if>
