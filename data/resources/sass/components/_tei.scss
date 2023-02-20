@@ -70,6 +70,18 @@ $tei_list-indent: $font-size-base;
     text-decoration:line-through;
 }
 
+.tei_del_overtyped {
+	background: rgba(255, 255, 255, 0.35);
+}
+
+.tei_del_overtyped::before {
+	content: attr(data-overtype);
+	display: inline-block; 
+	translate: 100% 0%;
+    color: #000;
+   
+}
+
 .tei_cb {
     cursor: help;
 }
