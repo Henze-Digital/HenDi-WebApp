@@ -641,12 +641,8 @@
          <xsl:apply-templates select="@xml:id"/>
          <xsl:attribute name="class" select="concat('tei_', local-name(), '_overtyped')"/>
          <xsl:variable name="delLength" as="xs:integer" select="string-length(text())"/>
+      	<xsl:if test="not(@data-overtype)"><xsl:attribute name="data-overtype" select="string-join(for $x in 1 to $delLength return 'x','')"/></xsl:if>
          <xsl:apply-templates mode="#current"/>
-         <xsl:element name="br"/>
-         <xsl:element name="span">
-            <xsl:attribute name="class">tei_del_overtyping</xsl:attribute>
-            <xsl:value-of select="string-join(for $x in 1 to $delLength return 'x','')"/>
-         </xsl:element>
       </xsl:element>
       <xsl:call-template name="popover"/>
    </xsl:template>
