@@ -647,6 +647,7 @@
 	<entry xml:id="siglum">Sigle</entry>
 	<entry xml:id="team">Team</entry>
 	<entry xml:id="settings">Einstellungen</entry>
+    <entry xml:id="emphases">Hervorhebungen</entry>
 	<entry xml:id="supplied-marker">Herausgeberergänzungen</entry>
 	<entry xml:id="show_markers_paragraph">Zeige Markierungen im Text</entry>
 	<entry xml:id="chars">Zeichen</entry>
