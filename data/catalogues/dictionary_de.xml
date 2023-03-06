@@ -195,6 +195,7 @@
     <entry xml:id="additionalSearchRow">Weiteres Suchfeld hinzufügen</entry>
     <entry xml:id="no_prefix">Volltext</entry>
     <entry xml:id="persName">Person</entry>
+    <entry xml:id="orgName">Institution</entry>
     <entry xml:id="placeName">Ort</entry>
     <entry xml:id="date">Datum</entry>
     <entry xml:id="characterName">Rolle</entry>
@@ -507,6 +508,7 @@
     <entry xml:id="figure">Abbildung</entry>
     <entry xml:id="figDesc">Abbildungsbeschreibung</entry>
     <entry xml:id="textConstitution">Textkonstitution</entry>
+    <entry xml:id="autoCommentaryNodes">Automatischer Kommentar</entry>
     <entry xml:id="note_commentary">Einzelstellenerläuterung</entry>
     <entry xml:id="note_definition">Begriffsdefinition</entry>
     <entry xml:id="note_textConst">Textkonstitution</entry>
@@ -731,4 +733,6 @@
     <entry xml:id="physDesc.objectDesc.form.statement.fee">Honorar-Abrechnung</entry>
     <entry xml:id="physDesc.objectDesc.form.telegram">Telegramm</entry>
     <entry xml:id="physDesc.objectDesc.form.unknown">Unbekannt</entry>
+    
+    <entry xml:id="assignmentNotClear">Zuordnung nicht eindeutig</entry>
 </dictionary>

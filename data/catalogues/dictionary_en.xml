@@ -195,6 +195,7 @@
     <entry xml:id="additionalSearchRow">Add further input field</entry>
     <entry xml:id="no_prefix">Full-Text</entry>
     <entry xml:id="persName">Person</entry>
+    <entry xml:id="orgName">Institution</entry>
     <entry xml:id="placeName">Place</entry>
     <entry xml:id="date">Date</entry>
     <entry xml:id="characterName">Character</entry>
@@ -497,6 +498,7 @@
     <entry xml:id="figure">Figure</entry>
     <entry xml:id="figDesc">Figure Description</entry>
     <entry xml:id="textConstitution">Text Constitution</entry>
+    <entry xml:id="autoCommentaryNodes">Automatical Commentay</entry>
     <entry xml:id="note_commentary">Commentary</entry>
     <entry xml:id="note_definition">Definition</entry>
     <entry xml:id="note_textConst">Text Constitution</entry>
@@ -722,4 +724,6 @@
     <entry xml:id="physDesc.objectDesc.form.statement.fee">Fee statement</entry>
     <entry xml:id="physDesc.objectDesc.form.telegram">Telegram</entry>
     <entry xml:id="physDesc.objectDesc.form.unknown">Unknown</entry>
+    
+    <entry xml:id="assignmentNotClear">Assignment not clear</entry>
 </dictionary>

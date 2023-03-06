@@ -11,6 +11,7 @@
    <xsl:variable name="doc" select="wega:doc($docID)"/>
 	<xsl:variable name="textConstitutionNodes" as="node()*" select=".//tei:subst | .//tei:add[not(parent::tei:subst)] | .//tei:gap[not(@reason='outOfScope' or parent::tei:del)] | .//tei:sic[not(parent::tei:choice)] | .//tei:del[not(parent::tei:subst)] | .//tei:unclear[not(parent::tei:choice)] | .//tei:note[@type='textConst'] | .//tei:handShift | .//tei:supplied[parent::tei:damage]"/>
    <xsl:variable name="commentaryNodes" as="node()*" select=".//tei:note[@type=('commentary', 'definition')] | .//tei:choice | .//tei:figDesc"/>
+   <xsl:variable name="autoCommentaryNodes" as="node()*" select=".//tei:persName[not(@key)] | .//tei:orgName[not(@key)] | .//tei:placeName[not(@key)]"/>
 	<xsl:variable name="internalNodes" as="node()*" select=".//tei:note[@type='internal']"/>
    <xsl:variable name="rdgNodes" as="node()*" select=".//tei:app"/>
 
@@ -144,6 +145,34 @@
       			</xsl:element>
       		</xsl:for-each>
       	</xsl:element>
+         <xsl:if test="$autoCommentaryNodes">
+            <xsl:element name="h3">
+               <xsl:attribute name="class">media-heading</xsl:attribute>
+               <xsl:value-of select="wega:getLanguageString('autoCommentaryNodes', $lang)"/>
+            </xsl:element>
+         </xsl:if>
+         <xsl:element name="ul">
+            <xsl:attribute name="class">apparatus commentary</xsl:attribute>
+            <xsl:for-each select="$autoCommentaryNodes">
+               <xsl:element name="li">
+                  <xsl:element name="div">
+                     <xsl:attribute name="class">row</xsl:attribute>
+                     <xsl:element name="div">
+                        <xsl:attribute name="class">col-1 text-nowrap</xsl:attribute>
+                        <xsl:element name="a">
+                           <xsl:attribute name="href">#transcription</xsl:attribute>
+                           <xsl:attribute name="data-href"><xsl:value-of select="concat('#ref-',wega:createID(.))"/></xsl:attribute>
+                           <xsl:attribute name="class">apparatus-link</xsl:attribute>
+                           <xsl:number count="$autoCommentaryNodes" level="any"/>
+                           <xsl:text>.</xsl:text>
+                        </xsl:element>
+                     </xsl:element>
+                     <xsl:apply-templates select="." mode="apparatus"/>
+                  </xsl:element>
+               </xsl:element>
+            </xsl:for-each>
+         </xsl:element>
+         
       </xsl:element>
    </xsl:template>
 
@@ -821,6 +850,28 @@
    </xsl:template>
    <!-- suppress processing of footnoteAnchors in lemma mode when the footnote itself is part of the tei:app -->
    <xsl:template match="tei:ref[@type='footnoteAnchor'][ancestor::tei:app//tei:footNote]" mode="lemma" priority="2"/>
+   
+   <xsl:template match="(tei:persName|tei:orgName|tei:placeName)[not(@key)]">
+      <xsl:element name="span">
+         <xsl:apply-templates mode="#current"/>
+      </xsl:element>
+      <xsl:call-template name="popover"/>
+   </xsl:template>
+   
+   <xsl:template match="(tei:persName|tei:orgName|tei:placeName)[not(@key)]" mode="apparatus">
+      <xsl:call-template name="apparatusEntry">
+<!--         <xsl:with-param name="title" select=""/>-->
+         <xsl:with-param name="title">
+         <xsl:choose>
+            <xsl:when test="self::tei:persName"><xsl:value-of select="wega:getLanguageString('persName',$lang)"/></xsl:when>
+            <xsl:when test="self::tei:orgName"><xsl:value-of select="wega:getLanguageString('orgName',$lang)"/></xsl:when>
+            <xsl:when test="self::tei:placeName"><xsl:value-of select="wega:getLanguageString('placeName',$lang)"/></xsl:when>
+         </xsl:choose>
+         </xsl:with-param>
+         <xsl:with-param name="lemma" select="text()"/>
+         <xsl:with-param name="explanation" select="wega:getLanguageString('assignmentNotClear',$lang)"/>
+      </xsl:call-template>
+   </xsl:template>
    
    <!-- template for creating an apparatus entry -->
    <xsl:template name="apparatusEntry">
