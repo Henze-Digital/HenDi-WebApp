@@ -203,21 +203,21 @@
 		<xsl:variable name="fw-classes-boxed" select="'tei_fw border-top border-bottom'"/>
 		<xsl:choose>
 			<xsl:when test="ancestor::tei:div[@type='row'] or @type='pageNum'">
-		<xsl:element name="p">
-			<xsl:attribute name="class">
-			<xsl:choose>
-				<xsl:when test="@rend">
+				<xsl:element name="p">
+					<xsl:attribute name="class">
+						<xsl:choose>
+							<xsl:when test="@rend">
 								<xsl:value-of select="concat($fw-classes-bold, ' textAlign-', @rend)"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:value-of select="$fw-classes-bold"/>
 							</xsl:otherwise>
 						</xsl:choose>
-						</xsl:attribute>
-						<xsl:apply-templates/>
-					</xsl:element>
-				</xsl:when>
-				<xsl:otherwise>
+					</xsl:attribute>
+					<xsl:apply-templates/>
+				</xsl:element>
+			</xsl:when>
+			<xsl:otherwise>
 				<xsl:element name="p">
 					<xsl:attribute name="class">
 						<xsl:choose>
@@ -226,11 +226,11 @@
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:value-of select="$fw-classes-boxed"/>
-				</xsl:otherwise>
-			</xsl:choose>
+							</xsl:otherwise>
+						</xsl:choose>
 					</xsl:attribute>
 					<xsl:apply-templates/>
-		</xsl:element>
+				</xsl:element>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
@@ -238,22 +238,22 @@
 	<xsl:template match="tei:address">
 		<xsl:choose>
 			<xsl:when test="@rend">
-		<xsl:element name="span">
-			<xsl:attribute name="class">
-				<xsl:choose>
-					<xsl:when test="@rend='right'">
-						<xsl:text> justify-content-end</xsl:text>
-					</xsl:when>
-					<xsl:when test="@rend='left'">
-						<xsl:text> justify-content-start</xsl:text>
-					</xsl:when>
-					<xsl:when test="@rend='center'">
-						<xsl:text> justify-content-center</xsl:text>
-					</xsl:when>
-				</xsl:choose>
-			</xsl:attribute>
-			<xsl:apply-templates/>
-		</xsl:element>
+				<xsl:element name="span">
+				<xsl:attribute name="class">
+					<xsl:choose>
+						<xsl:when test="@rend='right'">
+							<xsl:text> justify-content-end</xsl:text>
+						</xsl:when>
+						<xsl:when test="@rend='left'">
+							<xsl:text> justify-content-start</xsl:text>
+						</xsl:when>
+						<xsl:when test="@rend='center'">
+							<xsl:text> justify-content-center</xsl:text>
+						</xsl:when>
+					</xsl:choose>
+				</xsl:attribute>
+				<xsl:apply-templates/>
+			</xsl:element>
 			</xsl:when>
 			<xsl:otherwise><xsl:apply-templates/></xsl:otherwise>
 		</xsl:choose>
