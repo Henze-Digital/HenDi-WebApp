@@ -199,7 +199,7 @@
 	</xsl:template>
 	
 	<xsl:template match="tei:fw">
-		<xsl:variable name="fw-classes-bold" select="'tei_fw tei_hi_bold'"/>
+		<xsl:variable name="fw-classes-bold" select="'tei_fw tei_fw_smaller tei_hi_bold'"/>
 		<xsl:variable name="fw-classes-boxed" select="'tei_fw border-top border-bottom'"/>
 		<xsl:choose>
 			<xsl:when test="ancestor::tei:div[@type='row'] or @type='pageNum'">
