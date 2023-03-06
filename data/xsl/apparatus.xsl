@@ -324,6 +324,7 @@
                   <xsl:sequence select="wega:enquote($lemma)"/>
                </xsl:when>
             </xsl:choose>
+            <xsl:sequence select="hendi:getHandFeatures(.)"/>
          </xsl:with-param>
       </xsl:call-template>
    </xsl:template>
@@ -605,6 +606,7 @@
          </xsl:with-param>
          <xsl:with-param name="explanation">
             <xsl:sequence select="('recte ', wega:enquote($corr))"/>
+            <xsl:sequence select="hendi:getHandFeatures(.)"/>
          </xsl:with-param>
       </xsl:call-template>
    </xsl:template>
@@ -630,6 +632,7 @@
          <xsl:with-param name="explanation">
             <!-- Eventuell noch @cert mit ausgeben?!? -->
             <xsl:sequence select="(wega:getLanguageString('choiceUnclear', $lang),' ', $opt2)"/>
+            <xsl:sequence select="hendi:getHandFeatures(.)"/>
          </xsl:with-param>
       </xsl:call-template>
    </xsl:template>
@@ -649,6 +652,7 @@
          </xsl:with-param>
          <xsl:with-param name="explanation">
             <xsl:sequence select="(wega:getLanguageString('choiceAbbr', $lang),' ', wega:enquote($expan))"/>
+            <xsl:sequence select="hendi:getHandFeatures(.)"/>
          </xsl:with-param>
       </xsl:call-template>
    </xsl:template>
@@ -713,6 +717,7 @@
 			</xsl:with-param>
 			<xsl:with-param name="explanation">
 				<xsl:value-of select="wega:getLanguageString('supplied',$lang)"/>
+			   <xsl:sequence select="hendi:getHandFeatures(.)"/>
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -725,6 +730,7 @@
          </xsl:with-param>
          <xsl:with-param name="explanation">
             <xsl:text>sic!</xsl:text>
+            <xsl:sequence select="hendi:getHandFeatures(.)"/>
          </xsl:with-param>
       </xsl:call-template>
    </xsl:template>
@@ -759,6 +765,7 @@
                     <xsl:value-of select="wega:getLanguageString('delOrthoRealised', $lang)"/>
                 </xsl:otherwise>
             </xsl:choose>
+            <xsl:sequence select="hendi:getHandFeatures(.)"/>
          </xsl:with-param>
       </xsl:call-template>
    </xsl:template>
