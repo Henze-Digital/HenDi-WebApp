@@ -59,18 +59,18 @@
             <xsl:attribute name="data-ref" select="concat('#', $id)"/>
             <xsl:choose>
                 <xsl:when test="$marker eq 'arabic'">
-                	<xsl:value-of select="count(preceding::tei:note[@type=('commentary','definition','textConst','internal')]) + 1"/>
+                    <xsl:value-of select="count(preceding::tei:note[@type=('commentary','definition','textConst','internal')]) + 1"/>
                 </xsl:when>
-            	<xsl:when test="not($marker) and self::tei:note[not(@type=('textConst','internal'))]">
-            	    <xsl:text>*</xsl:text>
+                <xsl:when test="not($marker) and self::tei:note[not(@type=('textConst','internal'))]">
+                    <xsl:text>*</xsl:text>
                 </xsl:when>
                 <!-- https://www.i2symbol.com/symbols/office-tools -->
                 <xsl:when test="not($marker) and self::tei:figDesc">
                     <xsl:text>✎</xsl:text>
                 </xsl:when>
-            	<xsl:when test="self::tei:note[@type='internal']">
-            		<xsl:text>!</xsl:text>
-            	</xsl:when>
+                <xsl:when test="self::tei:note[@type='internal']">
+                    <xsl:text>!</xsl:text>
+                </xsl:when>
                 <xsl:when test="not($marker) and self::tei:app">
                     <xsl:text>Δ</xsl:text>
                 </xsl:when>
