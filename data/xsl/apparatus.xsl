@@ -900,7 +900,35 @@
          </xsl:otherwise>
       </xsl:choose>
    </xsl:function>
-
+   <xsl:function name="hendi:getHand" as="node()*">
+      <xsl:param name="elem" as="node()"/>
+      <xsl:variable name="handId" select="substring-after($elem/@hand,'#')"/>
+      <xsl:variable name="handNote" select="$doc//tei:handNote[@xml:id = $handId]"/>
+      <xsl:variable name="handNoteScript" select="wega:getLanguageString(concat('handshift',  functx:capitalize-first($handNote/@script)), $lang)"/>
+      <xsl:variable name="handNoteMedium" select="wega:getLanguageString(concat('medium.',$handNote/@medium), $lang)"/>
+      <xsl:variable name="handNoteColor" select="wega:getLanguageString(concat('color.',$handNote/@hendi:color), $lang)"/>
+      <xsl:variable name="handNoteScribe" select="$handNote/@scribe"/>
+      
+      <xsl:if test="$handNote">
+         <xsl:element name="hr"/>
+         <xsl:element name="ul">
+            <xsl:element name="li"><xsl:text>Schrift: </xsl:text><xsl:value-of select="$handNoteScript"/></xsl:element>
+            <xsl:element name="li"><xsl:text>Medium: </xsl:text><xsl:value-of select="$handNoteMedium"/>
+               <xsl:if test="$handNoteColor"><xsl:text> (</xsl:text><xsl:value-of select="$handNoteColor"/><xsl:text>)</xsl:text></xsl:if></xsl:element>
+            <xsl:element name="li">
+               <xsl:text>Schreiber: </xsl:text>
+               <xsl:element name="a">
+                  <xsl:attribute name="class">
+                     <xsl:value-of select="wega:preview-class($handNote)"/>
+                  </xsl:attribute>
+                  <xsl:attribute name="href" select="wega:createLinkToDoc(($handNoteScribe), $lang)"/>
+                  <xsl:value-of select="wega:doc($handNoteScribe)//tei:persName[@type='reg']"/>
+               </xsl:element>
+            </xsl:element>
+         </xsl:element>
+      </xsl:if>
+   </xsl:function>
+   
    <xsl:variable name="sort-order" as="element()+">
       <cert sort="1">high</cert>
       <cert sort="2">medium</cert>
