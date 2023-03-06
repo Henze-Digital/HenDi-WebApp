@@ -62,7 +62,11 @@
                 	<xsl:value-of select="count(preceding::tei:note[@type=('commentary','definition','textConst','internal')]) + 1"/>
                 </xsl:when>
             	<xsl:when test="not($marker) and self::tei:note[not(@type=('textConst','internal'))]">
-                    <xsl:text>*</xsl:text>
+            	    <xsl:text>*</xsl:text>
+                </xsl:when>
+                <!-- https://www.i2symbol.com/symbols/office-tools -->
+                <xsl:when test="not($marker) and self::tei:figDesc">
+                    <xsl:text>✎</xsl:text>
                 </xsl:when>
             	<xsl:when test="self::tei:note[@type='internal']">
             		<xsl:text>!</xsl:text>
@@ -487,11 +491,7 @@
                     <xsl:apply-templates select="tei:graphic"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:text>[</xsl:text>
-                    <xsl:value-of select="wega:getLanguageString(local-name(), $lang)"/>
-                    <xsl:text>: </xsl:text>
                     <xsl:apply-templates select="tei:desc | tei:figDesc"/>
-                    <xsl:text>]</xsl:text>
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:element>

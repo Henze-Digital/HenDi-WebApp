@@ -9,7 +9,7 @@
 
    <xsl:variable name="doc" select="wega:doc($docID)"/>
 	<xsl:variable name="textConstitutionNodes" as="node()*" select=".//tei:subst | .//tei:add[not(parent::tei:subst)] | .//tei:gap[not(@reason='outOfScope' or parent::tei:del)] | .//tei:sic[not(parent::tei:choice)] | .//tei:del[not(parent::tei:subst)] | .//tei:unclear[not(parent::tei:choice)] | .//tei:note[@type='textConst'] | .//tei:handShift | .//tei:supplied[parent::tei:damage]"/>
-   <xsl:variable name="commentaryNodes" as="node()*" select=".//tei:note[@type=('commentary', 'definition')] | .//tei:choice"/>
+   <xsl:variable name="commentaryNodes" as="node()*" select=".//tei:note[@type=('commentary', 'definition')] | .//tei:choice | .//tei:figDesc"/>
 	<xsl:variable name="internalNodes" as="node()*" select=".//tei:note[@type='internal']"/>
    <xsl:variable name="rdgNodes" as="node()*" select=".//tei:app"/>
 
@@ -162,6 +162,39 @@
    
    <xsl:template match="tei:note[@type=('definition', 'commentary', 'textConst')]">
       <xsl:call-template name="popover"/>
+   </xsl:template>
+   
+   <xsl:template match="tei:figDesc">
+      <xsl:text>[</xsl:text>
+      <xsl:value-of select="wega:getLanguageString('figure', $lang)"/>
+      <xsl:text>]</xsl:text>
+      <xsl:call-template name="popover"/>
+   </xsl:template>
+   
+   <xsl:template match="tei:figDesc" mode="apparatus">
+      <xsl:variable name="id" select="wega:createID(.)"/>
+      <xsl:call-template name="apparatusEntry">
+         <xsl:with-param name="title" select="wega:getLanguageString('note_commentary', $lang)"/>
+         <xsl:with-param name="counter-param">
+            <xsl:value-of select="'note'"/>
+         </xsl:with-param>
+         <xsl:with-param name="lemma">
+            <xsl:choose>
+               <xsl:when test="preceding::tei:ptr[@target=concat('#', $id)]">
+                  <!-- When ein ptr existiert, dann wird dieser ausgewertet -->
+                  <xsl:apply-templates select="preceding::tei:ptr[@target=concat('#', $id)]" mode="apparatus"/>
+               </xsl:when>
+               <xsl:otherwise>
+                  <xsl:text>[</xsl:text>
+                  <xsl:value-of select="wega:getLanguageString('figDesc', $lang)"/>
+                  <xsl:text>]</xsl:text>
+               </xsl:otherwise>
+            </xsl:choose>
+         </xsl:with-param>
+         <xsl:with-param name="explanation">
+            <xsl:apply-templates/>
+         </xsl:with-param>
+      </xsl:call-template>
    </xsl:template>
 	
    <xsl:template match="tei:note[@type=('internal')]">
@@ -777,6 +810,7 @@
   
     
    <xsl:template match="tei:note" mode="lemma"/>
+   <xsl:template match="tei:figDesc" mode="lemma"/>
    <xsl:template match="tei:lb" mode="lemma">
       <xsl:text> </xsl:text>
    </xsl:template>
@@ -818,7 +852,7 @@
       <xsl:variable name="counter">
          <xsl:choose>
             <xsl:when test="$counter-param='note'">
-               <xsl:number count="tei:note[@type=('commentary', 'definition')] | tei:choice" level="any"/>
+               <xsl:number count="tei:note[@type=('commentary', 'definition')] | tei:choice | tei:figDesc" level="any"/>
             </xsl:when>
             <xsl:otherwise>
             	<xsl:number count="tei:subst | tei:add[not(parent::tei:subst)] | tei:gap[not(@reason='outOfScope' or parent::tei:del)] | tei:sic[not(parent::tei:choice)] | tei:del[not(parent::tei:subst)] | tei:unclear[not(parent::tei:choice)] | tei:note[@type='textConst']  | tei:supplied[parent::tei:damage] | tei:note[@type='internal'] | tei:handShift" level="any"/>

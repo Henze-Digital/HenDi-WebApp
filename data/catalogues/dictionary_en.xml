@@ -495,6 +495,7 @@
     <entry xml:id="infoFromGND">Details from the GND</entry>
     <entry xml:id="notatedMusic">Sample Notation</entry>
     <entry xml:id="figure">Figure</entry>
+    <entry xml:id="figDesc">Figure Description</entry>
     <entry xml:id="textConstitution">Text Constitution</entry>
     <entry xml:id="note_commentary">Commentary</entry>
     <entry xml:id="note_definition">Definition</entry>
