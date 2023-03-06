@@ -21,7 +21,7 @@ properties:
   textConst-marker:
     type: boolean
     description: Show text constitution markers within the text view 
-    default: true
+    default: false
   supplied-marker:
     type: boolean
     description: Show supplied markers within the text view 
