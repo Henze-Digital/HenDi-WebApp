@@ -484,6 +484,7 @@
                   <xsl:value-of select="wega:getLanguageString('addDefault', $lang)"/>
                </xsl:otherwise>
             </xsl:choose>
+            <xsl:sequence select="hendi:getHand(.)"/>
          </xsl:with-param>
       </xsl:call-template>
    </xsl:template>
