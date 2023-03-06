@@ -13,7 +13,20 @@
 	<xsl:template match="tei:body">
 		<xsl:element name="div">
 			<xsl:attribute name="class" select="'teiLetter_body'"/>
-			<xsl:apply-templates/>
+			<xsl:choose>
+				<xsl:when test="parent::tei:text/@type='envelope'">
+					<xsl:element name="h4">
+						<xsl:attribute name="style" select="'padding-top: 2em; padding-bottom: 0.5em;'"/>
+						[<xsl:value-of select="wega:getLanguageString('physDesc.objectDesc.form.envelope', $lang)"/>:]</xsl:element>
+					<xsl:element name="div">
+						<xsl:attribute name="style" select="'border: solid;'"/>
+						<xsl:apply-templates/>		
+					</xsl:element>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:apply-templates/>
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:if test="//tei:note[@place='bottom']">
 				<xsl:call-template name="createEndnotes"/>
 			</xsl:if>
