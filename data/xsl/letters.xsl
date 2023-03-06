@@ -199,27 +199,45 @@
 	</xsl:template>
 	
 	<xsl:template match="tei:fw">
+		<xsl:variable name="fw-classes-bold" select="'tei_fw tei_hi_bold'"/>
+		<xsl:variable name="fw-classes-boxed" select="'tei_fw border-top border-bottom'"/>
+		<xsl:choose>
+			<xsl:when test="ancestor::tei:div[@type='row'] or @type='pageNum'">
 		<xsl:element name="p">
 			<xsl:attribute name="class">
-				<xsl:value-of select="'border-top border-bottom border-secondary tei_fw'"/>
-			</xsl:attribute>
 			<xsl:choose>
 				<xsl:when test="@rend">
-					<xsl:element name="span">
-						<xsl:attribute name="class">
-							<xsl:value-of select="concat('textAlign-',@rend)"/>
+								<xsl:value-of select="concat($fw-classes-bold, ' textAlign-', @rend)"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="$fw-classes-bold"/>
+							</xsl:otherwise>
+						</xsl:choose>
 						</xsl:attribute>
 						<xsl:apply-templates/>
 					</xsl:element>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:apply-templates/>
+				<xsl:element name="p">
+					<xsl:attribute name="class">
+						<xsl:choose>
+							<xsl:when test="@rend">
+								<xsl:value-of select="concat($fw-classes-boxed, ' textAlign-', @rend)"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="$fw-classes-boxed"/>
 				</xsl:otherwise>
 			</xsl:choose>
+					</xsl:attribute>
+					<xsl:apply-templates/>
 		</xsl:element>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
 	<xsl:template match="tei:address">
+		<xsl:choose>
+			<xsl:when test="@rend">
 		<xsl:element name="span">
 			<xsl:attribute name="class">
 				<xsl:choose>
@@ -236,6 +254,9 @@
 			</xsl:attribute>
 			<xsl:apply-templates/>
 		</xsl:element>
+			</xsl:when>
+			<xsl:otherwise><xsl:apply-templates/></xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
 	<xsl:template match="tei:addrLine">
