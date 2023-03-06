@@ -188,7 +188,7 @@
     <xsl:function name="wega:preview-class" as="xs:string">
         <xsl:param name="myNode" as="element()"/>
         <xsl:variable name="keys" select="
-        	for $key in tokenize(($myNode/@key, $myNode/@codedval, $myNode/@target/replace(., 'hendi:', '')), '\s+')
+            for $key in tokenize(($myNode/@scribe, $myNode/@key, $myNode/@codedval, $myNode/@target/replace(., 'hendi:', '')), '\s+')
             return substring($key, 1, 8)
             " as="xs:string+"/>
         <xsl:variable name="class" as="xs:string">
