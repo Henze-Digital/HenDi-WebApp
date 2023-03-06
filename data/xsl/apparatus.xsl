@@ -775,11 +775,8 @@
    <xsl:template match="tei:handShift" mode="apparatus">
         <xsl:variable name="hsScript">
             <xsl:choose>
-               <xsl:when test="@script='manuscript'">
-                  <xsl:value-of select="wega:getLanguageString('handshiftManuscript', $lang)"/>
-               </xsl:when>
-               <xsl:when test="@script='typescript'">
-                  <xsl:value-of select="wega:getLanguageString('handshiftTypescript', $lang)"/>
+               <xsl:when test="@script=('manuscript','typescript')">
+                  <xsl:value-of select="wega:getLanguageString(concat('handshift', functx:capitalize-first(@script)), $lang)"/>
                </xsl:when>
                <xsl:otherwise>
                   <xsl:value-of select="@script"/>
