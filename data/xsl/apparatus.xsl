@@ -5,6 +5,7 @@
    xmlns:xs="http://www.w3.org/2001/XMLSchema"
    xmlns:functx="http://www.functx.com"
    xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities"
+   xmlns:hendi="http://henze-digital.zenmem.de/ns/1.0"
    exclude-result-prefixes="xs" version="3.1">
 
    <xsl:variable name="doc" select="wega:doc($docID)"/>
