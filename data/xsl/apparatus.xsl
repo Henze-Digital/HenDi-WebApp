@@ -178,7 +178,7 @@
          <xsl:with-param name="counter-param">
             <xsl:value-of select="'note'"/>
          </xsl:with-param>
-         <xsl:with-param name="lemma">
+         <xsl:with-param name="lemmaAlt">
             <xsl:choose>
                <xsl:when test="preceding::tei:ptr[@target=concat('#', $id)]">
                   <!-- When ein ptr existiert, dann wird dieser ausgewertet -->
@@ -846,6 +846,7 @@
    <xsl:template name="apparatusEntry">
       <xsl:param name="title" as="xs:string"/>
       <xsl:param name="lemma" as="item()*"/>
+      <xsl:param name="lemmaAlt" as="item()*"/>
       <xsl:param name="explanation" as="item()*"/>
       <xsl:param name="counter-param"/>
       <xsl:variable name="id" select="wega:createID(.)"/>
@@ -871,6 +872,12 @@
             <xsl:element name="span">
                <xsl:attribute name="class" select="'tei_lemma'"/>
                <xsl:sequence select="wega:enquote($lemma)"/>
+            </xsl:element>
+         </xsl:if>
+         <xsl:if test="$lemmaAlt">
+            <xsl:element name="span">
+               <xsl:attribute name="class" select="'tei_lemma'"/>
+               <xsl:sequence select="$lemmaAlt"/>
             </xsl:element>
          </xsl:if>
          <xsl:if test="$explanation">
