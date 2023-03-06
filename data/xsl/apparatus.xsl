@@ -485,7 +485,7 @@
                   <xsl:value-of select="wega:getLanguageString('addDefault', $lang)"/>
                </xsl:otherwise>
             </xsl:choose>
-            <xsl:sequence select="hendi:getHand(.)"/>
+            <xsl:sequence select="hendi:getHandFeatures(.)"/>
          </xsl:with-param>
       </xsl:call-template>
    </xsl:template>
@@ -899,7 +899,7 @@
          </xsl:otherwise>
       </xsl:choose>
    </xsl:function>
-   <xsl:function name="hendi:getHand" as="node()*">
+   <xsl:function name="hendi:getHandFeatures" as="node()*">
       <xsl:param name="elem" as="node()"/>
       <xsl:variable name="handId" select="substring-after($elem/@hand,'#')"/>
       <xsl:variable name="handNote" select="$doc//tei:handNote[@xml:id = $handId]"/>
