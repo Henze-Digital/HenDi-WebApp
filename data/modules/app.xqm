@@ -1915,6 +1915,15 @@ declare
 declare 
     %templates:wrap
     %templates:default("lang", "en")
+    function app:preview-relator-trlLang($node as node(), $model as map(*), $lang as xs:string) as xs:string? {
+        if($model('relator')/self::*[@role[. = 'trl'] and @label])
+        then ('(' || lang:get-language-string($model('relator')/data(@label), $lang) || ')')
+        else wega-util:log-to-file('warn', 'app:preview-relator-trlLang(): Failed to reckognize label')
+};
+
+declare 
+    %templates:wrap
+    %templates:default("lang", "en")
     function app:preview-creation($node as node(), $model as map(*), $lang as xs:string) as xs:string? {
         if($model('doc')/mei:manifestation/mei:pubStmt) then string-join($model('doc')/mei:manifestation/mei:pubStmt/*, ', ')
         else if($model('doc')/mei:manifestation/mei:creation) then str:normalize-space($model('doc')/mei:manifestation/mei:creation)
