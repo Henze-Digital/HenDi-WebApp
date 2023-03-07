@@ -401,6 +401,8 @@ declare function wdt:works($item as item()*) as map(*) {
                 default return $item/root()/tei:TEI
             let $title-element := if($mei)
                                   then (($mei//mei:fileDesc/mei:titleStmt/mei:title[not(@type)])[1])
+                                  else if($tei//tei:biblStruct)
+                                  then (($tei//tei:biblStruct//tei:title[not(@type)])[1])
                                   else (($tei//tei:fileDesc/tei:titleStmt/tei:title[not(@type)])[1])
             return
                 switch($serialization)
