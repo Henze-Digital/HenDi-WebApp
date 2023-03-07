@@ -283,6 +283,9 @@
     <entry xml:id="albumblatt">Albumblatt</entry>
     <entry xml:id="authors">Authors</entry>
     <entry xml:id="editors">Editor</entry>
+    <entry xml:id="publication">Published</entry>
+    <entry xml:id="pubPlace">Publication Place</entry>
+    <entry xml:id="publisher">Publisher</entry>
     <entry xml:id="guestbookEntry">Guestbook Entry</entry>
     <entry xml:id="dedication">Dedication</entry>
     <entry xml:id="weisung">Weisung</entry>
