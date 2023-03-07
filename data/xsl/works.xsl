@@ -54,4 +54,30 @@
         </xsl:element>
     </xsl:template>
     
+    <xsl:template match="tei:biblStruct">
+        <xsl:element name="br"/>
+        <xsl:element name="span"><xsl:value-of select="wega:getLanguageString(@type, $lang)"/></xsl:element>
+        <xsl:apply-templates select="tei:monogr"/>
+    </xsl:template>
+    
+    <xsl:template match="tei:monogr">
+        <xsl:apply-templates select="tei:imprint"/>
+    </xsl:template>
+    
+    <xsl:template match="tei:author">
+        <xsl:call-template name="createLink"/>
+    </xsl:template>
+    
+    <xsl:template match="tei:imprint">
+        <xsl:element name="span">
+            <xsl:value-of select="tei:pubPlace"/>
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="tei:date/@when"/>
+        </xsl:element>
+        <xsl:element name="br"/>
+        <xsl:element name="span">
+            <xsl:value-of select="tei:publisher"/>
+        </xsl:element>
+    </xsl:template>
+    
 </xsl:stylesheet>

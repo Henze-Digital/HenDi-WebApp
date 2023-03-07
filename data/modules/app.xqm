@@ -773,13 +773,27 @@ declare
                 else ()
             }</span>
         }
+        let $print-authors := function($doc as document-node(), $alt as xs:boolean) {
+            for $author in ($doc//tei:sourceDesc/tei:biblStruct//tei:author)
+            return <span xmlns="http://www.w3.org/1999/xhtml">{
+                    wega-util:transform($author, doc(concat($config:xsl-collection-path, '/works.xsl')), config:get-xsl-params(()))
+            }</span>
+        }
+        let $print-bibl := function($doc as document-node(), $alt as xs:boolean) {
+            for $segment in ($doc//tei:sourceDesc/tei:biblStruct)
+            return <span xmlns="http://www.w3.org/1999/xhtml">{
+                    wega-util:transform($segment, doc(concat($config:xsl-collection-path, '/works.xsl')), config:get-xsl-params(()))
+            }</span>
+        }
         return
         map {
             'ids' : $model?doc//mei:altId[not(@type=('gnd', 'wikidata', 'dracor.einakter'))],
             'relators' : query:relators($model?doc),
-            'workType' : $model?doc//mei:term/data(@class),
+            'workType' : $model?doc//(mei:term|tei:biblStruct)/data(@class|@type),
             'titles' : $print-titles($model?doc, false()),
-            'altTitles' : $print-titles($model?doc, true())
+            'authors' : $print-authors($model?doc, false()),
+            'altTitles' : $print-titles($model?doc, true()),
+            'biblStruct': $print-bibl($model?doc, true())
         }
 };
 

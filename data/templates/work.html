@@ -58,7 +58,7 @@
             <div class="col-md paddingBottomIcon col-sm-6 basicdata">
                 <h2 data-template="lang:translate">basic_data</h2>
                 <ol class="media" data-template="app-shared:each" data-template-from="ids" data-template-to="id">
-                	<li data-template="app:prepare-work-id"><b data-template="app-shared:print" data-template-key="id-key">WeV:</b> <span data-template="app-shared:print" data-template-key="id-value">9911</span></li>
+                    <li data-template="app:prepare-work-id"><b data-template="app-shared:print" data-template-key="id-key">WeV:</b> <span data-template="app-shared:print" data-template-key="id-value">9911</span></li>
                 </ol>
                 <ol class="media" data-template="app-shared:each" data-template-from="titles" data-template-to="title">
                     <li><strong data-template="lang:translate">title</strong>: <span data-template="app-shared:output" data-template-key="title">Ein Titel</span></li>
@@ -66,8 +66,14 @@
                 <ol class="media" data-template="app-shared:each" data-template-from="altTitles" data-template-to="title">
                     <li><strong data-template="lang:translate">altTitle</strong>: <span data-template="app-shared:output" data-template-key="title">Ein Titel</span></li>
                 </ol>
+                <ol class="media" data-template="app-shared:each" data-template-from="authors" data-template-to="title">
+                    <li><strong data-template="lang:translate">author</strong>: <span data-template="app-shared:output" data-template-key="title">Ein Autor</span></li>
+                </ol>
+                <ol class="media" data-template="app-shared:each" data-template-from="biblStruct" data-template-to="title">
+                    <li><strong data-template="lang:translate">biblInf</strong>: <span data-template="app-shared:output" data-template-key="title">Eine BiblAngabe</span></li>
+                </ol>
                 <ol class="media" data-template="app-shared:each" data-template-from="relators" data-template-to="relator">
-                	<li><strong data-template="app:preview-relator-role"/>: <span data-template="app:preview-relator-name" data-template-popover="true"/></li>
+                    <li><strong data-template="app:preview-relator-role"/>: <span data-template="app:preview-relator-name" data-template-popover="true"/></li>
                 </ol>
             </div>
             <div class="col-md col-sm-12 iconographie">
@@ -111,22 +117,22 @@
                                             <!-- Nav tabs -->
                                             <ul class="nav nav-tabs">
                                                 <li class="nav-item gradient-light">
-                                                    <a class="nav-link active"  data-toggle="tab" href="#wegaText">WeGA Text</a>
+                                                    <a class="nav-link active" data-toggle="tab" href="#wegaText">WeGA Text</a>
                                                 </li>
                                                 <li class="nav-item gradient-light">
-                                                    <a class="nav-link"  data-toggle="tab" href="#wikipediaText" data-template="app:ajax-tab">wikipedia-article</a>
+                                                    <a class="nav-link" data-toggle="tab" href="#wikipediaText" data-template="app:ajax-tab">wikipedia-article</a>
                                                 </li>
                                                 <li class="nav-item gradient-light">
-                                                    <a class="nav-link"  data-toggle="tab" href="#gndText" data-template="app:ajax-tab">gnd-entry</a>
+                                                    <a class="nav-link" data-toggle="tab" href="#gndText" data-template="app:ajax-tab">gnd-entry</a>
                                                 </li>
                                                 <li class="nav-item gradient-light">
-                                                    <a class="nav-link"  data-toggle="tab" href="#gnd-beacon" data-template="app:ajax-tab">gnd-beacon</a>
+                                                    <a class="nav-link" data-toggle="tab" href="#gnd-beacon" data-template="app:ajax-tab">gnd-beacon</a>
                                                 </li>
                                                 <li class="nav-item gradient-light">
-                                                    <a class="nav-link"  data-toggle="tab" href="#XMLPreview" data-template="app:ajax-tab">XML-Preview</a>
+                                                    <a class="nav-link" data-toggle="tab" href="#XMLPreview" data-template="app:ajax-tab">XML-Preview</a>
                                                 </li>
                                                 <li class="nav-item gradient-light">
-                                                    <a class="nav-link"  href="#" data-toggle="modal" data-target="#downloadModal">Download</a>
+                                                    <a class="nav-link" href="#" data-toggle="modal" data-target="#downloadModal">Download</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -201,14 +207,14 @@
                     <h4>Empfohlene Zitierweise</h4>
                     <p>Hans Werner Henzes künstlerisches Netzwerk. Digitale Briefedition, <span data-template="app-shared:print" data-template-key="permalink">http://www.henze-digital.zenmem.de/ID</span> (<span data-template="app-shared:output" data-template-key="versionNews">Version NUMBER vom DATE</span>)
                         <br/>
-<!--                        <span data-template="app-shared:print" data-template-key="latestChange">Letzte Änderung dieses Dokuments am 22. Mai 2014 durch Peter Stadler</span>-->
+                        <!--                        <span data-template="app-shared:print" data-template-key="latestChange">Letzte Änderung dieses Dokuments am 22. Mai 2014 durch Peter Stadler</span>-->
                     </p>
                 </div>
                 <div class="col-md-9" data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">
                     <h4>Proposed citation</h4>
                     <p>Hans Werner Henze's network of artists. Digital letter edition, <span data-template="app-shared:print" data-template-key="permalink">http://www.henze-digital.zenmem.de/ID</span> (<span data-template="app-shared:output" data-template-key="versionNews">Version NUMBER vom DATE</span>)
                         <br/>
-<!--                        <span data-template="app-shared:print" data-template-key="latestChange">Letzte Änderung dieses Dokuments am DATE durch EDITOR</span>-->
+                        <!--                        <span data-template="app-shared:print" data-template-key="latestChange">Letzte Änderung dieses Dokuments am DATE durch EDITOR</span>-->
                     </p>
                 </div>
             </div>
