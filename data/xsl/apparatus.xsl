@@ -603,6 +603,10 @@
          <xsl:choose>
             <xsl:when test="tei:sic">
                <xsl:apply-templates select="tei:sic" mode="#current"/>
+               <xsl:element name="span">
+                  <xsl:attribute name="class">brackets_supplied</xsl:attribute>
+               <xsl:text>[sic!]</xsl:text>
+               </xsl:element>
             </xsl:when>
             <xsl:when test="tei:unclear">
                <xsl:variable name="opts" as="element()*">
@@ -698,8 +702,9 @@
    <xsl:template match="tei:sic[not(parent::tei:choice)] | tei:del[not(parent::tei:subst) and not(@rend='overtyped')]">
       <xsl:element name="span">
          <xsl:apply-templates select="@xml:id"/>
-         <xsl:attribute name="class" select="concat('tei_', local-name())"/>
+         <xsl:attribute name="class" select="concat('brackets_supplied tei_', local-name())"/>
          <xsl:apply-templates mode="#current"/>
+         <xsl:text>[sic!]</xsl:text>
       </xsl:element>
       <xsl:call-template name="popover"/>
    </xsl:template>
