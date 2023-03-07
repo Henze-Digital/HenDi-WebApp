@@ -190,8 +190,8 @@ declare function wega-util:substitute-wega-element-additions($nodes as node()*) 
 ~:)
 declare function wega-util:transform($node-tree as node()*, $stylesheet as item(), $parameters as node()?) as item()* {
     if(every $i in $node-tree satisfies functx:all-whitespace($i)) then () 
-    else if($node-tree/*) then transform:transform($node-tree, $stylesheet, $parameters)
-    else $node-tree ! str:normalize-space(.)
+    else (:if($node-tree/*) then:) transform:transform($node-tree, $stylesheet, $parameters)
+(:    else $node-tree ! str:normalize-space(.):)
 };
 
 (:~
