@@ -779,8 +779,16 @@ declare
                     wega-util:transform($author, doc(concat($config:xsl-collection-path, '/works.xsl')), config:get-xsl-params(()))
             }</span>
         }
-        let $print-bibl := function($doc as document-node(), $alt as xs:boolean) {
-            for $segment in ($doc//tei:sourceDesc/tei:biblStruct)
+        let $publication := function($doc as document-node(), $alt as xs:boolean) {
+            for $pubDate in ($doc//tei:sourceDesc/tei:biblStruct//tei:date)
+            return <span xmlns="http://www.w3.org/1999/xhtml">{$pubDate/string(@when)}</span>
+        }
+        let $pubPlace := function($doc as document-node(), $alt as xs:boolean) {
+            for $pubPlace in ($doc//tei:sourceDesc/tei:biblStruct//tei:pubPlace)
+            return <span xmlns="http://www.w3.org/1999/xhtml">{$pubPlace}</span>
+        }
+        let $publisher := function($doc as document-node(), $alt as xs:boolean) {
+            for $segment in ($doc//tei:sourceDesc/tei:biblStruct//tei:publisher)
             return <span xmlns="http://www.w3.org/1999/xhtml">{
                     wega-util:transform($segment, doc(concat($config:xsl-collection-path, '/works.xsl')), config:get-xsl-params(()))
             }</span>
@@ -793,7 +801,9 @@ declare
             'titles' : $print-titles($model?doc, false()),
             'authors' : $print-authors($model?doc, false()),
             'altTitles' : $print-titles($model?doc, true()),
-            'biblStruct': $print-bibl($model?doc, true())
+            'publication': $publication($model?doc, true()),
+            'publisher': $publisher($model?doc, true()),
+            'pubPlace': $pubPlace($model?doc, true())
         }
 };
 
