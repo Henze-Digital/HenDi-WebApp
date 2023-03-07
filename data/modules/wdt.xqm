@@ -353,18 +353,18 @@ declare function wdt:works($item as item()*) as map(*) {
             else false()
         },
         'filter' : function() as document-node()* {
-            $item/root()[mei:mei][descendant::mei:meiHead]
+            $item/root()[mei:mei|tei:TEI][descendant::mei:meiHead|descendant::tei:teiHeader]
         },
         'filter-by-person' : function($personID as xs:string) as document-node()* {
-            $item/root()/descendant::mei:persName[@codedval = $personID][@role=('cmp', 'lbt', 'lyr', 'aut', 'trl')][ancestor::mei:fileDesc]/root() 
+            $item/root()/(descendant::mei:persName[@codedval = $personID][@role=('cmp', 'lbt', 'lyr', 'aut', 'trl')][ancestor::mei:work]|descendant::tei:persName[@key = $personID][@role=('cmp', 'lbt', 'lyr', 'aut', 'trl')][ancestor::tei:fileDesc])/root() 
         },
         'filter-by-date' : function($dateFrom as xs:date?, $dateTo as xs:date?) as document-node()* {
             if(empty(($dateFrom, $dateTo))) then $item/root() 
             (: das muss noch umgeschrieben werden!! :)
-            else if(string($dateFrom) = string($dateTo)) then $item//mei:date[@isodate | @startdate | @enddate | @notbefore | @notafter = string($dateFrom)][ancestor::mei:history]/root()
-            else if(empty($dateFrom)) then $item//mei:date[@isodate | @startdate | @enddate | @notbefore | @notafter <= string($dateTo)][ancestor::mei:history]/root()
-            else if(empty($dateTo)) then $item//mei:date[@isodate | @startdate | @enddate | @notbefore | @notafter >= string($dateFrom)][ancestor::mei:history]/root()
-            else ($item//mei:date[@isodate | @startdate | @enddate | @notbefore | @notafter >= string($dateFrom)][@isodate | @startdate | @enddate | @notbefore | @notafter <= string($dateTo)][ancestor::mei:history])/root()
+            else if(string($dateFrom) = string($dateTo)) then ($item//mei:date[@isodate | @startdate | @enddate | @notbefore | @notafter = string($dateFrom)][ancestor::mei:history]/root() | $item//tei:date[@when | @from | @to | @notBefore | @notAfter = string($dateFrom)][ancestor::tei:sourceDesc]/root())
+            else if(empty($dateFrom)) then ($item//mei:date[@isodate | @startdate | @enddate | @notbefore | @notafter <= string($dateTo)][ancestor::mei:history]/root() | $item//tei:date[@when | @from | @to | @notBefore | @notAfter <= string($dateTo)][ancestor::tei:sourceDesc]/root())
+            else if(empty($dateTo)) then ($item//mei:date[@isodate | @startdate | @enddate | @notbefore | @notafter >= string($dateFrom)][ancestor::mei:history]/root() | $item//tei:date[@when | @from | @to | @notBefore | @notAfter >= string($dateFrom)][ancestor::tei:sourceDesc]/root())
+            else ($item//mei:date[@isodate | @startdate | @enddate | @notbefore | @notafter >= string($dateFrom)][@isodate | @startdate | @enddate | @notbefore | @notafter <= string($dateTo)][ancestor::mei:history] | $item//tei:date[@when | @from | @to | @notBefore | @notAfter >= string($dateFrom)][@when | @from | @to | @notBefore | @notAfter <= string($dateTo)][ancestor::tei:sourceDesc])/root()
         },
         'sort' : function($params as map(*)?) as document-node()* {
             if(sort:has-index('works')) then ()
@@ -372,17 +372,17 @@ declare function wdt:works($item as item()*) as map(*) {
             for $i in wdt:works($item)('filter')() order by sort:index('works', $i) return $i
         },
         'init-collection' : function() as document-node()* {
-            crud:data-collection('works')[mei:mei][descendant::mei:meiHead]
+            crud:data-collection('works')[mei:mei|tei:TEI][descendant::mei:meiHead|descendant::tei:teiHeader]
         },
         'init-sortIndex' : function() as item()* {
             sort:create-index-callback('works', wdt:works(())('init-collection')(), function($node) { 
-                functx:pad-integer-to-length(($node//mei:seriesStmt/mei:title[@level])[1]/xs:int(@n), 4) || 
+                functx:pad-integer-to-length(($node//mei:seriesStmt/mei:title[@level]|$node//tei:titleStmt/tei:title[@level])[1]/xs:int(@n), 4) || 
                 $node//mei:altId[@type = 'WeV']/string(@subtype) || 
                 (if($node//mei:altId[@type = 'WeV']/@n castable as xs:int) then
                     functx:pad-integer-to-length($node//mei:altId[@type = 'WeV']/xs:int(@n), 4) 
                 else '9999') ||
                 $node//mei:altId[@type = 'WeV']/string() || 
-                ($node//mei:title)[1]
+                ($node//mei:title|$node//tei:title)[1]
             }, ())
         },
         (: Sollte beim Titel noch der Komponist etc. angegeben werden? :)
@@ -393,7 +393,15 @@ declare function wdt:works($item as item()*) as map(*) {
                 case xs:untypedAtomic return crud:doc($item)/mei:mei
                 case document-node() return $item/mei:mei
                 default return $item/root()/mei:mei
-            let $title-element := ($mei//mei:fileDesc/mei:titleStmt/mei:title[not(@type)])[1]
+            let $tei := 
+                typeswitch($item)
+                case xs:string return crud:doc($item)/tei:TEI
+                case xs:untypedAtomic return crud:doc($item)/tei:TEI
+                case document-node() return $item/tei:TEI
+                default return $item/root()/tei:TEI
+            let $title-element := if($mei)
+                                  then (($mei//mei:fileDesc/mei:titleStmt/mei:title[not(@type)])[1])
+                                  else (($tei//tei:fileDesc/tei:titleStmt/tei:title[not(@type)])[1])
             return
                 switch($serialization)
                 case 'txt' return str:normalize-space(replace(string-join(str:txtFromTEI($title-element, config:guess-language(())), ''), '\s*\n+\s*(\S+)', '. $1'))
@@ -402,16 +410,18 @@ declare function wdt:works($item as item()*) as map(*) {
         },
         'label-facets' : function() as xs:string? {
             typeswitch($item)
-            case xs:string return str:normalize-space((crud:doc($item)//mei:fileDesc/mei:titleStmt/mei:title[not(@type)])[1])
-            case xs:untypedAtomic return str:normalize-space((crud:doc($item)//mei:fileDesc/mei:titleStmt/mei:title[not(@type)])[1])
-            case document-node() return str:normalize-space(($item//mei:fileDesc/mei:titleStmt/mei:title[not(@type)])[1])
-            case element() return str:normalize-space(($item//mei:fileDesc/mei:titleStmt/mei:title[not(@type)])[1])
+            case xs:string return str:normalize-space((crud:doc($item)//mei:fileDesc/mei:titleStmt/mei:title[not(@type)]|crud:doc($item)//tei:fileDesc/tei:titleStmt/tei:title[not(@type)])[1])
+            case xs:untypedAtomic return str:normalize-space((crud:doc($item)//mei:fileDesc/mei:titleStmt/mei:title[not(@type)]|crud:doc($item)//tei:fileDesc/tei:titleStmt/tei:title[not(@type)])[1])
+            case document-node() return str:normalize-space(($item//mei:fileDesc/mei:titleStmt/mei:title[not(@type)]|crud:doc($item)//tei:fileDesc/tei:titleStmt/tei:title[not(@type)])[1])
+            case element() return str:normalize-space(($item//mei:fileDesc/mei:titleStmt/mei:title[not(@type)]|crud:doc($item)//tei:fileDesc/tei:titleStmt/tei:title[not(@type)])[1])
             default return wega-util:log-to-file('error', 'wdt:works()("label-facests"): failed to get string')
         },
         'memberOf' : ('search', 'indices', 'unary-docTypes', 'sitemap'),
         'search' : function($query as element(query)) {
             $item[mei:mei]/mei:mei[ft:query(., $query)] | 
-            $item[mei:mei]//mei:title[ft:query(., $query)]
+            $item[tei:TEI]/tei:TEI[ft:query(., $query)] | 
+            $item[mei:mei]//mei:title[ft:query(., $query)] |
+            $item[tei:TEI]//tei:title[ft:query(., $query)]
         }
     }
 };
