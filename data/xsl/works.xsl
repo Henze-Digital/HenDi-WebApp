@@ -57,6 +57,7 @@
     <xsl:template match="tei:biblStruct">
         <xsl:element name="br"/>
         <xsl:element name="span"><xsl:value-of select="wega:getLanguageString(@type, $lang)"/></xsl:element>
+        <xsl:element name="br"/>
         <xsl:apply-templates select="tei:monogr"/>
     </xsl:template>
     
