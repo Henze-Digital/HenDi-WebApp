@@ -89,7 +89,7 @@ declare function query:get-author-element($doc as document-node()?) as element()
 declare function query:doc-by-gnd($gndID as xs:string) as document-node()* {
     core:getOrCreateColl('persons', 'indices', true())//tei:idno[.=$gndID][@type='gnd']/root() |
     core:getOrCreateColl('orgs', 'indices', true())//tei:idno[.=$gndID][@type='gnd']/root() |
-    core:getOrCreateColl('works', 'indices', true())//mei:altId[.=$gndID][@type='gnd']/root() 
+    core:getOrCreateColl('works', 'indices', true())//(mei:altId[.=$gndID][@type='gnd']|tei:idno[.=$gndID][@type='gnd'])/root() 
 };
 
 
@@ -105,10 +105,10 @@ declare function query:doc-by-viaf($viafID as xs:string) as document-node()* {
     return
         core:getOrCreateColl('persons', 'indices', true())//tei:idno[.=$viafID][@type='viaf']/root() |
         core:getOrCreateColl('orgs', 'indices', true())//tei:idno[.=$viafID][@type='viaf']/root() |
-        core:getOrCreateColl('works', 'indices', true())//mei:altId[.=$viafID][@type='viaf']/root() |
+        core:getOrCreateColl('works', 'indices', true())//(mei:altId[.=$gndID][@type='viaf']|tei:idno[.=$gndID][@type='viaf'])/root() |
         core:getOrCreateColl('persons', 'indices', true())//tei:idno[.=$gndID][@type='gnd']/root() |
         core:getOrCreateColl('orgs', 'indices', true())//tei:idno[.=$gndID][@type='gnd']/root() |
-        core:getOrCreateColl('works', 'indices', true())//mei:altId[.=$gndID][@type='gnd']/root() 
+        core:getOrCreateColl('works', 'indices', true())//(mei:altId[.=$gndID][@type='gnd']|tei:idno[.=$gndID][@type='gnd'])/root() 
 };
 
 (:~
@@ -122,7 +122,7 @@ declare function query:doc-by-wikidata($wikidataID as xs:string) as document-nod
     let $annotatedDocs := 
         core:getOrCreateColl('persons', 'indices', true())//tei:idno[.=$wikidataID][@type='wikidata']/root() |
         core:getOrCreateColl('orgs', 'indices', true())//tei:idno[.=$wikidataID][@type='wikidata']/root() |
-        core:getOrCreateColl('works', 'indices', true())//mei:altId[.=$wikidataID][@type='wikidata']/root()
+        core:getOrCreateColl('works', 'indices', true())//(mei:altId[.=$wikidataID][@type='wikidata']|tei:idno[.=$wikidataID][@type='wikidata'])/root()
     let $queriedDocs :=
         if(count($annotatedDocs) lt 1)
         then er:translate-authority-id(<tei:idno type="wikidata">{$wikidataID}</tei:idno>, 'wega') ! crud:doc(.)
@@ -243,7 +243,8 @@ declare function query:get-title-element($doc as document-node(), $lang as xs:st
     let $docID := $doc/*/data(@xml:id)
     return
         if(config:is-diary($docID)) then <tei:date>{$doc/tei:ab/data(@n)}</tei:date>
-        else if(config:is-work($docID)) then ($doc//mei:fileDesc/mei:titleStmt/mei:title[not(@type)])[1]
+        else if(config:is-work($docID)) then ($doc//mei:fileDesc/mei:titleStmt/mei:title[not(@type)] | 
+                                              $doc//tei:biblStruct//tei:title[not(@type)])[1]
         else if(config:is-var($docID)) then ($doc//tei:title[@level = 'a'][@xml:lang = $lang])[1]
         else ($doc//tei:fileDesc/tei:titleStmt/tei:title[@level = 'a'])[1]
 };
@@ -356,7 +357,7 @@ declare function query:get-facets($collection as node()*, $facet as xs:string) a
     case 'series' return $collection//mei:seriesStmt/mei:title[@level='s']
     case 'keywords' return $collection//tei:term[parent::tei:keywords]
     case 'docLang' return $collection//tei:language/@ident
-    case 'workTitle' return $collection//mei:title[parent::mei:titleStmt]
+    case 'workTitle' return ($collection//mei:title[parent::mei:titleStmt] | $collection//tei:title[ancestor::tei:biblStruct])
     case 'geonamesFeatureClass' return $collection//tei:place/@typeof
     default return ()
 };
