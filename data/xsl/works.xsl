@@ -1,46 +1,41 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-    xmlns:mei="http://www.music-encoding.org/ns/mei"
-    xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities"
-    xmlns="http://www.w3.org/1999/xhtml"
-    exclude-result-prefixes="xs" version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mei="http://www.music-encoding.org/ns/mei" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns="http://www.w3.org/1999/xhtml" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" exclude-result-prefixes="xs" version="2.0">
     
     <xsl:output encoding="UTF-8" method="html" omit-xml-declaration="yes"/>
     
     <xsl:include href="common_main.xsl"/>
     <xsl:include href="common_link.xsl"/>
     
-    <xsl:template match="mei:p">
+    <xsl:template match="mei:p|tei:p">
         <xsl:element name="p">
             <xsl:apply-templates select="@xml:id"/>
             <xsl:apply-templates/>
         </xsl:element>
     </xsl:template>
     
-    <xsl:template match="mei:lb">
+    <xsl:template match="mei:lb|tei:lb">
         <xsl:element name="br"/>
     </xsl:template>
     
     <!-- suppress links within titles (for popovers etc.) -->
-    <xsl:template match="mei:persName[parent::mei:title]" priority="4">
+    <xsl:template match="mei:persName[parent::mei:title]|tei:persName[parent::tei:title]" priority="4">
         <xsl:apply-templates/>
     </xsl:template>
     
-    <xsl:template match="mei:eventList">
+    <xsl:template match="mei:eventList|tei:listEvent">
         <xsl:element name="dl">
             <xsl:apply-templates select="@xml:id"/>
             <xsl:apply-templates/>
         </xsl:element>
     </xsl:template>
     
-    <xsl:template match="mei:event[parent::mei:eventList]">
+    <xsl:template match="mei:event[parent::mei:eventList]|tei:event[parent::tei:listEvent]">
         <xsl:element name="dt">
             <xsl:apply-templates select="@xml:id"/>
-            <xsl:apply-templates select="mei:head"/>
+            <xsl:apply-templates select="mei:head|tei:desc"/>
         </xsl:element>
         <xsl:element name="dd">
             <xsl:apply-templates select="@xml:id"/>
-            <xsl:apply-templates select="node() except mei:head"/>
+            <xsl:apply-templates select="node() except (mei:head|tei:desc)"/>
         </xsl:element>
     </xsl:template>
     
@@ -52,7 +47,7 @@
         </xsl:element>
     </xsl:template>
     
-    <xsl:template match="mei:annot">
+    <xsl:template match="mei:annot|tei:note">
         <xsl:element name="p">
             <xsl:apply-templates select="@xml:id"/>
             <xsl:apply-templates/>
