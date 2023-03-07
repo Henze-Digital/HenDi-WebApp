@@ -42,11 +42,11 @@
         -->
         <xsl:variable name="rs-types-with-link" as="xs:string+" select="('person', 'news', 'writing', 'letter', 'diaryDay', 'org', 'document', 'work')"/>
         <xsl:choose>
-            <xsl:when test="@key and (@type=$rs-types-with-link)">
+            <xsl:when test="@key and (replace(@type,'postal','letter')=$rs-types-with-link)">
                 <xsl:call-template name="createLink"/>
             </xsl:when>
             <!-- All plural forms, e.g. "persons" -->
-            <xsl:when test="@key and not(@type=$rs-types-with-link)">
+            <xsl:when test="@key and not(replace(@type,'postal','letter')=$rs-types-with-link)">
                 <xsl:call-template name="createSpan"/>
             </xsl:when>
             <xsl:otherwise>
