@@ -758,7 +758,8 @@ declare
     %templates:wrap
     function app:work-basic-data($node as node(), $model as map(*)) as map(*) {
         let $print-titles := function($doc as document-node(), $alt as xs:boolean) {
-            for $title in $doc//mei:meiHead/mei:fileDesc/mei:titleStmt/mei:title[not(@type='sub')][exists(@type='alt') = $alt]
+            for $title in ($doc//mei:meiHead/mei:workList/mei:work[1]/mei:title[. != ''][not(@type='sub')][exists(@type='alt') = $alt] |
+                           $doc//tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title[not(@level='s')][exists(@type='alt') = $alt])
             let $titleLang := $title/string(@xml:lang) 
             let $subTitle := ($title/following-sibling::mei:title[@type='sub'][string(@xml:lang) = $titleLang])[1]
             return <span xmlns="http://www.w3.org/1999/xhtml">{
@@ -772,13 +773,37 @@ declare
                 else ()
             }</span>
         }
+        let $print-authors := function($doc as document-node(), $alt as xs:boolean) {
+            for $author in ($doc//tei:sourceDesc/tei:biblStruct//tei:author)
+            return <span xmlns="http://www.w3.org/1999/xhtml">{
+                    wega-util:transform($author, doc(concat($config:xsl-collection-path, '/works.xsl')), config:get-xsl-params(()))
+            }</span>
+        }
+        let $publication := function($doc as document-node(), $alt as xs:boolean) {
+            for $pubDate in ($doc//tei:sourceDesc/tei:biblStruct//tei:date)
+            return <span xmlns="http://www.w3.org/1999/xhtml">{$pubDate/string(@when)}</span>
+        }
+        let $pubPlace := function($doc as document-node(), $alt as xs:boolean) {
+            for $pubPlace in ($doc//tei:sourceDesc/tei:biblStruct//tei:pubPlace)
+            return <span xmlns="http://www.w3.org/1999/xhtml">{$pubPlace}</span>
+        }
+        let $publisher := function($doc as document-node(), $alt as xs:boolean) {
+            for $segment in ($doc//tei:sourceDesc/tei:biblStruct//tei:publisher)
+            return <span xmlns="http://www.w3.org/1999/xhtml">{
+                    wega-util:transform($segment, doc(concat($config:xsl-collection-path, '/works.xsl')), config:get-xsl-params(()))
+            }</span>
+        }
         return
         map {
             'ids' : $model?doc//mei:altId[not(@type=('gnd', 'wikidata', 'dracor.einakter'))],
-            'relators' : query:relators($model?doc),
-            'workType' : $model?doc//mei:term/data(@class),
+            'relators' : query:relators($model?doc)[self::mei:*/@role[. = ('cmp', 'lbt', 'lyr', 'arr', 'aut', 'trl')] or self::tei:author],
+            'workType' : $model?doc//(mei:term|tei:biblStruct)/data(@class|@type),
             'titles' : $print-titles($model?doc, false()),
-            'altTitles' : $print-titles($model?doc, true())
+            'authors' : $print-authors($model?doc, false()),
+            'altTitles' : $print-titles($model?doc, true()),
+            'publication': $publication($model?doc, true()),
+            'publisher': $publisher($model?doc, true()),
+            'pubPlace': $pubPlace($model?doc, true())
         }
 };
 
@@ -1779,7 +1804,7 @@ declare
                 if(config:is-person($model?parent-docID)) then controller:create-url-for-doc-in-context($model?result-page-entry, $lang, $model?parent-docID)
                 else controller:create-url-for-doc($model('result-page-entry'), $lang),
             'docType' : config:get-doctype-by-id($model('result-page-entry')/root()/*/data(@xml:id)),
-            'relators' : query:relators($model('result-page-entry')),
+            'relators' : query:relators($model('result-page-entry'))[self::mei:*/@role[. = ('cmp', 'lbt', 'lyr', 'arr')] or self::tei:author],
             'biblioType' : $model('result-page-entry')/tei:biblStruct/data(@type),
             'workType' : $model('result-page-entry')//mei:term/data(@class),
             'newsDate' : date:printDate($model('result-page-entry')//tei:date[parent::tei:publicationStmt], $lang, lang:get-language-string#3, $config:default-date-picture-string)
@@ -1885,6 +1910,15 @@ declare
         if($model('relator')/self::mei:*/@role) then lang:get-language-string($model('relator')/data(@role), $lang)
         else if($model('relator')/self::tei:author) then lang:get-language-string('aut', $lang)
         else wega-util:log-to-file('warn', 'app:preview-relator-role(): Failed to reckognize role')
+};
+
+declare 
+    %templates:wrap
+    %templates:default("lang", "en")
+    function app:preview-relator-trlLang($node as node(), $model as map(*), $lang as xs:string) as xs:string? {
+        if($model('relator')/self::*[@role[. = 'trl'] and @label])
+        then ('(' || lang:get-language-string('into', $lang) || ' ' || lang:get-language-string($model('relator')/data(@label), $lang) || (if($lang = 'de') then ('e') else()) ||')')
+        else wega-util:log-to-file('warn', 'app:preview-relator-trlLang(): Failed to reckognize label')
 };
 
 declare 

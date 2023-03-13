@@ -283,6 +283,9 @@
     <entry xml:id="albumblatt">Albumblatt</entry>
     <entry xml:id="authors">Verfasst von</entry>
     <entry xml:id="editors">Herausgegeben von</entry>
+    <entry xml:id="publication">Veröffentlicht</entry>
+    <entry xml:id="pubPlace">Verlagsort</entry>
+    <entry xml:id="publisher">Verlag</entry>
     <entry xml:id="guestbookEntry">Gästebucheintrag</entry>
     <entry xml:id="dedication">Widmung</entry>
     <entry xml:id="weisung">Weisung</entry>
@@ -735,4 +738,5 @@
     <entry xml:id="physDesc.objectDesc.form.unknown">Unbekannt</entry>
     
     <entry xml:id="assignmentNotClear">Zuordnung nicht eindeutig</entry>
+    <entry xml:id="into">ins</entry>
 </dictionary>

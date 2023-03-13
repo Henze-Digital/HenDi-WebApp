@@ -859,8 +859,8 @@
    <xsl:template match="(tei:persName|tei:orgName|tei:placeName)[not(@key)]">
       <xsl:element name="span">
          <xsl:apply-templates mode="#current"/>
+         <xsl:call-template name="popover"/>
       </xsl:element>
-      <xsl:call-template name="popover"/>
    </xsl:template>
    
    <xsl:template match="(tei:persName|tei:orgName|tei:placeName)[not(@key)]" mode="apparatus">
