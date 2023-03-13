@@ -1,17 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml"
-   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-   xmlns:tei="http://www.tei-c.org/ns/1.0"
-   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-   xmlns:functx="http://www.functx.com"
-   xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities"
-   xmlns:hendi="http://henze-digital.zenmem.de/ns/1.0"
-   exclude-result-prefixes="xs" version="3.1">
+<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:functx="http://www.functx.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" xmlns:hendi="http://henze-digital.zenmem.de/ns/1.0" exclude-result-prefixes="xs" version="3.1">
 
    <xsl:variable name="doc" select="wega:doc($docID)"/>
 	<xsl:variable name="textConstitutionNodes" as="node()*" select=".//tei:subst | .//tei:add[not(parent::tei:subst)] | .//tei:gap[not(@reason='outOfScope' or parent::tei:del)] | .//tei:sic[not(parent::tei:choice)] | .//tei:del[not(parent::tei:subst)] | .//tei:unclear[not(parent::tei:choice)] | .//tei:note[@type='textConst'] | .//tei:handShift | .//tei:supplied[parent::tei:damage]"/>
-   <xsl:variable name="commentaryNodes" as="node()*" select=".//tei:note[@type=('commentary', 'definition')] | .//tei:choice | .//tei:figDesc"/>
-   <xsl:variable name="autoCommentaryNodes" as="node()*" select=".//tei:persName[not(@key)] | .//tei:orgName[not(@key)] | .//tei:placeName[not(@key)]"/>
+	<xsl:variable name="commentaryNodes" as="node()*" select=".//tei:note[@type=('commentary', 'definition')] | .//tei:choice | .//tei:figDesc"/>
+	<xsl:variable name="autoCommentaryNodes" as="node()*" select=".//tei:persName[not(@key)] | .//tei:orgName[not(@key)] | .//tei:placeName[not(@key)]"/>
+	<xsl:variable name="translationNodes" as="node()*" select=".//tei:foreign"/>
 	<xsl:variable name="internalNodes" as="node()*" select=".//tei:note[@type='internal']"/>
    <xsl:variable name="rdgNodes" as="node()*" select=".//tei:app"/>
 
@@ -83,6 +76,33 @@
                            <xsl:attribute name="data-href"><xsl:value-of select="concat('#ref-',wega:createID(.))"/></xsl:attribute>
                            <xsl:attribute name="class">apparatus-link</xsl:attribute>
                            <xsl:number count="$commentaryNodes" level="any"/>
+                           <xsl:text>.</xsl:text>
+                        </xsl:element>
+                     </xsl:element>
+                     <xsl:apply-templates select="." mode="apparatus"/>
+                  </xsl:element>
+               </xsl:element>
+            </xsl:for-each>
+         </xsl:element>
+      	<xsl:if test="$translationNodes">
+            <xsl:element name="h3">
+               <xsl:attribute name="class">media-heading</xsl:attribute>
+               <xsl:value-of select="wega:getLanguageString('translations', $lang)"/>
+            </xsl:element>
+         </xsl:if>
+         <xsl:element name="ul">
+            <xsl:attribute name="class">apparatus commentary</xsl:attribute>
+         	<xsl:for-each select="$translationNodes">
+               <xsl:element name="li">
+                  <xsl:element name="div">
+                     <xsl:attribute name="class">row</xsl:attribute>
+                     <xsl:element name="div">
+                        <xsl:attribute name="class">col-1 text-nowrap</xsl:attribute>
+                        <xsl:element name="a">
+                           <xsl:attribute name="href">#transcription</xsl:attribute>
+                           <xsl:attribute name="data-href"><xsl:value-of select="concat('#ref-',wega:createID(.))"/></xsl:attribute>
+                           <xsl:attribute name="class">apparatus-link</xsl:attribute>
+                        	<xsl:number count="$translationNodes" level="any"/>
                            <xsl:text>.</xsl:text>
                         </xsl:element>
                      </xsl:element>
@@ -172,8 +192,7 @@
                </xsl:element>
             </xsl:for-each>
          </xsl:element>
-         
-      </xsl:element>
+      	</xsl:element>
    </xsl:template>
 
    <!-- dedicated template for textConst notes in the notesStmt -->
@@ -825,7 +844,8 @@
     
    <xsl:template match="tei:note" mode="lemma"/>
    <xsl:template match="tei:figDesc" mode="lemma"/>
-   <xsl:template match="tei:lb" mode="lemma">
+	<xsl:template match="tei:foreign" mode="lemma"/>
+	<xsl:template match="tei:lb" mode="lemma">
       <xsl:text> </xsl:text>
    </xsl:template>
    <xsl:template match="tei:gap" mode="lemma">
@@ -865,7 +885,6 @@
    
    <xsl:template match="(tei:persName|tei:orgName|tei:placeName)[not(@key)]" mode="apparatus">
       <xsl:call-template name="apparatusEntry">
-<!--         <xsl:with-param name="title" select=""/>-->
          <xsl:with-param name="title">
          <xsl:choose>
             <xsl:when test="self::tei:persName"><xsl:value-of select="wega:getLanguageString('persName',$lang)"/></xsl:when>
@@ -877,6 +896,25 @@
          <xsl:with-param name="explanation" select="wega:getLanguageString('assignmentNotClear',$lang)"/>
       </xsl:call-template>
    </xsl:template>
+	
+	
+	<xsl:template match="tei:foreign">
+		<xsl:element name="span">
+			<xsl:apply-templates mode="#current"/>
+			<xsl:call-template name="popover"/>
+		</xsl:element>
+	</xsl:template>
+	
+	<xsl:template match="tei:foreign" mode="apparatus">
+		<xsl:call-template name="apparatusEntry">
+			<xsl:with-param name="counter-param">
+				<xsl:value-of select="'note'"/>
+			</xsl:with-param>
+			<xsl:with-param name="title" select="wega:getLanguageString('translation', $lang)"/>
+			<xsl:with-param name="lemma" select="text()"/>
+			<xsl:with-param name="explanation" select="hendi:getTranslation(.)"/>
+		</xsl:call-template>
+	</xsl:template>
    
    <!-- template for creating an apparatus entry -->
    <xsl:template name="apparatusEntry">
@@ -974,6 +1012,21 @@
          </xsl:if>
       </xsl:if>
    </xsl:function>
+	
+	<xsl:function name="hendi:getTranslation" as="node()*">
+		<xsl:param name="elem" as="node()"/>
+		<!--  xml:lang="es" xml:id="foreign.1"> -->
+		<xsl:variable name="foreignId" select="$elem/@xml:id"/>
+		<xsl:variable name="trlNotes" select="$doc//tei:note[@type='translation' and substring-after(@corresp,'#') = $foreignId]"/>
+		<!-- xml:lang="de" -->
+		<xsl:for-each select="$trlNotes">
+			<xsl:element name="li">
+				<xsl:value-of select="wega:getLanguageString(@xml:lang, $lang)"/>
+				<xsl:text>: </xsl:text>
+				<xsl:value-of select="./text()"/>
+			</xsl:element>
+		</xsl:for-each>
+	</xsl:function>
    
    <xsl:variable name="sort-order" as="element()+">
       <cert sort="1">high</cert>
