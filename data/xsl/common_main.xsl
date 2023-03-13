@@ -86,6 +86,10 @@
                 <xsl:when test="not($marker) and (self::tei:persName|self::tei:orgName|self::tei:placeName)[not(@key)]">
                     <xsl:text>°</xsl:text>
                 </xsl:when>
+            	<!-- https://www.i2symbol.com/symbols-->
+            	<xsl:when test="not($marker) and self::tei:foreign">
+            		<xsl:text>📕</xsl:text>
+            	</xsl:when>
                 <xsl:otherwise>
                     <xsl:text>‡</xsl:text> <!-- to be changed in apparatus.xsl too if necessary -->
                 </xsl:otherwise>
