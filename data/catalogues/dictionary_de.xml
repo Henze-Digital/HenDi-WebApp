@@ -739,4 +739,6 @@
     
     <entry xml:id="assignmentNotClear">Zuordnung nicht eindeutig</entry>
     <entry xml:id="into">ins</entry>
+	<entry xml:id="translations">Übersetzungen</entry>
+	<entry xml:id="translation">Übersetzung</entry>
 </dictionary>
