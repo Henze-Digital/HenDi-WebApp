@@ -946,7 +946,7 @@
       <xsl:param name="elem" as="element()"/>
       <xsl:choose>
          <xsl:when test="$elem/@xml:id">
-            <xsl:value-of select="$elem/@xml:id"/>
+            <xsl:value-of select="translate($elem/@xml:id, '.', '-')"/>
          </xsl:when>
          <xsl:otherwise>
             <xsl:value-of select="generate-id($elem)"/>

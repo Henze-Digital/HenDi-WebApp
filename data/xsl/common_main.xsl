@@ -43,7 +43,7 @@
         <xsl:variable name="id">
             <xsl:choose>
                 <xsl:when test="@xml:id">
-                    <xsl:value-of select="@xml:id"/>
+                	<xsl:value-of select="translate(@xml:id, '.', '-')"/>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:value-of select="generate-id(.)"/>
