@@ -2,9 +2,8 @@
 
    <xsl:variable name="doc" select="wega:doc($docID)"/>
 	<xsl:variable name="textConstitutionNodes" as="node()*" select=".//tei:subst | .//tei:add[not(parent::tei:subst)] | .//tei:gap[not(@reason='outOfScope' or parent::tei:del)] | .//tei:sic[not(parent::tei:choice)] | .//tei:del[not(parent::tei:subst)] | .//tei:unclear[not(parent::tei:choice)] | .//tei:note[@type='textConst'] | .//tei:handShift | .//tei:supplied[parent::tei:damage]"/>
-	<xsl:variable name="commentaryNodes" as="node()*" select=".//tei:note[@type=('commentary', 'definition')] | .//tei:choice | .//tei:figDesc"/>
+	<xsl:variable name="commentaryNodes" as="node()*" select=".//tei:note[@type=('commentary', 'definition')] | .//tei:choice | .//tei:figDesc | .//tei:foreign"/>
 	<xsl:variable name="autoCommentaryNodes" as="node()*" select=".//tei:persName[not(@key)] | .//tei:orgName[not(@key)] | .//tei:placeName[not(@key)]"/>
-	<xsl:variable name="translationNodes" as="node()*" select=".//tei:foreign"/>
 	<xsl:variable name="internalNodes" as="node()*" select=".//tei:note[@type='internal']"/>
    <xsl:variable name="rdgNodes" as="node()*" select=".//tei:app"/>
 
@@ -76,33 +75,6 @@
                            <xsl:attribute name="data-href"><xsl:value-of select="concat('#ref-',wega:createID(.))"/></xsl:attribute>
                            <xsl:attribute name="class">apparatus-link</xsl:attribute>
                            <xsl:number count="$commentaryNodes" level="any"/>
-                           <xsl:text>.</xsl:text>
-                        </xsl:element>
-                     </xsl:element>
-                     <xsl:apply-templates select="." mode="apparatus"/>
-                  </xsl:element>
-               </xsl:element>
-            </xsl:for-each>
-         </xsl:element>
-      	<xsl:if test="$translationNodes">
-            <xsl:element name="h3">
-               <xsl:attribute name="class">media-heading</xsl:attribute>
-               <xsl:value-of select="wega:getLanguageString('translations', $lang)"/>
-            </xsl:element>
-         </xsl:if>
-         <xsl:element name="ul">
-            <xsl:attribute name="class">apparatus commentary</xsl:attribute>
-         	<xsl:for-each select="$translationNodes">
-               <xsl:element name="li">
-                  <xsl:element name="div">
-                     <xsl:attribute name="class">row</xsl:attribute>
-                     <xsl:element name="div">
-                        <xsl:attribute name="class">col-1 text-nowrap</xsl:attribute>
-                        <xsl:element name="a">
-                           <xsl:attribute name="href">#transcription</xsl:attribute>
-                           <xsl:attribute name="data-href"><xsl:value-of select="concat('#ref-',wega:createID(.))"/></xsl:attribute>
-                           <xsl:attribute name="class">apparatus-link</xsl:attribute>
-                        	<xsl:number count="$translationNodes" level="any"/>
                            <xsl:text>.</xsl:text>
                         </xsl:element>
                      </xsl:element>
@@ -605,10 +577,7 @@
             <xsl:text> </xsl:text>
          <xsl:value-of select="@quantity"/>
             <xsl:text> </xsl:text>
-            <xsl:value-of select="
-                  if(@quantity = 1) then wega:getLanguageString(@unit || 'Sg', $lang)
-                  else wega:getLanguageString(@unit, $lang)
-                  "/>
+            <xsl:value-of select="                   if(@quantity = 1) then wega:getLanguageString(@unit || 'Sg', $lang)                   else wega:getLanguageString(@unit, $lang)                   "/>
             <xsl:text>)</xsl:text>
          </xsl:if>
       </xsl:with-param>
@@ -910,9 +879,19 @@
 			<xsl:with-param name="counter-param">
 				<xsl:value-of select="'note'"/>
 			</xsl:with-param>
-			<xsl:with-param name="title" select="wega:getLanguageString('translation', $lang)"/>
-			<xsl:with-param name="lemma" select="text()"/>
-			<xsl:with-param name="explanation" select="hendi:getTranslation(.)"/>
+			<xsl:with-param name="title" select="wega:getLanguageString('translationAid', $lang)"/>
+			<xsl:with-param name="lemma">
+				<xsl:value-of select="text()"/>
+			</xsl:with-param>
+			<xsl:with-param name="explanation">
+				<xsl:variable name="foreignId" select="@xml:id"/>
+				<xsl:variable name="trlNotes" select="$doc//tei:note[@type='translation' and substring-after(@corresp,'#') = $foreignId]"/>
+				<xsl:for-each select="$trlNotes">
+					<xsl:value-of select="concat(wega:getLanguageString('inLang', $lang), ' ', wega:getLanguageString(@xml:lang, $lang))"/>
+					<xsl:text>: </xsl:text>
+					<xsl:value-of select="./text()"/>
+					</xsl:for-each>
+			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
    
@@ -927,7 +906,7 @@
       <xsl:variable name="counter">
          <xsl:choose>
             <xsl:when test="$counter-param='note'">
-               <xsl:number count="tei:note[@type=('commentary', 'definition')] | tei:choice | tei:figDesc" level="any"/>
+               <xsl:number count="tei:note[@type=('commentary', 'definition')] | tei:choice | tei:figDesc | tei:foreign" level="any"/>
             </xsl:when>
             <xsl:otherwise>
             	<xsl:number count="tei:subst | tei:add[not(parent::tei:subst)] | tei:gap[not(@reason='outOfScope' or parent::tei:del)] | tei:sic[not(parent::tei:choice)] | tei:del[not(parent::tei:subst)] | tei:unclear[not(parent::tei:choice)] | tei:note[@type='textConst']  | tei:supplied[parent::tei:damage] | tei:note[@type='internal'] | tei:handShift" level="any"/>
@@ -1013,21 +992,6 @@
       </xsl:if>
    </xsl:function>
 	
-	<xsl:function name="hendi:getTranslation" as="node()*">
-		<xsl:param name="elem" as="node()"/>
-		<!--  xml:lang="es" xml:id="foreign.1"> -->
-		<xsl:variable name="foreignId" select="$elem/@xml:id"/>
-		<xsl:variable name="trlNotes" select="$doc//tei:note[@type='translation' and substring-after(@corresp,'#') = $foreignId]"/>
-		<!-- xml:lang="de" -->
-		<xsl:for-each select="$trlNotes">
-			<xsl:element name="li">
-				<xsl:value-of select="wega:getLanguageString(@xml:lang, $lang)"/>
-				<xsl:text>: </xsl:text>
-				<xsl:value-of select="./text()"/>
-			</xsl:element>
-		</xsl:for-each>
-	</xsl:function>
-   
    <xsl:variable name="sort-order" as="element()+">
       <cert sort="1">high</cert>
       <cert sort="2">medium</cert>
