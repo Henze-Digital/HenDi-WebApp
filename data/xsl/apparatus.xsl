@@ -868,10 +868,14 @@
 	
 	
 	<xsl:template match="tei:foreign">
+		<xsl:variable name="foreignId" select="@xml:id"/>
+		<xsl:variable name="trlNotes" select="$doc//tei:note[@type='translation' and substring-after(@corresp,'#') = $foreignId]"/>
 		<xsl:element name="span">
 			<xsl:apply-templates mode="#current"/>
-			<xsl:call-template name="popover"/>
 		</xsl:element>
+		<xsl:if test="$trlNotes">
+			<xsl:call-template name="popover"/>
+		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="tei:foreign" mode="apparatus">
