@@ -2,7 +2,7 @@
 
    <xsl:variable name="doc" select="wega:doc($docID)"/>
 	<xsl:variable name="textConstitutionNodes" as="node()*" select=".//tei:subst | .//tei:add[not(parent::tei:subst)] | .//tei:gap[not(@reason='outOfScope' or parent::tei:del)] | .//tei:sic[not(parent::tei:choice)] | .//tei:del[not(parent::tei:subst)] | .//tei:unclear[not(parent::tei:choice)] | .//tei:note[@type='textConst'] | .//tei:handShift | .//tei:supplied[parent::tei:damage]"/>
-	<xsl:variable name="commentaryNodes" as="node()*" select=".//tei:note[@type=('commentary', 'definition')] | .//tei:choice | .//tei:figDesc | .//tei:foreign"/>
+	<xsl:variable name="commentaryNodes" as="node()*" select=".//tei:note[@type=('commentary', 'definition')] | .//tei:choice | .//tei:figDesc | .//tei:foreign[@xml:id]"/>
 	<xsl:variable name="autoCommentaryNodes" as="node()*" select=".//tei:persName[not(@key)] | .//tei:orgName[not(@key)] | .//tei:placeName[not(@key)]"/>
 	<xsl:variable name="internalNodes" as="node()*" select=".//tei:note[@type='internal']"/>
    <xsl:variable name="rdgNodes" as="node()*" select=".//tei:app"/>
@@ -867,7 +867,7 @@
    </xsl:template>
 	
 	
-	<xsl:template match="tei:foreign">
+	<xsl:template match="tei:foreign[@xml:id]">
 		<xsl:variable name="foreignId" select="@xml:id"/>
 		<xsl:variable name="trlNotes" select="$doc//tei:note[@type='translation' and substring-after(@corresp,'#') = $foreignId]"/>
 		<xsl:element name="span">
@@ -878,24 +878,14 @@
 		</xsl:if>
 	</xsl:template>
 	
-	<xsl:template match="tei:foreign" mode="apparatus">
+	<xsl:template match="tei:foreign[@xml:id]" mode="apparatus">
 		<xsl:call-template name="apparatusEntry">
 			<xsl:with-param name="counter-param">
 				<xsl:value-of select="'note'"/>
 			</xsl:with-param>
 			<xsl:with-param name="title" select="wega:getLanguageString('translationAid', $lang)"/>
-			<xsl:with-param name="lemma">
-				<xsl:value-of select="text()"/>
-			</xsl:with-param>
-			<xsl:with-param name="explanation">
-				<xsl:variable name="foreignId" select="@xml:id"/>
-				<xsl:variable name="trlNotes" select="$doc//tei:note[@type='translation' and substring-after(@corresp,'#') = $foreignId]"/>
-				<xsl:for-each select="$trlNotes">
-					<xsl:value-of select="concat(wega:getLanguageString('inLang', $lang), ' ', wega:getLanguageString(@xml:lang, $lang))"/>
-					<xsl:text>: </xsl:text>
-					<xsl:value-of select="./text()"/>
-					</xsl:for-each>
-			</xsl:with-param>
+			<xsl:with-param name="lemmaLang" select="@xml:lang"/>
+			<xsl:with-param name="translation" select="."/>
 		</xsl:call-template>
 	</xsl:template>
    
@@ -904,13 +894,15 @@
       <xsl:param name="title" as="xs:string"/>
       <xsl:param name="lemma" as="item()*"/>
       <xsl:param name="lemmaAlt" as="item()*"/>
+      <xsl:param name="lemmaLang" as="item()*"/>
       <xsl:param name="explanation" as="item()*"/>
+   	  <xsl:param name="translation" as="item()*"/>
       <xsl:param name="counter-param"/>
       <xsl:variable name="id" select="wega:createID(.)"/>
       <xsl:variable name="counter">
          <xsl:choose>
             <xsl:when test="$counter-param='note'">
-               <xsl:number count="tei:note[@type=('commentary', 'definition')] | tei:choice | tei:figDesc | tei:foreign" level="any"/>
+               <xsl:number count="tei:note[@type=('commentary', 'definition')] | tei:choice | tei:figDesc | tei:foreign[@xml:id]" level="any"/>
             </xsl:when>
             <xsl:otherwise>
             	<xsl:number count="tei:subst | tei:add[not(parent::tei:subst)] | tei:gap[not(@reason='outOfScope' or parent::tei:del)] | tei:sic[not(parent::tei:choice)] | tei:del[not(parent::tei:subst)] | tei:unclear[not(parent::tei:choice)] | tei:note[@type='textConst']  | tei:supplied[parent::tei:damage] | tei:note[@type='internal'] | tei:handShift" level="any"/>
@@ -937,6 +929,16 @@
                <xsl:sequence select="$lemmaAlt"/>
             </xsl:element>
          </xsl:if>
+      	<xsl:if test="$lemmaLang">
+      		<xsl:element name="span">
+      			<xsl:attribute name="class" select="'tei_lemma'"/>
+      			<xsl:element name="span">
+      				<xsl:attribute name="class" select="concat('fi fi-',$lemmaLang)"/>
+      			</xsl:element>
+      			<xsl:text> </xsl:text>
+      			<xsl:sequence select="$lemmaLang/parent::node()/text()"/>
+      		</xsl:element>
+      	</xsl:if>
          <xsl:if test="$explanation">
             <xsl:sequence select="$explanation"/>
             <xsl:variable name="quotation-marks" as="xs:string">\s*("|“|”|»|'|‘|’|›|«|‹)*</xsl:variable>
@@ -944,6 +946,22 @@
                <xsl:text>.</xsl:text>
             </xsl:if>
          </xsl:if>
+      	<xsl:if test="$translation">
+      		<xsl:variable name="translationId" select="$translation/@xml:id"/>
+      		<xsl:variable name="trlNotes" select="$doc//tei:note[@type='translation' and substring-after(@corresp,'#') = $translationId]"/>
+      		<xsl:element name="ul">
+      			<xsl:attribute name="style" select="'margin-bottom: 0em;'"/>
+	      		<xsl:for-each select="$trlNotes">
+	      			<xsl:element name="li">
+	      				<xsl:element name="span">
+	      					<xsl:attribute name="class" select="concat('fi fi-',replace(@xml:lang, 'en', 'gb'))"/>
+	      				</xsl:element>
+	      				<xsl:text> </xsl:text>
+	      				<xsl:value-of select="./text()"/>
+	      			</xsl:element>
+	      		</xsl:for-each>
+      		</xsl:element>
+      	</xsl:if>
       </xsl:element>
    </xsl:template>
    <xsl:function name="wega:createID">
