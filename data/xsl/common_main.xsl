@@ -769,8 +769,7 @@
     
     <xsl:template match="tei:q|tei:quote|mei:q" priority="0.5" mode="#all">
         <xsl:choose>
-            <!-- Surround with quotation marks if current node is `<q>`, or `@rend` is set on `<quote>` -->
-            <xsl:when test="@rend or self::tei:q or self::mei:q">
+        	<xsl:when test="@rend or self::tei:q or self::tei:quote or self::mei:q">
                 <xsl:variable name="doubleQuotes" select="                     (                     (count(ancestor::tei:q | ancestor::mei:q | ancestor::tei:quote[@rend]) mod 2) = 0                         or @rend='double-quotes'                     )                     and not(@rend='single-quotes')                     "/>
                 <xsl:call-template name="enquote">
                     <xsl:with-param name="double" select="$doubleQuotes"/>
@@ -790,7 +789,6 @@
                     </xsl:with-param>
                 </xsl:call-template>
             </xsl:when>
-            <!-- no quotation marks as default for `<quote>` -->
             <xsl:otherwise>
                 <xsl:apply-templates mode="#current"/>
             </xsl:otherwise>
