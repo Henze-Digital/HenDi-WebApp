@@ -152,7 +152,7 @@
 		
 		<echo>Add yarn flags module</echo>
 		<mkdir dir="${WeGA-WebApp.basedir}/resources/flags"/>
-		<copy todir="${WeGA-WebApp.basedir}/resources/flags" overwrite="yes">
+		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/flags" overwrite="yes">
 			<fileset dir="${HenDi-WebApp.basedir}/node_modules/flag-icons/flags">
 				<include name="**/*.svg"/>
 			</fileset>
