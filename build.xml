@@ -27,19 +27,11 @@
 		</copy>
 	</target>
 	
-	<target name="yarn">
-		<description>Update javascript libraries via yarn</description>
-		<exec executable="${yarn.cmd}" failonerror="yes">
-			<arg value="install"/>
-		</exec>
-	</target>
-	
 	<target name="hendi:init">
 		<antcall target="wega:clean"/>
 		<antcall target="wega:init"/>
 		<antcall target="-get-hendi-secrets-for-ci"/>
 		<antcall target="-update-hendi-secrets-local"/>
-		<antcall target="yarn"/>
 	</target>
 	
 	<target name="hendi-package-files">
