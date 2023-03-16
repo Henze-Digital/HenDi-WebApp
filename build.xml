@@ -145,6 +145,12 @@
 			</fileset>
 		</copy>
 		
+		<echo>Move flag-icons svgs to resources</echo>
+		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/flags" overwrite="yes">
+			<fileset dir="${WeGA-WebApp.basedir}/${wega.dev_libs.dir}/flag-icons/flags">
+				<include name="**/*.svg"/>
+			</fileset>
+		</copy>
 		<echo>Overwrite API</echo>
 		<copy todir="${WeGA-WebApp.basedir}" overwrite="yes">
 			<fileset dir="${HenDi-WebApp.basedir}/data">
