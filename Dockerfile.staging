@@ -1,4 +1,4 @@
-FROM stadlerpeter/existdb:6
+FROM stadlerpeter/existdb:6.0.1
 
 ARG CI_JOB_TOKEN
 ENV EXIST_ENV=production
