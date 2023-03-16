@@ -51,6 +51,8 @@
 				<filter token="project.name" value="${hendi.project.name}"/>
 			</filterset>
 		</copy>
+		<echo>Update package.json in submodule WeGA-WebApp</echo>
+		<copy file="${HenDi-WebApp.basedir}/package.json" tofile="${HenDi-WebApp.basedir}/submodules/WeGA-WebApp/package.json" overwrite="true"/>
 	</target>
 	
 	<target name="webapp-dist-libs" depends="wega:yarn">
@@ -89,6 +91,51 @@
 			</fileset>
 		</copy>
 	</target>
+	
+	<!--<target name="webapp-dist-libs-hendi">
+		<echo>Copy HenDi libs to ${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib</echo>
+		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib">
+			<fileset dir="${HenDi-WebApp.basedir}/${frontend_libs.dir}">
+				<include name="**/*.js"/>
+				<include name="**/*.css"/>
+				<include name="**/*.gif"/>
+				<include name="**/*.png"/>
+				<include name="**/*.jpg"/>
+				<include name="**/*.xsl"/>
+				<include name="**/*.xml"/>
+				<include name="**/*.svg"/>
+				<!-\- exclude unnecessary directories -\->
+				<exclude name="bootstrap-vue/"/>
+				<exclude name="bravura/"/>
+				<exclude name="core-js/"/>
+				<exclude name="@fortawesome/"/>
+				<exclude name="prettydiff/"/>
+				<exclude name="less/"/>
+				<exclude name="sass/"/>
+				<exclude name="lodash/"/>
+				<exclude name="minify/"/>
+				<exclude name="rx/"/>
+				<exclude name="vnu/"/>
+				<exclude name="vnu-jar/"/>
+				<exclude name="vue/"/>
+				<exclude name="yuicompressor/"/>
+				<!-\- exclude html files. non-well-formed html makes eXist choke -\->
+				<exclude name="**/*.html"/>
+				<!-\- exclude tests to reduce file size -\->
+				<exclude name="**/test/**"/>
+				<exclude name="**/tests.js"/>
+				<exclude name="**/docs/**"/>
+				<exclude name="json-*/**"/>
+			</fileset>
+		</copy>
+		
+		<echo>Move yarn flags svgs to resources</echo>
+		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/flags" overwrite="yes">
+			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib/flag-icons/flags">
+				<include name="**/*.svg"/>
+			</fileset>
+		</copy>
+	</target>-->
 	
 	<target name="webapp-dist-data-wega">
 		<echo>Get data files from WeGA-WebApp dist task </echo>
@@ -147,20 +194,6 @@
 		<copy todir="${WeGA-WebApp.basedir}" overwrite="yes">
 			<fileset dir="${HenDi-WebApp.basedir}/data">
 				<include name="api/**"/>
-			</fileset>
-		</copy>
-		
-		<echo>Add yarn flags module</echo>
-		<mkdir dir="${WeGA-WebApp.basedir}/resources/flags"/>
-		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/flags" overwrite="yes">
-			<fileset dir="${HenDi-WebApp.basedir}/node_modules/flag-icons/flags">
-				<include name="**/*.svg"/>
-			</fileset>
-		</copy>
-		<mkdir dir="${WeGA-WebApp.basedir}/resources/flag-icons"/>
-		<copy todir="${WeGA-WebApp.basedir}/node_modules/flag-icons" overwrite="yes">
-			<fileset dir="${HenDi-WebApp.basedir}/node_modules/flag-icons">
-				<include name="**/*.*"/>
 			</fileset>
 		</copy>
 	</target>
@@ -233,6 +266,7 @@
 	<target name="webapp-prepare">
 		<antcall target="hendi-package-files"/>
 		<antcall target="webapp-dist-libs"/>
+<!--		<antcall target="webapp-dist-libs-hendi"/>-->
 		<antcall target="webapp-dist-data-wega"/>
 		<antcall target="webapp-dist-data-hendi"/>
 		<antcall target="webapp-dist-img-fonts"/>
