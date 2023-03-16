@@ -931,7 +931,7 @@
          </xsl:if>
       	<xsl:if test="$lemmaLang">
       		<xsl:element name="span">
-      			<xsl:attribute name="class" select="'tei_lemma'"/>
+      			<xsl:attribute name="class" select="'tei_lemmaLang'"/>
       			<xsl:element name="span">
       				<xsl:attribute name="class" select="concat('fi fi-',$lemmaLang)"/>
       			</xsl:element>

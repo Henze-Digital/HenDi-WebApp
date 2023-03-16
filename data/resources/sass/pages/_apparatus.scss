@@ -25,7 +25,7 @@
 }
 
 /* lemma styling */
-span.tei_lemma {
+span.tei_lemma, span.tei_lemmaLang {
     font-style: italic;
     color: gray;
     font-size: smaller;
