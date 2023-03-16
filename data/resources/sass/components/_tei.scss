@@ -71,15 +71,15 @@ $tei_list-indent: $font-size-base;
 }
 
 .tei_del_overtyped {
-	background: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.35);
+  display: inline-grid;
+  justify-items: start;
+  align-items: start;
 }
 
-.tei_del_overtyped::before {
-	content: attr(data-overtype);
-	display: inline-block; 
-	translate: 100% 0%;
-    color: #000;
-   
+.tei_del_overtyped > * {
+  grid-column-start: 1;
+  grid-row-start: 1;
 }
 
 .tei_cb {
