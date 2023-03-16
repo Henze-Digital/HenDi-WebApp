@@ -91,8 +91,8 @@
 			</fileset>
 		</copy>
 		
-		<replace file="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib/flag-icons/css/flag-icons.css" token="url(../flags/" value="url(../img/flags/"/>
-		<replace file="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib/flag-icons/css/flag-icons.min.css" token="url(../flags/" value="url(../img/flags/"/>
+		<replace file="${WeGA-WebApp.basedir}/${wega.dev_libs.dir}/flag-icons/css/flag-icons.css" token="url(../flags/" value="url(../img/flags/"/>
+		<replace file="${WeGA-WebApp.basedir}/${wega.dev_libs.dir}/flag-icons/css/flag-icons.min.css" token="url(../flags/" value="url(../img/flags/"/>
 	</target>
 	
 	<target name="webapp-dist-data-wega">
@@ -230,7 +230,6 @@
 	<target name="webapp-prepare">
 		<antcall target="hendi-package-files"/>
 		<antcall target="webapp-dist-libs"/>
-<!--		<antcall target="webapp-dist-libs-hendi"/>-->
 		<antcall target="webapp-dist-data-wega"/>
 		<antcall target="webapp-dist-data-hendi"/>
 		<antcall target="webapp-dist-img-fonts"/>
