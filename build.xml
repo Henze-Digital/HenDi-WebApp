@@ -90,6 +90,9 @@
 				<exclude name="json-*/**"/>
 			</fileset>
 		</copy>
+		
+		<replace file="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib/flag-icons/css/flag-icons.css" token="url(../flags/" value="url(../img/flags/"/>
+		<replace file="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib/flag-icons/css/flag-icons.min.css" token="url(../flags/" value="url(../img/flags/"/>
 	</target>
 	
 	<target name="webapp-dist-data-wega">
@@ -146,7 +149,7 @@
 		</copy>
 		
 		<echo>Move flag-icons svgs to resources</echo>
-		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/flags" overwrite="yes">
+		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/img/flags" overwrite="yes">
 			<fileset dir="${WeGA-WebApp.basedir}/${wega.dev_libs.dir}/flag-icons/flags">
 				<include name="**/*.svg"/>
 			</fileset>
