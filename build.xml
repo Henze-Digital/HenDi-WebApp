@@ -92,51 +92,6 @@
 		</copy>
 	</target>
 	
-	<!--<target name="webapp-dist-libs-hendi">
-		<echo>Copy HenDi libs to ${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib</echo>
-		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib">
-			<fileset dir="${HenDi-WebApp.basedir}/${frontend_libs.dir}">
-				<include name="**/*.js"/>
-				<include name="**/*.css"/>
-				<include name="**/*.gif"/>
-				<include name="**/*.png"/>
-				<include name="**/*.jpg"/>
-				<include name="**/*.xsl"/>
-				<include name="**/*.xml"/>
-				<include name="**/*.svg"/>
-				<!-\- exclude unnecessary directories -\->
-				<exclude name="bootstrap-vue/"/>
-				<exclude name="bravura/"/>
-				<exclude name="core-js/"/>
-				<exclude name="@fortawesome/"/>
-				<exclude name="prettydiff/"/>
-				<exclude name="less/"/>
-				<exclude name="sass/"/>
-				<exclude name="lodash/"/>
-				<exclude name="minify/"/>
-				<exclude name="rx/"/>
-				<exclude name="vnu/"/>
-				<exclude name="vnu-jar/"/>
-				<exclude name="vue/"/>
-				<exclude name="yuicompressor/"/>
-				<!-\- exclude html files. non-well-formed html makes eXist choke -\->
-				<exclude name="**/*.html"/>
-				<!-\- exclude tests to reduce file size -\->
-				<exclude name="**/test/**"/>
-				<exclude name="**/tests.js"/>
-				<exclude name="**/docs/**"/>
-				<exclude name="json-*/**"/>
-			</fileset>
-		</copy>
-		
-		<echo>Move yarn flags svgs to resources</echo>
-		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/flags" overwrite="yes">
-			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib/flag-icons/flags">
-				<include name="**/*.svg"/>
-			</fileset>
-		</copy>
-	</target>-->
-	
 	<target name="webapp-dist-data-wega">
 		<echo>Get data files from WeGA-WebApp dist task </echo>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}">
