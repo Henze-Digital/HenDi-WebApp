@@ -730,4 +730,7 @@
     
     <entry xml:id="assignmentNotClear">Assignment not clear</entry>
     <entry xml:id="into">into</entry>
+	<entry xml:id="translationAids">Translation Aids</entry>
+	<entry xml:id="translationAid">Translation Aid</entry>
+	<entry xml:id="inLang">In</entry>
 </dictionary>

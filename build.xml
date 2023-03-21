@@ -51,6 +51,8 @@
 				<filter token="project.name" value="${hendi.project.name}"/>
 			</filterset>
 		</copy>
+		<echo>Update package.json in submodule WeGA-WebApp</echo>
+		<copy file="${HenDi-WebApp.basedir}/package.json" tofile="${HenDi-WebApp.basedir}/submodules/WeGA-WebApp/package.json" overwrite="true"/>
 	</target>
 	
 	<target name="webapp-dist-libs" depends="wega:yarn">
@@ -88,6 +90,9 @@
 				<exclude name="json-*/**"/>
 			</fileset>
 		</copy>
+		
+		<replace file="${WeGA-WebApp.basedir}/${wega.dev_libs.dir}/flag-icons/css/flag-icons.css" token="url(../flags/" value="url(../img/flags/"/>
+		<replace file="${WeGA-WebApp.basedir}/${wega.dev_libs.dir}/flag-icons/css/flag-icons.min.css" token="url(../flags/" value="url(../img/flags/"/>
 	</target>
 	
 	<target name="webapp-dist-data-wega">
@@ -143,6 +148,12 @@
 			</fileset>
 		</copy>
 		
+		<echo>Move flag-icons svgs to resources</echo>
+		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/img/flags" overwrite="yes">
+			<fileset dir="${WeGA-WebApp.basedir}/${wega.dev_libs.dir}/flag-icons/flags">
+				<include name="**/*.svg"/>
+			</fileset>
+		</copy>
 		<echo>Overwrite API</echo>
 		<copy todir="${WeGA-WebApp.basedir}" overwrite="yes">
 			<fileset dir="${HenDi-WebApp.basedir}/data">
