@@ -3,7 +3,7 @@ variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
     IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-    IMAGE_TAG_BASE: registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image:v1-0-1
+    IMAGE_TAG_BASE: registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image:v1-1-0
     GIT_SUBMODULE_STRATEGY: recursive
     URL_CI_REGISTRY: "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp"
     HENDI_WEBAPP_CI_REGISTRY_USER: $HENDI_WEBAPP_CI_REGISTRY_USER #$CI_REGISTRY_USER
@@ -47,9 +47,8 @@ build-webapp:
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
-    - node -v
-    #- yarn
-    #- ant xar -Dbuild.env.ci=true -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
+    - yarn
+    - ant xar -Dbuild.env.ci=true -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   rules:
     - if: $CI_COMMIT_BRANCH == "develop" && ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true"  || $BUILD_PORTAL_PREVIEW == "true")
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
