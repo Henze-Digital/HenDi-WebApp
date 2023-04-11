@@ -78,9 +78,10 @@ build-webapp-docker-image:
   dependencies:
     - build-webapp
   script:
-    - docker buildx create --driver=docker-container --name=buildkit-builder --use
-    - docker login -u ${HENDI_WEBAPP_CI_REGISTRY_USER} -p ${HENDI_WEBAPP_CI_REGISTRY_PASSWORD} $CI_REGISTRY
-    - docker buildx build --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN}  --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG} .
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker run --privileged --rm tonistiigi/binfmt --install all
+    - docker buildx create --name hendiBuilder --use
+    - docker buildx build --no-cache --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN}  --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG} .
     
   rules:
     - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_INTERN == "true"
