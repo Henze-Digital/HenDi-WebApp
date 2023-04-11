@@ -47,8 +47,9 @@ build-webapp:
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
-    - yarn
-    - ant xar -Dbuild.env.ci=true -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
+    - node -v
+    #- yarn
+    #- ant xar -Dbuild.env.ci=true -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   rules:
     - if: $CI_COMMIT_BRANCH == "develop" && ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true"  || $BUILD_PORTAL_PREVIEW == "true")
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
