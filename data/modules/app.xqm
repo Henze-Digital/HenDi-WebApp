@@ -342,6 +342,20 @@ declare
 
 declare
     %templates:default("lang", "en")
+    function app:translation-tab($node as node(), $model as map(*), $lang as xs:string) as element() {
+        if(doc-available(document-uri(collection('/db/apps/hendi-data')//tei:relation[@name='isTranslation'][@key=$model?docID]/root()))) then 
+            element {node-name($node)} {
+                $node/@*,
+                'Übersetzung'
+            }
+        else
+            element {node-name($node)} {
+                attribute class {'deactivated'}
+            }
+};
+
+declare
+    %templates:default("lang", "en")
     function app:tab($node as node(), $model as map(*), $lang as xs:string) as element() {
         (: Currently only needed for "PND Beacon Links" :)
         if($model('gnd')) then
@@ -2189,4 +2203,36 @@ let $entries := for $letter at $n in $collPostals
                 }
             </div>
         </div>
+};
+
+declare function app:translation($node as node(), $model as map(*))  {
+    let $doc := $model('doc')
+    let $docID := $model('docID')
+    let $lang := $model('lang')
+    let $docType := $model('docType')
+    let $xslParams := config:get-xsl-params( map {
+            'dbPath' : document-uri($doc),
+            'docID' : $docID,
+            'transcript' : 'true',
+            'createSecNos' : if($docID = ('A070010', 'A070001F')) then 'true' else ()
+            } )
+    let $xslt1 := doc(concat($config:xsl-collection-path, '/letters.xsl'))
+    let $textRoot := collection('/db/apps/hendi-data')//tei:relation[@name='isTranslation'][@key=$model?docID]/root()//tei:text
+    let $body := 
+         if(functx:all-whitespace(<root>{$textRoot}</root>))
+         then 
+            element xhtml:p {
+                    attribute class {'notAvailable'}
+            }
+         else (
+            wega-util:transform($textRoot, $xslt1, $xslParams)
+        )
+    let $foot := 
+        if(config:is-news($docID)) then app:get-news-foot($doc, $lang)
+            else ()
+    return
+        <div class="tab-pane fade" id="translation">
+          {(wega-util:remove-elements-by-class($body, 'apparatus'),$foot)}
+        </div>
+    
 };
