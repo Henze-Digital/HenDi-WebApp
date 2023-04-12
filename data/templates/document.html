@@ -40,13 +40,18 @@
             <div data-template="templates:if-parameter-set" data-template-param="q">
                 <div class="row breadcrumb" data-template="search:get-session-for-singleview">
                     <div class="col-md-4">
-                        <a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-prev-item-url"><i class="fa fa-arrow-left"/> <span data-template="lang:translate">prevMatch</span></a>
+                        <a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-prev-item-url">
+                            <i class="fa fa-arrow-left"/> <span data-template="lang:translate">prevMatch</span>
+                        </a>
                     </div>
                     <div class="col-md-4">
-                        <span data-template="app-shared:print" data-template-key="index-of-current-doc">15</span> / <a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-backlink"><span data-template="search:results-count">124 Suchergebnisse</span> (»<span data-template="app-shared:print" data-template-key="query-string-org">Carl Weber</span>«)</a>
+                        <span data-template="app-shared:print" data-template-key="index-of-current-doc">15</span> / <a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-backlink">
+                            <span data-template="search:results-count">124 Suchergebnisse</span> (»<span data-template="app-shared:print" data-template-key="query-string-org">Carl Weber</span>«)</a>
                     </div>
                     <div class="col-md-4">
-                        <a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-next-item-url"><span data-template="lang:translate">nextMatch</span> <i class="fa fa-arrow-right"/></a>
+                        <a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-next-item-url">
+                            <span data-template="lang:translate">nextMatch</span> <i class="fa fa-arrow-right"/>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -72,6 +77,9 @@
                             <ul class="nav nav-tabs">
                                 <li class="nav-item gradient-light">
                                     <a class="nav-link active" href="#transcription" data-toggle="tab">Text</a>
+                                </li>
+                                <li class="nav-item gradient-light">
+                                    <a class="nav-link" href="#translation" data-toggle="tab" data-template="app:translation-tab" id="translation-tab">Übersetzung</a>
                                 </li>
                                 <div data-template="app-shared:if-not-matches" data-template-key="docType" data-template-value="news" data-template-wrap="no">
                                     <li class="nav-item gradient-light">
@@ -177,6 +185,8 @@
                     <div class="tab-pane active fade in" id="transcription">
                         <div data-template="app-shared:output" data-template-key="transcription"/>
                     </div>
+                    <div data-template="app:translation">
+                    </div>
                     <div class="tab-pane fade" id="editorial" data-template="app:check-apparatus">
                         <h2 data-template="lang:translate">editorial</h2>
                         <!--<div>
@@ -228,7 +238,8 @@
                             <ul>
                                 <li data-template="app-shared:each" data-template-from="textSources" data-template-to="textSource">
                                     <div data-template="app:print-Source" data-template-key="textSource">
-                                        <strong><span data-template="app-shared:print" data-template-key="title"/>:</strong>
+                                        <strong>
+                                            <span data-template="app-shared:print" data-template-key="title"/>:</strong>
                                         <span data-template="app-shared:if-exists" data-template-key="sourceCategory" data-template-wrap="no">
                                             <span data-template="app-shared:print" data-template-key="sourceCategory"/>: 
                                         </span>
@@ -269,8 +280,10 @@
                                         </div>
                                         <ul class="tei_list" data-template="app-shared:if-exists" data-template-key="externalImageURLs">
                                             <li data-template="app-shared:each" data-template-from="externalImageURLs" data-template-to="externalImageURL">
-                                                <a data-template="app-shared:set-attr" data-template-attr="href" data-template-key="externalImageURL"><span data-template="app-shared:print" data-template-key="externalImageURL">some URL</span>
-                                                    <i class="fa fa-external-link" aria-hidden="true"/></a>
+                                                <a data-template="app-shared:set-attr" data-template-attr="href" data-template-key="externalImageURL">
+                                                    <span data-template="app-shared:print" data-template-key="externalImageURL">some URL</span>
+                                                    <i class="fa fa-external-link" aria-hidden="true"/>
+                                                </a>
                                             </li>
                                         </ul>
                                     </div>                                                                    
