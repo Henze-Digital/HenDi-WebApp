@@ -939,7 +939,16 @@
       		<xsl:element name="span">
       			<xsl:attribute name="class" select="'tei_lemmaLang'"/>
       			<xsl:element name="span">
-      				<xsl:attribute name="class" select="concat('fi fi-',$lemmaLang)"/>
+      			   <xsl:choose>
+      			      <xsl:when test="$lemmaLang eq 'la'">
+      			         <xsl:text>[</xsl:text>
+      			         <xsl:value-of select="wega:getLanguageString($lemmaLang, $lang)"/>
+      			         <xsl:text>]</xsl:text>
+      			      </xsl:when>
+      			      <xsl:otherwise>
+      			         <xsl:attribute name="class" select="concat('fi fi-', $lemmaLang)"/>
+      			      </xsl:otherwise>
+      			   </xsl:choose>
       			</xsl:element>
       			<xsl:text> </xsl:text>
       			<xsl:sequence select="$lemmaLang/parent::node()/text()"/>
@@ -966,6 +975,7 @@
 	      		   </xsl:variable>
 	      			<xsl:element name="li">
 	      				<xsl:element name="span">
+      				      <xsl:attribute name="class" select="concat('fi fi-', $lang-code-switched)"/>
 	      				</xsl:element>
 	      				<xsl:text> </xsl:text>
 	      				<xsl:value-of select="./text()"/>
