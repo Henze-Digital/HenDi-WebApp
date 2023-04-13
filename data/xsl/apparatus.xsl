@@ -958,9 +958,14 @@
       		<xsl:element name="ul">
       			<xsl:attribute name="style" select="'margin-bottom: 0em;'"/>
 	      		<xsl:for-each select="$trlNotes">
+	      		   <xsl:variable name="lang-code-switched">
+	      		      <xsl:choose>
+	      		         <xsl:when test="@xml:lang eq 'en'">gb</xsl:when>
+	      		         <xsl:otherwise><xsl:value-of select="@xml:lang"/></xsl:otherwise>
+	      		      </xsl:choose>
+	      		   </xsl:variable>
 	      			<xsl:element name="li">
 	      				<xsl:element name="span">
-	      					<xsl:attribute name="class" select="concat('fi fi-',replace(@xml:lang, 'en', 'gb'))"/>
 	      				</xsl:element>
 	      				<xsl:text> </xsl:text>
 	      				<xsl:value-of select="./text()"/>
