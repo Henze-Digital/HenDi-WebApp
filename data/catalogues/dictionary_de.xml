@@ -741,5 +741,6 @@
     <entry xml:id="into">ins</entry>
 	<entry xml:id="translationAids">Übersetzungshilfen</entry>
 	<entry xml:id="translationAid">Übersetzungshilfe</entry>
+    <entry xml:id="translation">Übersetzung</entry>
 	<entry xml:id="inLang">Auf</entry>
 </dictionary>
