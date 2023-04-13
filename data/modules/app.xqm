@@ -343,10 +343,21 @@ declare
 declare
     %templates:default("lang", "en")
     function app:translation-tab($node as node(), $model as map(*), $lang as xs:string) as element() {
-        if(doc-available(document-uri(collection('/db/apps/hendi-data')//tei:relation[@name='isTranslation'][@key=$model?docID]/root()))) then 
+        let $trlDoc := collection('/db/apps/hendi-data')//tei:relation[@name='isTranslation'][@key=$model?docID]/root()
+        let $trlDocLang := $trlDoc//tei:profileDesc/tei:langUsage/tei:language/@ident => string()
+        let $trlDocLang := switch ($trlDocLang)
+                            case 'en' return 'gb'
+                            default return $trlDocLang
+        return
+        
+        if(doc-available(document-uri($trlDoc))) then 
             element {node-name($node)} {
                 $node/@*,
-                'Übersetzung'
+                lang:get-language-string(normalize-space($node), $lang),
+                '&#160;',
+                element span {
+                    attribute class {'fi fi-' || $trlDocLang}
+                }
             }
         else
             element {node-name($node)} {
