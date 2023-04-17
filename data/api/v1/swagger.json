@@ -139,9 +139,9 @@
                         "in": "query",
                         "description": "The min date to search for",
                         "type": "string",
-                        "default": "1926-07-01",
+                        "default": "1943-06-27",
                         "format": "date",
-                        "required": true
+                        "required": false
                     },
                     {
                         "name": "toDate",
