@@ -376,7 +376,7 @@ declare
                     attribute href {'#enclosure-' || $z},
                     attribute data-toggle {'tab'},
                     attribute id {'enclosure-tab-' || $z},
-                    lang:get-language-string('relatedItem', $lang),
+                    lang:get-language-string('enclosure', $lang),
                     if($z > 1) then(' (' || $z || ')') else()
                 }
 };
@@ -2298,7 +2298,9 @@ declare function app:enclosure($node as node(), $model as map(*))  {
 	            element xhtml:p {
 	                    attribute class {'notAvailable'}
 	            }
-	         else (element xhtml:div {element xhtml:p {app:createDocLink($enclosure,lang:get-language-string('translationBy',$lang),$lang,())}},
+	         else (element xhtml:div {
+	         	element xhtml:p {app:createDocLink($enclosure,lang:get-language-string('switchDocumentView',$lang),$lang,())},
+	         	element xhtml:hr {}},
 	               wega-util:transform($textRoot, $xslt1, $xslParams))
 	    return
 	        <div class="tab-pane fade" id="enclosure-{$z}">

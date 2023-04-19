@@ -743,4 +743,6 @@
 	<entry xml:id="isEnclosure">Is enclosure of</entry>
 	<entry xml:id="hasEnclosure">Has enclosure</entry>
 	<entry xml:id="enclosure">Enclosure</entry>
+	
+	<entry xml:id="switchDocumentView">Switch to document view</entry>
 </dictionary>
