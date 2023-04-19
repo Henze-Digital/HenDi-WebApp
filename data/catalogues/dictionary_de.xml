@@ -601,6 +601,7 @@
     <entry xml:id="sentVersion">Übermittelter Brief</entry>
     <entry xml:id="multiPart">Weiterer Teil</entry>
     <entry xml:id="relatedItems">Verknüpfte Dokumente</entry>
+    <entry xml:id="relatedItem">Verknüpftes Dokument</entry>
     <entry xml:id="country">Land</entry>
     <entry xml:id="placenames">Ortsnamen</entry>
     <entry xml:id="informationAboutTheWork">Informationen zum Werk</entry>

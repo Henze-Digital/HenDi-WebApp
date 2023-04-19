@@ -591,6 +591,7 @@
     <entry xml:id="sentVersion">Sent letter</entry>
     <entry xml:id="multiPart">Multi part</entry>
     <entry xml:id="relatedItems">Related documents</entry>
+    <entry xml:id="relatedItem">Related document</entry>
     <entry xml:id="country">Country</entry>
     <entry xml:id="placenames">Place names</entry>
     <entry xml:id="informationAboutTheWork">Information about the work</entry>

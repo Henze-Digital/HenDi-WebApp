@@ -367,19 +367,18 @@ declare
 
 declare
     %templates:default("lang", "en")
-    function app:enclosure-tab($node as node(), $model as map(*), $lang as xs:string) as element() {
+    function app:enclosure-tab($node as node(), $model as map(*), $lang as xs:string) as element()? {
         let $enclosures := collection('/db/apps/hendi-data')//tei:relation[@name='isEnclosure'][@key=$model?docID]/root()
 	    for $enclosure at $z in $enclosures
 		    return
 		        element {node-name($node)} {
-	                $node/@*,
                     attribute class {'nav-link'},
                     attribute href {'#enclosure-' || $z},
+                    attribute data-toggle {'tab'},
                     attribute id {'enclosure-tab-' || $z},
-                    lang:get-language-string('enclosure', $lang),
+                    lang:get-language-string('relatedItem', $lang),
                     if($z > 1) then(' (' || $z || ')') else()
                 }
-            }
 };
 
 declare
@@ -2299,7 +2298,8 @@ declare function app:enclosure($node as node(), $model as map(*))  {
 	            element xhtml:p {
 	                    attribute class {'notAvailable'}
 	            }
-	         else (wega-util:transform($textRoot, $xslt1, $xslParams))
+	         else (element xhtml:div {element xhtml:p {app:createDocLink($enclosure,lang:get-language-string('translationBy',$lang),$lang,())}},
+	               wega-util:transform($textRoot, $xslt1, $xslParams))
 	    return
 	        <div class="tab-pane fade" id="enclosure-{$z}">
 	          {wega-util:remove-elements-by-class($body, 'apparatus')}
