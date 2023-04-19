@@ -162,8 +162,13 @@
             <xsl:element name="ul">
                 <xsl:for-each select="tei:accMat">
                     <xsl:element name="li">
-                        <xsl:apply-templates/>
+                        <xsl:apply-templates select="tei:desc"/>
                     </xsl:element>
+                    <xsl:if test="tei:dimensions">
+                        <xsl:element name="li">
+                            <xsl:apply-templates select="tei:dimensions"/>
+                        </xsl:element>
+                    </xsl:if>
                 </xsl:for-each>
             </xsl:element>
         </xsl:if>
