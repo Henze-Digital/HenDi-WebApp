@@ -65,6 +65,7 @@
 		<entry xml:id="placesIdPattern">A13[0-9A-F]{5}</entry>
 		<entry xml:id="sourcesIdPattern">A22[0-9A-F]{5}</entry>
 		<entry xml:id="thematicCommentariesIdPattern">A09[0-9A-F]{5}</entry>
+		<entry xml:id="translationsIdPattern">A14[0-9A-F]{5}</entry>
 		<entry xml:id="documentsIdPattern">A10[0-9A-F]{5}</entry>
 		<entry xml:id="addendaIdPattern">A12[0-9A-F]{5}</entry>
 		<!-- insert textType values as whitespace seperated list -->
