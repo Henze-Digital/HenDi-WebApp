@@ -71,7 +71,7 @@ declare function wdt:orgs($item as item()*) as map(*) {
             return
                 wdt:orgs($doc)('title')('txt') || ' (' || string-join($doc//tei:state[tei:label='Art der Institution']/tei:desc, ', ') || ')'
         },
-        'memberOf' : ('search', 'indices', 'sitemap', 'unary-docTypes'), (: index, search :)
+        'memberOf' : ('sitemap', 'unary-docTypes'), (: index, search :)
         'search' : ()
     }
 };
@@ -125,7 +125,7 @@ declare function wdt:persons($item as item()*) as map(*) {
                 case element() return str:normalize-space(($item/root()//tei:persName[@type = 'reg']))
                 default return wega-util:log-to-file('error', 'wdt:persons()("label-facests"): failed to get string')
         },
-        'memberOf' : ('search', 'indices', 'sitemap', 'unary-docTypes'),
+        'memberOf' : ('sitemap', 'unary-docTypes'),
         'search' : ()
     }
 };
@@ -234,11 +234,10 @@ declare function wdt:letters($item as item()*) as map(*) {
 
 declare function wdt:translations($item as item()*) as map(*) {
     let $text-types := tokenize(config:get-option('textTypes'), '\s+')
-    let $translators := $item//tei:respStmt[tei:resp[. = 'Übersetzung']]//tei:name
     let $constructLetterHead := function($TEI as element(tei:TEI)) as element(tei:title) {
         let $id := $TEI/data(@xml:id)
         let $lang := config:guess-language(())
-        
+        let $translators := $TEI//tei:respStmt[tei:resp[. = 'Übersetzung']]/tei:name => string-join(', ')
         return (
             element tei:title {
                 concat(lang:get-language-string('translationBy',$lang), ' ', $translators)
@@ -295,9 +294,7 @@ declare function wdt:translations($item as item()*) as map(*) {
                 default return wega-util:log-to-file('error', 'wdt:translations()("title"): unsupported serialization "' || $serialization || '"')
         },
         'memberOf' : ('unary-docTypes'),
-        'search' : function($query as element(query)) {
-            $item[tei:TEI]//tei:body[ft:query(., $query)]
-        }
+        'search' : ()
     }
 };
 
