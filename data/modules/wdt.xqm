@@ -234,7 +234,7 @@ declare function wdt:letters($item as item()*) as map(*) {
 
 declare function wdt:translations($item as item()*) as map(*) {
     let $text-types := tokenize(config:get-option('textTypes'), '\s+')
-    let $constructLetterHead := function($TEI as element(tei:TEI)) as element(tei:title) {
+    let $constructTranslationHead := function($TEI as element(tei:TEI)) as element(tei:title) {
         let $id := $TEI/data(@xml:id)
         let $lang := config:guess-language(())
         let $translators := $TEI//tei:respStmt[tei:resp[. = 'Übersetzung']]/tei:name => string-join(', ')
@@ -286,7 +286,7 @@ declare function wdt:translations($item as item()*) as map(*) {
                 case xs:untypedAtomic return crud:doc($item)/tei:TEI
                 case document-node() return $item/tei:TEI
                 default return $item/root()/tei:TEI
-            let $title-element := $constructLetterHead($TEI) 
+            let $title-element := $constructTranslationHead($TEI) 
             return
                 switch($serialization)
                 case 'txt' return str:normalize-space(replace(string-join(str:txtFromTEI($title-element, config:guess-language(())), ''), '\s*\n+\s*(\S+)', '. $1'))
