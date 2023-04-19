@@ -742,5 +742,7 @@
 	<entry xml:id="translationAids">Übersetzungshilfen</entry>
 	<entry xml:id="translationAid">Übersetzungshilfe</entry>
     <entry xml:id="translation">Übersetzung</entry>
+    <entry xml:id="translations">Übersetzungen</entry>
+    <entry xml:id="translationBy">Übersetzung von</entry>
 	<entry xml:id="inLang">Auf</entry>
 </dictionary>

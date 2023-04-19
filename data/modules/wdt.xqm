@@ -234,6 +234,17 @@ declare function wdt:letters($item as item()*) as map(*) {
 
 declare function wdt:translations($item as item()*) as map(*) {
     let $text-types := tokenize(config:get-option('textTypes'), '\s+')
+    let $translators := $item//tei:respStmt[tei:resp[. = 'Übersetzung']]//tei:name
+    let $constructLetterHead := function($TEI as element(tei:TEI)) as element(tei:title) {
+        let $id := $TEI/data(@xml:id)
+        let $lang := config:guess-language(())
+        
+        return (
+            element tei:title {
+                concat(lang:get-language-string('translationBy',$lang), ' ', $translators)
+            }
+        )
+    }
     return 
     map {
         'name' : 'translations',
@@ -270,10 +281,13 @@ declare function wdt:translations($item as item()*) as map(*) {
             }, ())
         },
         'title' : function($serialization as xs:string) as item()? {
-            let $TEI := string-join($item//tei:respStmt[tei:resp[. = 'Übersetzung']]//tei:name => text(), ' | ')
+            let $TEI := 
+                typeswitch($item)
+                case xs:string return crud:doc($item)/tei:TEI
+                case xs:untypedAtomic return crud:doc($item)/tei:TEI
+                case document-node() return $item/tei:TEI
+                default return $item/root()/tei:TEI
             let $title-element := $constructLetterHead($TEI) 
-                (: if(functx:all-whitespace(($TEI//tei:fileDesc/tei:titleStmt/tei:title[@level = 'a'])[1])) then $constructLetterHead($TEI)
-                else ($TEI//tei:fileDesc/tei:titleStmt/tei:title[@level = 'a'])[1] :)
             return
                 switch($serialization)
                 case 'txt' return str:normalize-space(replace(string-join(str:txtFromTEI($title-element, config:guess-language(())), ''), '\s*\n+\s*(\S+)', '. $1'))
@@ -323,7 +337,7 @@ declare function wdt:personsPlus($item as item()*) as map(*) {
                 else wdt:sort-key-person($node)
             }, ())
         },
-        'memberOf' : (), (: 'search', 'indices' :)
+        'memberOf' : ('search','indices'),
         'search' : function($query as element(query)) {
             $item[tei:org]/tei:org[ft:query(., $query)] | 
             $item[tei:org]//tei:orgName[ft:query(., $query)][@type] |
