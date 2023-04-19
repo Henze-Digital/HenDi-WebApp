@@ -13,7 +13,7 @@ get:
       schema:
         type: string
         format: date
-        default: '1926-07-01T00:00:00.000+0000'
+        default: '1943-06-27T00:00:00.000+0000'
     - name: toDate
       in: query
       description: The max date to search for
