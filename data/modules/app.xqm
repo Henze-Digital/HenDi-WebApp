@@ -1413,11 +1413,21 @@ declare
     %templates:wrap
     %templates:default("lang", "en")
     function app:respStmts($node as node(), $model as map(*), $lang as xs:string) as element()* {
-        for $respStmt in $model?respStmts
-        return (
-            <dt xmlns="http://www.w3.org/1999/xhtml">{str:normalize-space($respStmt/tei:resp)}</dt>,
-            <dd xmlns="http://www.w3.org/1999/xhtml">{str:normalize-space(string-join($respStmt/tei:name, '; '))}</dd>
-        )
+        let $respStmts := for $respStmt in $model?respStmts
+        					return (
+            					<dt xmlns="http://www.w3.org/1999/xhtml">{str:normalize-space($respStmt/tei:resp)}</dt>,
+					            <dd xmlns="http://www.w3.org/1999/xhtml">{str:normalize-space(string-join($respStmt/tei:name, '; '))}</dd>
+        							)
+        let $translation := collection('/db/apps/hendi-data')//tei:relation[@name='isTranslationOf'][@key=$model?docID]
+        let $translationRespStmt := $translation/root()//tei:respStmt[tei:resp[.='Übersetzung']]
+        let $respStmtsRelated := if(exists($translation))
+            then(
+            	<dt xmlns="http://www.w3.org/1999/xhtml">{str:normalize-space($translationRespStmt/tei:resp)}</dt>,
+                <dd xmlns="http://www.w3.org/1999/xhtml">{str:normalize-space(string-join($translationRespStmt/tei:name, '; '))}</dd>
+            )
+            else()
+        return
+            ($respStmts, $respStmtsRelated)
 };
 
 declare 
