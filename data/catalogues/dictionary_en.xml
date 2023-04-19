@@ -739,4 +739,7 @@
     <entry xml:id="translations">Translations</entry>
     <entry xml:id="translationBy">Translation by</entry>
 	<entry xml:id="inLang">In</entry>
+	<entry xml:id="isEnclosure">Is enclosure of</entry>
+	<entry xml:id="hasEnclosure">Has enclosure</entry>
+	<entry xml:id="enclosure">Enclosure</entry>
 </dictionary>
