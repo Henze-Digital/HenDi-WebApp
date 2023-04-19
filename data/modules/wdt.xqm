@@ -232,6 +232,62 @@ declare function wdt:letters($item as item()*) as map(*) {
     }
 };
 
+declare function wdt:translations($item as item()*) as map(*) {
+    let $text-types := tokenize(config:get-option('textTypes'), '\s+')
+    return 
+    map {
+        'name' : 'translations',
+        'prefix' : substring(config:get-option('translationsIdPattern'), 1, 3),
+        'check' : function() as xs:boolean {
+            if($item castable as xs:string) then matches($item, config:wrap-regex('translationsIdPattern'))
+            else false()
+        },
+        'filter' : function() as document-node()* {
+            $item/root()/descendant::tei:text[@type = $text-types]/root()
+        },
+        'filter-by-person' : function($personID as xs:string) as document-node()* {
+            typeswitch($item) (: remove call to function `root()` when document-node()s are passed as input :)
+            case document-node()+ return $item//tei:*[contains(@key, $personID)][ancestor::tei:correspAction][not(ancestor-or-self::tei:note)]/root()
+            default return $item/root()//tei:*[contains(@key, $personID)][ancestor::tei:correspAction][not(ancestor-or-self::tei:note)]/root()
+        },
+        'filter-by-date' : function($dateFrom as xs:date?, $dateTo as xs:date?) as document-node()* {
+            $wdt:filter-by-date($item, $dateFrom, $dateTo)[parent::tei:correspAction]/root()
+        },
+        'sort' : function($params as map(*)?) as document-node()* {
+            if(sort:has-index('letters')) then ()
+            else (wdt:letters(())('init-sortIndex')()),
+            for $i in wdt:letters($item)('filter')() order by sort:index('letters', $i) ascending return $i
+        },
+        'init-collection' : function() as document-node()* {
+            crud:data-collection('letters')/descendant::tei:text[@type = $text-types]/root()
+        },
+        'init-sortIndex' : function() as item()* {
+            sort:create-index-callback('letters', wdt:letters(())('init-collection')(), function($node) {
+                let $normDate := query:get-normalized-date($node)
+                let $n :=  functx:pad-integer-to-length(($node//tei:correspAction[@type='sent']/tei:date)[1]/data(@n), 4)
+                return
+                    (if(exists($normDate)) then $normDate else 'xxxx-xx-xx') || $n
+            }, ())
+        },
+        'title' : function($serialization as xs:string) as item()? {
+            let $TEI := string-join($item//tei:respStmt[tei:resp[. = 'Übersetzung']]//tei:name => text(), ' | ')
+            let $title-element := $constructLetterHead($TEI) 
+                (: if(functx:all-whitespace(($TEI//tei:fileDesc/tei:titleStmt/tei:title[@level = 'a'])[1])) then $constructLetterHead($TEI)
+                else ($TEI//tei:fileDesc/tei:titleStmt/tei:title[@level = 'a'])[1] :)
+            return
+                switch($serialization)
+                case 'txt' return str:normalize-space(replace(string-join(str:txtFromTEI($title-element, config:guess-language(())), ''), '\s*\n+\s*(\S+)', '. $1'))
+                case 'html' return wega-util:transform($title-element, doc(concat($config:xsl-collection-path, '/common_main.xsl')), config:get-xsl-params(())) 
+                default return wega-util:log-to-file('error', 'wdt:translations()("title"): unsupported serialization "' || $serialization || '"')
+        },
+        'memberOf' : ('unary-docTypes'),
+        'search' : function($query as element(query)) {
+            $item[tei:TEI]//tei:body[ft:query(., $query)]
+        }
+    }
+};
+
+
 declare function wdt:personsPlus($item as item()*) as map(*) {
     let $filter := function($docs as document-node()*) as document-node()* {
         wdt:orgs($docs)('filter')() | wdt:persons($docs)('filter')()
