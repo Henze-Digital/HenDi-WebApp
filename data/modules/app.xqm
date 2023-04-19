@@ -367,6 +367,23 @@ declare
 
 declare
     %templates:default("lang", "en")
+    function app:enclosure-tab($node as node(), $model as map(*), $lang as xs:string) as element() {
+        let $enclosures := collection('/db/apps/hendi-data')//tei:relation[@name='isEnclosure'][@key=$model?docID]/root()
+	    for $enclosure at $z in $enclosures
+		    return
+		        element {node-name($node)} {
+	                $node/@*,
+                    attribute class {'nav-link'},
+                    attribute href {'#enclosure-' || $z},
+                    attribute id {'enclosure-tab-' || $z},
+                    lang:get-language-string('enclosure', $lang),
+                    if($z > 1) then(' (' || $z || ')') else()
+                }
+            }
+};
+
+declare
+    %templates:default("lang", "en")
     function app:tab($node as node(), $model as map(*), $lang as xs:string) as element() {
         (: Currently only needed for "PND Beacon Links" :)
         if($model('gnd')) then
@@ -2259,4 +2276,32 @@ declare function app:translation($node as node(), $model as map(*))  {
           {(wega-util:remove-elements-by-class($body, 'apparatus'),$foot)}
         </div>
     
+};
+
+declare function app:enclosure($node as node(), $model as map(*))  {
+    let $doc := $model('doc')
+    let $docID := $model('docID')
+    let $lang := $model('lang')
+    let $docType := $model('docType')
+    let $xslParams := config:get-xsl-params( map {
+            'dbPath' : document-uri($doc),
+            'docID' : $docID,
+            'transcript' : 'true',
+            'createSecNos' : ()
+            } )
+    let $xslt1 := doc(concat($config:xsl-collection-path, '/letters.xsl'))
+    let $enclosures := collection('/db/apps/hendi-data')//tei:relation[@name='isEnclosure'][@key=$model?docID]/root()
+    for $enclosure at $z in $enclosures
+    	let $textRoot := $enclosure//tei:text
+    	let $body := 
+	         if(functx:all-whitespace(<root>{$textRoot}</root>))
+	         then 
+	            element xhtml:p {
+	                    attribute class {'notAvailable'}
+	            }
+	         else (wega-util:transform($textRoot, $xslt1, $xslParams))
+	    return
+	        <div class="tab-pane fade" id="enclosure-{$z}">
+	          {wega-util:remove-elements-by-class($body, 'apparatus')}
+	        </div>
 };
