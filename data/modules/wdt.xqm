@@ -71,7 +71,7 @@ declare function wdt:orgs($item as item()*) as map(*) {
             return
                 wdt:orgs($doc)('title')('txt') || ' (' || string-join($doc//tei:state[tei:label='Art der Institution']/tei:desc, ', ') || ')'
         },
-        'memberOf' : ('sitemap', 'unary-docTypes'), (: index, search :)
+        'memberOf' : ('search', 'indices', 'sitemap', 'unary-docTypes'), (: index, search :)
         'search' : ()
     }
 };
@@ -125,7 +125,7 @@ declare function wdt:persons($item as item()*) as map(*) {
                 case element() return str:normalize-space(($item/root()//tei:persName[@type = 'reg']))
                 default return wega-util:log-to-file('error', 'wdt:persons()("label-facests"): failed to get string')
         },
-        'memberOf' : ('sitemap', 'unary-docTypes'),
+        'memberOf' : ('search', 'indices', 'sitemap', 'unary-docTypes'),
         'search' : ()
     }
 };
@@ -323,7 +323,7 @@ declare function wdt:personsPlus($item as item()*) as map(*) {
                 else wdt:sort-key-person($node)
             }, ())
         },
-        'memberOf' : ('search', 'indices'),
+        'memberOf' : (), (: 'search', 'indices' :)
         'search' : function($query as element(query)) {
             $item[tei:org]/tei:org[ft:query(., $query)] | 
             $item[tei:org]//tei:orgName[ft:query(., $query)][@type] |
@@ -543,7 +543,7 @@ declare function wdt:diaries($item as item()*) as map(*) {
                     case 'html' return <span xmlns="http://www.w3.org/1999/xhtml">{$formattedDate}<br xmlns="http://www.w3.org/1999/xhtml"/>{$formattedPlaces}</span> 
                     default return wega-util:log-to-file('error', 'wdt:diaries()("title"): unsupported serialization "' || $serialization || '"')
         },
-        'memberOf' : ('search', 'indices', 'sitemap', 'unary-docTypes'),
+        'memberOf' : (),
         'search' : function($query as element(query)) {
             $item[tei:ab]/tei:ab[ft:query(., $query)]
         }
@@ -632,7 +632,7 @@ declare function wdt:iconography($item as item()*) as map(*) {
         'init-sortIndex' : function() as item()* {
             sort:create-index-callback('iconography', wdt:iconography(())('init-collection')(), function($node) { $node//tei:person/data(@corresp) }, ())
         },
-        'memberOf' : ('unary-docTypes'),
+        'memberOf' : (),
         'search' : ()
     }
 };
@@ -844,7 +844,7 @@ declare function wdt:sources($item as item()*) as map(*) {
                 case 'html' return wega-util:transform($title-element, doc(concat($config:xsl-collection-path, '/common_main.xsl')), config:get-xsl-params(())) 
                 default return wega-util:log-to-file('error', 'wdt:works()("title"): unsupported serialization "' || $serialization || '"')
         },
-        'memberOf' : ('unary-docTypes'),
+        'memberOf' : (),
         'search' : ()
     }
 };
@@ -1023,7 +1023,7 @@ declare function wdt:addenda($item as item()*) as map(*) {
                     }</xhtml:span>
                 default return wega-util:log-to-file('error', 'wdt:letters()("title"): unsupported serialization "' || $serialization || '"')
         },
-        'memberOf' : ('unary-docTypes', 'sitemap'),
+        'memberOf' : ('sitemap'),
         'search' : function($query as element(query)) {
             $item[tei:TEI]//tei:body[ft:query(., $query)] | 
             $item[tei:TEI]//tei:title[ft:query(., $query)]
