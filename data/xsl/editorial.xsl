@@ -288,6 +288,23 @@
             </xsl:for-each>
     </xsl:template>
     
+    <xsl:template match="tei:dimensions">
+    	<xsl:value-of select="wega:getLanguageString('physDesc.dimensions', $lang)"/><xsl:text>: </xsl:text>
+    	<xsl:value-of select="./tei:height/@quantity"/>
+    	<xsl:if test="not(./tei:height/@quantity)">0</xsl:if> <!-- for debugging -->
+    	<xsl:text>x</xsl:text>
+    	<xsl:value-of select="./tei:width/@quantity"/>
+    	<xsl:if test="not(./tei:width/@quantity)">0</xsl:if> <!-- for debugging -->
+    	<xsl:text> [</xsl:text>
+    	<xsl:value-of select="string-join(distinct-values(./tei:height/@unit | ./tei:width/@unit), '/')"/>
+    	<xsl:text>]</xsl:text>
+    	<xsl:text> (</xsl:text>
+    	<xsl:value-of select="wega:getLanguageString('physDesc.height.short', $lang)"/>
+    	<xsl:text>x</xsl:text>
+    	<xsl:value-of select="wega:getLanguageString('physDesc.width.short', $lang)"/>
+    	<xsl:text>)</xsl:text>
+    </xsl:template>
+	
     <xsl:template match="tei:extent">
         <xsl:element name="h4">
             <xsl:attribute name="class">media-heading</xsl:attribute>
@@ -320,20 +337,7 @@
             </xsl:choose>
         </xsl:element>
         <xsl:element name="li">
-            <xsl:value-of select="wega:getLanguageString('physDesc.dimensions', $lang)"/><xsl:text>: </xsl:text>
-            <xsl:value-of select=".//tei:height/@quantity"/>
-            <xsl:if test="not(.//tei:height/@quantity)">0</xsl:if> <!-- for debugging -->
-            <xsl:text>x</xsl:text>
-            <xsl:value-of select=".//tei:width/@quantity"/>
-            <xsl:if test="not(.//tei:width/@quantity)">0</xsl:if> <!-- for debugging -->
-            <xsl:text> [</xsl:text>
-            <xsl:value-of select="string-join(distinct-values(.//tei:height/@unit | .//tei:width/@unit), '/')"/>
-            <xsl:text>]</xsl:text>
-            <xsl:text> (</xsl:text>
-            <xsl:value-of select="wega:getLanguageString('physDesc.height.short', $lang)"/>
-            <xsl:text>x</xsl:text>
-            <xsl:value-of select="wega:getLanguageString('physDesc.width.short', $lang)"/>
-            <xsl:text>)</xsl:text>
+            <xsl:apply-templates select="tei:dimensions"/>
         </xsl:element>
     </xsl:template>
     
@@ -367,6 +371,5 @@
             </xsl:element>
         </xsl:for-each>
     </xsl:template>
-    
     
 </xsl:stylesheet>
