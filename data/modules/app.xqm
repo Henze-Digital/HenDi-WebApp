@@ -343,7 +343,7 @@ declare
 declare
     %templates:default("lang", "en")
     function app:translation-tab($node as node(), $model as map(*), $lang as xs:string) as element() {
-        let $trlDoc := collection('/db/apps/hendi-data')//tei:relation[@name='isTranslation'][@key=$model?docID]/root()
+        let $trlDoc := collection('/db/apps/hendi-data')//tei:relation[@name='isTranslationOf'][@key=$model?docID]/root()
         let $trlDocLang := $trlDoc//tei:profileDesc/tei:langUsage/tei:language/@ident => string()
         let $trlDocLang := switch ($trlDocLang)
                             case 'en' return 'gb'
@@ -2228,7 +2228,7 @@ declare function app:translation($node as node(), $model as map(*))  {
             'createSecNos' : if($docID = ('A070010', 'A070001F')) then 'true' else ()
             } )
     let $xslt1 := doc(concat($config:xsl-collection-path, '/letters.xsl'))
-    let $textRoot := collection('/db/apps/hendi-data')//tei:relation[@name='isTranslation'][@key=$model?docID]/root()//tei:text
+    let $textRoot := collection('/db/apps/hendi-data')//tei:relation[@name='isTranslationOf'][@key=$model?docID]/root()//tei:text
     let $body := 
          if(functx:all-whitespace(<root>{$textRoot}</root>))
          then 
