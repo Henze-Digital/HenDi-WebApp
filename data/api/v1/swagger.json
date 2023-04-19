@@ -141,7 +141,7 @@
                         "type": "string",
                         "default": "1943-06-27",
                         "format": "date",
-                        "required": false
+                        "required": true
                     },
                     {
                         "name": "toDate",
@@ -600,6 +600,7 @@
                     "persons",
                     "places",
                     "thematicCommentaries",
+                    "translations",
                     "var",
                     "works",
                     "writings"
@@ -617,6 +618,7 @@
                     "persons",
                     "places",
                     "thematicCommentaries",
+                    "translations",
                     "var",
                     "works",
                     "writings"
