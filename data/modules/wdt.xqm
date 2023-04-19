@@ -264,17 +264,17 @@ declare function wdt:translations($item as item()*) as map(*) {
             $wdt:filter-by-date($item, $dateFrom, $dateTo)[parent::tei:correspAction]/root()
         },
         'sort' : function($params as map(*)?) as document-node()* {
-            if(sort:has-index('letters')) then ()
+            if(sort:has-index('translations')) then ()
             else (wdt:letters(())('init-sortIndex')()),
-            for $i in wdt:letters($item)('filter')() order by sort:index('letters', $i) ascending return $i
+            for $i in wdt:letters($item)('filter')() order by sort:index('translations', $i) ascending return $i
         },
         'init-collection' : function() as document-node()* {
-            crud:data-collection('letters')/descendant::tei:text[@type = $text-types]/root()
+            crud:data-collection('translations')/descendant::tei:text[@type = $text-types]/root()
         },
         'init-sortIndex' : function() as item()* {
             sort:create-index-callback('letters', wdt:letters(())('init-collection')(), function($node) {
                 let $normDate := query:get-normalized-date($node)
-                let $n :=  functx:pad-integer-to-length(($node//tei:correspAction[@type='sent']/tei:date)[1]/data(@n), 4)
+                let $n :=  functx:pad-integer-to-length(($node//tei:title[@level='a'])[1]/data(.), 4)
                 return
                     (if(exists($normDate)) then $normDate else 'xxxx-xx-xx') || $n
             }, ())
