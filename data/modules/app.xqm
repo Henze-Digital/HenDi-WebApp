@@ -2246,17 +2246,14 @@ declare function app:translation($node as node(), $model as map(*))  {
                     attribute class {'notAvailable'}
             }
          else (
-            wega-util:transform($textRoot, $xslt1, $xslParams),
-            element xhtml:p {
+            wega-util:transform($textRoot, $xslt1, $xslParams)
+        )
+    let $foot := element xhtml:p {
                     attribute class {'float-right font-italic'},
-                    lang:get-language-string('translationBy',$lang),
+        			lang:get-language-string('translationBy',$lang),
                     ' ',
                     $textRoot/root()//tei:respStmt[tei:resp[. = 'Übersetzung']]/tei:name => string-join('/')
-            }
-        )
-    let $foot := 
-        if(config:is-news($docID)) then app:get-news-foot($doc, $lang)
-            else ()
+                    }
     return
         <div class="tab-pane fade" id="translation">
           {(wega-util:remove-elements-by-class($body, 'apparatus'),$foot)}
