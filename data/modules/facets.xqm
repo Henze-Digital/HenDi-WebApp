@@ -151,8 +151,9 @@ declare %private function facets:display-term($facet as xs:string, $term as xs:s
     case 'sex' return 
         if($term ='Art der Institution') then lang:get-language-string('organisationsInstitutions', $lang)
         else lang:get-language-string('sex_' || $term, $lang)
-    case 'docTypeSubClass' case 'docStatus' case 'textType' 
-    case 'facsimile' case 'keywords' case 'docLang' return lang:get-language-string($term, $lang)
+    case 'docStatus' case 'facsimile' case 'keywords' case 'textType'
+    case 'docLang' return lang:get-language-string($term, $lang)
+    case 'docTypeSubClass' return lang:get-language-string(concat('physDesc.objectDesc.form.',$term), $lang)
     case 'repository' return facets:display-term-repository($term)
     case 'geonamesFeatureClass' return lang:get-language-string('geonamesFeatureClass_' || $term, $lang)
     default return str:normalize-space($term)
