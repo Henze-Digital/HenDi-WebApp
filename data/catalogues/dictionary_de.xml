@@ -730,12 +730,16 @@
     <entry xml:id="physDesc.objectDesc.form.contract">Vertrag</entry>
     <entry xml:id="physDesc.objectDesc.form.document">Dokument</entry>
     <entry xml:id="physDesc.objectDesc.form.envelope">Umschlag</entry>
+    <entry xml:id="physDesc.objectDesc.form.fax">Fax</entry>
     <entry xml:id="physDesc.objectDesc.form.formCommitment">Verpflichtungsschein</entry>
     <entry xml:id="physDesc.objectDesc.form.letter">Brief</entry>
+    <entry xml:id="physDesc.objectDesc.form.note.telephone">Telefonnotiz</entry>
+	<entry xml:id="physDesc.objectDesc.form.note.conversation">Gesprächsnotiz</entry>
     <entry xml:id="physDesc.objectDesc.form.statement">Abrechnung</entry>
     <entry xml:id="physDesc.objectDesc.form.statement.fee">Honorar-Abrechnung</entry>
     <entry xml:id="physDesc.objectDesc.form.telegram">Telegramm</entry>
     <entry xml:id="physDesc.objectDesc.form.unknown">Unbekannt</entry>
+	
     
     <entry xml:id="assignmentNotClear">Zuordnung nicht eindeutig</entry>
     <entry xml:id="into">ins</entry>

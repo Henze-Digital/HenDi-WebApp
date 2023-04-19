@@ -721,8 +721,11 @@
     <entry xml:id="physDesc.objectDesc.form.contract">Contract</entry>
     <entry xml:id="physDesc.objectDesc.form.document">Document</entry>
     <entry xml:id="physDesc.objectDesc.form.envelope">Envelope</entry>
+    <entry xml:id="physDesc.objectDesc.form.fax">Fax</entry>
     <entry xml:id="physDesc.objectDesc.form.formCommitment">Commitment form</entry>
     <entry xml:id="physDesc.objectDesc.form.letter">Letter</entry>
+    <entry xml:id="physDesc.objectDesc.form.note.telephone">Telefonnotiz</entry>
+    <entry xml:id="physDesc.objectDesc.form.note.conversation">Gesprächsnotiz</entry>
     <entry xml:id="physDesc.objectDesc.form.statement">Statement</entry>
     <entry xml:id="physDesc.objectDesc.form.statement.fee">Fee statement</entry>
     <entry xml:id="physDesc.objectDesc.form.telegram">Telegram</entry>
