@@ -52,7 +52,9 @@
 
 /* non-bootstrap imports */
 @import "../../node_modules/flag-icons/css/flag-icons";
-@import "../../node_modules/font-awesome/scss/font-awesome";
+@import "../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome";
+@import "../../node_modules/@fortawesome/fontawesome-free/scss/solid";
+@import "../../node_modules/@fortawesome/fontawesome-free/scss/regular";
 @import "base/fonts";
 @import "base/helpers";
 @import "base/base";

@@ -199,6 +199,9 @@
 		<echo>Add fonts.</echo>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/fonts" failonerror="no">
 			<fileset dir="${HenDi-WebApp.basedir}/hendi-secrets/wega-app/fonts" includes="**"/>
+			<fileset dir="${WeGA-WebApp.basedir}/${wega.frontend_libs.dir}/@fortawesome/fontawesome-free/webfonts/">
+				<include name="*"/>
+			</fileset>
 		</copy>
 	</target>
 
@@ -242,6 +245,7 @@
 		<antcall target="webapp-prepare"/>
 		<!-- run sass -->
 		<antcall target="wega:sass"/>
+		<replace file="${wega.dist.dir}/resources/css/styles.css" token="../webfonts/" value="../fonts/"/>
 		<!-- compile openapi.json-->
 		<antcall target="wega:swagger-cli"/>
 	</target>
@@ -254,6 +258,7 @@
 				<outputmapper type="glob" from="*.css" to="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/css/*-min.css"/>
 			</redirector>
 		</apply>
+		
 		<echo>Run minify on JS files</echo>
 		<apply executable="${WeGA-WebApp.basedir}/${dev_libs.dir}/minify/bin/minify.js" parallel="false">
 			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/js" includes="*.js" excludes="*min.js"/>
