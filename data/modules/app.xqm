@@ -299,8 +299,7 @@ declare
             case 'XML-Preview' return 'xml.html'
             case 'examples' return if(gl:schemaIdent2docType($model?schemaID) = (for $func in $wdt:functions return $func(())('name'))) then 'examples.html' else ()
             case 'wikipedia-article' return 
-                if($model?gnd and exists(er:grab-external-resource-wikidata($model?gnd, 'gnd')//sr:binding[@name=('article' || upper-case($lang))]/sr:uri/data(.))) then 'wikipedia.html'
-                else if($model?viaf and exists(er:grab-external-resource-wikidata($model?viaf, 'viaf')//sr:binding[@name=('article' || upper-case($lang))]/sr:uri/data(.))) then 'wikipedia.html'
+                if(count(($model?doc//tei:idno | $model?doc//mei:altId) => er:wikipedia-article-url($lang)) gt 0) then 'wikipedia.html'
                 else ()
             case 'adb-article' return if($model?gnd and er:lookup-gnd-from-beaconProvider('adbBeacon', $model?gnd)) then 'adb.html' else ()
             case 'ndb-article' return if($model?gnd and er:lookup-gnd-from-beaconProvider('ndbBeacon', $model?gnd)) then 'ndb.html' else ()
@@ -730,10 +729,9 @@ declare
 :)
 
 declare function app:place-details($node as node(), $model as map(*)) as map(*) {
-    let $geonames-id := str:normalize-space(($model?doc//tei:idno[@type='geonames'])[1])
-    let $gnd := query:get-gnd($model('doc'))
-    let $gn-doc := er:grabExternalResource('geonames', $geonames-id, '', ())
     let $basic-data := app:place-basic-data($node, $model)
+    let $gnd := query:get-gnd($model('doc'))
+    let $gn-doc := er:grabExternalResource('geonames', $basic-data?geonames-id, ())
     return
         map:merge((
             map {
@@ -1087,19 +1085,10 @@ declare
     %templates:wrap
     %templates:default("lang", "en")
     function app:wikipedia($node as node(), $model as map(*), $lang as xs:string) as map(*) {
-        let $gnd := query:get-gnd($model('doc'))
-        let $viaf := if($gnd) then () else query:get-viaf($model('doc'))
-        let $wikiContent := 
-            if($gnd) then er:grabExternalResource('wikipedia', $gnd, config:get-doctype-by-id($model('docID')), $lang)
-            else er:grabExternalResource('wikipediaVIAF', $viaf, config:get-doctype-by-id($model('docID')), $lang)
-        let $wikiUrl := $wikiContent//xhtml:div[@class eq 'printfooter']/xhtml:a[1]/data(@href)
-        let $wikiName := normalize-space($wikiContent//xhtml:h1[@id = 'firstHeading'])
-        return 
-            map {
-                'wikiContent' : $wikiContent,
-                'wikiUrl' : $wikiUrl,
-                'wikiName' : $wikiName
-            }
+        (: the return value of `er:wikipedia-article-url` is a sequence of URLs :)
+        let $wikiUrl as xs:anyURI := (($model?doc//tei:idno        | $model?doc//mei:altId) => er:wikipedia-article-url($lang))[1]
+        return
+            er:wikipedia-article($wikiUrl,                $lang)
 };
 
 
@@ -1190,7 +1179,7 @@ declare
     %templates:default("lang", "en")
     function app:dnb($node as node(), $model as map(*), $lang as xs:string) as map(*) {
         let $gnd := query:get-gnd($model('doc'))
-        let $dnbContent := er:grabExternalResource('dnb', $gnd, config:get-doctype-by-id($model('docID')), ())
+        let $dnbContent := er:grabExternalResource('dnb', $gnd, ())
         let $dnbOccupations := ($dnbContent//rdf:RDF/rdf:Description/gndo:professionOrOccupation ! er:resolve-rdf-resource(.))//gndo:preferredNameForTheSubjectHeading/str:normalize-space(.)
         let $subjectHeadings := (($dnbContent//rdf:RDF/rdf:Description/gndo:broaderTermInstantial | $dnbContent//rdf:RDF/rdf:Description/gndo:formOfWorkAndExpression) ! er:resolve-rdf-resource(.))//gndo:preferredNameForTheSubjectHeading/str:normalize-space(.)
         return
@@ -1563,7 +1552,7 @@ declare
             if(exists($incipit) and (every $i in $incipit satisfies $i instance of element())) then $incipit ! element xhtml:p { app:enquote-html(./xhtml:p/node(), $lang) }
             else element xhtml:p {
                 if(exists($incipit)) then app:enquote-html($incipit, $lang)
-                else if(wega-util-shared:semantic-boolean($generate) and not(functx:all-whitespace($model('doc')//tei:text[1]/tei:body))) then app:enquote-html(app:compute-incipit($model?doc, $lang), $lang)
+                else if(wega-util-shared:semantic-boolean($generate) and not(functx:all-whitespace($model('doc')//tei:text/tei:body))) then app:enquote-html(app:compute-incipit($model?doc, $lang), $lang)
                 else '–'
             }
 };
@@ -1579,10 +1568,10 @@ declare
  :  @param $lang the current language (de|en)
  :)
 declare %private function app:compute-incipit($doc as document-node(), $lang as xs:string) as xs:string? {
-    let $myTextNodes := $doc//tei:text[1]/tei:body/tei:div[not(@type='address')]/(* except tei:dateline except tei:opener except tei:head | text())
+    let $myTextNodes := $doc//tei:text/tei:body/tei:div[not(@type='address')]/(* except tei:dateline except tei:opener except tei:head | text())
     return
         if(string-length(normalize-space(string-join($myTextNodes, ' '))) gt 20) then str:shorten-TEI($myTextNodes, 80, $lang)
-        else str:shorten-TEI($doc//tei:text[1]/tei:body, 80, $lang)
+        else str:shorten-TEI($doc//tei:text/tei:body, 80, $lang)
 };
 
 declare 

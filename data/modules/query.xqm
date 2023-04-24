@@ -108,7 +108,7 @@ declare function query:doc-by-viaf($viafID as xs:string) as document-node()* {
     return
         core:getOrCreateColl('persons', 'indices', true())//tei:idno[.=$viafID][@type='viaf']/root() |
         core:getOrCreateColl('orgs', 'indices', true())//tei:idno[.=$viafID][@type='viaf']/root() |
-        core:getOrCreateColl('works', 'indices', true())//(mei:altId[.=$gndID][@type='viaf']|tei:idno[.=$gndID][@type='viaf'])/root() |
+        core:getOrCreateColl('works', 'indices', true())//(mei:altId[.=$viafID][@type='viaf']|tei:idno[.=$gndID][@type='viaf'])/root() |
         core:getOrCreateColl('persons', 'indices', true())//tei:idno[.=$gndID][@type='gnd']/root() |
         core:getOrCreateColl('orgs', 'indices', true())//tei:idno[.=$gndID][@type='gnd']/root() |
         core:getOrCreateColl('works', 'indices', true())//(mei:altId[.=$gndID][@type='gnd']|tei:idno[.=$gndID][@type='gnd'])/root() 
@@ -215,7 +215,7 @@ declare function query:get-geonamesID($item as item()?) as xs:string? {
  : @return the main name as given in the GeoNames RDF as gn:name 
 :)
 declare function query:get-geonames-name($gn-id as xs:string) as xs:string? {
-    er:grabExternalResource('geonames', $gn-id, '', ())//gn:name
+    er:grabExternalResource('geonames', $gn-id, ())//gn:name
 };
 
 
@@ -509,6 +509,47 @@ declare function query:facsimile($doc as document-node()?) as element(tei:facsim
 };
 
 (:~
+ : Group a collection of TEI documents by having internal, external, or no facsimiles
+ : 
+ : @param $collection the collection of TEI documents
+ : @return an array of three map objects with the keys 'value' (internal|external|without), 
+ :  'documents' (a sequence of document-nodes), and 'frequency' (the number of documents) 
+~:)
+declare function query:group-collection-by-facsimiles($collection as document-node()*) as array(*) {
+    let $facsimiles as element(tei:facsimile)* := $collection ! query:facsimile(.)
+    let $external as document-node()* := ($facsimiles[matches(@sameAs, '^http')] | $facsimiles[tei:graphic[matches(@sameAs, '^http')]])/root()
+    let $internal as document-node()* := $facsimiles[@sameAs or tei:graphic]/root() except $external
+    let $noFacs as document-node()* := $collection except ($external | $internal)
+    let $internalCount := count($internal)
+    let $externalCount := count($external)
+    let $noFacsCount := count($noFacs)
+    return
+        array {
+            if($internalCount > 0) then
+                map {
+                    'value' : 'internal',
+                    'documents' : $internal,
+                    'frequency' : $internalCount
+                }
+            else (),
+            if($externalCount > 0) then
+                map {
+                    'value' : 'external',
+                    'documents' : $external,
+                    'frequency' : $externalCount
+                }
+            else (),
+            if($noFacsCount > 0) then
+                map {
+                    'value' : 'without',
+                    'documents' : $noFacs,
+                    'frequency' : $noFacsCount
+                }
+            else ()
+        }
+};
+
+(:~
  : Return the appropriate source element for a given TEI facsimile element
  : (this is the inverse function of query:witness-facsimile())
  :
@@ -530,9 +571,9 @@ declare function query:facsimile-witness($facsimile as element(tei:facsimile)) a
  : (this is the inverse function of query:facsimile-witness())
  :
  : @param $source the TEI 'biblLike' element (e.g. msDesc, or biblStruct)
- : @return a TEI facsimile element if available, the empty sequence otherwise
+ : @return a sequence of TEI facsimile elements if available, the empty sequence otherwise
 ~:)
-declare function query:witness-facsimile($source as element()) as element(tei:facsimile)? {
+declare function query:witness-facsimile($source as element()) as element(tei:facsimile)* {
     let $sourceID := ($source/@xml:id, $source/parent::tei:witness/@xml:id)[1] (: the ID can be given on the 'biblLike' element itself or the parent witness element :) 
     return 
         if($sourceID) then $source/following::tei:facsimile[@source = concat('#', $sourceID)]
