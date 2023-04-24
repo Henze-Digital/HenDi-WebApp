@@ -3,12 +3,9 @@ variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
     IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-    IMAGE_TAG_BASE: registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image:v1-1-0
+    HENDI_CI_IMAGE: registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image:v1-1-0
     GIT_SUBMODULE_STRATEGY: recursive
     URL_CI_REGISTRY: "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp"
-    HENDI_WEBAPP_CI_REGISTRY_USER: $HENDI_WEBAPP_CI_REGISTRY_USER #$CI_REGISTRY_USER
-    HENDI_WEBAPP_CI_REGISTRY_PASSWORD: $HENDI_WEBAPP_CI_REGISTRY_PASSWORD #$CI_REGISTRY_PASSWORD
-    HENDI_WEBAPP_CI_REGISTRY: "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp" #$CI_REGISTRY
 
 stages:
   - update
@@ -17,7 +14,7 @@ stages:
 
 update-submodules:
   stage: update
-  image: $IMAGE_TAG_BASE
+  image: $HENDI_CI_IMAGE
   script:
     - git config user.email "${GITLAB_USER_EMAIL}"
     - git config user.name "${GITLAB_USER_NAME}"
@@ -43,7 +40,7 @@ update-submodules:
 
 build-webapp:
   stage: build
-  image: $IMAGE_TAG_BASE
+  image: $HENDI_CI_IMAGE
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
@@ -68,7 +65,7 @@ upload-webapp-to-package-registry:
 
 build-webapp-stable:
   stage: build
-  image: $IMAGE_TAG_BASE
+  image: $HENDI_CI_IMAGE
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
@@ -125,7 +122,7 @@ build-webapp-docker-image-stable:
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker run --privileged --rm tonistiigi/binfmt --install all
-    - docker buildx create --name mybuilder --use
+    - docker buildx create --name hendiBuilderStable --use
     - docker buildx build --provenance false --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN} --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG} -f Dockerfile.stable .
   rules:
     - if: $CI_COMMIT_BRANCH == "stable" && $BUILD_PORTAL_STABLE == "true"
@@ -139,8 +136,9 @@ build-webapp-docker-image-preview:
   dependencies:
     - build-webapp
   script:
-    - docker buildx create --driver=docker-container --name=buildkit-builder --use
-    - docker login -u ${HENDI_WEBAPP_CI_REGISTRY_USER} -p ${HENDI_WEBAPP_CI_REGISTRY_PASSWORD} $CI_REGISTRY
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker run --privileged --rm tonistiigi/binfmt --install all
+    - docker buildx create --name hendiBuilderPreview --use
     - docker buildx build --provenance false --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN} --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG}-preview -f Dockerfile.preview .
   rules:
     - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_PREVIEW == "true"
