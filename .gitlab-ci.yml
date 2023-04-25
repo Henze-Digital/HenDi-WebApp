@@ -123,14 +123,9 @@ staging:image-build:
       
 stable:image-build:
   stage: docker
-  image: docker:20.10
-  services:
-    - docker:20.10-dind
-  script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker run --privileged --rm tonistiigi/binfmt --install all
-    - docker buildx create --name hendiBuilderStable --use
-    - docker buildx build --provenance false --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN} --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG} -f Dockerfile.stable .
+  variables:
+    HENDI_ENV_NAME: stable
+  extends: .docker-build-action
   rules:
     - if: $CI_COMMIT_BRANCH == "stable" && $BUILD_PORTAL_STABLE == "true"
 
@@ -173,6 +168,7 @@ stable:image-deploy:
   except:
     variables:
       - ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true")
+
 preview:deploy-webapp:
   stage: deploy
   image: curlimages/curl
