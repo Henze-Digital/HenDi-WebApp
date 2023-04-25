@@ -77,7 +77,7 @@ update:submodules:
     - >
       curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "'${CI_REGISTRY_IMAGE}'", "tag": "'${CI_COMMIT_REF_SLUG}-${HENDI_ENV_NAME}'"}'
       
-develop:webapp-build:
+develop:webapp:
   stage: build
   image: $HENDI_CI_IMAGE
   variables:
@@ -91,7 +91,7 @@ develop:webapp-build:
   after_script:
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ./hendi-pkg-webapp/HenDi-WebApp-*.xar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hendi-webapp/latest/HenDi-WebApp-latest.xar"'
 
-stable:webapp-build:
+stable:webapp:
   stage: build
   image: $HENDI_CI_IMAGE
   variables:
@@ -105,7 +105,7 @@ stable:webapp-build:
   after_script:
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ./hendi-pkg-webapp-stable/HenDi-WebApp-*.xar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hendi-webapp/latest/HenDi-WebApp-stable-latest.xar"'
 
-develop:docker-build:
+develop:image-build:
   stage: docker
   variables:
     HENDI_ENV_NAME: develop
@@ -114,14 +114,14 @@ develop:docker-build:
     - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_INTERN == "true"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
-staging:docker-build:
+staging:image-build:
   stage: docker
   variables:
     HENDI_ENV_NAME: staging
   extends: .docker-build-action
   rules: !reference [.rules-staging, rules]
       
-stable:docker-build:
+stable:image-build:
   stage: docker
   image: docker:20.10
   services:
@@ -134,7 +134,7 @@ stable:docker-build:
   rules:
     - if: $CI_COMMIT_BRANCH == "stable" && $BUILD_PORTAL_STABLE == "true"
 
-preview:docker-build:
+preview:image-build:
   stage: docker
   variables:
     HENDI_ENV_NAME: preview
