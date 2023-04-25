@@ -12,7 +12,7 @@ stages:
   - build
   - deploy
 
-update-submodules:
+update:submodules:
   stage: update
   image: $HENDI_CI_IMAGE
   script:
@@ -46,6 +46,14 @@ update-submodules:
 .rules-stable:
   rules:
     - if: $CI_COMMIT_BRANCH == "stable" && $BUILD_PORTAL_STABLE == "true"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+
+.rules-staging:
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_STAGING == "true"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
 
 .rules-preview:
   rules:
@@ -63,8 +71,12 @@ update-submodules:
     - docker buildx create --name hendiBuilder-${HENDI_ENV_NAME} --use
     - docker buildx build --provenance false --no-cache --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN}  --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG}-${HENDI_ENV_NAME} -f Dockerfile.${HENDI_ENV_NAME} .
 
-
-webapp-build:
+.keel-deploy:
+  script:
+  	- >
+  	  curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "'${CI_REGISTRY_IMAGE}'", "tag": "'${CI_COMMIT_REF_SLUG}-${HENDI_ENV_NAME}'"}'
+      
+develop:webapp-build:
   stage: build
   image: $HENDI_CI_IMAGE
   variables:
@@ -76,7 +88,7 @@ webapp-build:
     paths:
       - hendi-pkg-webapp/HenDi-WebApp-*.xar
 
-webapp-upload:
+develop:webapp-upload:
   stage: deploy
   image: curlimages/curl
   needs: [webapp-build]
@@ -84,7 +96,7 @@ webapp-upload:
   script:
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ./hendi-pkg-webapp/HenDi-WebApp-*.xar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hendi-webapp/latest/HenDi-WebApp-latest.xar"'
 
-webapp-build-stable:
+stable:webapp-build:
   stage: build
   image: $HENDI_CI_IMAGE
   variables:
@@ -96,7 +108,7 @@ webapp-build-stable:
     paths:
       - hendi-pkg-webapp-stable/HenDi-WebApp-*.xar
 
-webapp-upload-stable:
+stable:webapp-upload:
   stage: deploy
   image: curlimages/curl
   needs: [webapp-build-stable]
@@ -104,23 +116,24 @@ webapp-upload-stable:
   script:
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ./hendi-pkg-webapp-stable/HenDi-WebApp-*.xar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hendi-webapp/latest/HenDi-WebApp-stable-latest.xar"'
 
-docker-image-build-develop:
+develop:docker-build:
   stage: build
   variables:
     HENDI_ENV_NAME: develop
   extends: .docker-build-action
+  needs:
+    - job: develop:webapp-build
+      optional: true
   rules:
     - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_INTERN == "true"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
-docker-image-build-staging:
+staging:docker-build:
   stage: build
   variables:
     HENDI_ENV_NAME: staging
   extends: .docker-build-action
-  rules:
-    - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_STAGING == "true"
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  rules: !reference [.rules-staging, rules]
       
 build-webapp-docker-image-stable:
   stage: build
@@ -138,38 +151,38 @@ build-webapp-docker-image-stable:
   rules:
     - if: $CI_COMMIT_BRANCH == "stable" && $BUILD_PORTAL_STABLE == "true"
 
-build-webapp-docker-image-preview:
+preview:docker-build:
   stage: build
-  image: docker:20.10
-  services:
-    - docker:20.10-dind
-  needs: [webapp-build]
-  dependencies:
-    - webapp-build
-  script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker run --privileged --rm tonistiigi/binfmt --install all
-    - docker buildx create --name hendiBuilderPreview --use
-    - docker buildx build --provenance false --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN} --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG}-preview -f Dockerfile.preview .
+  variables:
+    HENDI_ENV_NAME: preview
+  extends: .docker-build-action
   rules: !reference [.rules-preview, rules]
 
-deploy-webapp:
+develop:image-deploy:
   stage: deploy
   image: curlimages/curl
-  #needs: [build-webapp-docker-image]
-  script:
-    - >
-      curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "'${CI_REGISTRY_IMAGE}'", "tag": "'${CI_COMMIT_REF_SLUG}'"}'
+  needs:
+    - job: develop:webapp-build
+      optional: true
+    - job: develop:docker-build
+      optional: true
+  variables:
+    HENDI_ENV_NAME: develop
+  script: !reference [.keel-deploy, script]
   rules:
     - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_INTERN == "true"
 
-deploy-webapp-staging:
+staging:image-deploy:
   stage: deploy
   image: curlimages/curl
-  #needs: [build-webapp-docker-image-staging]
-  script:
-    - >
-      curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "'${CI_REGISTRY_IMAGE}'", "tag": "'${CI_COMMIT_REF_SLUG}-staging'"}'
+  needs:
+    - job: staging:webapp-build
+      optional: true
+    - job: staging:docker-build
+      optional: true
+  variables:
+    HENDI_ENV_NAME: staging
+  script: !reference [.keel-deploy, script]
   rules:
     - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_STAGING == "true"
 
@@ -188,12 +201,16 @@ deploy-webapp-stable:
   except:
     variables:
       - ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true")
-deploy-webapp-preview:
+preview:deploy-webapp:
   stage: deploy
   image: curlimages/curl
-  needs: [build-webapp-docker-image-preview]
-  script:
-    - >
-      curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "'${CI_REGISTRY_IMAGE}'", "tag": "'${CI_COMMIT_REF_SLUG}-preview'"}'
+  needs:
+    - job: preview:webapp-build
+      optional: true
+    - job: preview:docker-build
+      optional: true
+  variables:
+    HENDI_ENV_NAME: preview
+  script: !reference [.keel-deploy, script]
   rules:
     - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_PREVIEW == "true"
