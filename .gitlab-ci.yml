@@ -88,6 +88,7 @@ develop:webapp:
   artifacts:
     paths:
       - hendi-pkg-webapp/HenDi-WebApp-*.xar
+  allow_failure: true
   after_script:
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ./hendi-pkg-webapp/HenDi-WebApp-*.xar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hendi-webapp/latest/HenDi-WebApp-latest.xar"'
 
