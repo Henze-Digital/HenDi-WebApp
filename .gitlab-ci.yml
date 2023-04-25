@@ -10,6 +10,7 @@ variables:
 stages:
   - update
   - build
+  - docker
   - deploy
 
 update:submodules:
@@ -117,7 +118,7 @@ stable:webapp-upload:
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ./hendi-pkg-webapp-stable/HenDi-WebApp-*.xar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hendi-webapp/latest/HenDi-WebApp-stable-latest.xar"'
 
 develop:docker-build:
-  stage: build
+  stage: docker
   variables:
     HENDI_ENV_NAME: develop
   extends: .docker-build-action
@@ -129,14 +130,14 @@ develop:docker-build:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
 staging:docker-build:
-  stage: build
+  stage: docker
   variables:
     HENDI_ENV_NAME: staging
   extends: .docker-build-action
   rules: !reference [.rules-staging, rules]
       
 stable:docker-build:
-  stage: build
+  stage: docker
   image: docker:20.10
   services:
     - docker:20.10-dind
@@ -152,7 +153,7 @@ stable:docker-build:
     - if: $CI_COMMIT_BRANCH == "stable" && $BUILD_PORTAL_STABLE == "true"
 
 preview:docker-build:
-  stage: build
+  stage: docker
   variables:
     HENDI_ENV_NAME: preview
   extends: .docker-build-action
