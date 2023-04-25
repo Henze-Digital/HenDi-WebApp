@@ -47,6 +47,22 @@ update-submodules:
   rules:
     - if: $CI_COMMIT_BRANCH == "stable" && $BUILD_PORTAL_STABLE == "true"
 
+.rules-preview:
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_PREVIEW == "true"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+
+.docker-build-action:
+  image: docker:20.10
+  services:
+    - docker:20.10-dind
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker run --privileged --rm tonistiigi/binfmt --install all
+    - docker buildx create --name hendiBuilder-${HENDI_ENV_NAME} --use
+    - docker buildx build --provenance false --no-cache --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN}  --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG}-${HENDI_ENV_NAME} -f Dockerfile.${HENDI_ENV_NAME} .
+
 
 webapp-build:
   stage: build
@@ -55,7 +71,7 @@ webapp-build:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
     - ant xar -Dbuild.env.ci=true -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
-  rules: !reference [.rules-default]
+  rules: !reference [.rules-default, rules]
   artifacts:
     paths:
       - hendi-pkg-webapp/HenDi-WebApp-*.xar
@@ -64,7 +80,7 @@ webapp-upload:
   stage: deploy
   image: curlimages/curl
   needs: [webapp-build]
-  rules: !reference [.rules-default]
+  rules: !reference [.rules-default, rules]
   script:
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ./hendi-pkg-webapp/HenDi-WebApp-*.xar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hendi-webapp/latest/HenDi-WebApp-latest.xar"'
 
@@ -75,7 +91,7 @@ webapp-build-stable:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
     - ant xar-stable -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
-  rules: !reference [.rules-stable]
+  rules: !reference [.rules-stable, rules]
   artifacts:
     paths:
       - hendi-pkg-webapp-stable/HenDi-WebApp-*.xar
@@ -84,41 +100,24 @@ webapp-upload-stable:
   stage: deploy
   image: curlimages/curl
   needs: [webapp-build-stable]
-  rules: !reference [.rules-stable]
+  rules: !reference [.rules-stable, rules]
   script:
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ./hendi-pkg-webapp-stable/HenDi-WebApp-*.xar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hendi-webapp/latest/HenDi-WebApp-stable-latest.xar"'
 
-build-webapp-docker-image:
+docker-image-build-develop:
   stage: build
-  image: docker:20.10
-  services:
-    - docker:20.10-dind
-  needs: [webapp-build]
-  dependencies:
-    - build-webapp
-  script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker run --privileged --rm tonistiigi/binfmt --install all
-    - docker buildx create --name hendiBuilder --use
-    - docker buildx build --provenance false --no-cache --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN}  --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG} .
-    
+  variables:
+    HENDI_ENV_NAME: develop
+  extends: .docker-build-action
   rules:
     - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_INTERN == "true"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
-build-webapp-docker-image-staging:
+docker-image-build-staging:
   stage: build
-  image: docker:20.10
-  services:
-    - docker:20.10-dind
-  needs: [build-webapp]
-  dependencies:
-    - build-webapp
-  script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker run --privileged --rm tonistiigi/binfmt --install all
-    - docker buildx create --name hendiBuilderStaging --use
-    - docker buildx build --provenance false --no-cache --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN}  --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG}-staging -f Dockerfile.staging .
+  variables:
+    HENDI_ENV_NAME: staging
+  extends: .docker-build-action
   rules:
     - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_STAGING == "true"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -128,9 +127,9 @@ build-webapp-docker-image-stable:
   image: docker:20.10
   services:
     - docker:20.10-dind
-  needs: [build-webapp-stable]
+  needs: [webapp-build-stable]
   dependencies:
-    - build-webapp-stable
+    - webapp-build-stable
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker run --privileged --rm tonistiigi/binfmt --install all
@@ -144,23 +143,20 @@ build-webapp-docker-image-preview:
   image: docker:20.10
   services:
     - docker:20.10-dind
-  needs: [build-webapp]
+  needs: [webapp-build]
   dependencies:
-    - build-webapp
+    - webapp-build
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker run --privileged --rm tonistiigi/binfmt --install all
     - docker buildx create --name hendiBuilderPreview --use
     - docker buildx build --provenance false --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN} --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG}-preview -f Dockerfile.preview .
-  rules:
-    - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_PREVIEW == "true"
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: never
+  rules: !reference [.rules-preview, rules]
 
 deploy-webapp:
   stage: deploy
   image: curlimages/curl
-  needs: [build-webapp-docker-image]
+  #needs: [build-webapp-docker-image]
   script:
     - >
       curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "'${CI_REGISTRY_IMAGE}'", "tag": "'${CI_COMMIT_REF_SLUG}'"}'
@@ -170,7 +166,7 @@ deploy-webapp:
 deploy-webapp-staging:
   stage: deploy
   image: curlimages/curl
-  needs: [build-webapp-docker-image-staging]
+  #needs: [build-webapp-docker-image-staging]
   script:
     - >
       curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "'${CI_REGISTRY_IMAGE}'", "tag": "'${CI_COMMIT_REF_SLUG}-staging'"}'
