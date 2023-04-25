@@ -4,9 +4,9 @@ ARG CI_JOB_TOKEN
 ENV EXIST_ENV=development
 
 RUN curl --output WeGA-WebApp-lib-1.8.0.xar --location "https://github.com/Edirom/WeGA-WebApp-lib/releases/download/v1.8.0/WeGA-WebApp-lib-1.8.0.xar" &&\
-    mv WeGA-WebApp-lib-1.8.0.xar ${EXIST_HOME}/autodeploy
-RUN curl --location --output hendiData.zip "https://git.uni-paderborn.de/api/v4/projects/2328/jobs/artifacts/develop/download?job=data-package&job_token=$CI_JOB_TOKEN" &&\
-    unzip hendiData.zip &&\
-    rm hendiData.zip &&\
-    mv hendi-pkg-data/*.xar ${EXIST_HOME}/autodeploy
-COPY ./hendi-pkg-webapp/*.xar ${EXIST_HOME}/autodeploy
+mv WeGA-WebApp-lib-1.8.0.xar ${EXIST_HOME}/autodeploy
+RUN curl --output HenDi-Data-latest.xar --location "https://git.uni-paderborn.de/api/v4/projects/2328/packages/generic/hendi-data/latest/hendi-data-full-latest.xar" &&\
+mv HenDi-Data-latest.xar ${EXIST_HOME}/autodeploy
+    
+RUN curl --output HenDi-WebApp-latest.xar --location "https://git.uni-paderborn.de/api/v4/projects/5005/packages/generic/hendi-webapp/latest/HenDi-WebApp-latest.xar" &&\
+mv HenDi-WebApp-latest.xar ${EXIST_HOME}/autodeploy
