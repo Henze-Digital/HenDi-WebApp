@@ -38,50 +38,62 @@ update-submodules:
     variables:
       - $TRIGGER_UPDATE_SUBMODULE == "true"
 
-build-webapp:
+.rules-default:
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop" && ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true"  || $BUILD_PORTAL_PREVIEW == "true")
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+.rules-stable:
+  rules:
+    - if: $CI_COMMIT_BRANCH == "stable" && $BUILD_PORTAL_STABLE == "true"
+
+
+webapp-build:
   stage: build
   image: $HENDI_CI_IMAGE
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
-    #- yarn
     - ant xar -Dbuild.env.ci=true -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
-  rules:
-    - if: $CI_COMMIT_BRANCH == "develop" && ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true"  || $BUILD_PORTAL_PREVIEW == "true")
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  rules: !reference [.rules-default]
   artifacts:
     paths:
       - hendi-pkg-webapp/HenDi-WebApp-*.xar
 
-upload-webapp-to-package-registry:
+webapp-upload:
   stage: deploy
   image: curlimages/curl
-  needs: [build-webapp]
-  rules:
-    - if: $CI_COMMIT_BRANCH == "develop" && ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true"  || $BUILD_PORTAL_PREVIEW == "true")
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  needs: [webapp-build]
+  rules: !reference [.rules-default]
   script:
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ./hendi-pkg-webapp/HenDi-WebApp-*.xar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hendi-webapp/latest/HenDi-WebApp-latest.xar"'
 
-build-webapp-stable:
+webapp-build-stable:
   stage: build
   image: $HENDI_CI_IMAGE
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
     - ant xar-stable -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
-  rules:
-    - if: $CI_COMMIT_BRANCH == "stable" && $BUILD_PORTAL_STABLE == "true"
+  rules: !reference [.rules-stable]
   artifacts:
     paths:
       - hendi-pkg-webapp-stable/HenDi-WebApp-*.xar
+
+webapp-upload-stable:
+  stage: deploy
+  image: curlimages/curl
+  needs: [webapp-build-stable]
+  rules: !reference [.rules-stable]
+  script:
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ./hendi-pkg-webapp-stable/HenDi-WebApp-*.xar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hendi-webapp/latest/HenDi-WebApp-stable-latest.xar"'
 
 build-webapp-docker-image:
   stage: build
   image: docker:20.10
   services:
     - docker:20.10-dind
-  needs: [build-webapp]
+  needs: [webapp-build]
   dependencies:
     - build-webapp
   script:
