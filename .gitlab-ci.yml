@@ -153,11 +153,6 @@ develop:image-deploy:
 staging:image-deploy:
   stage: deploy
   image: curlimages/curl
-  needs:
-    - job: develop:webapp-build
-      optional: true
-    - job: staging:docker-build
-      optional: true
   variables:
     HENDI_ENV_NAME: staging
   script: !reference [.keel-deploy, script]
