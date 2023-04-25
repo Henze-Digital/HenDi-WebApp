@@ -92,7 +92,6 @@ develop:webapp-build:
 develop:webapp-upload:
   stage: deploy
   image: curlimages/curl
-  needs: [develop:webapp-build]
   rules: !reference [.rules-default, rules]
   script:
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ./hendi-pkg-webapp/HenDi-WebApp-*.xar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hendi-webapp/latest/HenDi-WebApp-latest.xar"'
@@ -112,7 +111,6 @@ stable:webapp-build:
 stable:webapp-upload:
   stage: deploy
   image: curlimages/curl
-  needs: [stable:webapp-build]
   rules: !reference [.rules-stable, rules]
   script:
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ./hendi-pkg-webapp-stable/HenDi-WebApp-*.xar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hendi-webapp/latest/HenDi-WebApp-stable-latest.xar"'
@@ -122,9 +120,6 @@ develop:docker-build:
   variables:
     HENDI_ENV_NAME: develop
   extends: .docker-build-action
-  needs:
-    - job: develop:webapp-build
-      optional: true
   rules:
     - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_INTERN == "true"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -141,9 +136,6 @@ stable:docker-build:
   image: docker:20.10
   services:
     - docker:20.10-dind
-  needs: [stable:webapp-build]
-  dependencies:
-    - stable:webapp-build
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker run --privileged --rm tonistiigi/binfmt --install all
@@ -162,11 +154,6 @@ preview:docker-build:
 develop:image-deploy:
   stage: deploy
   image: curlimages/curl
-  needs:
-    - job: develop:webapp-build
-      optional: true
-    - job: develop:docker-build
-      optional: true
   variables:
     HENDI_ENV_NAME: develop
   script: !reference [.keel-deploy, script]
@@ -190,7 +177,6 @@ staging:image-deploy:
 stable:image-deploy:
   stage: deploy
   image: curlimages/curl
-  needs: [stable:docker-build]
   script:
     - >
       curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "'${CI_REGISTRY_IMAGE}'", "tag": "'${CI_COMMIT_REF_SLUG}'"}'
@@ -205,11 +191,6 @@ stable:image-deploy:
 preview:deploy-webapp:
   stage: deploy
   image: curlimages/curl
-  needs:
-    - job: develop:webapp-build
-      optional: true
-    - job: preview:docker-build
-      optional: true
   variables:
     HENDI_ENV_NAME: preview
   script: !reference [.keel-deploy, script]
