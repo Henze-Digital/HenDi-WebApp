@@ -13,6 +13,7 @@ stages:
   - docker
   - deploy
 
+# jobs for updating
 update:submodules:
   stage: update
   image: $HENDI_CI_IMAGE
@@ -39,6 +40,7 @@ update:submodules:
     variables:
       - $TRIGGER_UPDATE_SUBMODULE == "true"
 
+# hidden jobs for reusable rules
 .rules-default:
   rules:
     - if: $CI_COMMIT_BRANCH == "develop" && ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true"  || $BUILD_PORTAL_PREVIEW == "true")
@@ -62,6 +64,7 @@ update:submodules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
 
+# hidden jobs for docker build actions
 .docker-build-action:
   image: docker:20.10
   services:
@@ -72,11 +75,13 @@ update:submodules:
     - docker buildx create --name hendiBuilder-${HENDI_ENV_NAME} --use
     - docker buildx build --provenance false --no-cache --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN}  --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG}-${HENDI_ENV_NAME} -f Dockerfile.${HENDI_ENV_NAME} .
 
+# hidden jobs for triggering deploy (keel)
 .keel-deploy:
   script:
     - >
       curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "'${CI_REGISTRY_IMAGE}'", "tag": "'${CI_COMMIT_REF_SLUG}-${HENDI_ENV_NAME}'"}'
       
+# jobs for building the webapp
 develop:webapp:
   stage: build
   image: $HENDI_CI_IMAGE
@@ -106,6 +111,7 @@ stable:webapp:
   after_script:
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ./hendi-pkg-webapp-stable/HenDi-WebApp-*.xar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hendi-webapp/latest/HenDi-WebApp-stable-latest.xar"'
 
+# jobs for building the docker image
 develop:image-build:
   stage: docker
   variables:
@@ -121,14 +127,6 @@ staging:image-build:
     HENDI_ENV_NAME: staging
   extends: .docker-build-action
   rules: !reference [.rules-staging, rules]
-      
-stable:image-build:
-  stage: docker
-  variables:
-    HENDI_ENV_NAME: stable
-  extends: .docker-build-action
-  rules:
-    - if: $CI_COMMIT_BRANCH == "stable" && $BUILD_PORTAL_STABLE == "true"
 
 preview:image-build:
   stage: docker
@@ -137,6 +135,15 @@ preview:image-build:
   extends: .docker-build-action
   rules: !reference [.rules-preview, rules]
 
+stable:image-build:
+  stage: docker
+  variables:
+    HENDI_ENV_NAME: stable
+  extends: .docker-build-action
+  rules:
+    - if: $CI_COMMIT_BRANCH == "stable" && $BUILD_PORTAL_STABLE == "true"
+
+# jobs for deploying the docker image
 develop:image-deploy:
   stage: deploy
   image: curlimages/curl
@@ -155,6 +162,15 @@ staging:image-deploy:
   rules:
     - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_STAGING == "true"
 
+preview:deploy-webapp:
+  stage: deploy
+  image: curlimages/curl
+  variables:
+    HENDI_ENV_NAME: preview
+  script: !reference [.keel-deploy, script]
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_PREVIEW == "true"
+
 stable:image-deploy:
   stage: deploy
   image: curlimages/curl
@@ -169,12 +185,3 @@ stable:image-deploy:
   except:
     variables:
       - ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true")
-
-preview:deploy-webapp:
-  stage: deploy
-  image: curlimages/curl
-  variables:
-    HENDI_ENV_NAME: preview
-  script: !reference [.keel-deploy, script]
-  rules:
-    - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_PREVIEW == "true"
