@@ -73,10 +73,25 @@ update:submodules:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker run --privileged --rm tonistiigi/binfmt --install all
     - docker buildx create --name hendiBuilder-${HENDI_ENV_NAME} --use
+    - docker buildx build --provenance false --no-cache --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN}  --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG} -f Dockerfile.${HENDI_ENV_NAME} .
+
+.docker-build-action-suffixed:
+  image: docker:20.10
+  services:
+    - docker:20.10-dind
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker run --privileged --rm tonistiigi/binfmt --install all
+    - docker buildx create --name hendiBuilder-${HENDI_ENV_NAME} --use
     - docker buildx build --provenance false --no-cache --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN}  --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG}-${HENDI_ENV_NAME} -f Dockerfile.${HENDI_ENV_NAME} .
 
 # hidden jobs for triggering deploy (keel)
 .keel-deploy:
+  script:
+    - >
+      curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "'${CI_REGISTRY_IMAGE}'", "tag": "'${CI_COMMIT_REF_SLUG}'"}'
+
+.keel-deploy-suffixed:
   script:
     - >
       curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "'${CI_REGISTRY_IMAGE}'", "tag": "'${CI_COMMIT_REF_SLUG}-${HENDI_ENV_NAME}'"}'
@@ -125,14 +140,14 @@ staging:image-build:
   stage: docker
   variables:
     HENDI_ENV_NAME: staging
-  extends: .docker-build-action
+  extends: .docker-build-action-suffixed
   rules: !reference [.rules-staging, rules]
 
 preview:image-build:
   stage: docker
   variables:
     HENDI_ENV_NAME: preview
-  extends: .docker-build-action
+  extends: .docker-build-action-suffixed
   rules: !reference [.rules-preview, rules]
 
 stable:image-build:
@@ -158,7 +173,7 @@ staging:image-deploy:
   image: curlimages/curl
   variables:
     HENDI_ENV_NAME: staging
-  script: !reference [.keel-deploy, script]
+  script: !reference [.keel-deploy-suffixed, script]
   rules:
     - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_STAGING == "true"
 
@@ -167,16 +182,16 @@ preview:deploy-webapp:
   image: curlimages/curl
   variables:
     HENDI_ENV_NAME: preview
-  script: !reference [.keel-deploy, script]
+  script: !reference [.keel-deploy-suffixed, script]
   rules:
     - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_PREVIEW == "true"
 
 stable:image-deploy:
   stage: deploy
   image: curlimages/curl
-  script:
-    - >
-      curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "'${CI_REGISTRY_IMAGE}'", "tag": "'${CI_COMMIT_REF_SLUG}'"}'
+  variables:
+    HENDI_ENV_NAME: stable
+  script: !reference [.keel-deploy, script]
   only:
     refs:
       - stable
