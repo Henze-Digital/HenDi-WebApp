@@ -30,7 +30,7 @@ import module namespace functx="http://www.functx.com";
 
 declare variable $gl:guidelines-collection-path as xs:string := $config:app-root || '/guidelines';
 declare variable $gl:main-source as document-node()? := 
-    try { doc(str:join-path-elements(($gl:guidelines-collection-path, 'guidelines-de-wega_all.compiled.xml'))) }
+    try { doc(str:join-path-elements(($gl:guidelines-collection-path, 'guidelines-de-hendiAll.compiled.xml'))) }
     catch * {wega-util:log-to-file('error', 'failed to load main Guidelines source')};
 
 declare variable $gl:schemaSpec-idents as xs:string* := gl:schemaSpec-idents();
