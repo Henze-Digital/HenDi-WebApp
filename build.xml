@@ -206,26 +206,14 @@
 	</target>
 
 	<target name="webapp-dist-odd-hendi">
-		<echo>Overwrite the WeGA-ODD with HenDi-ODD data</echo>
-		<!-- todo: improve behaviour, add compile ODD task? -->
-		<delete dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib/WeGA-ODD"/>
-		<mkdir dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib/WeGA-ODD"/>
-		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib/WeGA-ODD" overwrite="yes">
-			<fileset dir="${HenDi-WebApp.basedir}/submodules/HenDi-ODD">
-				<!--<include name="**/*.*"/>-->
-				<include name="compiled-ODD/*.xml"/>
-				<include name="src/**/*.xml"/>
-			</fileset>
-		</copy>
-	</target>
-	
-	<target name="webapp-dist-guidelines-hendi">
-		<echo>Overwrite the WeGA Guidelines with the Henze-Digital Guidelines</echo>
-		<delete dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/guidelines"/>
+		<echo>Overwrite WeGA-ODD with the HenDi-ODD data</echo>
 		<mkdir dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/guidelines"/>
-		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/guidelines" overwrite="yes">
+		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/guidelines" overwrite="xes">
 			<fileset dir="${HenDi-WebApp.basedir}/submodules/HenDi-ODD/guidelines-html">
 				<include name="*.html"/>
+			</fileset>
+			<fileset dir="${WeGA-WebApp.basedir}/${wega.frontend_libs.dir}/WeGA-ODD/compiled-ODD">
+				<include name="*.xml"/>
 			</fileset>
 		</copy>
 	</target>
@@ -237,7 +225,6 @@
 		<antcall target="webapp-dist-data-hendi"/>
 		<antcall target="webapp-dist-img-fonts"/>
 		<antcall target="webapp-dist-odd-hendi"/>
-		<antcall target="webapp-dist-guidelines-hendi"/>
 	</target>
 	
 	<target name="build-webapp" depends="hendi:init">
