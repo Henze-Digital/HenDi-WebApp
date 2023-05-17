@@ -45,14 +45,6 @@ update:submodules:
   rules:
     - if: $CI_COMMIT_BRANCH == "develop" && ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true"  || $BUILD_PORTAL_PREVIEW == "true")
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: never
-
-.rules-build-webapp:
-  rules:
-    - if: $CI_COMMIT_BRANCH == "develop"
-    - if: $BUILD_WEBAPP == "true"
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: never
 
 .rules-stable:
   rules:
@@ -112,7 +104,9 @@ develop:webapp:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
     - ant xar -Dbuild.env.ci=true -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
-  rules: !reference [.rules-build-webapp, rules]
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_WEBAPP == "true"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   artifacts:
     paths:
       - hendi-pkg-webapp/HenDi-WebApp-*.xar
