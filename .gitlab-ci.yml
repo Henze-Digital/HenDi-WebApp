@@ -45,12 +45,14 @@ update:submodules:
   rules:
     - if: $CI_COMMIT_BRANCH == "develop" && ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true"  || $BUILD_PORTAL_PREVIEW == "true")
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
 
 .rules-build-webapp:
   rules:
     - if: $CI_COMMIT_BRANCH == "develop"
     - if: $BUILD_WEBAPP == "true"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
 
 .rules-stable:
   rules:
