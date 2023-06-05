@@ -331,6 +331,8 @@
     <entry xml:id="metaTitleIndex-home">Henze-Digital</entry>
     <entry xml:id="metaTitleIndex-search">Suchseite von Henze-Digital</entry>
     <entry xml:id="metaTitleIndex-personsPlus">Register der Personen</entry>
+    <entry xml:id="metaTitleIndex-persons">Register der Personen</entry>
+    <entry xml:id="metaTitleIndex-orgs">Register der Organisationen</entry>
     <entry xml:id="metaTitleIndex-letters">Register der Briefe</entry>
     <entry xml:id="metaTitleIndex-places">Register der Orte</entry>
     <entry xml:id="metaTitleIndex-writings">Register der Schriften</entry>

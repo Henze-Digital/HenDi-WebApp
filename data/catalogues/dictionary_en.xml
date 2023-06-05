@@ -321,6 +321,8 @@
     <entry xml:id="metaTitleIndex-home">Henze-Digital</entry>
     <entry xml:id="metaTitleIndex-search">Search page of Henze-Digital</entry>
     <entry xml:id="metaTitleIndex-personsPlus">Index of persons</entry>
+    <entry xml:id="metaTitleIndex-persons">Index of persons</entry>
+	<entry xml:id="metaTitleIndex-orgs">Index of organizations</entry>
     <entry xml:id="metaTitleIndex-letters">Index of letters</entry>
     <entry xml:id="metaTitleIndex-places">Index of places</entry>
     <entry xml:id="metaTitleIndex-writings">Index of writings</entry>
