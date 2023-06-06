@@ -1093,7 +1093,8 @@ declare function wdt:backlinks($item as item()*) as map(*) {
                 crud:data-collection('news')//tei:author[@key = $personID][ancestor::tei:fileDesc]/root()  |
                 crud:data-collection('thematicCommentaries')//tei:author[@key = $personID][ancestor::tei:fileDesc]/root()  |
                 crud:data-collection('documents')//tei:author[@key = $personID][ancestor::tei:fileDesc]/root() |
-                crud:data-collection('works')//mei:persName[@codedval = $personID][@role=('cmp', 'lbt', 'lyr', 'aut', 'trl')][ancestor::mei:fileDesc]/root()
+                crud:data-collection('works')//mei:persName[@codedval = $personID][@role=('cmp', 'lbt', 'lyr', 'aut', 'trl')][ancestor::mei:fileDesc]/root()  |
+                crud:data-collection('works')//tei:author[@key = $personID][ancestor::tei:fileDesc]/root()
             let $docsMentioned := 
                 crud:data-collection('letters')//tei:*[contains(@key,$personID)][not(ancestor::tei:publicationStmt)]/root() | 
                 crud:data-collection('diaries')//tei:*[contains(@key,$personID)]/root() |
