@@ -244,7 +244,7 @@
     <entry xml:id="newsAboutTheProject">Aktuelles zum Projekt</entry>
     <entry xml:id="projectHenDi">Das Projekt Henze-Digital</entry>
     <!--  error warnings  -->
-    <entry xml:id="noBioFound">Keine biographischen Angaben gefunden</entry>
+    <entry xml:id="noBioFound">Keine zusätzlichen biographischen Angaben erfasst</entry>
     <entry xml:id="noBioFoundReason">Kurzbiographie aus einem der folgenden Gründe nicht vorhanden:</entry>
     <entry xml:id="noBioFoundReason1">Daten werden erst zu einem späteren Zeitpunkt ergänzt</entry>
     <entry xml:id="noBioFoundReason2">Die Recherchen von Henze-Digital waren bislang erfolglos</entry>
@@ -607,7 +607,7 @@
     <entry xml:id="country">Land</entry>
     <entry xml:id="placenames">Ortsnamen</entry>
     <entry xml:id="informationAboutTheWork">Informationen zum Werk</entry>
-    <entry xml:id="noWorkDetailsFound">Keine weiteren Angaben gefunden</entry>
+    <entry xml:id="noWorkDetailsFound">Keine weiteren Angaben erfasst</entry>
     <entry xml:id="noWorkDetailsFoundReason">Detailinformationen zum Werk aus einem der folgenden Gründe nicht vorhanden:</entry>
     <entry xml:id="noWorkDetailsFoundReason3">Es handelt sich um ein allgemein bekanntes Werk, das bereits ausreichend an anderer Stelle erschlossen ist, vgl. etwa den Wikipedia-Link</entry>
     <entry xml:id="altTitle">Alternativer Titel</entry>

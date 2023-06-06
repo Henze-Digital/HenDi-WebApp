@@ -244,7 +244,7 @@
     <entry xml:id="newsAboutTheProject">News of the Project</entry>
     <entry xml:id="projectHenDi">The Project Henze-Digital</entry>
     <!--  error warnings  -->
-    <entry xml:id="noBioFound">No biographical data found</entry>
+    <entry xml:id="noBioFound">No additional biographical data recorded</entry>
     <entry xml:id="noBioFoundReason">Biography not available due to one of the following causes:</entry>
     <entry xml:id="noBioFoundReason1">Data will be added at a later stage</entry>
     <entry xml:id="noBioFoundReason2">Research of Henze-Digital was without success so far</entry>
@@ -597,7 +597,7 @@
     <entry xml:id="country">Country</entry>
     <entry xml:id="placenames">Place names</entry>
     <entry xml:id="informationAboutTheWork">Information about the work</entry>
-    <entry xml:id="noWorkDetailsFound">No detailed work description</entry>
+    <entry xml:id="noWorkDetailsFound">No detailed work description recorded</entry>
     <entry xml:id="noWorkDetailsFoundReason">Further information about the work not available due to one of the following causes:</entry>
     <entry xml:id="noWorkDetailsFoundReason3">It is a well known work where enough information is available online elsewhere, see e.g Wikipedia</entry>
     <entry xml:id="altTitle">Alternative Title</entry>
