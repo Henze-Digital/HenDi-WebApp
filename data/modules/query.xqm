@@ -82,6 +82,14 @@ declare function query:get-author-element($doc as document-node()?) as element()
     )
 };
 
+
+declare function query:get-editor-element($doc as document-node()?) as element()* {
+    ( 
+        $doc//mei:fileDesc/mei:titleStmt/mei:respStmt/mei:persName[@role = ('cmp', 'aut', 'lbt', 'arr')] |
+        $doc//tei:fileDesc/tei:titleStmt/tei:editor
+    )
+};
+
 (:~
  : Retrieves a document by GND identifier
  :

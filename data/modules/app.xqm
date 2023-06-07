@@ -1437,6 +1437,16 @@ declare
 
 declare 
     %templates:wrap
+    %templates:default("lang", "en")
+    function app:editors($node as node(), $model as map(*), $lang as xs:string) as element()* {
+        
+        <dt xmlns="http://www.w3.org/1999/xhtml">{lang:get-language-string('editors', $lang)}</dt>,
+		<dd xmlns="http://www.w3.org/1999/xhtml">{str:normalize-space(string-join($model?editors, '; '))}</dd>
+        	
+};
+
+declare 
+    %templates:wrap
     function app:textSources($node as node(), $model as map(*)) as map(*) {
     let $textSources := query:text-sources($model?doc)
     let $textSourcesCount := count($textSources)
@@ -1615,10 +1625,12 @@ declare
             'incipit' : query:incipit($model('doc')),
             'summary' : query:summary($model('doc'), $lang),
             'generalRemark' : query:generalRemark($model('doc')),
+            
             'authors' : if (count(query:get-author-element($model('doc'))) > 1 ) then
                 for $author in query:get-author-element($model('doc')) return app:printCorrespondentName($author,$lang,'fs') else (),
-            'respStmts': 
-                switch($model('docType'))
+            'editors' : if (count(query:get-editor-element($model('doc'))) > 0 ) then
+                for $editor in query:get-editor-element($model('doc')) return app:printCorrespondentName($editor,$lang,'fs') else (),
+            'respStmts' : switch($model('docType'))
                 case 'diaries' return <tei:respStmt><tei:resp>Übertragung</tei:resp><tei:name>Dagmar Beck</tei:name></tei:respStmt>
                 default return $model('doc')//tei:respStmt[parent::tei:titleStmt]
         }
