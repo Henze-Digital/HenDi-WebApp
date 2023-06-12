@@ -62,7 +62,7 @@ a.checkbox-only {
 }
 
 .checkbox input[type="checkbox"] + label::before {
-    content: "\f096\a0";
+    content: $sidebar-separator;
     font-family: "Font Awesome 6 Free";
     margin-right:8px;
     margin-left:2px;
@@ -70,7 +70,7 @@ a.checkbox-only {
 }
 
 .checkbox input[type="checkbox"]:checked + label::before {
-    content: "\f14a ";
+    content: $sidebar-separator-checked;
     font-family: "Font Awesome 6 Free";
     margin-right:8px;
     margin-left:2px;
