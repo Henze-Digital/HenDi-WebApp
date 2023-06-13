@@ -23,7 +23,7 @@ form.searchfilter {
 }
 
 .searchDocTypeFilter label.active:before, .filtersection .btn.active:before {
-        content: "\f14a\a0";
+        content: $sidebar-separator-checked;
         color: $primary;
         margin-right:10px;
 }
