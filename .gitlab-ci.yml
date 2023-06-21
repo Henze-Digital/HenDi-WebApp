@@ -74,7 +74,6 @@ update:submodules:
     - docker run --privileged --rm tonistiigi/binfmt --install all
     - docker buildx create --name hendiBuilder-${HENDI_ENV_NAME} --use
     - docker buildx build --provenance false --no-cache --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN}  --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG} -f Dockerfile.${HENDI_ENV_NAME} .
-    - docker buildx rm --builder hendiBuilder-${HENDI_ENV_NAME} -f
     - docker buildx prune --builder hendiBuilder-${HENDI_ENV_NAME} -fa
 
 .docker-build-action-suffixed:
@@ -86,7 +85,6 @@ update:submodules:
     - docker run --privileged --rm tonistiigi/binfmt --install all
     - docker buildx create --name hendiBuilder-${HENDI_ENV_NAME} --use
     - docker buildx build --provenance false --no-cache --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN}  --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG}-${HENDI_ENV_NAME} -f Dockerfile.${HENDI_ENV_NAME} .
-    - docker buildx rm --builder hendiBuilder-${HENDI_ENV_NAME} -f
     - docker buildx prune --builder hendiBuilder-${HENDI_ENV_NAME} -fa
 
 # hidden jobs for triggering deploy (keel)
