@@ -3,8 +3,8 @@ FROM stadlerpeter/existdb:6.0.1
 ARG CI_JOB_TOKEN
 ENV EXIST_ENV=production
 
-RUN curl --output WeGA-WebApp-lib-1.9.0.xar --location "https://github.com/Edirom/WeGA-WebApp-lib/releases/download/v1.9.0/WeGA-WebApp-lib-1.9.0.xar" &&\
-    mv WeGA-WebApp-lib-1.9.0.xar ${EXIST_HOME}/autodeploy
+RUN curl --output WeGA-WebApp-lib-1.8.0.xar --location "https://github.com/Edirom/WeGA-WebApp-lib/releases/download/v1.8.0/WeGA-WebApp-lib-1.8.0.xar" &&\
+    mv WeGA-WebApp-lib-1.8.0.xar ${EXIST_HOME}/autodeploy
 
 RUN curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --output HenDi-Data-preview-latest.xar --location "https://git.uni-paderborn.de/api/v4/projects/2328/packages/generic/hendi-data/latest/hendi-data-preview-latest.xar" &&\
 mv HenDi-Data-preview-latest.xar ${EXIST_HOME}/autodeploy
