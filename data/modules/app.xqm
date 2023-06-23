@@ -2352,10 +2352,7 @@ declare function app:envelope($node as node(), $model as map(*))  {
 	            element xhtml:p {
 	                    attribute class {'notAvailable'}
 	            }
-	         else (element xhtml:div {
-	         	element xhtml:p {app:createDocLink($envelope,lang:get-language-string('switchDocumentView',$lang),$lang,())},
-	         	element xhtml:hr {}},
-	               wega-util:transform($textRoot, $xslt1, $xslParams))
+	         else (wega-util:transform($textRoot, $xslt1, $xslParams))
 	    return
 	        <div class="tab-pane fade" id="envelope-{$z}">
 	          {wega-util:remove-elements-by-class($body, 'apparatus')}
