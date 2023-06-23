@@ -367,16 +367,38 @@ declare
 declare
     %templates:default("lang", "en")
     function app:enclosure-tab($node as node(), $model as map(*), $lang as xs:string) as element()? {
-        let $enclosures := collection('/db/apps/hendi-data')//tei:relation[@name='isEnclosure'][@key=$model?docID]/root()
+        let $enclosures := collection('/db/apps/hendi-data')//tei:relation[@name='isEnclosureOf'][@key=$model?docID]/root()
 	    for $enclosure at $z in $enclosures
 		    return
 		        element {node-name($node)} {
-                    attribute class {'nav-link'},
-                    attribute href {'#enclosure-' || $z},
-                    attribute data-toggle {'tab'},
-                    attribute id {'enclosure-tab-' || $z},
-                    lang:get-language-string('enclosure', $lang),
-                    if($z > 1) then(' (' || $z || ')') else()
+		        attribute class {'nav-item gradient-light'},
+                    element {'a'} {
+                       attribute class {'nav-link'},
+                       attribute href {'#enclosure-' || $z},
+                       attribute data-toggle {'tab'},
+                       attribute id {'enclosure-tab-' || $z},
+                       lang:get-language-string('enclosure', $lang),
+                       if($z > 1) then(' (' || $z || ')') else()
+                    }
+                }
+};
+
+declare
+    %templates:default("lang", "en")
+    function app:envelope-tab($node as node(), $model as map(*), $lang as xs:string) as element()? {
+        let $envelopes := collection('/db/apps/hendi-data')//tei:relation[@name='isEnvelopeOf'][@key=$model?docID]/root()
+	    for $envelope at $z in $envelopes
+		    return
+		        element {node-name($node)} {
+                    attribute class {'nav-item gradient-light'},
+                    element {'a'} {
+                       attribute class {'nav-link'},
+                       attribute href {'#envelope-' || $z},
+                       attribute data-toggle {'tab'},
+                       attribute id {'envelope-tab-' || $z},
+                       lang:get-language-string('envelope', $lang),
+                       if($z > 1) then(' (' || $z || ')') else()
+                    }
                 }
 };
 
@@ -2290,7 +2312,7 @@ declare function app:enclosure($node as node(), $model as map(*))  {
             'createSecNos' : ()
             } )
     let $xslt1 := doc(concat($config:xsl-collection-path, '/letters.xsl'))
-    let $enclosures := collection('/db/apps/hendi-data')//tei:relation[@name='isEnclosure'][@key=$model?docID]/root()
+    let $enclosures := collection('/db/apps/hendi-data')//tei:relation[@name='isEnclosureOf'][@key=$model?docID]/root()
     for $enclosure at $z in $enclosures
     	let $textRoot := $enclosure//tei:text
     	let $body := 
@@ -2305,6 +2327,37 @@ declare function app:enclosure($node as node(), $model as map(*))  {
 	               wega-util:transform($textRoot, $xslt1, $xslParams))
 	    return
 	        <div class="tab-pane fade" id="enclosure-{$z}">
+	          {wega-util:remove-elements-by-class($body, 'apparatus')}
+	        </div>
+};
+
+declare function app:envelope($node as node(), $model as map(*))  {
+    let $doc := $model('doc')
+    let $docID := $model('docID')
+    let $lang := $model('lang')
+    let $docType := $model('docType')
+    let $xslParams := config:get-xsl-params( map {
+            'dbPath' : document-uri($doc),
+            'docID' : $docID,
+            'transcript' : 'true',
+            'createSecNos' : ()
+            } )
+    let $xslt1 := doc(concat($config:xsl-collection-path, '/letters.xsl'))
+    let $envelopes := collection('/db/apps/hendi-data')//tei:relation[@name='isEnvelopeOf'][@key=$model?docID]/root()
+    for $envelope at $z in $envelopes
+    	let $textRoot := $envelope//tei:text
+    	let $body := 
+	         if(functx:all-whitespace(<root>{$textRoot}</root>))
+	         then 
+	            element xhtml:p {
+	                    attribute class {'notAvailable'}
+	            }
+	         else (element xhtml:div {
+	         	element xhtml:p {app:createDocLink($envelope,lang:get-language-string('switchDocumentView',$lang),$lang,())},
+	         	element xhtml:hr {}},
+	               wega-util:transform($textRoot, $xslt1, $xslParams))
+	    return
+	        <div class="tab-pane fade" id="envelope-{$z}">
 	          {wega-util:remove-elements-by-class($body, 'apparatus')}
 	        </div>
 };
