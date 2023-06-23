@@ -179,7 +179,7 @@ declare function wdt:letters($item as item()*) as map(*) {
             else false()
         },
         'filter' : function() as document-node()* {
-            $item/root()/descendant::tei:text[@type = $text-types]/root()
+            $item/root()/descendant::tei:text[@type = $text-types]/root()[not(descendant::tei:relation[@name='isEnvelopeOf'])]
         },
         'filter-by-person' : function($personID as xs:string) as document-node()* {
             typeswitch($item) (: remove call to function `root()` when document-node()s are passed as input :)
