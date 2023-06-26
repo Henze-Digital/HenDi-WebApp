@@ -626,6 +626,7 @@
     <entry xml:id="internal">intern (HenDi)</entry>
     <entry xml:id="external">extern</entry>
     <entry xml:id="without">ohne</entry>
+    <entry xml:id="with">mit</entry>
     <entry xml:id="mei_notesStmt">Bemerkungen</entry>
     <entry xml:id="biographical">Biographisches</entry>
     <entry xml:id="keywords">Schlagwörter</entry>
@@ -733,6 +734,8 @@
     <entry xml:id="physDesc.objectDesc.form.contract">Vertrag</entry>
     <entry xml:id="physDesc.objectDesc.form.document">Dokument</entry>
     <entry xml:id="physDesc.objectDesc.form.envelope">Umschlag</entry>
+	<entry xml:id="physDesc.objectDesc.form.enclosure">Beilage</entry>
+	<entry xml:id="physDesc.objectDesc.form.enclosures">Beilagen</entry>
     <entry xml:id="physDesc.objectDesc.form.fax">Fax</entry>
     <entry xml:id="physDesc.objectDesc.form.formCommitment">Verpflichtungsschein</entry>
     <entry xml:id="physDesc.objectDesc.form.letter">Brief</entry>

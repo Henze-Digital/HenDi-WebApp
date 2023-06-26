@@ -156,9 +156,16 @@ declare function wdt:letters($item as item()*) as map(*) {
         let $placeAddressee := 
             if(query:placeName-elements($TEI//tei:correspAction[@type='received'])/@key) then query:title((query:placeName-elements($TEI//tei:correspAction[@type='received'])/@key)[1])
             else str:normalize-space(query:placeName-elements($TEI//tei:correspAction[@type='received'])[1])
-        let $letterClasses := for $class in $TEI//tei:objectDesc/string(@form)
-                                        return lang:get-language-string(concat('physDesc.objectDesc.form.', $class),$lang)
-        let $letterClass := string-join($letterClasses, ' | ')
+        let $letterClass := lang:get-language-string(concat('physDesc.objectDesc.form.', $TEI//tei:objectDesc/@form/string()),$lang)
+        let $letterEnvelope := if($TEI//tei:relation[@name='hasEnvelope'])
+        						then(lang:get-language-string('physDesc.objectDesc.form.envelope',$lang))
+        						else()
+        let $letterEnclosures := if(count($TEI//tei:relation[@name='hasEnclosure']) = 1)
+        						then(lang:get-language-string('physDesc.objectDesc.form.enclosure',$lang))
+        						else if(count($TEI//tei:relation[@name='hasEnclosure']) > 1)
+        						then(lang:get-language-string('physDesc.objectDesc.form.enclosures',$lang))
+        						else()
+        let $letterClass := $letterClass || '(' || lang:get-language-string('with',$lang) || string-join(($letterEnvelope, $letterEnclosures), concat(' ', lang:get-language-string('and',$lang),' ')) || ')'
         return (
             element tei:title {
                 if($letterClass) then ($letterClass,<tei:lb/>) else(),
