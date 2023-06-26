@@ -366,7 +366,7 @@ declare
 
 declare
     %templates:default("lang", "en")
-    function app:enclosure-tab($node as node(), $model as map(*), $lang as xs:string) as element()? {
+    function app:enclosure-tab($node as node(), $model as map(*), $lang as xs:string) as element()* {
         let $enclosures := collection('/db/apps/hendi-data')//tei:relation[@name='isEnclosureOf'][@key=$model?docID]/root()
 	    for $enclosure at $z in $enclosures
 		    return
