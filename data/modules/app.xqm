@@ -378,7 +378,7 @@ declare
                        attribute data-toggle {'tab'},
                        attribute id {'enclosure-tab-' || $z},
                        lang:get-language-string('enclosure', $lang),
-                       if($z > 1) then(' (' || $z || ')') else()
+                       if(count($enclosures) > 1) then(' (' || $z || ')') else()
                     }
                 }
 };
