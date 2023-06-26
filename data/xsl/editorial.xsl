@@ -275,11 +275,11 @@
     </xsl:template>-->
 
 
-    <xsl:template match="tei:quote|tei:q">
+    <!--<xsl:template match="tei:quote|tei:q">
         <xsl:text>"</xsl:text>
         <xsl:apply-templates/>
         <xsl:text>"</xsl:text>
-    </xsl:template>
+    </xsl:template>-->
     
     <xsl:template match="tei:support">
         <xsl:element name="h4">
