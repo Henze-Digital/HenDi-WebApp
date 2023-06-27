@@ -593,7 +593,7 @@
                <xsl:apply-templates select="tei:sic" mode="#current"/>
                <xsl:element name="span">
                   <xsl:attribute name="class">brackets_supplied</xsl:attribute>
-               <xsl:text>[sic!]</xsl:text>
+               <xsl:text>[sic]</xsl:text>
                </xsl:element>
             </xsl:when>
             <xsl:when test="tei:unclear">
@@ -683,7 +683,7 @@
       <xsl:apply-templates/>
       <xsl:element name="span">
          <xsl:attribute name="class">brackets_supplied</xsl:attribute>
-         <xsl:text>[sic!]</xsl:text>
+         <xsl:text>[sic]</xsl:text>
       </xsl:element>
    </xsl:template>
 
@@ -692,7 +692,7 @@
          <xsl:apply-templates select="@xml:id"/>
          <xsl:attribute name="class" select="concat('brackets_supplied tei_', local-name())"/>
          <xsl:apply-templates mode="#current"/>
-         <xsl:text>[sic!]</xsl:text>
+         <xsl:text>[sic]</xsl:text>
       </xsl:element>
       <xsl:call-template name="popover"/>
    </xsl:template>
@@ -757,7 +757,7 @@
             <xsl:apply-templates mode="lemma"/>
          </xsl:with-param>
          <xsl:with-param name="explanation">
-            <xsl:text>sic!</xsl:text>
+            <xsl:text>sic</xsl:text>
             <xsl:sequence select="hendi:getHandFeatures(.)"/>
          </xsl:with-param>
       </xsl:call-template>
