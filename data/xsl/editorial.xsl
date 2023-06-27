@@ -263,7 +263,7 @@
         <xsl:element name="span">
             <xsl:attribute name="class" select="concat('tei_', local-name())"/>
             <xsl:apply-templates/>
-            <xsl:text> [sic!]</xsl:text>
+            <xsl:text> [sic]</xsl:text>
         </xsl:element>
     </xsl:template>
     
