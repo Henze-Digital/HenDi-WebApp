@@ -195,6 +195,11 @@
 				<include name="manifest.json"/>
 			</fileset>
 		</copy>
+		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/" overwrite="yes" failonerror="no">
+			<fileset dir="${HenDi-WebApp.basedir}/hendi-secrets/wega-app/">
+				<include name="manifest.json"/>
+			</fileset>
+		</copy>
 		
 		<echo>Add fonts.</echo>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/fonts" failonerror="no">
