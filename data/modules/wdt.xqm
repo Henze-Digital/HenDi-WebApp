@@ -434,7 +434,7 @@ declare function wdt:works($item as item()*) as map(*) {
             $item/root()[mei:mei|tei:TEI][descendant::mei:meiHead|descendant::tei:teiHeader]
         },
         'filter-by-person' : function($personID as xs:string) as document-node()* {
-            $item/root()/(descendant::mei:persName[@codedval = $personID][@role=('cmp', 'lbt', 'lyr', 'aut', 'trl')][ancestor::mei:work]|descendant::tei:persName[@key = $personID][@role=('cmp', 'lbt', 'lyr', 'aut', 'trl')][ancestor::tei:fileDesc])/root() 
+            $item/root()/(descendant::mei:persName[@codedval = $personID][@role=('cmp', 'lbt', 'lyr', 'aut', 'trl')][ancestor::mei:work]|descendant::tei:persName[@key = $personID][ancestor::tei:biblStruct])/root() 
         },
         'filter-by-date' : function($dateFrom as xs:date?, $dateTo as xs:date?) as document-node()* {
             if(empty(($dateFrom, $dateTo))) then $item/root() 
@@ -1104,8 +1104,8 @@ declare function wdt:backlinks($item as item()*) as map(*) {
                 crud:data-collection('news')//tei:author[@key = $personID][ancestor::tei:fileDesc]/root()  |
                 crud:data-collection('thematicCommentaries')//tei:author[@key = $personID][ancestor::tei:fileDesc]/root()  |
                 crud:data-collection('documents')//tei:author[@key = $personID][ancestor::tei:fileDesc]/root() |
-                crud:data-collection('works')//mei:persName[@codedval = $personID][@role=('cmp', 'lbt', 'lyr', 'aut', 'trl')][ancestor::mei:fileDesc]/root()  |
-                crud:data-collection('works')//tei:author[@key = $personID][ancestor::tei:biblStruct]/root()
+                crud:data-collection('works')//mei:persName[@codedval = $personID][ancestor::mei:respStmt]/root()
+                (: Not necessary to exclude keys from works encoded in tei :)
             let $docsMentioned := 
                 crud:data-collection('letters')//tei:*[contains(@key,$personID)][not(ancestor::tei:publicationStmt)]/root() | 
                 crud:data-collection('diaries')//tei:*[contains(@key,$personID)]/root() |
@@ -1119,6 +1119,7 @@ declare function wdt:backlinks($item as item()*) as map(*) {
                 crud:data-collection('documents')//tei:*[contains(@key,$personID)][not(ancestor::tei:publicationStmt)]/root() |
                 crud:data-collection('var')//tei:*[contains(@key,$personID)][not(ancestor::tei:publicationStmt)]/root() |
                 crud:data-collection('works')//mei:*[contains(@codedval,$personID)][not(ancestor::mei:revisionDesc)]/root() |
+                crud:data-collection('works')//tei:*[contains(@key,$personID)][ancestor::tei:biblStruct]/root() |
                 (: <ref target="wega:A002068"/> :)
                 crud:data-collection('letters')//tei:*[contains(@target, 'wega:' || $personID)]/root() |
                 crud:data-collection('diaries')//tei:*[contains(@target,'wega:' || $personID)]/root() |
