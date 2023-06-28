@@ -924,7 +924,7 @@ declare function wdt:thematicCommentaries($item as item()*) as map(*) {
 };
 
 declare function wdt:documents($item as item()*) as map(*) {
-    let $text-types := ('work-related_document', 'personal_document', 'financial_document', 'varia_document', 'notification_document', 'konzertzettel_document', 'legal_document', 'theater_document')
+    let $text-types := ('document', 'work-related_document', 'personal_document', 'financial_document', 'varia_document', 'notification_document', 'konzertzettel_document', 'legal_document', 'theater_document')
     let $filter := function($docs as document-node()*) as document-node()* {
         $docs/root()/descendant::tei:text[@type = $text-types]/root()
     }
