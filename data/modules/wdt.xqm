@@ -478,10 +478,10 @@ declare function wdt:works($item as item()*) as map(*) {
                 case document-node() return $item/tei:TEI
                 default return $item/root()/tei:TEI
             let $title-element := if($mei)
-                                  then (($mei//mei:fileDesc/mei:titleStmt/mei:title[not(@type)])[1])
+                                  then (($mei//mei:work)[1]//mei:titlePart[@type="main"])
                                   else if($tei//tei:biblStruct)
-                                  then (($tei//tei:biblStruct//tei:title[not(@type)])[1])
-                                  else (($tei//tei:fileDesc/tei:titleStmt/tei:title[not(@type)])[1])
+                                  then (($tei//tei:biblStruct)[1]//tei:title[1])
+                                  else ('no title found')
             return
                 switch($serialization)
                 case 'txt' return str:normalize-space(replace(string-join(str:txtFromTEI($title-element, config:guess-language(())), ''), '\s*\n+\s*(\S+)', '. $1'))
@@ -492,8 +492,8 @@ declare function wdt:works($item as item()*) as map(*) {
             typeswitch($item)
             case xs:string return str:normalize-space((crud:doc($item)//mei:fileDesc/mei:titleStmt/mei:title[not(@type)]|crud:doc($item)//tei:fileDesc/tei:titleStmt/tei:title[not(@type)])[1])
             case xs:untypedAtomic return str:normalize-space((crud:doc($item)//mei:fileDesc/mei:titleStmt/mei:title[not(@type)]|crud:doc($item)//tei:fileDesc/tei:titleStmt/tei:title[not(@type)])[1])
-            case document-node() return str:normalize-space(($item//mei:fileDesc/mei:titleStmt/mei:title[not(@type)]|crud:doc($item)//tei:fileDesc/tei:titleStmt/tei:title[not(@type)])[1])
-            case element() return str:normalize-space(($item//mei:fileDesc/mei:titleStmt/mei:title[not(@type)]|crud:doc($item)//tei:fileDesc/tei:titleStmt/tei:title[not(@type)])[1])
+            case document-node() return str:normalize-space(($item//mei:fileDesc/mei:titleStmt/mei:title[not(@type)]|$item//tei:fileDesc/tei:titleStmt/tei:title[not(@type)])[1])
+            case element() return str:normalize-space(($item//mei:fileDesc/mei:titleStmt/mei:title[not(@type)]|$item//tei:fileDesc/tei:titleStmt/tei:title[not(@type)])[1])
             default return wega-util:log-to-file('error', 'wdt:works()("label-facests"): failed to get string')
         },
         'memberOf' : ('search', 'indices', 'unary-docTypes', 'sitemap'),
