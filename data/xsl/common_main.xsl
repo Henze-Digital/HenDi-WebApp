@@ -569,24 +569,16 @@
                     <xsl:apply-templates/>
                 </xsl:element>
             </xsl:when>
-            <xsl:when test="@type = 'simple'">
+            <xsl:when test="@type = 'unordered'">
                 <xsl:element name="ul">
                     <xsl:apply-templates select="@xml:id"/>
-                    <xsl:attribute name="class" select="'tei_simpleList'"/>
-                    <xsl:apply-templates/>
-                </xsl:element>
-            </xsl:when>
-            <xsl:when test="@type = 'gloss'">
-                <xsl:element name="dl">
-                    <xsl:apply-templates select="@xml:id"/>
-                    <xsl:attribute name="class" select="'tei_glossList'"/>
                     <xsl:apply-templates/>
                 </xsl:element>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:element name="ul">
                     <xsl:apply-templates select="@xml:id"/>
-                    <xsl:attribute name="class" select="'tei_list'"/>
+                	<xsl:attribute name="class" select="'tei_simpleList'"/>
                     <xsl:apply-templates/>
                 </xsl:element>
             </xsl:otherwise>
