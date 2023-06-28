@@ -1118,21 +1118,7 @@ declare function wdt:backlinks($item as item()*) as map(*) {
                 crud:data-collection('biblio')//tei:term[.=$personID]/root() |
                 crud:data-collection('thematicCommentaries')//tei:*[contains(@key,$personID)][not(ancestor::tei:publicationStmt)]/root() |
                 crud:data-collection('documents')//tei:*[contains(@key,$personID)][not(ancestor::tei:publicationStmt)]/root() |
-                crud:data-collection('var')//tei:*[contains(@key,$personID)][not(ancestor::tei:publicationStmt)]/root() |
-                crud:data-collection('works')//mei:*[contains(@codedval,$personID)][not(ancestor::mei:revisionDesc)]/root() |
-                crud:data-collection('works')//tei:*[contains(@key,$personID)][ancestor::tei:biblStruct]/root() |
-                (: <ref target="wega:A002068"/> :)
-                crud:data-collection('letters')//tei:*[contains(@target, 'wega:' || $personID)]/root() |
-                crud:data-collection('diaries')//tei:*[contains(@target,'wega:' || $personID)]/root() |
-                crud:data-collection('writings')//tei:*[contains(@target,'wega:' || $personID)]/root() |
-                crud:data-collection('persons')//tei:*[contains(@target,'wega:' || $personID)]/root() |
-                crud:data-collection('news')//tei:*[contains(@target,'wega:' || $personID)]/root() |
-                crud:data-collection('orgs')//tei:*[contains(@target,'wega:' || $personID)]/root() |
-                crud:data-collection('biblio')//tei:*[contains(@target,'wega:' || $personID)]/root() |
-                crud:data-collection('thematicCommentaries')//tei:*[contains(@target,'wega:' || $personID)]/root() |
-                crud:data-collection('documents')//tei:*[contains(@target,'wega:' || $personID)]/root() |
-                crud:data-collection('var')//tei:*[contains(@target,'wega:' || $personID)]/root() |
-                crud:data-collection('works')//mei:*[contains(@target,'wega:' || $personID)]/root()
+                crud:data-collection('var')//tei:*[contains(@key,$personID)][not(ancestor::tei:publicationStmt)]/root()
             return
                 $docsMentioned except $docsAuthor
         },
