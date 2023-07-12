@@ -6,6 +6,7 @@ variables:
     HENDI_CI_IMAGE: registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image:v1-1-0
     GIT_SUBMODULE_STRATEGY: recursive
     URL_CI_REGISTRY: "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp"
+    GIT_DEPTH: 5
 
 stages:
   - update
