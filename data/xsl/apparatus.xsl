@@ -313,7 +313,7 @@
                <xsl:when test="tei:del[@rend='strikethrough']">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
-               	<xsl:call-template name="unclearInDel"/>
+               	  <xsl:call-template name="unclearInDel"/>
                   <xsl:value-of select="wega:getLanguageString('substDelStrikethrough', $lang)"/>
                   <xsl:text> </xsl:text>
                   <xsl:sequence select="wega:enquote($lemma)"/>
@@ -698,7 +698,7 @@
       </xsl:element>
    </xsl:template>
 
-   <xsl:template match="tei:sic[not(parent::tei:choice)] | tei:del[not(parent::tei:subst) and not(@rend='overtyped')]">
+   <xsl:template match="tei:sic[not(parent::tei:choice)]">
       <xsl:element name="span">
          <xsl:apply-templates select="@xml:id"/>
          <xsl:attribute name="class" select="concat('brackets_supplied tei_', local-name())"/>
