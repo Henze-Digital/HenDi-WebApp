@@ -313,7 +313,7 @@
                <xsl:when test="tei:del[@rend='strikethrough']">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
-               	  <xsl:call-template name="unclearInDel"/>
+               	<xsl:if test="./tei:unclear"><xsl:call-template name="unclearInDel"/></xsl:if>
                   <xsl:value-of select="wega:getLanguageString('substDelStrikethrough', $lang)"/>
                   <xsl:text> </xsl:text>
                   <xsl:sequence select="wega:enquote($lemma)"/>
@@ -321,7 +321,7 @@
                <xsl:when test="tei:del[@rend='overwritten']">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
-               	<xsl:call-template name="unclearInDel"/>
+               	<xsl:if test="./tei:unclear"><xsl:call-template name="unclearInDel"/></xsl:if>
                   <xsl:value-of select="wega:getLanguageString('substDelOverwritten', $lang)"/>
                   <xsl:text> </xsl:text>
                   <xsl:sequence select="wega:enquote($lemma)"/>
@@ -329,7 +329,7 @@
                <xsl:when test="tei:del[@rend='overtyped']">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
-               	  <xsl:call-template name="unclearInDel"/>
+               	  <xsl:if test="./tei:unclear"><xsl:call-template name="unclearInDel"/></xsl:if>
                   <xsl:value-of select="wega:getLanguageString('substDelOvertyped', $lang)"/>
                   <xsl:text> </xsl:text>
                   <xsl:sequence select="wega:enquote($lemma)"/>
@@ -337,13 +337,13 @@
                <xsl:when test="tei:del[@rend='erased']">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
-               	<xsl:call-template name="unclearInDel"/>
+               	<xsl:if test="./tei:unclear"><xsl:call-template name="unclearInDel"/></xsl:if>
                   <xsl:value-of select="wega:getLanguageString('delErased', $lang)"/>
                </xsl:when>
                <xsl:when test="tei:del">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
-               	  <xsl:call-template name="unclearInDel"/>
+               	  <xsl:if test="./tei:unclear"><xsl:call-template name="unclearInDel"/></xsl:if>
                   <xsl:value-of select="wega:getLanguageString('substDel', $lang)"/>
                   <xsl:text> </xsl:text>
                   <xsl:sequence select="wega:enquote($lemma)"/>
