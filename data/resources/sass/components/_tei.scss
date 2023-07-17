@@ -11,16 +11,24 @@ $tei_list-indent: $font-size-base;
 
 .tei_hi_underline1 {
 /*    border-bottom: 1px solid black;*/
-    background-image: url(../img/underline1.gif);
+    /* /background-image: url(../img/underline1.gif);
     background-position: center bottom;
-    background-repeat: repeat-x;
+    background-repeat: repeat-x; */
+    text-decoration-line: underline;
+    text-decoration-skip: none;
+    text-underline-offset: 1px;
+    text-decoration-style: solid;
 }
 
 .tei_hi_underline2andMore {
-    background-image: url(../img/underline2.gif);
+    /*background-image: url(../img/underline2.gif);
     background-position: center bottom;
-    background-repeat: repeat-x;
+    background-repeat: repeat-x;*/
 /*    border-bottom: 2px solid black;*/
+text-decoration-line: underline;
+    text-decoration-skip: none;
+    text-underline-offset: 1px;
+    text-decoration-style: double;
 }
 
 .tei_hi_latintype, .tei_hi_italic, .tei_hi_antiqua {
