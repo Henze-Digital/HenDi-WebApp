@@ -155,8 +155,10 @@
     <entry xml:id="delOrthoRealised">Tilgung orthographisch realisiert</entry>
     <entry xml:id="choiceCorr">in der Vorlage</entry>
     <entry xml:id="choiceUnclear">weitere mögliche Lesungen</entry>
-    <entry xml:id="choiceAbbr">Abk. von</entry>
     <entry xml:id="popoverTitle.choiceAbbr">Abkürzung</entry>
+    <entry xml:id="choiceAbbr">Abk. von</entry>
+    <entry xml:id="popoverTitle.choiceReg">Regularisierung</entry>
+    <entry xml:id="choiceReg">angepasst zu</entry>
     <entry xml:id="appRdgs">Lesarten</entry>
     <entry xml:id="noRdg">Text nicht vorhanden</entry>
     <entry xml:id="unclearDefault">unsichere Lesung</entry>

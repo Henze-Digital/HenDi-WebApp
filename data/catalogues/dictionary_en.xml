@@ -157,6 +157,8 @@
     <entry xml:id="choiceUnclear">further possible transcriptions</entry>
     <entry xml:id="popoverTitle.choiceAbbr">Abbreviation</entry>
     <entry xml:id="choiceAbbr">abbreviation of</entry>
+    <entry xml:id="popoverTitle.choiceReg">Regularization</entry>
+    <entry xml:id="choiceReg">regularized to</entry>
     <entry xml:id="appRdgs">Readings</entry>
     <entry xml:id="noRdg">No text present</entry>
     <entry xml:id="unclearDefault">uncertain transcription</entry>

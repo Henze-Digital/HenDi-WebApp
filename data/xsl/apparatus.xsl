@@ -325,7 +325,9 @@
                <xsl:when test="tei:del[@rend='strikethrough']">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
-               	<xsl:if test="./tei:unclear"><xsl:call-template name="unclearInDel"/></xsl:if>
+               	<xsl:if test="./tei:unclear">
+                            <xsl:call-template name="unclearInDel"/>
+                        </xsl:if>
                   <xsl:value-of select="wega:getLanguageString('substDelStrikethrough', $lang)"/>
                   <xsl:text> </xsl:text>
                   <xsl:sequence select="wega:enquote($lemma)"/>
@@ -333,7 +335,9 @@
                <xsl:when test="tei:del[@rend='overwritten']">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
-               	<xsl:if test="./tei:unclear"><xsl:call-template name="unclearInDel"/></xsl:if>
+               	<xsl:if test="./tei:unclear">
+                            <xsl:call-template name="unclearInDel"/>
+                        </xsl:if>
                   <xsl:value-of select="wega:getLanguageString('substDelOverwritten', $lang)"/>
                   <xsl:text> </xsl:text>
                   <xsl:sequence select="wega:enquote($lemma)"/>
@@ -341,7 +345,9 @@
                <xsl:when test="tei:del[@rend='overtyped']">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
-               	  <xsl:if test="./tei:unclear"><xsl:call-template name="unclearInDel"/></xsl:if>
+               	  <xsl:if test="./tei:unclear">
+                            <xsl:call-template name="unclearInDel"/>
+                        </xsl:if>
                   <xsl:value-of select="wega:getLanguageString('substDelOvertyped', $lang)"/>
                   <xsl:text> </xsl:text>
                   <xsl:sequence select="wega:enquote($lemma)"/>
@@ -349,13 +355,17 @@
                <xsl:when test="tei:del[@rend='erased']">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
-               	<xsl:if test="./tei:unclear"><xsl:call-template name="unclearInDel"/></xsl:if>
+               	<xsl:if test="./tei:unclear">
+                            <xsl:call-template name="unclearInDel"/>
+                        </xsl:if>
                   <xsl:value-of select="wega:getLanguageString('delErased', $lang)"/>
                </xsl:when>
                <xsl:when test="tei:del">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
-               	  <xsl:if test="./tei:unclear"><xsl:call-template name="unclearInDel"/></xsl:if>
+               	  <xsl:if test="./tei:unclear">
+                            <xsl:call-template name="unclearInDel"/>
+                        </xsl:if>
                   <xsl:value-of select="wega:getLanguageString('substDel', $lang)"/>
                   <xsl:text> </xsl:text>
                   <xsl:sequence select="wega:enquote($lemma)"/>
@@ -637,6 +647,9 @@
             <xsl:when test="tei:abbr">
                <xsl:apply-templates select="tei:abbr"/>
             </xsl:when>
+            <xsl:when test="tei:reg">
+               <xsl:apply-templates select="tei:reg" mode="#current"/>
+            </xsl:when>
          </xsl:choose>
          <xsl:call-template name="popover"/>
       </xsl:element>
@@ -707,6 +720,26 @@
          </xsl:with-param>
       </xsl:call-template>
    </xsl:template>
+
+   <xsl:template match="tei:choice[tei:reg]" mode="apparatus">
+      <xsl:variable name="reg">
+         <xsl:apply-templates select="tei:reg" mode="lemma"/>
+      </xsl:variable>
+      <xsl:variable name="orig">
+         <xsl:apply-templates select="tei:orig" mode="lemma"/>
+      </xsl:variable>
+      <xsl:call-template name="apparatusEntry">
+         <xsl:with-param name="counter-param" select="'note'"/>
+         <xsl:with-param name="title" select="wega:getLanguageString('popoverTitle.choiceReg',$lang)"/>
+         <xsl:with-param name="lemma">
+            <xsl:sequence select="$orig"/>
+         </xsl:with-param>
+         <xsl:with-param name="explanation">
+            <xsl:sequence select="(wega:getLanguageString('choiceReg', $lang),' ', wega:enquote($reg))"/>
+         </xsl:with-param>
+      </xsl:call-template>
+   </xsl:template>
+   
 
    <!-- special template rule for <sic> within bibliographic contexts -->
    <xsl:template match="tei:sic[parent::tei:title or parent::tei:author]" priority="2">
