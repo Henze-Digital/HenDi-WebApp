@@ -569,12 +569,13 @@
                     <xsl:apply-templates/>
                 </xsl:element>
             </xsl:when>
-            <xsl:when test="@type = 'unordered'">
-                <xsl:element name="ul">
-                    <xsl:apply-templates select="@xml:id"/>
-                    <xsl:apply-templates/>
-                </xsl:element>
-            </xsl:when>
+        	<xsl:when test="@type = 'unordered'">
+        		<xsl:element name="ul">
+        			<xsl:apply-templates select="@xml:id"/>
+        			<xsl:attribute name="class" select="'tei_unorderedList'"/>
+        			<xsl:apply-templates/>
+        		</xsl:element>
+        	</xsl:when>
             <xsl:otherwise>
                 <xsl:element name="ul">
                     <xsl:apply-templates select="@xml:id"/>

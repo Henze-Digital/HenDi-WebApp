@@ -205,6 +205,17 @@ li.listSubTitle {
     }
 }
 
+.tei_unorderedList {
+    list-style: none;
+    margin-left: $tei_list-indent;
+    li::before {
+        content: "• ";
+    }
+    li.listTitle::before {
+        content: " ";
+    }
+}
+
 /* 
     <signed> und <seg> werden als 'block' gesetzt, 
     damit die Textausrichtung (s.u.) modifiziert werden kann 
