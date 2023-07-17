@@ -45,7 +45,9 @@
                         <xsl:attribute name="class">col-1 text-nowrap</xsl:attribute>
                         <xsl:element name="a">
                            <xsl:attribute name="href">#transcription</xsl:attribute>
-                           <xsl:attribute name="data-href"><xsl:value-of select="concat('#ref-',wega:createID(.))"/></xsl:attribute>
+                           <xsl:attribute name="data-href">
+                                        <xsl:value-of select="concat('#ref-',wega:createID(.))"/>
+                                    </xsl:attribute>
                            <xsl:attribute name="class">apparatus-link</xsl:attribute>
                            <xsl:number count="$textConstitutionNodes" level="any"/>
                            <xsl:text>.</xsl:text>
@@ -72,7 +74,9 @@
                         <xsl:attribute name="class">col-1 text-nowrap</xsl:attribute>
                         <xsl:element name="a">
                            <xsl:attribute name="href">#transcription</xsl:attribute>
-                           <xsl:attribute name="data-href"><xsl:value-of select="concat('#ref-',wega:createID(.))"/></xsl:attribute>
+                           <xsl:attribute name="data-href">
+                                        <xsl:value-of select="concat('#ref-',wega:createID(.))"/>
+                                    </xsl:attribute>
                            <xsl:attribute name="class">apparatus-link</xsl:attribute>
                            <xsl:number count="$commentaryNodes" level="any"/>
                            <xsl:text>.</xsl:text>
@@ -99,7 +103,9 @@
                         <xsl:attribute name="class">col-1 text-nowrap</xsl:attribute>
                         <xsl:element name="a">
                            <xsl:attribute name="href">#transcription</xsl:attribute>
-                           <xsl:attribute name="data-href"><xsl:value-of select="concat('#ref-',wega:createID(.))"/></xsl:attribute>
+                           <xsl:attribute name="data-href">
+                                        <xsl:value-of select="concat('#ref-',wega:createID(.))"/>
+                                    </xsl:attribute>
                            <xsl:attribute name="class">apparatus-link</xsl:attribute>
                            <xsl:number count="$rdgNodes" level="any"/>
                            <xsl:text>.</xsl:text>
@@ -126,7 +132,9 @@
       						<xsl:attribute name="class">col-1 text-nowrap</xsl:attribute>
       						<xsl:element name="a">
       							<xsl:attribute name="href">#transcription</xsl:attribute>
-      							<xsl:attribute name="data-href"><xsl:value-of select="concat('#ref-',wega:createID(.))"/></xsl:attribute>
+      							<xsl:attribute name="data-href">
+                                        <xsl:value-of select="concat('#ref-',wega:createID(.))"/>
+                                    </xsl:attribute>
       							<xsl:attribute name="class">apparatus-link</xsl:attribute>
       							<xsl:number count="$internalNodes" level="any"/>
       							<xsl:text>.</xsl:text>
@@ -153,7 +161,9 @@
                         <xsl:attribute name="class">col-1 text-nowrap</xsl:attribute>
                         <xsl:element name="a">
                            <xsl:attribute name="href">#transcription</xsl:attribute>
-                           <xsl:attribute name="data-href"><xsl:value-of select="concat('#ref-',wega:createID(.))"/></xsl:attribute>
+                           <xsl:attribute name="data-href">
+                                        <xsl:value-of select="concat('#ref-',wega:createID(.))"/>
+                                    </xsl:attribute>
                            <xsl:attribute name="class">apparatus-link</xsl:attribute>
                            <xsl:number count="$autoCommentaryNodes" level="any"/>
                            <xsl:text>.</xsl:text>
@@ -231,7 +241,9 @@
          <xsl:with-param name="counter-param">
             <xsl:choose>
                <xsl:when test="@type='textConst'"/>
-               <xsl:otherwise><xsl:value-of select="'note'"/></xsl:otherwise>
+               <xsl:otherwise>
+                        <xsl:value-of select="'note'"/>
+                    </xsl:otherwise>
             </xsl:choose>
          </xsl:with-param>
          <xsl:with-param name="lemma">
@@ -402,8 +414,12 @@
          <xsl:attribute name="data-title">
             <xsl:value-of select="wega:getLanguageString('appRdgs',$lang)"/>
          </xsl:attribute>
-         <xsl:attribute name="data-counter"><xsl:value-of select="$counter"/></xsl:attribute>
-         <xsl:attribute name="data-href"><xsl:value-of select="concat('#',$id)"/></xsl:attribute>
+         <xsl:attribute name="data-counter">
+                <xsl:value-of select="$counter"/>
+            </xsl:attribute>
+         <xsl:attribute name="data-href">
+                <xsl:value-of select="concat('#',$id)"/>
+            </xsl:attribute>
          <xsl:element name="div">
             <xsl:element name="strong">
                <!-- source containing the lemma the first available (not lost) text source by definition' -->
@@ -526,7 +542,10 @@
    </xsl:template>
 	
    <xsl:template name="unclearInDel">
-   	<xsl:element name="span"><xsl:text>(</xsl:text><xsl:value-of select="wega:getLanguageString('unclearDefault', $lang)"/><xsl:text>) </xsl:text>
+   	<xsl:element name="span">
+            <xsl:text>(</xsl:text>
+            <xsl:value-of select="wega:getLanguageString('unclearDefault', $lang)"/>
+            <xsl:text>) </xsl:text>
          
       </xsl:element>
    </xsl:template>
@@ -718,7 +737,9 @@
          </xsl:element>
          <xsl:element name="span">
           	<xsl:choose>
-          		<xsl:when test="@style"><xsl:attribute name="data-overtype" select="@style"/></xsl:when>
+          		<xsl:when test="@style">
+                        <xsl:attribute name="data-overtype" select="@style"/>
+                    </xsl:when>
           		<xsl:otherwise>
           		      <xsl:value-of select="string-join(for $x in 1 to $delLength return 'x','')"/>
           		   </xsl:otherwise>
@@ -873,9 +894,15 @@
       <xsl:call-template name="apparatusEntry">
          <xsl:with-param name="title">
          <xsl:choose>
-            <xsl:when test="self::tei:persName"><xsl:value-of select="wega:getLanguageString('persName',$lang)"/></xsl:when>
-            <xsl:when test="self::tei:orgName"><xsl:value-of select="wega:getLanguageString('orgName',$lang)"/></xsl:when>
-            <xsl:when test="self::tei:placeName"><xsl:value-of select="wega:getLanguageString('placeName',$lang)"/></xsl:when>
+            <xsl:when test="self::tei:persName">
+                        <xsl:value-of select="wega:getLanguageString('persName',$lang)"/>
+                    </xsl:when>
+            <xsl:when test="self::tei:orgName">
+                        <xsl:value-of select="wega:getLanguageString('orgName',$lang)"/>
+                    </xsl:when>
+            <xsl:when test="self::tei:placeName">
+                        <xsl:value-of select="wega:getLanguageString('placeName',$lang)"/>
+                    </xsl:when>
          </xsl:choose>
          </xsl:with-param>
          <xsl:with-param name="lemma" select="text()"/>
@@ -932,8 +959,12 @@
          <xsl:attribute name="data-title">
             <xsl:value-of select="$title"/>
          </xsl:attribute>
-         <xsl:attribute name="data-counter"><xsl:value-of select="$counter"/></xsl:attribute>
-         <xsl:attribute name="data-href"><xsl:value-of select="concat('#',$id)"/></xsl:attribute>
+         <xsl:attribute name="data-counter">
+                <xsl:value-of select="$counter"/>
+            </xsl:attribute>
+         <xsl:attribute name="data-href">
+                <xsl:value-of select="concat('#',$id)"/>
+            </xsl:attribute>
          <xsl:if test="$lemma">
             <xsl:element name="span">
                <xsl:attribute name="class" select="'tei_lemma'"/>
@@ -981,7 +1012,9 @@
 	      		   <xsl:variable name="lang-code-switched">
 	      		      <xsl:choose>
 	      		         <xsl:when test="@xml:lang eq 'en'">gb</xsl:when>
-	      		         <xsl:otherwise><xsl:value-of select="@xml:lang"/></xsl:otherwise>
+	      		         <xsl:otherwise>
+                                    <xsl:value-of select="@xml:lang"/>
+                                </xsl:otherwise>
 	      		      </xsl:choose>
 	      		   </xsl:variable>
 	      			<xsl:element name="li">
@@ -1019,8 +1052,13 @@
       
       <xsl:if test="$handNote">
          <xsl:choose>
-            <xsl:when test="$elem/self::tei:handShift"><xsl:value-of select="wega:getLanguageString('further', $lang)"/><xsl:text> </xsl:text></xsl:when>
-            <xsl:otherwise><xsl:text>, </xsl:text></xsl:otherwise>
+            <xsl:when test="$elem/self::tei:handShift">
+                    <xsl:value-of select="wega:getLanguageString('further', $lang)"/>
+                    <xsl:text> </xsl:text>
+                </xsl:when>
+            <xsl:otherwise>
+                    <xsl:text>, </xsl:text>
+                </xsl:otherwise>
          </xsl:choose>
          <xsl:value-of select="$handNoteScript"/>
          <xsl:if test="$handNoteMedium or $handNoteColor">   
@@ -1028,9 +1066,15 @@
             <xsl:choose>
                <xsl:when test="$handNoteMedium">
                   <xsl:value-of select="$handNoteMedium"/>
-                  <xsl:if test="$handNoteColor"><xsl:text> (</xsl:text><xsl:value-of select="$handNoteColor"/><xsl:text>)</xsl:text></xsl:if>
+                  <xsl:if test="$handNoteColor">
+                            <xsl:text> (</xsl:text>
+                            <xsl:value-of select="$handNoteColor"/>
+                            <xsl:text>)</xsl:text>
+                        </xsl:if>
                </xsl:when>
-               <xsl:when test="$handNoteColor"><xsl:value-of select="$handNoteColor"/></xsl:when>
+               <xsl:when test="$handNoteColor">
+                        <xsl:value-of select="$handNoteColor"/>
+                    </xsl:when>
             </xsl:choose>
          </xsl:if>
          <xsl:if test="$handNoteScribe">
