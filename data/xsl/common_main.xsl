@@ -729,9 +729,9 @@
         <xsl:variable name="default-textAlignment">
             <!-- datelines werden im closer standardmäßig linksbündig gesetzt, ansonsten rechtsbündig. Immer in eine eigene Zeile (display:block)-->
             <xsl:choose>
-                <xsl:when test="ancestor::tei:closer[not(@rend)]">left</xsl:when>
-                <xsl:when test="ancestor::tei:closer[@rend]">
-                    <xsl:value-of select="wega:getTextAlignment(ancestor::tei:closer/@rend, 'left')"/>
+            	<xsl:when test="ancestor::tei:closer[not(@rend)] or ancestor::tei:opener[not(@rend)]">left</xsl:when>
+            	<xsl:when test="ancestor::tei:closer[@rend] or ancestor::tei:opener[@rend]">
+            		<xsl:value-of select="wega:getTextAlignment((ancestor::tei:closer|ancestor::tei:opener)/@rend, 'left')"/>
                 </xsl:when>
                 <xsl:otherwise>right</xsl:otherwise>
             </xsl:choose>
