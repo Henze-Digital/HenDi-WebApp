@@ -313,6 +313,7 @@
                <xsl:when test="tei:del[@rend='strikethrough']">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
+               	<xsl:call-template name="unclearInDel"/>
                   <xsl:value-of select="wega:getLanguageString('substDelStrikethrough', $lang)"/>
                   <xsl:text> </xsl:text>
                   <xsl:sequence select="wega:enquote($lemma)"/>
@@ -320,6 +321,7 @@
                <xsl:when test="tei:del[@rend='overwritten']">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
+               	<xsl:call-template name="unclearInDel"/>
                   <xsl:value-of select="wega:getLanguageString('substDelOverwritten', $lang)"/>
                   <xsl:text> </xsl:text>
                   <xsl:sequence select="wega:enquote($lemma)"/>
@@ -327,6 +329,7 @@
                <xsl:when test="tei:del[@rend='overtyped']">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
+               	  <xsl:call-template name="unclearInDel"/>
                   <xsl:value-of select="wega:getLanguageString('substDelOvertyped', $lang)"/>
                   <xsl:text> </xsl:text>
                   <xsl:sequence select="wega:enquote($lemma)"/>
@@ -334,11 +337,13 @@
                <xsl:when test="tei:del[@rend='erased']">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
+               	<xsl:call-template name="unclearInDel"/>
                   <xsl:value-of select="wega:getLanguageString('delErased', $lang)"/>
                </xsl:when>
                <xsl:when test="tei:del">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
+               	  <xsl:call-template name="unclearInDel"/>
                   <xsl:value-of select="wega:getLanguageString('substDel', $lang)"/>
                   <xsl:text> </xsl:text>
                   <xsl:sequence select="wega:enquote($lemma)"/>
@@ -517,6 +522,12 @@
          <xsl:attribute name="class" select="concat('tei_', local-name())"/>
          <xsl:apply-templates/>
          <xsl:call-template name="popover"/>
+      </xsl:element>
+   </xsl:template>
+	
+   <xsl:template name="unclearInDel">
+   	<xsl:element name="span"><xsl:text>(</xsl:text><xsl:value-of select="wega:getLanguageString('unclearDefault', $lang)"/><xsl:text>) </xsl:text>
+         
       </xsl:element>
    </xsl:template>
 
