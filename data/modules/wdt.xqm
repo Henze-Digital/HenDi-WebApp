@@ -491,10 +491,10 @@ declare function wdt:works($item as item()*) as map(*) {
         },
         'label-facets' : function() as xs:string? {
             typeswitch($item)
-            case xs:string return str:normalize-space((crud:doc($item)//mei:fileDesc/mei:titleStmt/mei:title[not(@type)]|crud:doc($item)//tei:fileDesc/tei:titleStmt/tei:title[not(@type)])[1])
-            case xs:untypedAtomic return str:normalize-space((crud:doc($item)//mei:fileDesc/mei:titleStmt/mei:title[not(@type)]|crud:doc($item)//tei:fileDesc/tei:titleStmt/tei:title[not(@type)])[1])
-            case document-node() return str:normalize-space(($item//mei:fileDesc/mei:titleStmt/mei:title[not(@type)]|$item//tei:fileDesc/tei:titleStmt/tei:title[not(@type)])[1])
-            case element() return str:normalize-space(($item//mei:fileDesc/mei:titleStmt/mei:title[not(@type)]|$item//tei:fileDesc/tei:titleStmt/tei:title[not(@type)])[1])
+            case xs:string return str:normalize-space((crud:doc($item)//mei:fileDesc/mei:titleStmt/mei:title[not(@type)]|(crud:doc($item)//tei:biblStruct)[1]//tei:title)[1])
+            case xs:untypedAtomic return str:normalize-space((crud:doc($item)//mei:fileDesc/mei:titleStmt/mei:title[not(@type)]|(crud:doc($item)//tei:biblStruct)[1]//tei:title)[1])
+            case document-node() return str:normalize-space(($item//mei:fileDesc/mei:titleStmt/mei:title[not(@type)]|($item//tei:biblStruct)[1]//tei:title)[1])
+            case element() return str:normalize-space(($item//mei:fileDesc/mei:titleStmt/mei:title[not(@type)]|($item//tei:biblStruct)[1]//tei:title)[1])
             default return wega-util:log-to-file('error', 'wdt:works()("label-facests"): failed to get string')
         },
         'memberOf' : ('search', 'indices', 'unary-docTypes', 'sitemap'),
