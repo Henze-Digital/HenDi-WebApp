@@ -144,7 +144,7 @@ declare function wdt:letters($item as item()*) as map(*) {
                             return date:printDate($date, $lang, lang:get-language-string#3, $dateFormat)
         let $dateSender := $dateSender => string-join('/')
         let $dateAddressee := for $date in $TEI//tei:correspAction[@type='received']/tei:date
-                                return date:printDate($addressee, $lang, lang:get-language-string#3, $dateFormat)
+                                return date:printDate($date, $lang, lang:get-language-string#3, $dateFormat)
         let $dateAddressee := $dateAddressee => string-join('/')
         let $date := 
             if($dateSender) then $dateSender
