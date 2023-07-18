@@ -454,13 +454,9 @@ declare function wdt:works($item as item()*) as map(*) {
         },
         'init-sortIndex' : function() as item()* {
             sort:create-index-callback('works', wdt:works(())('init-collection')(), function($node) { 
-                functx:pad-integer-to-length(($node//mei:seriesStmt/mei:title[@level]|$node//tei:titleStmt/tei:title[@level])[1]/xs:int(@n), 4) || 
-                $node//mei:altId[@type = 'WeV']/string(@subtype) || 
-                (if($node//mei:altId[@type = 'WeV']/@n castable as xs:int) then
-                    functx:pad-integer-to-length($node//mei:altId[@type = 'WeV']/xs:int(@n), 4) 
-                else '9999') ||
-                $node//mei:altId[@type = 'WeV']/string() || 
-                ($node//mei:title|$node//tei:title)[1]
+                if($node//mei:work)
+                then(lower-case(string-join(tokenize($node//mei:work/mei:title//mei:titlePart[@type='main'],' '),'_')))
+                else(lower-case(string-join(tokenize(($node//tei:biblStruct//tei:title)[1],' '),'_')))
             }, ())
         },
         (: Sollte beim Titel noch der Komponist etc. angegeben werden? :)
