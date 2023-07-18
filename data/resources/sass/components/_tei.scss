@@ -187,11 +187,7 @@ li.listSubTitle {
     list-style:none;
 }
 
-.tei_simpleList {
-	list-style-type: none;
-}
-
-.tei_list {
+.tei_simpleList, .tei_list {
     list-style: none;
     margin-left: $tei_list-indent;
     li.listTitle, li.listSubTitle {
