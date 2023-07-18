@@ -431,11 +431,10 @@ declare function wdt:works($item as item()*) as map(*) {
             else false()
         },
         'filter' : function() as document-node()* {
-            $item/root()[mei:mei|tei:TEI][descendant::mei:meiHead|descendant::tei:teiHeader]
+            $item/root()[mei:mei|tei:TEI][descendant::mei:work|descendant::tei:teiHeader]
         },
         'filter-by-person' : function($personID as xs:string) as document-node()* {
-            $item/root()//mei:work//mei:persName[@codedval = $personID][@role=('cmp', 'lbt', 'lyr', 'aut', 'trl')]/root()  |
-            $item/root()//tei:biblStruct//(tei:persName|tei:author)[@key = $personID]/root() 
+            $item/root()[.//mei:work//mei:persName[@codedval = $personID] or .//tei:biblStruct//(tei:persName|tei:author)[@key = $personID]]
         },
         'filter-by-date' : function($dateFrom as xs:date?, $dateTo as xs:date?) as document-node()* {
             if(empty(($dateFrom, $dateTo))) then $item/root() 
@@ -451,7 +450,7 @@ declare function wdt:works($item as item()*) as map(*) {
             for $i in wdt:works($item)('filter')() order by sort:index('works', $i) return $i
         },
         'init-collection' : function() as document-node()* {
-            crud:data-collection('works')[mei:mei|tei:TEI][descendant::mei:meiHead|descendant::tei:teiHeader]
+            crud:data-collection('works')[mei:mei|tei:TEI][descendant::mei:work|descendant::tei:teiHeader]
         },
         'init-sortIndex' : function() as item()* {
             sort:create-index-callback('works', wdt:works(())('init-collection')(), function($node) { 
