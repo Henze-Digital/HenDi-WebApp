@@ -150,10 +150,12 @@ declare function wdt:letters($item as item()*) as map(*) {
             if($dateSender) then $dateSender
             else if($dateAddressee) then (lang:get-language-string('received', $lang) || ' ' || $dateAddressee)
             else ()
-        let $senderElem := ($TEI//tei:correspAction[@type='sent']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name or self::tei:rs[@type=('person', 'persons', 'org', 'orgs')]])[1]
-        let $sender := wega-util:print-forename-surname-from-nameLike-element($senderElem)
-        let $addresseeElem := ($TEI//tei:correspAction[@type='received']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name or self::tei:rs[@type=('person', 'persons', 'org', 'orgs')]])[1]
-        let $addressee := wega-util:print-forename-surname-from-nameLike-element($addresseeElem) 
+        let $senders := for $senderElem in $TEI//tei:correspAction[@type='sent']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name or self::tei:rs[@type=('person', 'persons', 'org', 'orgs')]]
+                        return wega-util:print-forename-surname-from-nameLike-element($senderElem) 
+        let $sender := $senders => string-join('/')
+        let $addressees := for $addresseeElem in $TEI//tei:correspAction[@type='received']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name or self::tei:rs[@type=('person', 'persons', 'org', 'orgs')]]
+                            return wega-util:print-forename-surname-from-nameLike-element($addresseeElem)
+        let $addressee := $addressees => string-join('/') 
         let $placeSender := 
             if(query:placeName-elements($TEI//tei:correspAction[@type='sent'])/@key) then query:title((query:placeName-elements($TEI//tei:correspAction[@type='sent'])/@key)[1])
             else str:normalize-space(query:placeName-elements($TEI//tei:correspAction[@type='sent'])[1])
