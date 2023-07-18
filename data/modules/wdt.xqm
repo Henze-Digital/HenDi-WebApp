@@ -228,8 +228,6 @@ declare function wdt:letters($item as item()*) as map(*) {
                 case document-node() return $item/tei:TEI
                 default return $item/root()/tei:TEI
             let $title-element := $constructLetterHead($TEI) 
-                (: if(functx:all-whitespace(($TEI//tei:fileDesc/tei:titleStmt/tei:title[@level = 'a'])[1])) then $constructLetterHead($TEI)
-                else ($TEI//tei:fileDesc/tei:titleStmt/tei:title[@level = 'a'])[1] :)
             return
                 switch($serialization)
                 case 'txt' return str:normalize-space(replace(string-join(str:txtFromTEI($title-element, config:guess-language(())), ''), '\s*\n+\s*(\S+)', '. $1'))
