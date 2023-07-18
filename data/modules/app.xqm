@@ -1962,8 +1962,8 @@ declare
 declare 
     %templates:default("lang", "en")
     function app:preview-subtitle($node as node(), $model as map(*), $lang as xs:string) as element()? {
-        let $main-title := ($model?doc//mei:meiHead/mei:fileDesc/mei:titleStmt/mei:title[not(@type=('sub', 'alt'))])[1]
-        let $sub-titles := $model?doc//mei:fileDesc/mei:titleStmt/mei:title[@type = 'sub'][string(@xml:lang) = $main-title/string(@xml:lang)]
+        let $main-title := ($model?doc//mei:meiHead//mei:workList/mei:work[1]/mei:title[@type='main'])[1]
+        let $sub-titles := $model?doc//mei:meiHead//mei:workList/mei:work[1]/mei:title[@type = 'sub'][string(@xml:lang) = $main-title/string(@xml:lang)]
         return 
             if($sub-titles) then
                 element {node-name($node)} {
