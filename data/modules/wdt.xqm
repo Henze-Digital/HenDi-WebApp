@@ -140,8 +140,12 @@ declare function wdt:letters($item as item()*) as map(*) {
             if ($lang = 'de') then '[FNn], [D]. [MNn] [Y]'
             else '[FNn], [MNn] [D], [Y]'
         }
-        let $dateSender := date:printDate(($TEI//tei:correspAction[@type='sent']/tei:date)[1], $lang, lang:get-language-string#3, $dateFormat)
-        let $dateAddressee := date:printDate(($TEI//tei:correspAction[@type='received']/tei:date)[1], $lang, lang:get-language-string#3, $dateFormat)
+        let $dateSender := for $date in $TEI//tei:correspAction[@type='sent']/tei:date
+                            return date:printDate($date, $lang, lang:get-language-string#3, $dateFormat)
+        let $dateSender := $dateSender => string-join('/')
+        let $dateAddressee := for $date in $TEI//tei:correspAction[@type='received']/tei:date
+                                return date:printDate($addressee, $lang, lang:get-language-string#3, $dateFormat)
+        let $dateAddressee := $dateAddressee => string-join('/')
         let $date := 
             if($dateSender) then $dateSender
             else if($dateAddressee) then (lang:get-language-string('received', $lang) || ' ' || $dateAddressee)
