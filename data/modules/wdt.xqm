@@ -478,9 +478,9 @@ declare function wdt:works($item as item()*) as map(*) {
                 case document-node() return $item/tei:TEI
                 default return $item/root()/tei:TEI
             let $title-element := if($mei)
-                                  then (($mei//mei:work)[1]//mei:titlePart[@type="main"])
+                                  then (($mei//mei:work)[1]/mei:title/mei:titlePart[@type="main"])
                                   else if($tei//tei:biblStruct)
-                                  then (($tei//tei:biblStruct)[1]//tei:title[1])
+                                  then ((($tei//tei:biblStruct)[1]//tei:title)[1])
                                   else ('no title found')
             return
                 switch($serialization)
@@ -490,10 +490,10 @@ declare function wdt:works($item as item()*) as map(*) {
         },
         'label-facets' : function() as xs:string? {
             typeswitch($item)
-            case xs:string return str:normalize-space((crud:doc($item)//mei:fileDesc/mei:titleStmt/mei:title[not(@type)]|(crud:doc($item)//tei:biblStruct)[1]//tei:title)[1])
-            case xs:untypedAtomic return str:normalize-space((crud:doc($item)//mei:fileDesc/mei:titleStmt/mei:title[not(@type)]|(crud:doc($item)//tei:biblStruct)[1]//tei:title)[1])
-            case document-node() return str:normalize-space(($item//mei:fileDesc/mei:titleStmt/mei:title[not(@type)]|($item//tei:biblStruct)[1]//tei:title)[1])
-            case element() return str:normalize-space(($item//mei:fileDesc/mei:titleStmt/mei:title[not(@type)]|($item//tei:biblStruct)[1]//tei:title)[1])
+            case xs:string return str:normalize-space((crud:doc($item)//mei:work[1]/mei:title/mei:titlePart[@type='main']|(crud:doc($item)//tei:biblStruct)[1]//tei:title)[1])
+            case xs:untypedAtomic return str:normalize-space((crud:doc($item)//mei:work[1]/mei:title/mei:titlePart[@type='main']|(crud:doc($item)//tei:biblStruct)[1]//tei:title)[1])
+            case document-node() return str:normalize-space(($item//mei:work[1]/mei:title/mei:titlePart[@type='main']|($item//tei:biblStruct)[1]//tei:title)[1])
+            case element() return str:normalize-space(($item//mei:work[1]/mei:title/mei:titlePart[@type='main']|($item//tei:biblStruct)[1]//tei:title)[1])
             default return wega-util:log-to-file('error', 'wdt:works()("label-facests"): failed to get string')
         },
         'memberOf' : ('search', 'indices', 'unary-docTypes', 'sitemap'),
