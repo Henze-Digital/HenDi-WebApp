@@ -103,3 +103,24 @@ declare function hwh-util:iterateResults($results as node()*, $sortParam as node
         return
             $result
 }; 
+
+(:~
+ : Returns a string of the title without leading articles and so on
+ : @author  Dennis Ried
+ : @param   $title the node to process
+:)
+declare function hwh-util:prepareTitleForSorting($title as node()) as xs:string?{
+    $title//text()
+    => string-join(' ')
+    => normalize-space()
+    => tokenize(' ')
+    => string-join('_')
+    => lower-case()
+    => replace("(^„)|(^l’)|(^l')|(la_)|(^le_)|(^les_)|(^un_)|(^une_)|(^the_) |(^a_)|(^an_)|(^der_)|(^die_)|(^das_)|(^ein_)|(^eine_)|(^el_)|(^i_)|(^il_)","")
+    => replace("^é","e")
+    => replace("^œ","oe")
+    => replace("^á","a")
+    => replace("^ä","a")
+    => replace("^ö","o")
+    => replace("^ü","u")
+};

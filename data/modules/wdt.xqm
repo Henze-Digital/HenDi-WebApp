@@ -14,6 +14,7 @@ import module namespace crud="http://xquery.weber-gesamtausgabe.de/modules/crud"
 import module namespace query="http://xquery.weber-gesamtausgabe.de/modules/query" at "query.xqm";
 import module namespace config="http://xquery.weber-gesamtausgabe.de/modules/config" at "config.xqm";
 import module namespace wega-util="http://xquery.weber-gesamtausgabe.de/modules/wega-util" at "wega-util.xqm";
+import module namespace hwh-util="http://henze-digital.zenmem.de/modules/hwh-util" at "hwh-util.xqm";
 import module namespace bibl="http://xquery.weber-gesamtausgabe.de/modules/bibl" at "bibl.xqm";
 import module namespace lang="http://xquery.weber-gesamtausgabe.de/modules/lang" at "lang.xqm";
 import module namespace str="http://xquery.weber-gesamtausgabe.de/modules/str" at "xmldb:exist:///db/apps/WeGA-WebApp-lib/xquery/str.xqm";
@@ -458,7 +459,9 @@ declare function wdt:works($item as item()*) as map(*) {
         },
         'init-sortIndex' : function() as item()* {
             sort:create-index-callback('works', wdt:works(())('init-collection')(), function($node) { 
-                if($node//mei:work)
+                if($node//mei:fileDesc/mei:titleStmt/mei:title)
+                then(hwh-util:prepareTitleForSorting($node//mei:fileDesc/mei:titleStmt/mei:title[1]))
+                else if($node//mei:work)
                 then(lower-case(string-join(tokenize($node//mei:work/mei:title//mei:titlePart[@type='main'],' '),'_')))
                 else(lower-case(string-join(tokenize(($node//tei:biblStruct//tei:title)[1],' '),'_')))
             }, ())
