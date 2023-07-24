@@ -2,6 +2,7 @@
 <xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
     xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" 
+    xmlns:hendi="http://henze-digital.zenmem.de/ns/1.0" 
     xmlns:tei="http://www.tei-c.org/ns/1.0" 
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     xmlns:rng="http://relaxng.org/ns/structure/1.0" 
@@ -423,6 +424,15 @@
         <xsl:for-each select="$doc//tei:language">
             <xsl:value-of select="functx:substring-before-if-contains(@ident, '-')"/>
         </xsl:for-each>
+    </xsl:function>
+    
+    <xsl:function name="hendi:isTypescript" as="xs:boolean">
+        <xsl:param name="docID" as="xs:string"/>
+        <xsl:variable name="doc" select="wega:doc($docID)"/>
+        <xsl:choose>
+            <xsl:when test="$doc//tei:handNotes/tei:handNote[1]/@script='typescript'"><xsl:sequence select="true()"/></xsl:when>
+            <xsl:otherwise><xsl:sequence select="false()"/></xsl:otherwise>
+        </xsl:choose>    
     </xsl:function>
 
     <!--  *********************************************  -->
