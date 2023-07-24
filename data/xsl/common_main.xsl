@@ -1,5 +1,5 @@
 <xsl:stylesheet xmlns="http://www.w3.
-    org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mei="http://www.music-encoding.org/ns/mei" xmlns:exist="http://exist.sourceforge.net/NS/exist" xmlns:teix="http://www.tei-c.org/ns/Examples" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:functx="http://www.functx.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" xmlns:xhtml="http://www.w3.org/1999/xhtml" version="2.0">
+    org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mei="http://www.music-encoding.org/ns/mei" xmlns:exist="http://exist.sourceforge.net/NS/exist" xmlns:teix="http://www.tei-c.org/ns/Examples" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:functx="http://www.functx.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" xmlns:hendi="http://henze-digital.zenmem.de/ns/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" version="2.0">
     
     <xsl:output encoding="UTF-8" method="html" omit-xml-declaration="yes" indent="no"/>
 
@@ -152,41 +152,208 @@
     
     <xsl:template name="enquote">
         <xsl:param name="double" select="true()"/>
+        <xsl:param name="typescript" select="true()"/>
+        <xsl:param name="special" select="true()"/>
         <xsl:param name="ellipsis" select="false()"/>
         <xsl:param name="lang" select="$lang"/>
         <xsl:choose>
-            <!-- German double quotation marks -->
-            <xsl:when test="$lang eq 'de' and $double">
-                <xsl:text>„</xsl:text>
-                <xsl:apply-templates mode="#current"/>
-                <xsl:if test="$ellipsis">
-                    <xsl:text>…</xsl:text>
-                </xsl:if>
-                <xsl:text>“</xsl:text>
+            <xsl:when test="$typescript">
+                <xsl:choose>
+                    <xsl:when test="@rend='none'">
+                        <xsl:apply-templates mode="#current"/>
+                    </xsl:when>
+                    <xsl:when test="not($double)">
+                        <xsl:text>'</xsl:text>
+                        <xsl:apply-templates mode="#current"/>
+                        <xsl:text>'</xsl:text>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:text>"</xsl:text>
+                        <xsl:apply-templates mode="#current"/>
+                        <xsl:text>"</xsl:text>
+                    </xsl:otherwise>
+                </xsl:choose>
             </xsl:when>
-            <xsl:when test="$lang eq 'en' and $double">
-                <xsl:text>“</xsl:text>
-                <xsl:apply-templates mode="#current"/>
-                <xsl:if test="$ellipsis">
-                    <xsl:text>…</xsl:text>
-                </xsl:if>
-                <xsl:text>”</xsl:text>
+            <xsl:when test="$special and $lang eq 'de'">
+                <xsl:choose>
+                    <xsl:when test="@rendLeft or @rendRight">
+                        <xsl:choose>
+                            <xsl:when test="@rendLeft='single down'">
+                                <xsl:text>,</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rendLeft='single up'">
+                                <xsl:text>‘</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rendLeft='double down'">
+                                <xsl:text>“</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rendLeft='double up'">
+                                <xsl:text>“</xsl:text>
+                            </xsl:when>
+                        </xsl:choose>
+                        <xsl:apply-templates mode="#current"/>
+                        <xsl:choose>
+                            <xsl:when test="@rendRight='single down'">
+                                <xsl:text>,</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rendRight='single up'">
+                                <xsl:text>‘</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rendRight='double down'">
+                                <xsl:text>„</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rendRight='double up'">
+                                <xsl:text>„</xsl:text>
+                            </xsl:when>
+                        </xsl:choose>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:choose>
+                            <xsl:when test="@rend='single down'">
+                                <xsl:text>,</xsl:text>
+                                <xsl:apply-templates mode="#current"/>
+                                <xsl:text>,</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rend='single up'">
+                                <xsl:text>‘</xsl:text>
+                                <xsl:apply-templates mode="#current"/>
+                                <xsl:text>‘</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rend='double down'">
+                                <xsl:text>“</xsl:text>
+                                <xsl:apply-templates mode="#current"/>
+                                <xsl:text>„</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rend='double up'">
+                                <xsl:text>“</xsl:text>
+                                <xsl:apply-templates mode="#current"/>
+                                <xsl:text>„</xsl:text>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:text>"</xsl:text>
+                                <xsl:apply-templates mode="#current"/>
+                                <xsl:text>"</xsl:text>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:otherwise>
+                </xsl:choose>
             </xsl:when>
-            <!-- German single quotation marks -->
-            <xsl:when test="$lang eq 'de' and not($double)">
-                <xsl:text>‚</xsl:text>
-                <xsl:apply-templates mode="#current"/>
-                <xsl:text>‘</xsl:text>
-            </xsl:when>
-            <xsl:when test="$lang eq 'en' and not($double)">
-                <xsl:text>‘</xsl:text>
-                <xsl:apply-templates mode="#current"/>
-                <xsl:text>’</xsl:text>
+            <xsl:when test="$special and $lang eq 'en'">
+                <xsl:choose>
+                    <xsl:when test="@rendLeft or @rendRight">
+                        <xsl:choose>
+                            <xsl:when test="@rendLeft='single down'">
+                                <xsl:text>’</xsl:text>
+                            </xsl:when>                                                        
+                            <xsl:when test="@rendLeft='single up'">
+                                <xsl:text>‘</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rendLeft='double up'">
+                                <xsl:text>“</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rendLeft='double down'">
+                                <xsl:text>”</xsl:text>
+                            </xsl:when>
+                        </xsl:choose>
+                        <xsl:apply-templates mode="#current"/>
+                        <xsl:choose>
+                            <xsl:when test="@rendRight='single down'">
+                                <xsl:text>,</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rendRight='single up'">
+                                <xsl:text>‘</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rendRight='double down'">
+                                <xsl:text>„</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rendRight='double up'">
+                                <xsl:text>„</xsl:text>
+                            </xsl:when>
+                        </xsl:choose>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:choose>
+                            <xsl:when test="@rend='single down'">
+                                <xsl:text>,</xsl:text>
+                                <xsl:apply-templates mode="#current"/>
+                                <xsl:text>,</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rend='single up'">
+                                <xsl:text>‘</xsl:text>
+                                <xsl:apply-templates mode="#current"/>
+                                <xsl:text>‘</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rend='double down'">
+                                <xsl:text>“</xsl:text>
+                                <xsl:apply-templates mode="#current"/>
+                                <xsl:text>„</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rend='double up'">
+                                <xsl:text>“</xsl:text>
+                                <xsl:apply-templates mode="#current"/>
+                                <xsl:text>„</xsl:text>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:text>"</xsl:text>
+                                <xsl:apply-templates mode="#current"/>
+                                <xsl:text>"</xsl:text>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:otherwise>
+                </xsl:choose>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:text>"</xsl:text>
-                <xsl:apply-templates mode="#current"/>
-                <xsl:text>"</xsl:text>
+                <xsl:choose>
+                    <!-- German double quotation marks -->
+                    <xsl:when test="@rend='none'">
+                        <xsl:apply-templates mode="#current"/>
+                    </xsl:when>
+                    <xsl:when test="$lang eq 'de' and $double">
+                        <xsl:text>„</xsl:text>
+                        <xsl:apply-templates mode="#current"/>
+                        <xsl:if test="$ellipsis">
+                            <xsl:text>…</xsl:text>
+                        </xsl:if>
+                        <xsl:text>“</xsl:text>
+                    </xsl:when>
+                    <xsl:when test="$lang eq 'en' and $double">
+                        <xsl:text>“</xsl:text>
+                        <xsl:apply-templates mode="#current"/>
+                        <xsl:if test="$ellipsis">
+                            <xsl:text>…</xsl:text>
+                        </xsl:if>
+                        <xsl:text>”</xsl:text>
+                    </xsl:when>
+                    <xsl:when test="$lang eq 'es' and $double">
+                        <xsl:text>«</xsl:text>
+                        <xsl:apply-templates mode="#current"/>
+                        <xsl:if test="$ellipsis">
+                            <xsl:text>…</xsl:text>
+                        </xsl:if>
+                        <xsl:text>»</xsl:text>
+                    </xsl:when>
+                    <!-- German single quotation marks -->
+                    <xsl:when test="$lang eq 'de' and not($double)">
+                        <xsl:text>‚</xsl:text>
+                        <xsl:apply-templates mode="#current"/>
+                        <xsl:text>‘</xsl:text>
+                    </xsl:when>
+                    <xsl:when test="$lang eq 'en' and not($double)">
+                        <xsl:text>‘</xsl:text>
+                        <xsl:apply-templates mode="#current"/>
+                        <xsl:text>’</xsl:text>
+                    </xsl:when>
+                    <xsl:when test="$lang eq 'es' and not($double)">
+                        <xsl:text>‹</xsl:text>
+                        <xsl:apply-templates mode="#current"/>
+                        <xsl:text>›</xsl:text>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:text>"</xsl:text>
+                        <xsl:apply-templates mode="#current"/>
+                        <xsl:text>"</xsl:text>
+                    </xsl:otherwise>
+                </xsl:choose>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -762,16 +929,21 @@
     <xsl:template match="tei:q|tei:quote|mei:q" priority="0.5" mode="#all">
         <xsl:choose>
         	<xsl:when test="@rend or self::tei:q or self::tei:quote or self::mei:q">
-                <xsl:variable name="doubleQuotes" select="                     (                     (count(ancestor::tei:q | ancestor::mei:q | ancestor::tei:quote[@rend]) mod 2) = 0                         or @rend='double-quotes'                     )                     and not(@rend='single-quotes')                     "/>
-                <xsl:call-template name="enquote">
+        	    
+        	    <xsl:variable name="doubleQuotes" select="((count(ancestor::tei:q | ancestor::mei:q | ancestor::tei:quote[@rend]) mod 2) = 0 or contains(@rend,'double')) and not(contains(@rend,'single'))"/>
+        	    <xsl:variable name="isTypescript" select="hendi:isTypescript($docID)"/>
+        	    <xsl:variable name="isSpecial" select="contains(@rend, ' ') or @rendRight or @rendLeft"/>
+        	    <xsl:call-template name="enquote">
+        	        <xsl:with-param name="special" select="$isSpecial"/>
                     <xsl:with-param name="double" select="$doubleQuotes"/>
+                    <xsl:with-param name="typescript" select="$isTypescript"/>
                     <xsl:with-param name="lang">
-                        <!-- for quotes occuring in the text body try to use the 
-                            proper quotation marks corresponding to the language of the text 
-                        -->
                         <xsl:variable name="docLang" select="wega:get-doc-languages($docID)[1]"/>
                         <xsl:choose>
-                            <xsl:when test="ancestor::tei:body and $docLang = ('de', 'en')">
+                            <xsl:when test="ancestor::tei:body and @xml:lang">
+                                <xsl:value-of select="@xml:lang"/>
+                            </xsl:when>
+                            <xsl:when test="ancestor::tei:body and $docLang = ('de', 'en', 'fr', 'es')">
                                 <xsl:value-of select="$docLang"/>
                             </xsl:when>
                             <xsl:otherwise>
