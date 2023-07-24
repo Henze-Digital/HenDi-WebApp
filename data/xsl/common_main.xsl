@@ -185,7 +185,7 @@
                                 <xsl:text>‘</xsl:text>
                             </xsl:when>
                             <xsl:when test="@rendLeft='double down'">
-                                <xsl:text>“</xsl:text>
+                                <xsl:text>„</xsl:text>
                             </xsl:when>
                             <xsl:when test="@rendLeft='double up'">
                                 <xsl:text>“</xsl:text>
@@ -203,7 +203,7 @@
                                 <xsl:text>„</xsl:text>
                             </xsl:when>
                             <xsl:when test="@rendRight='double up'">
-                                <xsl:text>„</xsl:text>
+                                <xsl:text>“</xsl:text>
                             </xsl:when>
                         </xsl:choose>
                     </xsl:when>
@@ -220,14 +220,14 @@
                                 <xsl:text>‘</xsl:text>
                             </xsl:when>
                             <xsl:when test="@rend='double down'">
-                                <xsl:text>“</xsl:text>
+                                <xsl:text>„</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>„</xsl:text>
                             </xsl:when>
                             <xsl:when test="@rend='double up'">
                                 <xsl:text>“</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
-                                <xsl:text>„</xsl:text>
+                                <xsl:text>“</xsl:text>
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:text>"</xsl:text>
@@ -243,55 +243,119 @@
                     <xsl:when test="@rendLeft or @rendRight">
                         <xsl:choose>
                             <xsl:when test="@rendLeft='single down'">
-                                <xsl:text>’</xsl:text>
+                                <xsl:text>‘</xsl:text>
                             </xsl:when>                                                        
                             <xsl:when test="@rendLeft='single up'">
-                                <xsl:text>‘</xsl:text>
-                            </xsl:when>
-                            <xsl:when test="@rendLeft='double up'">
-                                <xsl:text>“</xsl:text>
+                                <xsl:text>’</xsl:text>
                             </xsl:when>
                             <xsl:when test="@rendLeft='double down'">
+                                <xsl:text>“</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rendLeft='double up'">
                                 <xsl:text>”</xsl:text>
                             </xsl:when>
                         </xsl:choose>
                         <xsl:apply-templates mode="#current"/>
                         <xsl:choose>
                             <xsl:when test="@rendRight='single down'">
-                                <xsl:text>,</xsl:text>
-                            </xsl:when>
-                            <xsl:when test="@rendRight='single up'">
                                 <xsl:text>‘</xsl:text>
                             </xsl:when>
+                            <xsl:when test="@rendRight='single up'">
+                                <xsl:text>’</xsl:text>
+                            </xsl:when>
                             <xsl:when test="@rendRight='double down'">
-                                <xsl:text>„</xsl:text>
+                                <xsl:text>“</xsl:text>
                             </xsl:when>
                             <xsl:when test="@rendRight='double up'">
-                                <xsl:text>„</xsl:text>
+                                <xsl:text>”</xsl:text>
                             </xsl:when>
                         </xsl:choose>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:choose>
                             <xsl:when test="@rend='single down'">
-                                <xsl:text>,</xsl:text>
+                                <xsl:text>‘</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
-                                <xsl:text>,</xsl:text>
+                                <xsl:text>‘</xsl:text>
                             </xsl:when>
                             <xsl:when test="@rend='single up'">
-                                <xsl:text>‘</xsl:text>
+                                <xsl:text>’</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
-                                <xsl:text>‘</xsl:text>
+                                <xsl:text>’</xsl:text>
                             </xsl:when>
                             <xsl:when test="@rend='double down'">
                                 <xsl:text>“</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
-                                <xsl:text>„</xsl:text>
+                                <xsl:text>“</xsl:text>
                             </xsl:when>
                             <xsl:when test="@rend='double up'">
-                                <xsl:text>“</xsl:text>
+                                <xsl:text>”</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
-                                <xsl:text>„</xsl:text>
+                                <xsl:text>”</xsl:text>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:text>"</xsl:text>
+                                <xsl:apply-templates mode="#current"/>
+                                <xsl:text>"</xsl:text>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:when>
+            <xsl:when test="$special and $lang = ('fr','es')">
+                <xsl:choose>
+                    <xsl:when test="@rendLeft or @rendRight">
+                        <xsl:choose>
+                            <xsl:when test="@rendLeft='single down'">
+                                <xsl:text>‹</xsl:text>
+                            </xsl:when>                                                        
+                            <xsl:when test="@rendLeft='single up'">
+                                <xsl:text>›</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rendLeft='double down'">
+                                <xsl:text>«</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rendLeft='double up'">
+                                <xsl:text>»</xsl:text>
+                            </xsl:when>
+                        </xsl:choose>
+                        <xsl:apply-templates mode="#current"/>
+                        <xsl:choose>
+                            <xsl:when test="@rendRight='single down'">
+                                <xsl:text>‹</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rendRight='single up'">
+                                <xsl:text>›</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rendRight='double down'">
+                                <xsl:text>«</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rendRight='double up'">
+                                <xsl:text>»</xsl:text>
+                            </xsl:when>
+                        </xsl:choose>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:choose>
+                            <xsl:when test="@rend='single down'">
+                                <xsl:text>‹</xsl:text>
+                                <xsl:apply-templates mode="#current"/>
+                                <xsl:text>‹</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rend='single up'">
+                                <xsl:text>›</xsl:text>
+                                <xsl:apply-templates mode="#current"/>
+                                <xsl:text>›</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rend='double down'">
+                                <xsl:text>«</xsl:text>
+                                <xsl:apply-templates mode="#current"/>
+                                <xsl:text>«</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="@rend='double up'">
+                                <xsl:text>»</xsl:text>
+                                <xsl:apply-templates mode="#current"/>
+                                <xsl:text>»</xsl:text>
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:text>"</xsl:text>
