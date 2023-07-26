@@ -923,25 +923,29 @@ declare
     %templates:wrap
     %templates:default("lang", "en")
     function app:person-basic-data($node as node(), $model as map(*), $lang as xs:string) as map(*) {
-        map{
-            'fullnames' : $model('doc')//tei:persName[@type = 'full'] ! string-join(str:txtFromTEI(., $lang), ''),
-            'pseudonyme' : $model('doc')//tei:persName[@type = 'pseud'] ! string-join(str:txtFromTEI(., $lang), ''),
-            'birthnames' : $model('doc')//tei:persName[@subtype = 'birth'] ! string-join(str:txtFromTEI(., $lang), ''),
-            'realnames' : $model('doc')//tei:persName[@type = 'real'] ! string-join(str:txtFromTEI(., $lang), ''),
-            'altnames' : 
-                (
-                $model('doc')//tei:persName[@type = 'alt'][not(@subtype)] ! string-join(str:txtFromTEI(., $lang), ''),  
-                $model('doc')//tei:orgName[@type = 'alt'] ! string-join(str:txtFromTEI(., $lang), '')
-                ),
-            'marriednames' : $model('doc')//tei:persName[@subtype = 'married'] ! string-join(str:txtFromTEI(., $lang), ''),
-            'birth' : exists($model('doc')//tei:birth[not(tei:date) or tei:date[not(@type)]]),
-            'baptism' : exists($model('doc')//tei:birth/tei:date[@type='baptism']),
-            'death' : exists($model('doc')//tei:death[not(tei:date) or tei:date[not(@type)]]),
-            'funeral' : exists($model('doc')//tei:death/tei:date[@type = 'funeral']),
-            'occupations' : $model('doc')//tei:occupation | $model('doc')//tei:label[.='Art der Institution']/following-sibling::tei:desc,
-            'residences' : $model('doc')//tei:residence | $model('doc')//tei:label[.='Ort']/following-sibling::tei:desc/tei:*,
-            'addrLines' : $model('doc')//tei:addrLine[ancestor::tei:affiliation[tei:orgName='Carl-Maria-von-Weber-Gesamtausgabe']] 
-        }
+        let $wegaSpecs := $model('doc')//tei:residence | $model('doc')//tei:label[.='Ort']/following-sibling::tei:desc/tei:*
+        let $hendiSpecs := $model('doc')//tei:org//tei:settlement | $model('doc')//tei:org//tei:country
+        let $residences := $wegaSpecs | $hendiSpecs
+        return
+	        map{
+	            'fullnames' : $model('doc')//tei:persName[@type = 'full'] ! string-join(str:txtFromTEI(., $lang), ''),
+	            'pseudonyme' : $model('doc')//tei:persName[@type = 'pseud'] ! string-join(str:txtFromTEI(., $lang), ''),
+	            'birthnames' : $model('doc')//tei:persName[@subtype = 'birth'] ! string-join(str:txtFromTEI(., $lang), ''),
+	            'realnames' : $model('doc')//tei:persName[@type = 'real'] ! string-join(str:txtFromTEI(., $lang), ''),
+	            'altnames' : 
+	                (
+	                $model('doc')//tei:persName[@type = 'alt'][not(@subtype)] ! string-join(str:txtFromTEI(., $lang), ''),  
+	                $model('doc')//tei:orgName[@type = 'alt'] ! string-join(str:txtFromTEI(., $lang), '')
+	                ),
+	            'marriednames' : $model('doc')//tei:persName[@subtype = 'married'] ! string-join(str:txtFromTEI(., $lang), ''),
+	            'birth' : exists($model('doc')//tei:birth[not(tei:date) or tei:date[not(@type)]]),
+	            'baptism' : exists($model('doc')//tei:birth/tei:date[@type='baptism']),
+	            'death' : exists($model('doc')//tei:death[not(tei:date) or tei:date[not(@type)]]),
+	            'funeral' : exists($model('doc')//tei:death/tei:date[@type = 'funeral']),
+	            'occupations' : $model('doc')//tei:occupation | $model('doc')//tei:label[.='Art der Institution']/following-sibling::tei:desc,
+	            'residences' : $residences,
+	            'addrLines' : $model('doc')//tei:addrLine[ancestor::tei:affiliation[tei:orgName='Carl-Maria-von-Weber-Gesamtausgabe']] 
+	        }
 };
 
 declare 
