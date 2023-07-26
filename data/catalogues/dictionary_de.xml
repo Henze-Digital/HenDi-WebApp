@@ -747,6 +747,7 @@
     <entry xml:id="physDesc.objectDesc.form.statement.fee">Honorar-Abrechnung</entry>
     <entry xml:id="physDesc.objectDesc.form.telegram">Telegramm</entry>
     <entry xml:id="physDesc.objectDesc.form.unknown">Unbekannt</entry>
+	<entry xml:id="physDesc.objectDesc.material.copy.carbon">Durchschlag</entry>
 	
     <entry xml:id="assignmentNotClear">Zuordnung nicht eindeutig</entry>
     <entry xml:id="into">ins</entry>

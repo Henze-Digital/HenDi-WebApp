@@ -738,6 +738,7 @@
     <entry xml:id="physDesc.objectDesc.form.statement.fee">Fee statement</entry>
     <entry xml:id="physDesc.objectDesc.form.telegram">Telegram</entry>
     <entry xml:id="physDesc.objectDesc.form.unknown">Unknown</entry>
+	<entry xml:id="physDesc.objectDesc.material.copy.carbon">Carbon copy</entry>
     
     <entry xml:id="assignmentNotClear">Assignment not clear</entry>
     <entry xml:id="into">into</entry>
