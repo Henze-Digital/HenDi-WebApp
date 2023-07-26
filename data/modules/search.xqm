@@ -60,8 +60,8 @@ declare
             switch($docType)
             (: search page :)
             case 'search' return search:search-session(map:merge(($model, $filters, map:entry('docID', 'indices'))), search:search#1)
-            (: controller sends docType=persons which needs to be turned into "personsPlus" here :)
-            case 'persons' return search:list(map:merge(($filters, map:put($model, 'docType', 'personsPlus'))))
+            (: Wefor GA: controller sends docType=persons which needs to be turned into "personsPlus" here :)
+            case 'persons' return search:list(map:merge(($filters, map:put($model, 'docType', 'persons'))))
             (: various list views :)
             default return search:list(map:merge(($filters, map:put($model, 'docType', $docType))))
 };
