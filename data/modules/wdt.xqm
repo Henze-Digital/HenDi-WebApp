@@ -72,7 +72,7 @@ declare function wdt:orgs($item as item()*) as map(*) {
             return
                 wdt:orgs($doc)('title')('txt') || ' (' || string-join($doc//tei:state[tei:label='Art der Institution']/tei:desc, ', ') || ')'
         },
-        'memberOf' : ('indices', 'sitemap', 'unary-docTypes'), (: 'search':)
+        'memberOf' : ('search','indices', 'sitemap', 'unary-docTypes'), (: 'search':)
         'search' : function($query as element(query)) {
             $item[tei:org]/tei:org[ft:query(., $query)] | 
             $item[tei:org]//tei:orgName[ft:query(., $query)][@type]
@@ -129,7 +129,7 @@ declare function wdt:persons($item as item()*) as map(*) {
                 case element() return str:normalize-space(($item/root()//tei:persName[@type = 'reg']))
                 default return wega-util:log-to-file('error', 'wdt:persons()("label-facests"): failed to get string')
         },
-        'memberOf' : ('indices', 'sitemap', 'unary-docTypes'),
+        'memberOf' : ('search','indices', 'sitemap', 'unary-docTypes'),
         'search' : function($query as element(query)) {
             $item[tei:person]/tei:person[ft:query(., $query)] | 
             $item[tei:person]//tei:persName[ft:query(., $query)][@type]
@@ -320,46 +320,6 @@ declare function wdt:translations($item as item()*) as map(*) {
     }
 };
 
-
-declare function wdt:personsPlus($item as item()*) as map(*) {
-    let $filter := function($docs as document-node()*) as document-node()* {
-        wdt:orgs($docs)('filter')() | wdt:persons($docs)('filter')()
-    }
-    return
-    map {
-        'name' : 'personsPlus',
-        'prefix' : (),
-        'check' : function() as xs:boolean {
-            if($item castable as xs:string) then matches($item, config:wrap-regex('personsPlusIdPattern'))
-            else false()
-        },
-        'filter' : function() as document-node()* {
-            $filter($item)
-        },
-        'filter-by-person' : function($personID as xs:string) as document-node()* {
-            () 
-        },
-        'filter-by-date' : function($dateFrom as xs:date?, $dateTo as xs:date?) as document-node()* {
-            $wdt:filter-by-date($item, $dateFrom, $dateTo)/root() => $filter()
-        },
-        'sort' : function($params as map(*)?) as document-node()* {
-            if(sort:has-index('personsPlus')) then ()
-            else (wdt:personsPlus(())('init-sortIndex')()),
-            for $i in $filter($item) order by sort:index('personsPlus', $i) ascending return $i
-        },
-        'init-collection' : function() as document-node()* {
-            wdt:orgs($item)('init-collection')() | wdt:persons($item)('init-collection')()
-        },
-        'init-sortIndex' : function() as item()* {
-            sort:create-index-callback('personsPlus', wdt:personsPlus(())('init-collection')(), function($node) {
-                if($node/tei:org) then lower-case(str:normalize-space($node//tei:orgName[@type = 'reg']))
-                else wdt:sort-key-person($node)
-            }, ())
-        },
-        'memberOf' : (), (:'search', 'indices':)
-        'search' : ()
-    }
-};
 
 declare function wdt:writings($item as item()*) as map(*) {
     let $filter := function($docs as document-node()*) as document-node()* {
@@ -1180,7 +1140,7 @@ declare function wdt:indices($item as item()*) as map(*) {
 
 (:~
  : Helper function for creating a sort key for persons
- : Called by wdt:persons and wdt:personsPlus
+ : Called by wdt:persons
 ~:)
 declare %private function wdt:sort-key-person($node as node()) as xs:string? {
     let $sortName :=

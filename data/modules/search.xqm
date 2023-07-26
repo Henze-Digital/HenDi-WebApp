@@ -123,7 +123,7 @@ declare
             default return $docType
 (:        let $log := util:log-system-out($model('docType') || ' - ' || $model('docID')):)
         (: Need to distinguish between contacts and other person previews :)
-        let $usage := if(wdt:personsPlus(($model('docID')))('check')() and $model('docType') = 'contacts') then 'contacts' else ''
+        let $usage := if((wdt:persons(($model('docID')))('check')() or wdt:orgs(($model('docID')))('check')()) and $model('docType') = 'contacts') then 'contacts' else ''
         (: Since docID will be overwritten by app:preview we need to preserve it to know what the parent page is :)
         let $newModel := map:merge(($model, map:entry('parent-docID', $model('docID')), map:entry('usage', $usage)))
         return

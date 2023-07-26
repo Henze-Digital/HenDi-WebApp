@@ -735,8 +735,8 @@ declare function api:validate-works($model as map(*)) as map(*)? {
  : or by sending a comma separated list as the value of one URL parameter
 ~:)
 declare function api:validate-persons($model as map(*)) as map(*)? {
-    if(every $i in $model?persons ! tokenize(., ',') satisfies wdt:personsPlus($i)('check')()) then map { 'persons': $model?persons ! tokenize(., ',') }
-    else error($api:INVALID_PARAMETER, 'Unsupported value for parameter "persons". It must be a WeGA person or org ID.' )
+    if(every $i in $model?persons ! tokenize(., ',') satisfies wdt:persons($i)('check')()) then map { 'persons': $model?persons ! tokenize(., ',') }
+    else error($api:INVALID_PARAMETER, 'Unsupported value for parameter "persons". It must be a person ID.' )
 }; 
 
 (:~
@@ -746,7 +746,7 @@ declare function api:validate-persons($model as map(*)) as map(*)? {
 ~:)
 declare function api:validate-orgs($model as map(*)) as map(*)? {
     if(every $i in $model?orgs ! tokenize(., ',') satisfies wdt:orgs($i)('check')()) then map { 'orgs': $model?orgs ! tokenize(., ',') }
-    else error($api:INVALID_PARAMETER, 'Unsupported value for parameter "orgs". It must be a WeGA org ID.' )
+    else error($api:INVALID_PARAMETER, 'Unsupported value for parameter "orgs". It must be a org ID.' )
 }; 
 
 (:~
@@ -835,7 +835,8 @@ declare function api:validate-docStatus($model as map(*)) as map(*)? {
  : or by sending a comma separated list as the value of one URL parameter
 ~:)
 declare function api:validate-addressee($model as map(*)) as map(*)? {
-    if(every $i in $model?addressee ! tokenize(., ',') satisfies wdt:personsPlus($i)('check')()) then map { 'addressee': $model?addressee ! tokenize(., ',') }
+    if(every $i in $model?addressee ! tokenize(., ',') satisfies wdt:persons($i)('check')()) then map { 'addressee': $model?addressee ! tokenize(., ',') }
+    else if(every $i in $model?addressee ! tokenize(., ',') satisfies wdt:orgs($i)('check')()) then map { 'addressee': $model?addressee ! tokenize(., ',') }
     else error($api:INVALID_PARAMETER, 'Unsupported value for parameter "addressee". It must be a WeGA person or org ID.' )
 }; 
 
@@ -845,7 +846,8 @@ declare function api:validate-addressee($model as map(*)) as map(*)? {
  : or by sending a comma separated list as the value of one URL parameter
 ~:)
 declare function api:validate-sender($model as map(*)) as map(*)? {
-    if(every $i in $model?sender ! tokenize(., ',') satisfies wdt:personsPlus($i)('check')()) then map { 'sender': $model?sender ! tokenize(., ',') }
+    if(every $i in $model?sender ! tokenize(., ',') satisfies wdt:persons($i)('check')()) then map { 'sender': $model?sender ! tokenize(., ',') }
+    else if(every $i in $model?sender ! tokenize(., ',') satisfies wdt:orgs($i)('check')()) then map { 'sender': $model?sender ! tokenize(., ',') }
     else error($api:INVALID_PARAMETER, 'Unsupported value for parameter "sender". It must be a WeGA person or org ID.' )
 }; 
 
