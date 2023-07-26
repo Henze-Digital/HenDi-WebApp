@@ -73,7 +73,10 @@ declare function wdt:orgs($item as item()*) as map(*) {
                 wdt:orgs($doc)('title')('txt') || ' (' || string-join($doc//tei:state[tei:label='Art der Institution']/tei:desc, ', ') || ')'
         },
         'memberOf' : ('indices', 'sitemap', 'unary-docTypes'), (: 'search':)
-        'search' : ()
+        'search' : function($query as element(query)) {
+            $item[tei:org]/tei:org[ft:query(., $query)] | 
+            $item[tei:org]//tei:orgName[ft:query(., $query)][@type]
+        }
     }
 };
 
@@ -127,7 +130,10 @@ declare function wdt:persons($item as item()*) as map(*) {
                 default return wega-util:log-to-file('error', 'wdt:persons()("label-facests"): failed to get string')
         },
         'memberOf' : ('indices', 'sitemap', 'unary-docTypes'),
-        'search' : ()
+        'search' : function($query as element(query)) {
+            $item[tei:person]/tei:person[ft:query(., $query)] | 
+            $item[tei:person]//tei:persName[ft:query(., $query)][@type]
+        }
     }
 };
 
@@ -350,13 +356,8 @@ declare function wdt:personsPlus($item as item()*) as map(*) {
                 else wdt:sort-key-person($node)
             }, ())
         },
-        'memberOf' : ('search'), (:'search', 'indices':)
-        'search' : function($query as element(query)) {
-            $item[tei:org]/tei:org[ft:query(., $query)] | 
-            $item[tei:org]//tei:orgName[ft:query(., $query)][@type] |
-            $item[tei:person]/tei:person[ft:query(., $query)] | 
-            $item[tei:person]//tei:persName[ft:query(., $query)][@type]
-        }
+        'memberOf' : (), (:'search', 'indices':)
+        'search' : ()
     }
 };
 
