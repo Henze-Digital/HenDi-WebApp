@@ -124,6 +124,12 @@ hr.tei_pb-text:before {
     transform: translate(-50%, -50%);
 }
 
+.tei_quote_bloc {
+	font-size: medium;
+	text-align: justify;
+	line-height: 1.5;
+}
+
 /*  for development … */
 .tei_cssUndefined {
     border: 1px solid red;

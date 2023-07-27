@@ -1022,7 +1022,22 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
+	
+    <xsl:template match="tei:quote[@type='bloc']">
+    	<xsl:element name="div">
+    		<xsl:attribute name="class">row</xsl:attribute>
+	    	<xsl:element name="div">
+	    		<xsl:attribute name="class">col-1</xsl:attribute>
+	    	</xsl:element>
+	    	<xsl:element name="div">
+	    		<xsl:attribute name="class">col-10 tei_quote_bloc</xsl:attribute>
+	    		<xsl:apply-templates/>
+	    	</xsl:element>
+	    	<xsl:element name="div">
+	    		<xsl:attribute name="class">col-1</xsl:attribute>
+	    	</xsl:element>
+    	</xsl:element>
+    </xsl:template>
     <xsl:template match="tei:soCalled" mode="#all">
         <xsl:call-template name="enquote">
             <xsl:with-param name="double" select="false()"/>
