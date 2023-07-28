@@ -1378,7 +1378,7 @@ declare
             case 'diaries' return $doc/tei:ab ! app:inject-query(.)
             case 'works' return $doc/mei:mei ! app:inject-query(.)
             case 'var' case 'addenda' return ($doc//tei:text/tei:body ! app:inject-query(.))/(tei:div[@xml:lang=$lang] | tei:divGen | tei:div[not(@xml:lang)])
-            case 'thematicCommentaries' return $doc//tei:text/tei:body ! app:inject-query(.) | $doc//tei:text/tei:back
+            case 'thematicCommentaries' return ($doc//tei:text/tei:body ! app:inject-query(.))/(tei:div[@xml:lang=$lang] | tei:div[not(@xml:lang)]) | $doc//tei:text/tei:back
             default return $doc//tei:text ! app:inject-query(.)
         let $body := 
              if(functx:all-whitespace(<root>{$textRoot}</root>))
