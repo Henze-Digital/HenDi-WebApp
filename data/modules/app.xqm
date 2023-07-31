@@ -867,7 +867,7 @@ declare
         return
         map {
             'ids' : $model?doc//mei:altId[not(@type=('gnd', 'wikidata', 'dracor.einakter'))],
-            'relators' : query:relators($model?doc)[self::mei:*/@role[. = ('cmp', 'lbt', 'lyr', 'arr', 'aut', 'trl')] or self::tei:author or (self::mei:persName|self::mei:corpName)[@role = 'mus'][parent::mei:contributor]],
+            'relators' : query:relators($model?doc)[self::mei:*/@role[. = ('cmp', 'lbt', 'lyr', 'arr', 'aut', 'trl')] or self::tei:*/@role[. = ('arr', 'trl')] or self::tei:author or (self::mei:persName|self::mei:corpName)[@role = 'mus'][parent::mei:contributor]],
             'workType' : $workType,
             'workTypeLabel' : if($workType) then(lang:get-language-string($workType, config:guess-language(()))) else(),
             'titles' : $print-titles($model?doc, false()),
@@ -1896,7 +1896,7 @@ declare
                 if(config:is-person($model?parent-docID)) then controller:create-url-for-doc-in-context($model?result-page-entry, $lang, $model?parent-docID)
                 else controller:create-url-for-doc($model('result-page-entry'), $lang),
             'docType' : config:get-doctype-by-id($model('result-page-entry')/root()/*/data(@xml:id)),
-            'relators' : query:relators($model('result-page-entry'))[self::mei:*/@role[. = ('cmp', 'lbt', 'lyr', 'arr')] or self::tei:author or (self::mei:persName|self::mei:corpName)[@role = 'mus'][parent::mei:contributor]],
+            'relators' : query:relators($model('result-page-entry'))[self::mei:*/@role[. = ('cmp', 'lbt', 'lyr', 'arr')] or self::tei:*/@role[. = ('arr', 'trl')] or self::tei:author or (self::mei:persName|self::mei:corpName)[@role = 'mus'][parent::mei:contributor]],
             'biblioType' : $model('result-page-entry')/tei:biblStruct/data(@type),
             'workType' : $workType,
             'workTypeLabel' : if($workType) then(lang:get-language-string($workType, $lang)) else(),
@@ -2017,6 +2017,7 @@ declare
     %templates:default("lang", "en")
     function app:preview-relator-role($node as node(), $model as map(*), $lang as xs:string) as xs:string? {
         if($model('relator')/self::mei:*/@role) then lang:get-language-string($model('relator')/data(@role), $lang)
+        else if($model('relator')/self::tei:*/@role) then lang:get-language-string($model('relator')/data(@role), $lang)
         else if($model('relator')/self::tei:author) then lang:get-language-string('aut', $lang)
         else wega-util:log-to-file('warn', 'app:preview-relator-role(): Failed to reckognize role')
 };
@@ -2026,6 +2027,8 @@ declare
     %templates:default("lang", "en")
     function app:preview-relator-trlLang($node as node(), $model as map(*), $lang as xs:string) as xs:string? {
         if($model('relator')/self::mei:*[@role[. = 'trl'] and @label])
+        then ('(' || lang:get-language-string('into', $lang) || ' ' || lang:get-language-string($model('relator')/data(@label), $lang) || (if($lang = 'de') then ('e') else()) ||')')
+        else if($model('relator')/self::tei:*[@role[. = 'trl'] and @label])
         then ('(' || lang:get-language-string('into', $lang) || ' ' || lang:get-language-string($model('relator')/data(@label), $lang) || (if($lang = 'de') then ('e') else()) ||')')
         else wega-util:log-to-file('warn', 'app:preview-relator-trlLang(): Failed to reckognize label')
 };
