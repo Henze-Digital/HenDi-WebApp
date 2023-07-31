@@ -767,6 +767,7 @@
 	
 	<entry xml:id="switchDocumentView">Zur Dokumentansicht wechseln</entry>
     
+    <entry xml:id="workTypeMedium">Medium</entry>
     <entry xml:id="music">Musikalsiches Werk</entry>
     <entry xml:id="cd">Compact disc (CD)</entry>
     <entry xml:id="tape">Tonband (Tape)</entry>

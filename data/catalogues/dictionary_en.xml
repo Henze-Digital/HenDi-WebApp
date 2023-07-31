@@ -758,6 +758,7 @@
 	
 	<entry xml:id="switchDocumentView">Switch to document view</entry>
     
+    <entry xml:id="workTypeMedium">Medium</entry>
     <entry xml:id="music">Musical work</entry>
     <entry xml:id="cd">Compact disc (CD)</entry>
     <entry xml:id="tape">Tape</entry>
