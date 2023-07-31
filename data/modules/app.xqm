@@ -1882,7 +1882,7 @@ declare
                 if(config:is-person($model?parent-docID)) then controller:create-url-for-doc-in-context($model?result-page-entry, $lang, $model?parent-docID)
                 else controller:create-url-for-doc($model('result-page-entry'), $lang),
             'docType' : config:get-doctype-by-id($model('result-page-entry')/root()/*/data(@xml:id)),
-            'relators' : query:relators($model('result-page-entry'))[self::mei:*/@role[. = ('cmp', 'lbt', 'lyr', 'arr')] or self::tei:author],
+            'relators' : query:relators($model('result-page-entry'))[self::mei:*/@role[. = ('cmp', 'lbt', 'lyr', 'arr')] or self::tei:author or (self::mei:persName|self::mei:corpName)[@role = 'mus'][parent::mei:contributor]],
             'biblioType' : $model('result-page-entry')/tei:biblStruct/data(@type),
             'workType' : $model('result-page-entry')//mei:term/data(@class),
             'newsDate' : date:printDate($model('result-page-entry')//tei:date[parent::tei:publicationStmt], $lang, lang:get-language-string#3, $config:default-date-picture-string)
@@ -1994,7 +1994,7 @@ declare
     %templates:wrap
     %templates:default("lang", "en")
     function app:preview-relator-trlLang($node as node(), $model as map(*), $lang as xs:string) as xs:string? {
-        if($model('relator')/self::*[@role[. = 'trl'] and @label])
+        if($model('relator')/self::mei:*[@role[. = 'trl'] and @label])
         then ('(' || lang:get-language-string('into', $lang) || ' ' || lang:get-language-string($model('relator')/data(@label), $lang) || (if($lang = 'de') then ('e') else()) ||')')
         else wega-util:log-to-file('warn', 'app:preview-relator-trlLang(): Failed to reckognize label')
 };
