@@ -766,4 +766,10 @@
     <entry xml:id="envelope">Briefumschlag</entry>
 	
 	<entry xml:id="switchDocumentView">Zur Dokumentansicht wechseln</entry>
+    
+    <entry xml:id="music">Musikalsiches Werk</entry>
+    <entry xml:id="cd">Compact disc (CD)</entry>
+    <entry xml:id="tape">Tonband (Tape)</entry>
+    <entry xml:id="film">Filmwerk</entry>
+    <entry xml:id="lp">Langspielplatte (LP)</entry>
 </dictionary>
