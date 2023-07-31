@@ -3,8 +3,10 @@ xquery version "3.1";
 module namespace hwh-util="http://henze-digital.zenmem.de/modules/hwh-util";
 
 import module namespace functx="http://www.functx.com";
+import module namespace crud="http://xquery.weber-gesamtausgabe.de/modules/crud" at "crud.xqm";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
+declare namespace mei="http://www.music-encoding.org/ns/mei";
 declare namespace html="http://www.w3.org/1999/xhtml";
 declare namespace map="http://www.w3.org/2005/xpath-functions/map";
 
@@ -123,4 +125,12 @@ declare function hwh-util:prepareTitleForSorting($title as node()) as xs:string?
     => replace("^ä","a")
     => replace("^ö","o")
     => replace("^ü","u")
+};
+(:~
+ : Returns a string of the work Type
+ : @author  Dennis Ried
+ : @param   $docID 
+:)
+declare function hwh-util:get-work-type($docID as xs:string) as xs:string?{
+    (crud:doc($docID)//(mei:term|mei:work[not(parent::mei:componentList)]|tei:biblStruct)[1]/data(@class))[1]
 };

@@ -30,6 +30,7 @@ import module namespace core="http://xquery.weber-gesamtausgabe.de/modules/core"
 import module namespace lang="http://xquery.weber-gesamtausgabe.de/modules/lang" at "lang.xqm";
 import module namespace query="http://xquery.weber-gesamtausgabe.de/modules/query" at "query.xqm";
 import module namespace wega-util="http://xquery.weber-gesamtausgabe.de/modules/wega-util" at "wega-util.xqm";
+import module namespace hwh-util="http://henze-digital.zenmem.de/modules/hwh-util" at "hwh-util.xqm";
 import module namespace str="http://xquery.weber-gesamtausgabe.de/modules/str" at "xmldb:exist:///db/apps/WeGA-WebApp-lib/xquery/str.xqm";
 import module namespace wdt="http://xquery.weber-gesamtausgabe.de/modules/wdt" at "wdt.xqm";
 import module namespace controller="http://xquery.weber-gesamtausgabe.de/modules/controller" at "controller.xqm";
@@ -475,11 +476,11 @@ declare %private function img:get-generic-portrait($model as map(*), $lang as xs
         if(config:is-org($model('docID'))) then 'org'
         else if(config:is-place($model('docID'))) then 'place'
         else if($model('doc')//mei:term/data(@class) = 'http://d-nb.info/standards/elementset/gnd#MusicalWork') then 'musicalWork'
-        else if(config:is-work($model('docID')) and $model('workType') = 'music') then 'musicalWork'
-        else if(config:is-work($model('docID')) and $model('workType') = 'tape') then 'tape'
-        else if(config:is-work($model('docID')) and $model('workType') = 'cd') then 'compactDisc'
-        else if(config:is-work($model('docID')) and $model('workType') = 'film') then 'film'
-        else if(config:is-work($model('docID')) and $model('workType') = 'lp') then 'longPlay'
+        else if(config:is-work($model('docID')) and hwh-util:get-work-type($model('docID')) = 'music') then 'musicalWork'
+        else if(config:is-work($model('docID')) and hwh-util:get-work-type($model('docID')) = 'tape') then 'tape'
+        else if(config:is-work($model('docID')) and hwh-util:get-work-type($model('docID')) = 'cd') then 'compactDisc'
+        else if(config:is-work($model('docID')) and hwh-util:get-work-type($model('docID')) = 'film') then 'film'
+        else if(config:is-work($model('docID')) and hwh-util:get-work-type($model('docID')) = 'lp') then 'longPlay'
         else if(config:is-work($model('docID'))) then 'otherWork'
         else $model('doc')//tei:sex/text()
     return
