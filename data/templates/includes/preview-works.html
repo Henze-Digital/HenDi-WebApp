@@ -19,7 +19,8 @@
             </a>
         </h3>
         <h4 class="media-heading" data-template="app:preview-subtitle">Some subtitle</h4>
-        <p data-template="app-shared:if-exists" data-template-key="workType">
+        <h4 class="media-heading" data-template="app:preview-titleDesc">Some description</h4>
+        <p data-template="app-shared:if-matches" data-template-key="workType" data-template-value="tape lp cd film">
             <strong data-template="lang:translate">workTypeMedium</strong>: <span data-template="app-shared:print" data-template-key="workTypeLabel">Musikalisches Werk</span>
         </p>
         <p data-template="app-shared:each" data-template-from="relators" data-template-to="relator">

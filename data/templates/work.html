@@ -87,8 +87,15 @@
                         <strong data-template="lang:translate">altTitle</strong>: <span data-template="app-shared:output" data-template-key="title">Ein Titel</span>
                     </li>
                 </ol>
-                <ol class="media" data-template="app-shared:if-exists" data-template-key="workType">
-                    <li><strong data-template="lang:translate">workTypeMedium</strong>: <span data-template="app-shared:print" data-template-key="workTypeLabel">Musikalisches Werk</span></li>
+                <ol class="media" data-template="app-shared:each" data-template-from="descTitles" data-template-to="title">
+                    <li>
+                        <strong data-template="lang:translate">descTitle</strong>: <span data-template="app-shared:output" data-template-key="title">Ein beschreibender Titel</span>
+                    </li>
+                </ol>
+                <ol class="media" data-template="app-shared:if-matches" data-template-key="workType" data-template-value="tape lp cd film">
+                    <li>
+                        <strong data-template="lang:translate">workTypeMedium</strong>: <span data-template="app-shared:print" data-template-key="workTypeLabel">Musikalisches Werk</span>
+                    </li>
                 </ol>
                 <ol class="media" data-template="app-shared:each" data-template-from="relators" data-template-to="relator">
                     <li>

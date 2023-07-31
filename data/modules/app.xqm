@@ -834,6 +834,15 @@ declare
                 else ()
             }</span>
         }
+        let $print-titles-desc := function($doc as document-node()) {
+            for $titleDesc in $doc//mei:meiHead//mei:workList/mei:work[1]//mei:titlePart[@type = 'desc']
+            let $titleLang := $titleDesc/string(@xml:lang) 
+            return <span xmlns="http://www.w3.org/1999/xhtml">{
+                string-join(wega-util:transform($titleDesc, doc(concat($config:xsl-collection-path, '/works.xsl')), config:get-xsl-params(())), '. '),
+                if($titleLang) then ' (' || $titleLang || ')'
+                else ()
+            }</span>
+        }
         let $print-authors := function($doc as document-node(), $alt as xs:boolean) {
             for $author in ($doc//tei:sourceDesc/tei:biblStruct//tei:author)
             return <span xmlns="http://www.w3.org/1999/xhtml">{
@@ -855,9 +864,6 @@ declare
             }</span>
         }
         let $workType := ($model?doc//(mei:term|mei:work[not(parent::mei:componentList)]|tei:biblStruct)[1]/data(@class|@type))[1]
-        let $workType := switch ($workType)
-                            case 'music' return ''
-                            default return $workType
         return
         map {
             'ids' : $model?doc//mei:altId[not(@type=('gnd', 'wikidata', 'dracor.einakter'))],
@@ -867,6 +873,7 @@ declare
             'titles' : $print-titles($model?doc, false()),
             'authors' : $print-authors($model?doc, false()),
             'altTitles' : $print-titles($model?doc, true()),
+            'descTitles' : $print-titles-desc($model?doc),
             'publication': $publication($model?doc, true()),
             'publisher': $publisher($model?doc, true()),
             'pubPlace': $pubPlace($model?doc, true())
@@ -1881,9 +1888,6 @@ declare
     %templates:default("lang", "en")
     function app:preview($node as node(), $model as map(*), $lang as xs:string) as map(*) {
         let $workType := ($model('result-page-entry')//(mei:term|mei:work[not(parent::mei:componentList)]|tei:biblStruct)[1]/data(@class))[1]
-        let $workType := switch ($workType)
-                            case 'music' return ''
-                            default return $workType
         return
             map {
             'doc' : $model('result-page-entry'),
@@ -1977,8 +1981,8 @@ declare
 declare 
     %templates:default("lang", "en")
     function app:preview-subtitle($node as node(), $model as map(*), $lang as xs:string) as element()? {
-        let $main-title := ($model?doc//mei:meiHead//mei:workList/mei:work[1]/mei:title[@type='main'])[1]
-        let $sub-titles := $model?doc//mei:meiHead//mei:workList/mei:work[1]/mei:title[@type = 'sub'][string(@xml:lang) = $main-title/string(@xml:lang)]
+        let $main-title := ($model?doc//mei:meiHead//mei:workList/mei:work[1]//mei:titlePart[@type='main'])[1]
+        let $sub-titles := $model?doc//mei:meiHead//mei:workList/mei:work[1]//mei:titlePart[@type = 'sub'][string(@xml:lang) = $main-title/string(@xml:lang)]
         return 
             if($sub-titles) then
                 element {node-name($node)} {
@@ -1991,6 +1995,22 @@ declare
             else ()
 };
 
+declare 
+    %templates:default("lang", "en")
+    function app:preview-titleDesc($node as node(), $model as map(*), $lang as xs:string) as element()? {
+        let $main-title := ($model?doc//mei:meiHead//mei:workList/mei:work[1]//mei:titlePart[@type='main'])[1]
+        let $desc-titles := $model?doc//mei:meiHead//mei:workList/mei:work[1]//mei:titlePart[@type = 'desc'][string(@xml:lang) = $main-title/string(@xml:lang)]
+        return 
+            if($desc-titles) then
+                element {node-name($node)} {
+                    $node/@*,
+                    data(
+                        (: output the first matching subtitle :)
+                        $desc-titles[1]
+                    )
+                }
+            else ()
+};
 
 declare 
     %templates:wrap
