@@ -632,7 +632,7 @@ declare function query:placeName-elements($parent-nodes as node()*) as node()* {
 ~:)
 declare function query:relators($doc as document-node()?) as element()* {
     $doc//mei:fileDesc/mei:titleStmt/mei:respStmt/mei:persName[@role][not(@role='dte')] |
-    $doc//mei:workList/mei:work[1]//mei:persName[@role][not(@role='dte')] | query:get-author-element($doc)
+    $doc//mei:workList/mei:work[1]//(mei:persName|mei:corpName)[@role][not(@role='dte')] | query:get-author-element($doc)
 };
 
 (:~

@@ -264,6 +264,7 @@
     <entry xml:id="aut">Verfasst von</entry>
     <entry xml:id="arr">Bearbeitung von</entry>
     <entry xml:id="chr">Choreographiert von</entry>
+    <entry xml:id="mus">Ausgeführt von</entry>
     <!--  Facets  -->
     <entry xml:id="filter">Filter</entry>
     <entry xml:id="dedicatees">Widmung an</entry>

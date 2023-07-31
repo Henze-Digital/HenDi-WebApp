@@ -264,6 +264,7 @@
     <entry xml:id="aut">Author</entry>
     <entry xml:id="arr">Arranger</entry>
     <entry xml:id="chr">Choreographer</entry>
+    <entry xml:id="mus">Performer</entry>
     <!--  Facets  -->
     <entry xml:id="filter">Filter</entry>
     <entry xml:id="dedicatees">Dedicatees</entry>
