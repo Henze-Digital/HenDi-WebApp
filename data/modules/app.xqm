@@ -854,11 +854,16 @@ declare
                     wega-util:transform($segment, doc(concat($config:xsl-collection-path, '/works.xsl')), config:get-xsl-params(()))
             }</span>
         }
+        let $workType := ($model?doc//(mei:term|mei:work[not(parent::mei:componentList)]|tei:biblStruct)[1]/data(@class|@type))[1]
+        let $workType := switch ($workType)
+                            case 'music' return ''
+                            default return $workType
         return
         map {
             'ids' : $model?doc//mei:altId[not(@type=('gnd', 'wikidata', 'dracor.einakter'))],
             'relators' : query:relators($model?doc)[self::mei:*/@role[. = ('cmp', 'lbt', 'lyr', 'arr', 'aut', 'trl')] or self::tei:author or (self::mei:persName|self::mei:corpName)[@role = 'mus'][parent::mei:contributor]],
-            'workType' : $model?doc//(mei:term|mei:work|tei:biblStruct)[1]/data(@class|@type),
+            'workType' : $workType,
+            'workTypeLabel' : if($workType) then(lang:get-language-string($workType, config:guess-language(()))) else(),
             'titles' : $print-titles($model?doc, false()),
             'authors' : $print-authors($model?doc, false()),
             'altTitles' : $print-titles($model?doc, true()),
@@ -1875,7 +1880,12 @@ declare
     %templates:wrap
     %templates:default("lang", "en")
     function app:preview($node as node(), $model as map(*), $lang as xs:string) as map(*) {
-        map {
+        let $workType := ($model('result-page-entry')//(mei:term|mei:work[not(parent::mei:componentList)]|tei:biblStruct)[1]/data(@class))[1]
+        let $workType := switch ($workType)
+                            case 'music' return ''
+                            default return $workType
+        return
+            map {
             'doc' : $model('result-page-entry'),
             'docID' : $model('result-page-entry')/root()/*/data(@xml:id),
             'docURL' : 
@@ -1884,7 +1894,8 @@ declare
             'docType' : config:get-doctype-by-id($model('result-page-entry')/root()/*/data(@xml:id)),
             'relators' : query:relators($model('result-page-entry'))[self::mei:*/@role[. = ('cmp', 'lbt', 'lyr', 'arr')] or self::tei:author or (self::mei:persName|self::mei:corpName)[@role = 'mus'][parent::mei:contributor]],
             'biblioType' : $model('result-page-entry')/tei:biblStruct/data(@type),
-            'workType' : $model('result-page-entry')//(mei:term|mei:work|tei:biblStruct)[1]/data(@class|@type),
+            'workType' : $workType,
+            'workTypeLabel' : if($workType) then(lang:get-language-string($workType, $lang)) else(),
             'newsDate' : date:printDate($model('result-page-entry')//tei:date[parent::tei:publicationStmt], $lang, lang:get-language-string#3, $config:default-date-picture-string)
         }
 };
