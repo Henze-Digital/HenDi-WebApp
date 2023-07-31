@@ -858,7 +858,7 @@ declare
         map {
             'ids' : $model?doc//mei:altId[not(@type=('gnd', 'wikidata', 'dracor.einakter'))],
             'relators' : query:relators($model?doc)[self::mei:*/@role[. = ('cmp', 'lbt', 'lyr', 'arr', 'aut', 'trl')] or self::tei:author or (self::mei:persName|self::mei:corpName)[@role = 'mus'][parent::mei:contributor]],
-            'workType' : $model?doc//(mei:term|tei:biblStruct)/data(@class|@type),
+            'workType' : $model?doc//(mei:term|mei:work|tei:biblStruct)[1]/data(@class|@type),
             'titles' : $print-titles($model?doc, false()),
             'authors' : $print-authors($model?doc, false()),
             'altTitles' : $print-titles($model?doc, true()),
@@ -1884,7 +1884,7 @@ declare
             'docType' : config:get-doctype-by-id($model('result-page-entry')/root()/*/data(@xml:id)),
             'relators' : query:relators($model('result-page-entry'))[self::mei:*/@role[. = ('cmp', 'lbt', 'lyr', 'arr')] or self::tei:author or (self::mei:persName|self::mei:corpName)[@role = 'mus'][parent::mei:contributor]],
             'biblioType' : $model('result-page-entry')/tei:biblStruct/data(@type),
-            'workType' : $model('result-page-entry')//mei:term/data(@class),
+            'workType' : $model('result-page-entry')//(mei:term|mei:work|tei:biblStruct)[1]/data(@class|@type),
             'newsDate' : date:printDate($model('result-page-entry')//tei:date[parent::tei:publicationStmt], $lang, lang:get-language-string#3, $config:default-date-picture-string)
         }
 };
