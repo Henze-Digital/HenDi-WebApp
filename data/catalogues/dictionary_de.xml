@@ -681,7 +681,7 @@
 	<entry xml:id="geonamesFeatureClass_T">Berg, Hügel, …</entry>
 	<entry xml:id="geonamesFeatureClass_V">Wald, Heide, …</entry>
 	
-    <entry xml:id="further">Im Weiteren</entry>
+    <entry xml:id="further">Folgend</entry>
     
     <!-- colors -->
     <entry xml:id="color.blue">blau</entry>

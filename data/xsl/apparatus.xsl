@@ -1088,7 +1088,7 @@
              <xsl:choose>
                 <xsl:when test="$elem/self::tei:handShift">
                         <xsl:value-of select="wega:getLanguageString('further', $lang)"/>
-                        <xsl:text> </xsl:text>
+                        <xsl:text>: </xsl:text>
                     </xsl:when>
                 <xsl:otherwise>
                         <xsl:text>, </xsl:text>
@@ -1124,7 +1124,7 @@
          </xsl:when>
          <xsl:otherwise>
             <xsl:value-of select="wega:getLanguageString('further', $lang)"/>
-            <xsl:text> </xsl:text>
+            <xsl:text>: </xsl:text>
              <xsl:value-of select="wega:getLanguageString(concat('handshift',  functx:capitalize-first($elem/@script)), $lang)"/>
          </xsl:otherwise>
       </xsl:choose>
