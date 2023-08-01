@@ -130,6 +130,10 @@ hr.tei_pb-text:before {
 	line-height: 1.5;
 }
 
+.tei_choice, .tei_subst {
+	display: inline-block;
+}
+
 /*  for development … */
 .tei_cssUndefined {
     border: 1px solid red;
