@@ -146,6 +146,20 @@
                          Köln, Gotha
                       </div>
                    </li>
+                    <li class="media states" data-template="app-shared:if-exists" data-template-key="states">
+                        <div class="pull-left">                  
+                            <i class="fa fa-university"/> <!-- fa-industry -->
+                        </div>
+                        <div class="media-body" data-template="app-shared:join" data-template-key="states">
+                            Weiterbildungsanstalt
+                        </div>
+                    </li>
+                    <li class="media bibls" data-template="app-shared:each" data-template-from="bibls" data-template-to="bibl">
+                        <div class="pull-left">
+                            <i class="fa fa-book"/>
+                        </div>
+                        <div class="media-body"> <span data-template="app-shared:print" data-template-key="bibl">https://henze-digital.zenmem.de</span></div>
+                    </li>
                 </ol>
             </div>
             <div class="col-md col-sm-12 iconographie" data-template="app-shared:if-not-exists" data-template-key="addrLines">

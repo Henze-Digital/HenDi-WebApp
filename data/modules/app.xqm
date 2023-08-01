@@ -956,6 +956,8 @@ declare
 	            'funeral' : exists($model('doc')//tei:death/tei:date[@type = 'funeral']),
 	            'occupations' : $model('doc')//tei:occupation | $model('doc')//tei:label[.='Art der Institution']/following-sibling::tei:desc,
 	            'residences' : $residences,
+	            'states' : $model('doc')//tei:state[@type='orgType']//tei:term,
+	            'bibls' : $model('doc')//tei:listBibl/tei:bibl,
 	            'addrLines' : $model('doc')//tei:addrLine[ancestor::tei:affiliation[tei:orgName='Carl-Maria-von-Weber-Gesamtausgabe']] 
 	        }
 };
