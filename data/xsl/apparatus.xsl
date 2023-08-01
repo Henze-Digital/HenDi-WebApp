@@ -1122,11 +1122,12 @@
               </xsl:element>
              </xsl:if>
          </xsl:when>
-         <xsl:otherwise>
+         <xsl:when test="local-name($elem) = 'handShift'">
             <xsl:value-of select="wega:getLanguageString('further', $lang)"/>
             <xsl:text>: </xsl:text>
-             <xsl:value-of select="wega:getLanguageString(concat('handshift',  functx:capitalize-first($elem/@script)), $lang)"/>
-         </xsl:otherwise>
+             <xsl:value-of select="wega:getLanguageString(concat('handshift',  functx:capitalize-first($elem/@script)), $lang)"/> 
+         </xsl:when>
+         <xsl:otherwise/>
       </xsl:choose>
    </xsl:function>
 	
