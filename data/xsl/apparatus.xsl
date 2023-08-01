@@ -1083,44 +1083,51 @@
       <xsl:variable name="handNoteColor" select="wega:getLanguageString(concat('color.',$handNote/@hendi:color), $lang)"/>
       <xsl:variable name="handNoteScribe" select="$handNote/@scribe"/>
       
-      <xsl:if test="$handNote">
-         <xsl:choose>
-            <xsl:when test="$elem/self::tei:handShift">
-                    <xsl:value-of select="wega:getLanguageString('further', $lang)"/>
-                    <xsl:text> </xsl:text>
-                </xsl:when>
-            <xsl:otherwise>
-                    <xsl:text>, </xsl:text>
-                </xsl:otherwise>
-         </xsl:choose>
-         <xsl:value-of select="$handNoteScript"/>
-         <xsl:if test="$handNoteMedium or $handNoteColor">   
-            <xsl:text>, </xsl:text>
-            <xsl:choose>
-               <xsl:when test="$handNoteMedium">
-                  <xsl:value-of select="$handNoteMedium"/>
-                  <xsl:if test="$handNoteColor">
-                            <xsl:text> (</xsl:text>
-                            <xsl:value-of select="$handNoteColor"/>
-                            <xsl:text>)</xsl:text>
-                        </xsl:if>
-               </xsl:when>
-               <xsl:when test="$handNoteColor">
-                        <xsl:value-of select="$handNoteColor"/>
+      <xsl:choose>
+          <xsl:when test="$handNote">
+             <xsl:choose>
+                <xsl:when test="$elem/self::tei:handShift">
+                        <xsl:value-of select="wega:getLanguageString('further', $lang)"/>
+                        <xsl:text> </xsl:text>
                     </xsl:when>
-            </xsl:choose>
-         </xsl:if>
-         <xsl:if test="$handNoteScribe">
-          <xsl:text>, </xsl:text>
-          <xsl:element name="a">
-             <xsl:attribute name="class">
-                <xsl:value-of select="wega:preview-class($handNote)"/>
-             </xsl:attribute>
-             <xsl:attribute name="href" select="wega:createLinkToDoc($handNoteScribe, $lang)"/>
-             <xsl:value-of select="wega:doc($handNoteScribe)//tei:persName[@type='reg']"/>
-          </xsl:element>
-         </xsl:if>
-      </xsl:if>
+                <xsl:otherwise>
+                        <xsl:text>, </xsl:text>
+                    </xsl:otherwise>
+             </xsl:choose>
+             <xsl:value-of select="$handNoteScript"/>
+             <xsl:if test="$handNoteMedium or $handNoteColor">   
+                <xsl:text>, </xsl:text>
+                <xsl:choose>
+                   <xsl:when test="$handNoteMedium">
+                      <xsl:value-of select="$handNoteMedium"/>
+                      <xsl:if test="$handNoteColor">
+                                <xsl:text> (</xsl:text>
+                                <xsl:value-of select="$handNoteColor"/>
+                                <xsl:text>)</xsl:text>
+                            </xsl:if>
+                   </xsl:when>
+                   <xsl:when test="$handNoteColor">
+                            <xsl:value-of select="$handNoteColor"/>
+                        </xsl:when>
+                </xsl:choose>
+             </xsl:if>
+             <xsl:if test="$handNoteScribe">
+              <xsl:text>, </xsl:text>
+              <xsl:element name="a">
+                 <xsl:attribute name="class">
+                    <xsl:value-of select="wega:preview-class($handNote)"/>
+                 </xsl:attribute>
+                 <xsl:attribute name="href" select="wega:createLinkToDoc($handNoteScribe, $lang)"/>
+                 <xsl:value-of select="wega:doc($handNoteScribe)//tei:persName[@type='reg']"/>
+              </xsl:element>
+             </xsl:if>
+         </xsl:when>
+         <xsl:otherwise>
+            <xsl:value-of select="wega:getLanguageString('further', $lang)"/>
+            <xsl:text> </xsl:text>
+             <xsl:value-of select="wega:getLanguageString(concat('handshift',  functx:capitalize-first($elem/@script)), $lang)"/>
+         </xsl:otherwise>
+      </xsl:choose>
    </xsl:function>
 	
    <xsl:variable name="sort-order" as="element()+">
