@@ -893,6 +893,16 @@ declare
                 config:get-xsl-params( map {'dbPath' : document-uri($model?doc), 'docID' : $model?docID })
                 ), 
             'dedicatees' : $model?doc//mei:fileDesc/mei:titleStmt/mei:respStmt/mei:persName[@role='dte'],
+            'castList': wega-util:transform(
+                $model?doc//mei:perfMedium/mei:castList,
+                doc(concat($config:xsl-collection-path, '/works.xsl')), 
+                config:get-xsl-params( map {'dbPath' : document-uri($model?doc), 'docID' : $model?docID })
+                ),
+            'perfResList': wega-util:transform(
+                $model?doc//mei:perfMedium/mei:perfResList,
+                doc(concat($config:xsl-collection-path, '/works.xsl')), 
+                config:get-xsl-params( map {'dbPath' : document-uri($model?doc), 'docID' : $model?docID })
+                ),
             'notesStmt': wega-util:transform(
                 $model?doc//mei:notesStmt,
                 doc(concat($config:xsl-collection-path, '/works.xsl')), 
