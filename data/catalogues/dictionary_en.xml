@@ -335,7 +335,7 @@
     <entry xml:id="metaTitleIndex-biblio">Index of bibliographic entries</entry>
     <entry xml:id="metaTitleIndex-documents">Index of documents</entry>
     <entry xml:id="metaTitleIndex-indices">Complete Index</entry>
-    <entry xml:id="metaTitleIndex-thematicCommentaries">Index of commentaries (Ed.)</entry>
+    <entry xml:id="metaTitleIndex-thematicCommentaries">Index of commentaries</entry>
     <entry xml:id="metaTitleError">That doesn't sound good!</entry>
     <entry xml:id="metaDescriptionError">Error page</entry>
     <!--<entry xml:id="metaTitleDiscoBiblio">Discography – Bibliography</entry>-->
@@ -489,13 +489,13 @@
     <entry xml:id="all_works">All Works</entry>
     <entry xml:id="all_documents">All Documents</entry>
     <entry xml:id="all_places">All Places</entry>
-    <entry xml:id="all_thematicCommentaries">All Commentaries (Ed.)</entry>
     <entry xml:id="henzes_person">Henze's Person</entry>
     <entry xml:id="henzes_correspondence">Henze's Correspondence</entry>
     <entry xml:id="henzes_writings">Henze's Writings</entry>
     <entry xml:id="henzes_diaries">Henze's Diaries</entry>
     <entry xml:id="henzes_documents">Henze's Documents</entry>
     <entry xml:id="henzes_works">Henze's Works</entry>
+    <entry xml:id="all_thematicCommentaries">All Commentaries</entry>
     <entry xml:id="project">Project</entry>
     <entry xml:id="biblio">Bibliography</entry>
     <entry xml:id="complete_indices">Complete Indices</entry>
@@ -518,8 +518,8 @@
     <entry xml:id="searchTerm">search term</entry>
     <entry xml:id="credits">Credits</entry>
     <entry xml:id="calendar">Calendar</entry>
-    <entry xml:id="thematicCommentaries">Commentaries (Ed.)</entry>
-	<entry xml:id="thematicCom">Commentary (Ed.)</entry>
+    <entry xml:id="thematicCommentaries">Commentaries</entry>
+	<entry xml:id="thematicCom">Commentary</entry>
     <entry xml:id="endNotes">Endnotes</entry>
     <entry xml:id="endNote">Endnote</entry>
     <entry xml:id="originalFootnotes">[Original Footnotes]</entry>

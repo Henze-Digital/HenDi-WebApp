@@ -499,13 +499,13 @@
     <entry xml:id="all_works">Alle Werke</entry>
     <entry xml:id="all_documents">Alle Dokumente</entry>
     <entry xml:id="all_places">Alle Orte</entry>
-	<entry xml:id="all_thematicCommentaries">Alle Kommentare (Hg.)</entry>
     <entry xml:id="henzes_person">Henzes Person</entry>
     <entry xml:id="henzes_correspondence">Henzes Korrespondenz</entry>
     <entry xml:id="henzes_writings">Henzes Schriften</entry>
     <entry xml:id="henzes_diaries">Henzes Tagebücher</entry>
     <entry xml:id="henzes_works">Henzes Werke</entry>
     <entry xml:id="henzes_documents">Henzes Dokumente</entry>
+	<entry xml:id="all_thematicCommentaries">Alle Kommentare</entry>
     <entry xml:id="project">Projekt</entry>
     <entry xml:id="biblio">Bibliographie</entry>
     <entry xml:id="complete_indices">Gesamtes Register</entry>
@@ -528,8 +528,8 @@
     <entry xml:id="searchTerm">Suchbegriff</entry>
     <entry xml:id="credits">Danksagungen</entry>
     <entry xml:id="calendar">Kalender</entry>
-    <entry xml:id="thematicCommentaries">Kommentar (Hg.)</entry>
-	<entry xml:id="thematicCom">Kommentar (Hg.)</entry>
+    <entry xml:id="thematicCommentaries">Kommentare</entry>
+	<entry xml:id="thematicCom">Kommentar</entry>
     <entry xml:id="endNotes">Einzelnachweise</entry>
     <entry xml:id="endNote">Einzelnachweis</entry>
     <entry xml:id="originalFootnotes">[Originale Fußnoten]</entry>
