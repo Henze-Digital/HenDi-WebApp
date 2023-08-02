@@ -765,4 +765,37 @@
     <entry xml:id="tape">Tape</entry>
     <entry xml:id="film">Film work</entry>
     <entry xml:id="lp">Long Play (LP)</entry>
+    
+    <entry xml:id="perfResList">Instrumentation</entry>
+    <entry xml:id="castList">Dramatis personae</entry>
+    <entry xml:id="ua">Uraufführung</entry>
+    <entry xml:id="ua-szen">Staged premiere</entry>
+    <entry xml:id="ua-konz">Concert premiere</entry>
+    <entry xml:id="us">World's premiere broadcast</entry>
+    <entry xml:id="ea">First performance</entry>
+    <entry xml:id="pa">Private performance</entry>
+    
+    <!-- other marc relators -->
+    <entry xml:id="act">Actor</entry>
+    <entry xml:id="ard">Artistic director</entry>
+    <entry xml:id="aus">Screenwriter</entry>
+    <entry xml:id="cnd">Conductor</entry>
+    <entry xml:id="cst">Costume designer</entry>
+    <entry xml:id="drt">Director</entry>
+    <entry xml:id="flm">Film editor</entry>
+    <entry xml:id="fmd">Film director</entry>
+    <entry xml:id="fmp">Film producer</entry>
+    <entry xml:id="itr">Instrumentalist</entry>
+    <entry xml:id="mcp">Music copyist</entry>
+    <entry xml:id="msd">Musical director</entry>
+    <entry xml:id="pdr">Project director</entry>
+    <entry xml:id="pmn">Production manager</entry>
+    <entry xml:id="prn">Production company</entry>
+    <entry xml:id="pro">Producer</entry>
+    <entry xml:id="rce">Recording engineer</entry>
+    <entry xml:id="scr">Scribe</entry>
+    <entry xml:id="sng">Singer</entry>
+    <entry xml:id="std">Set designer</entry>
+    <entry xml:id="trc">Transcriber</entry>
+    <entry xml:id="vdg">Videographer</entry>
 </dictionary>

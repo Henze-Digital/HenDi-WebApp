@@ -774,4 +774,37 @@
     <entry xml:id="tape">Tonband (Tape)</entry>
     <entry xml:id="film">Filmwerk</entry>
     <entry xml:id="lp">Langspielplatte (LP)</entry>
+    
+    <entry xml:id="perfResList">Besetzung</entry>
+    <entry xml:id="castList">Dramatis personae</entry>
+    <entry xml:id="ua">Uraufführung</entry>
+    <entry xml:id="ua-szen">Uraufführung (szenisch)</entry>
+    <entry xml:id="ua-konz">Uraufführung (konzertant)</entry>
+    <entry xml:id="us">Ursendung</entry>
+    <entry xml:id="ea">Erstaufführung</entry>
+    <entry xml:id="pa">Privataufführung</entry>
+    
+    <!-- other marc relators -->
+    <entry xml:id="act">Schauspieler</entry>
+    <entry xml:id="ard">Inszenierung</entry>
+    <entry xml:id="aus">Drehbuchautor</entry>
+    <entry xml:id="cnd">Dirigent</entry>
+    <entry xml:id="cst">Kostümdesigner</entry>
+    <entry xml:id="drt">Direktor</entry>
+    <entry xml:id="flm">Filmeditor</entry>
+    <entry xml:id="fmd">Film Direktor</entry>
+    <entry xml:id="fmp">Filmproduzent</entry>
+    <entry xml:id="itr">Instrumentalist</entry>
+    <entry xml:id="mcp">Musikkopist</entry>
+    <entry xml:id="msd">Musikalischer Direktor</entry>
+    <entry xml:id="pdr">Projekt Direktor</entry>
+    <entry xml:id="pmn">Produktionsmanager</entry>
+    <entry xml:id="prn">Produktionsfirma</entry>
+    <entry xml:id="pro">Produzent</entry>
+    <entry xml:id="rce">Toningenieur</entry>
+    <entry xml:id="scr">Schreiber</entry>
+    <entry xml:id="sng">Sänger</entry>
+    <entry xml:id="std">Bühnenbildner</entry>
+    <entry xml:id="trc">Einrichtung von</entry>
+    <entry xml:id="vdg">Videofilmer</entry>
 </dictionary>
