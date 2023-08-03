@@ -760,7 +760,7 @@
     <entry xml:id="music">Musikalisches Werk</entry>
     <entry xml:id="cd">Compact disc (CD)</entry>
     <entry xml:id="tape">Tonband (Tape)</entry>
-    <entry xml:id="film">Filmwerk</entry>
+    <entry xml:id="film">Film</entry>
     <entry xml:id="lp">Langspielplatte (LP)</entry>
     
     <entry xml:id="perfResList">Besetzung</entry>

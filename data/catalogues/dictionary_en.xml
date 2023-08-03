@@ -752,7 +752,7 @@
     <entry xml:id="music">Musical work</entry>
     <entry xml:id="cd">Compact disc (CD)</entry>
     <entry xml:id="tape">Tape</entry>
-    <entry xml:id="film">Film work</entry>
+    <entry xml:id="film">Film</entry>
     <entry xml:id="lp">Long Play (LP)</entry>
     
     <entry xml:id="perfResList">Instrumentation</entry>
