@@ -9,6 +9,14 @@
             <a data-template="app:preview-title">News Title</a>
         </h3>
         <p><strong data-template="app-shared:print" data-template-key="newsDate">6. September 2013</strong></p>
+        <ol class="media" data-template="app:news-basic-data">
+            <li class="media" data-template="app-shared:each" data-template-from="authors" data-template-to="author">
+                <div class="pull-left">
+                    <i class="fa fa-user"/>
+                </div>
+                <div class="media-body"><span data-template="app-shared:print" data-template-key="author">Nachname, Vorname</span></div>
+            </li>
+        </ol>
         <p data-template="app:preview-teaser">Fünf Monate nach dem letzten Release konnte heute die Version 1.1.8 der Digitalen Edition der Carl-Maria-von-Weber-Gesamtausgabe veröffentlicht …</p>
         <p>
             <strong><span data-template="lang:translate">identifier</span>:</strong> 
