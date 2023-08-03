@@ -1125,6 +1125,21 @@ declare
 };
 
 (:~
+ : Basic Data for Thematic Commentaries
+ : 
+ : @author Dennis Ried :)
+
+declare 
+    %templates:wrap
+    %templates:default("lang", "en")
+    function app:thematicCommentary-basic-data($node as node(), $model as map(*), $lang as xs:string) as map(*) {
+        map{
+            'authors' : $model('doc')//tei:fileDesc/tei:titleStmt/tei:author
+            }
+};
+
+
+(:~
  : Main Function for wikipedia.html
  : Creates the wikipedia model
  :
