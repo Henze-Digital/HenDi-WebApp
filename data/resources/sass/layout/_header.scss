@@ -85,6 +85,10 @@
     width: 1px;
 }
 
+.divider-top-landing {
+    border-top: 10px solid $primary;
+}
+
 .header {
     background: url(../img/header.png) no-repeat center top;
     border-bottom: 10px solid $primary;
