@@ -1,10 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities"
-    xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:rng="http://relaxng.org/ns/structure/1.0"
-    xmlns:teix="http://www.tei-c.org/ns/Examples"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema" version="2.0">
+<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:teix="http://www.tei-c.org/ns/Examples" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" version="2.0">
     <xsl:output encoding="UTF-8" method="html" omit-xml-declaration="yes" indent="no"/>
     <xsl:param name="createSecNos" select="false()"/>
     <xsl:param name="secNoOffset" select="0"/>
@@ -190,6 +184,56 @@
         </xsl:element>
     </xsl:template>
     
+    <!-- Styling of code examples -->
+    
+    <xsl:template match="teix:egXML">
+        <xsl:element name="pre">
+            <xsl:apply-templates select="@xml:id"/>
+            <xsl:attribute name="class">shadow-sm p-3 bg-light rounded</xsl:attribute>
+            <xsl:element name="code">
+                <xsl:apply-templates select="@xml:id"/>
+                <xsl:attribute name="class">language-xml</xsl:attribute>
+                <xsl:apply-templates select="./node()" mode="verbatim"/>
+            </xsl:element>
+        </xsl:element>
+        <xsl:if test="@source">
+            <xsl:element name="p">
+                <xsl:attribute name="class">textAlign-right</xsl:attribute>
+                <xsl:text>(Beispiel aus </xsl:text>
+                    <xsl:value-of select="@source"/>
+                <xsl:text>)</xsl:text>
+            </xsl:element>
+        </xsl:if>
+    </xsl:template>
+    
+    <!-- Linking of named elements and attributes and values -->
+    
+    <xsl:template match="tei:gi">
+        <xsl:element name="a">
+            <xsl:attribute name="href"><xsl:value-of select="concat('Elemente/ref-', ., '.html')"/></xsl:attribute>
+            <xsl:text>&lt;</xsl:text>
+            <xsl:value-of select="."/>
+            <xsl:text>&gt;</xsl:text>
+        </xsl:element>
+    </xsl:template>
+    
+    <xsl:template match="tei:att">
+        <xsl:element name="code">
+            <xsl:text>@</xsl:text>
+            <xsl:value-of select="."/>
+        </xsl:element>
+    </xsl:template>
+    
+    <xsl:template match="tei:val">
+        <xsl:element name="code"><xsl:text>"</xsl:text><xsl:value-of select="."/><xsl:text>"</xsl:text></xsl:element>
+    </xsl:template>
+    
+    <xsl:template match="tei:tag">
+            <xsl:text>&lt;</xsl:text>
+            <xsl:value-of select="."/>
+            <xsl:text>&gt;</xsl:text>
+    </xsl:template>
+    
     <!-- Create section numbers for headings   -->
     <xsl:template name="createSecNo">
         <xsl:param name="div"/>
@@ -214,7 +258,7 @@
         </xsl:if>
         <xsl:value-of select="count($div/preceding-sibling::tei:div[not(following::tei:divGen)][tei:head][ancestor-or-self::tei:div/@xml:lang=$lang]) + 1 +$offset"/>
         <xsl:if test="$dot">
-            <xsl:text>.&#8201;</xsl:text>
+            <xsl:text>. </xsl:text>
         </xsl:if>
     </xsl:template>
 
@@ -286,7 +330,7 @@
                 <xsl:for-each select="//tei:note[@type=('commentary','definition','textConst')]">
                     <xsl:element name="li">
                         <xsl:attribute name="id" select="./@xml:id"/>
-                        <xsl:attribute name="data-title" select="concat(wega:getLanguageString('endNote', $lang), '&#160;', position())"/>
+                        <xsl:attribute name="data-title" select="concat(wega:getLanguageString('endNote', $lang), ' ', position())"/>
                         <xsl:element name="a">
                             <xsl:attribute name="class">endnote_backlink</xsl:attribute>
                             <xsl:attribute name="href" select="concat('#ref-', @xml:id)"/>
@@ -386,7 +430,9 @@
                 <xsl:when test="$head = '&gt;'">&amp;gt;</xsl:when>
                 <xsl:when test="$head = '&#34;'">&amp;quot;</xsl:when>
                 <xsl:when test="$head = &#34;'&#34;">&amp;apos;</xsl:when>
-                <xsl:otherwise><xsl:value-of select="$head"/></xsl:otherwise>
+                <xsl:otherwise>
+                    <xsl:value-of select="$head"/>
+                </xsl:otherwise>
             </xsl:choose>
             <xsl:call-template name="verbatim-xml">
                 <xsl:with-param name="text" select="$tail"/>
