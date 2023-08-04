@@ -554,7 +554,7 @@
     <entry xml:id="datatype">Datatype</entry>
     <entry xml:id="datatypes">Datatypes</entry>
     <entry xml:id="closed_values">Possible values</entry>
-    <entry xml:id="downloaded_on">Download of this file</entry>
+    <entry xml:id="downloaded_on">Status of this file</entry>
     <entry xml:id="appendix">Appendix</entry>
     <entry xml:id="classes">Classes</entry>
     <entry xml:id="metaTitleGuidelinesSpecs">%1 (schema: %2)</entry>
