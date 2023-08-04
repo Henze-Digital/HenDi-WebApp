@@ -60,8 +60,10 @@ declare function crud:docUri($docID as xs:string) as xs:string? {
  : @param $docID the ID of the document
  : @return boolean
 :)
-declare function crud:docAvailable($docID as xs:string) as xs:boolean {
-     doc-available(crud:docUri($docID))
+declare function crud:docAvailable($docID as xs:string?) as xs:boolean {
+     if($docID)
+     then doc-available(crud:docUri($docID))
+     else false()
 };
 
 (:~
