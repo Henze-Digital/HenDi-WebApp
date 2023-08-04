@@ -2089,10 +2089,12 @@ declare
     function app:preview-relator-name($node as node(), $model as map(*), $lang as xs:string, $popover as xs:string) as element() {
         let $key := $model('relator')/@codedval | $model('relator')/@key
         let $myPopover := wega-util-shared:semantic-boolean($popover)
+        let $doc2keyAvailable := crud:docAvailable($key)
         return
-            if($key and $myPopover) then app:createDocLink(crud:doc($key), query:title($key), $lang, (), true())
+            if($key and $myPopover and $doc2keyAvailable)
+            then app:createDocLink(crud:doc($key), query:title($key), $lang, (), true())
             else element xhtml:span {
-                if($key) then wdt:lookup(config:get-doctype-by-id($key), data($key))?title('txt')
+                if($key and $doc2keyAvailable) then wdt:lookup(config:get-doctype-by-id($key), data($key))?title('txt')
                 else str:normalize-space($model('relator'))
             }
 };
