@@ -40,6 +40,31 @@ declare function crud:doc($docID as xs:string) as document-node()? {
 };
 
 (:~
+ : Get document uri by ID
+ :
+ : @author Dennis Ried
+ : @param $docID the ID of the document
+ : @return the document uri of the resource found for the specified ID
+:)
+declare function crud:docUri($docID as xs:string) as xs:string? {
+    let $collectionPath := config:getCollectionPath($docID)
+    let $docURL := str:join-path-elements(($collectionPath, $docID)) || '.xml'
+    return 
+        $docURL
+};
+
+(:~
+ : Checks if an document is available by ID
+ :
+ : @author Dennis Ried
+ : @param $docID the ID of the document
+ : @return boolean
+:)
+declare function crud:docAvailable($docID as xs:string) as xs:boolean {
+     doc-available(crud:docUri($docID))
+};
+
+(:~
  : Returns collection from the WeGA-data library
  : In contrast to core:getOrCreateColl() this function will return *all* documents from the specified collection, i.e. with all duplicates
  :
