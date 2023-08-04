@@ -821,8 +821,10 @@ declare
         let $print-titles := function($doc as document-node(), $alt as xs:boolean) {
             for $title in ($doc//mei:meiHead/mei:workList/mei:work[1]/mei:title/mei:titlePart[. != ''][not(@type=('sub','desc'))][exists(@type='alt') = $alt] |
                            $doc//tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title[not(@level='s')][exists(@type='alt') = $alt])
-            let $titleLang := $title/string(@xml:lang) 
-            let $subTitle := ($title/following-sibling::mei:title[@type='sub'][string(@xml:lang) = $titleLang])[1]
+            let $titleLang := $title/@xml:lang => string() 
+            let $subTitle := if($titleLang)
+                             then(($title/following-sibling::mei:titlePart[@type='sub'][string(@xml:lang) = $titleLang])[1])
+                             else(($title/following-sibling::mei:titlePart[@type='sub'])[1])
             return <span xmlns="http://www.w3.org/1999/xhtml">{
                 string-join((
                     wega-util:transform($title, doc(concat($config:xsl-collection-path, '/works.xsl')), config:get-xsl-params(())),
@@ -888,7 +890,7 @@ declare
                 if($config:isDevelopment) then core:getOrCreateColl('sources', $model('docID'), true())
                 else (),
             'creation' : wega-util:transform(
-                ($model?doc//mei:creation, $model?doc//mei:author[@type="textualSource"]), 
+                ($model?doc//mei:creation[not(parent::mei:expression)], $model?doc//mei:author[@type="textualSource"]), 
                 doc(concat($config:xsl-collection-path, '/works.xsl')), 
                 config:get-xsl-params( map {'dbPath' : document-uri($model?doc), 'docID' : $model?docID })
                 ), 

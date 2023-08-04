@@ -81,6 +81,7 @@
             <xsl:element name="dl">
                 <xsl:apply-templates select="@xml:id"/>
                 <xsl:for-each select="distinct-values(mei:persName/@role|mei:corpName/@role)">
+                    <xsl:sort select="wega:getLanguageString(., $lang)"/>
                     <xsl:variable name="localRole" select="."/>
                     <xsl:element name="dt">
                         <xsl:attribute name="class">tei_event_h2</xsl:attribute>
@@ -98,14 +99,19 @@
                         </xsl:for-each>
                     </xsl:element>
                 </xsl:for-each>
-                <xsl:if test="mei:p">
+                <xsl:if test="count(mei:p) gt 0">
                     <xsl:element name="dt">
                         <xsl:attribute name="class">tei_event_h2</xsl:attribute>
                         <xsl:value-of select="wega:getLanguageString('furtherDetails', $lang)"/>
                     </xsl:element>
                     <xsl:element name="dd">
                         <xsl:apply-templates select="@xml:id"/>
-                        <xsl:value-of select="string-join(mei:p//text(),' ')"/>
+                        <xsl:element name="p">
+                            <xsl:for-each select="mei:p">
+                                <xsl:apply-templates/>
+                                <xsl:element name="br"/>
+                            </xsl:for-each>
+                        </xsl:element>
                     </xsl:element>
                 </xsl:if>
             </xsl:element>
@@ -152,10 +158,16 @@
     <xsl:template match="mei:perfResList[parent::mei:perfResList]">
         <xsl:element name="dt">
             <xsl:apply-templates select="@xml:id"/>
+            <xsl:if test="@label">
+                <xsl:element name="span">
+                    <xsl:attribute name="class">tei_event_h2</xsl:attribute>
+                    <xsl:value-of select="@label"/>
+                </xsl:element>
+            </xsl:if>
         </xsl:element>
         <xsl:element name="dd">
             <xsl:apply-templates select="@xml:id"/>
-            <xsl:apply-templates/>
+            <xsl:value-of select="string-join(mei:perfRes,', ')"/>
         </xsl:element>
     </xsl:template>
     
@@ -165,13 +177,24 @@
         </xsl:element>
         <xsl:element name="dd">
             <xsl:apply-templates select="@xml:id"/>
-            <xsl:value-of select="mei:role"/>
-            <xsl:if test="mei:roleDesc != ''">
-                <xsl:text>, </xsl:text>
-                <xsl:element name="i">
-                    <xsl:value-of select="mei:roleDesc"/>
-                </xsl:element>
-            </xsl:if>
+            <xsl:choose>
+                <xsl:when test="mei:role">
+                    <xsl:value-of select="mei:role"/>
+                    <xsl:if test="mei:roleDesc != ''">
+                        <xsl:text>, </xsl:text>
+                        <xsl:element name="i">
+                            <xsl:value-of select="mei:roleDesc"/>
+                        </xsl:element>
+                    </xsl:if>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:if test="mei:roleDesc != ''">
+                        <xsl:element name="i">
+                            <xsl:value-of select="mei:roleDesc"/>
+                        </xsl:element>
+                    </xsl:if>
+                </xsl:otherwise>
+            </xsl:choose>
             <xsl:if test="mei:perfRes != ''">
                 <xsl:text> (</xsl:text>
                 <xsl:value-of select="mei:perfRes"/>
@@ -180,6 +203,29 @@
         </xsl:element>
     </xsl:template>
     
+    <xsl:template match="mei:castGrp[not(mei:castItem)]">
+        <xsl:element name="dt">
+            <xsl:apply-templates select="@xml:id"/>
+        </xsl:element>
+        <xsl:element name="dd">
+            <xsl:apply-templates select="@xml:id"/>
+            <xsl:element name="i">
+                <xsl:value-of select="mei:roleDesc"/>
+            </xsl:element>
+        </xsl:element>
+    </xsl:template>
+    
+    <xsl:template match="mei:castGrp[mei:castItem]">
+        <xsl:element name="dt">
+            <xsl:apply-templates select="@xml:id"/>
+            <xsl:attribute name="class">tei_castGrp_h1</xsl:attribute>
+            <xsl:value-of select="mei:roleDesc"/>
+        </xsl:element>
+        <xsl:element name="dd">
+            <xsl:apply-templates select="@xml:id"/>
+            <xsl:apply-templates select="mei:castItem"/>
+        </xsl:element>
+    </xsl:template>
     
     <xsl:template match="mei:annot|tei:note">
         <xsl:element name="dt">
