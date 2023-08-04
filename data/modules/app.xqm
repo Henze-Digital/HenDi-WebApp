@@ -888,11 +888,16 @@ declare
                 if($config:isDevelopment) then core:getOrCreateColl('sources', $model('docID'), true())
                 else (),
             'creation' : wega-util:transform(
-                ($model?doc//mei:creation, $model?doc//mei:history), 
+                ($model?doc//mei:creation, $model?doc//mei:author[@type="textualSource"]), 
                 doc(concat($config:xsl-collection-path, '/works.xsl')), 
                 config:get-xsl-params( map {'dbPath' : document-uri($model?doc), 'docID' : $model?docID })
                 ), 
             'dedicatees' : $model?doc//mei:fileDesc/mei:titleStmt/mei:respStmt/mei:persName[@role='dte'],
+            'events' : wega-util:transform(
+                ($model?doc//mei:eventList, $model?doc//tei:listEvent), 
+                doc(concat($config:xsl-collection-path, '/works.xsl')), 
+                config:get-xsl-params( map {'dbPath' : document-uri($model?doc), 'docID' : $model?docID })
+                ), 
             'castList': wega-util:transform(
                 $model?doc//mei:perfMedium/mei:castList,
                 doc(concat($config:xsl-collection-path, '/works.xsl')), 

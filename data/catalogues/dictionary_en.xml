@@ -8,6 +8,7 @@
     <!--  Dokumente Meta Data  -->
     <entry xml:id="title">Title</entry>
     <!--  Monatsnamen  -->
+    <entry xml:id="on">on</entry>
     <entry xml:id="month1">January</entry>
     <entry xml:id="month2">February</entry>
     <entry xml:id="month3">March</entry>
@@ -798,4 +799,9 @@
     <entry xml:id="trc">Transcriber</entry>
     <entry xml:id="trl">Translator</entry>
     <entry xml:id="vdg">Videographer</entry>
+    
+    <entry xml:id="events">Events</entry>
+    <entry xml:id="event">Event</entry>
+    <entry xml:id="textualSource">Textual source</entry>
+    <entry xml:id="furtherDetails">Further details</entry>
 </dictionary>

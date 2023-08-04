@@ -8,6 +8,7 @@
     <!--  Dokumente Meta Data  -->
     <entry xml:id="title">Titel</entry>
     <!--  Monatsnamen  -->
+    <entry xml:id="on">am</entry>
     <entry xml:id="month1">Januar</entry>
     <entry xml:id="month2">Februar</entry>
     <entry xml:id="month3">März</entry>
@@ -792,7 +793,7 @@
     <entry xml:id="itr">Instrumente</entry>
     <entry xml:id="mcp">Musikkopist</entry>
     <entry xml:id="msd">Musikalische Direktion</entry>
-    <entry xml:id="mus">Ausgeführung</entry>
+    <entry xml:id="mus">Ausführung</entry>
     <entry xml:id="lbt">Libretto</entry>
     <entry xml:id="lyr">Textdichtung</entry>
     <entry xml:id="pdr">Projekt Direktion</entry>
@@ -806,4 +807,9 @@
     <entry xml:id="trc">Einrichtung</entry>
     <entry xml:id="trl">Übersetzung</entry>
     <entry xml:id="vdg">Film (Video)</entry>
+    
+    <entry xml:id="events">Ereignisse</entry>
+    <entry xml:id="event">Ereignis</entry>
+    <entry xml:id="textualSource">Textgrundlage</entry>
+    <entry xml:id="furtherDetails">Weitere Angaben</entry>
 </dictionary>
