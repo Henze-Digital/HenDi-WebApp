@@ -43,7 +43,7 @@
         <xsl:element name="dd">
             <xsl:apply-templates select="@xml:id"/>
             <xsl:element name="span">
-                <xsl:attribute name="tei_event_h1"/>
+                <xsl:attribute name="class">tei_event_h1</xsl:attribute>
                 <xsl:choose>
                     <xsl:when test="@type">
                         <xsl:value-of select="wega:getLanguageString(@type, $lang)"/>
@@ -83,7 +83,7 @@
                 <xsl:for-each select="distinct-values(mei:persName/@role|mei:corpName/@role)">
                     <xsl:variable name="localRole" select="."/>
                     <xsl:element name="dt">
-                        <xsl:attribute name="tei_event_h2"/>
+                        <xsl:attribute name="class">tei_event_h2</xsl:attribute>
                         <xsl:value-of select="wega:getLanguageString($localRole, $lang)"/>
                     </xsl:element>
                     <xsl:element name="dd">
@@ -100,7 +100,7 @@
                 </xsl:for-each>
                 <xsl:if test="mei:p">
                     <xsl:element name="dt">
-                        <xsl:attribute name="tei_event_h2"/>
+                        <xsl:attribute name="class">tei_event_h2</xsl:attribute>
                         <xsl:value-of select="wega:getLanguageString('furtherDetails', $lang)"/>
                     </xsl:element>
                     <xsl:element name="dd">
