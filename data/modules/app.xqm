@@ -2445,3 +2445,9 @@ declare function app:envelope($node as node(), $model as map(*))  {
 	          {wega-util:remove-elements-by-class($body, 'apparatus')}
 	        </div>
 };
+
+declare function app:download-modal($node as node(), $model as map(*))  {
+		if(exists($model('doc')//tei:availability/tei:licence[. = 'noDownload']) = true())
+		then templates:include($node, $model, 'templates/includes/download-modal-restricted.html')
+		else templates:include($node, $model, 'templates/includes/download-modal-tei.html')
+};
