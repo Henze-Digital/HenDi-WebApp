@@ -3,21 +3,39 @@
 		<div class="modal-content" data-template="app-shared:if-not-matches" data-template-key="lang" data-template-value="de">
 			<div class="modal-header">
 				<h3 class="modal-title" id="myModalLabel">Introductory texts</h3>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&#215;</span></button>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
 			</div>
 			<div class="modal-body">
-				<h4><a href="/de/A001058B/Kommentare/A090070B.html">Introduction to the content of the correspondence</a></h4>
-				<h4><a href="/de/A001058B/Kommentare/A0900668.html">Notes on the use of the portal</a></h4>
+				<h4>
+					<a href="/en/A001058B/Kommentare/A090070B.html"><button type="button" class="btn btn-outline-info">Introduction</button></a>
+				</h4>
+				<p>An introduction to the content of this correspondence is available.</p>
+				<hr/>
+				<h4>
+					<a href="/en/A001058B/Kommentare/A0900668.html"><button type="button" class="btn btn-outline-info">Operating help</button></a>
+				</h4>
+				<p>Here you will find instructions on how to use the online portal</p>
 			</div>
-			<div class="modal-content" data-template="app-shared:if-matches" data-template-key="lang" data-template-value="de">
-				<div class="modal-header">
-					<h3 class="modal-title" id="myModalLabel">Einleitende Texte</h3>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&#215;</span></button>
-				</div>
-				<div class="modal-body">
-					<h4><a href="/de/A001058B/Kommentare/A090070B.html">Inhaltliche Einführung zur Korrespondenz</a></h4>
-					<h4><a href="/de/A001058B/Kommentare/A0900668.html">Hinweise zur Benutzung des Portals</a></h4>
-				</div>
+		</div>
+		<div class="modal-content" data-template="app-shared:if-matches" data-template-key="lang" data-template-value="de">
+			<div class="modal-header">
+				<h3 class="modal-title" id="myModalLabel">Einleitende Texte</h3>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<h4>
+					<a href="/de/A001058B/Kommentare/A090070B.html"><button type="button" class="btn btn-outline-info">Einleitung</button></a>
+				</h4>
+				<p>Zu dieser Korrespondenz ist eine inhaltliche Einleitung verfügbar.</p>
+				<hr/>
+				<h4>
+					<a href="/de/A001058B/Kommentare/A0900668.html"><button type="button" class="btn btn-outline-info">Bedienhilfe</button></a>
+				</h4>
+				<p>Hier finden Sie Hinweise zur Benutzung des Online-Portals</p>
 			</div>
 		</div>
 	</div>
