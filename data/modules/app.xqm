@@ -2120,6 +2120,12 @@ declare function app:register-dispatch($node as node(), $model as map(*)) {
     default return templates:include($node, $model, 'templates/ajax/' || $model('docType') || '.html')
 };
 
+declare function app:register-introduction-modal($node as node(), $model as map(*)) {
+    switch($model('docType'))
+    case 'letters' return templates:include($node, $model, 'templates/includes/introduction-modal.html')
+    default return ()
+};
+
 declare 
     %templates:wrap
     function app:letter-count($node as node(), $model as map(*)) as xs:integer? {

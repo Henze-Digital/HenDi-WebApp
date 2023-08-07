@@ -286,6 +286,17 @@
         <script type="text/javascript" src="$resources/js/init.js" data-template="app-shared:if-matches" data-template-key="environment" data-template-value="development"/>
         <script type="text/javascript" src="$resources/js/init-min.js" data-template="app-shared:if-not-matches" data-template-key="environment" data-template-value="development"/>
         
+       	 
+        <div data-template="app-shared:if-matches" data-template-key="environment" data-template-value="production" data-template-wrap="false">
+        	<script type="text/javascript">
+			    window.onload = function () {
+			        OpenBootstrapPopup();
+			    };
+			    function OpenBootstrapPopup() {
+			        $("#introductionModal").modal('show');
+			    }
+			</script>
+        </div>
         <div data-template="app-shared:if-matches" data-template-key="environment" data-template-value="production" data-template-wrap="false">
             <!-- Matomo -->
             <script type="text/javascript">
