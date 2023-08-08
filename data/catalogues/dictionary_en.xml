@@ -308,8 +308,8 @@
 <!--    <entry xml:id="metaPapersPublications">A list of papers written by (former and current) staff members of Henze-Digital.</entry>-->
 <!--    <entry xml:id="metaTalksPublications">A list of talks given by (former and current) staff members of Henze-Digital.</entry>-->
     <entry xml:id="metaDescriptionIndex-biblio">A bibliography of Henze-Literature.</entry>
-    <entry xml:id="metaDescriptionIndex-thematicCommentaries">A list of editorial commentaries published by Henze-Digital. These editorial commentaries provide additional information about various events and facts that exceed regular notes within the text.</entry>
-    <entry xml:id="metaDescriptionSearch">Search across all the persons, letters, diaries, writings, commentaries, etc. of the Digital Edition of Henze-Digital.</entry>
+	<entry xml:id="metaDescriptionIndex-thematicCommentaries">A list of editorial explanatory notes published by Henze-Digital. These editorial explanatory notes provide additional information about various events and facts that exceed regular notes within the text.</entry>
+	<entry xml:id="metaDescriptionSearch">Search across all the persons, letters, diaries, writings, explanatory notes, etc. of the Digital Edition of Henze-Digital.</entry>
     <!-- HTML Meta Daten (title) -->
     <entry xml:id="metaTitleIndex-home">Henze-Digital</entry>
     <entry xml:id="metaTitleIndex-search">Search page of Henze-Digital</entry>
@@ -325,7 +325,7 @@
     <entry xml:id="metaTitleIndex-biblio">Index of bibliographic entries</entry>
     <entry xml:id="metaTitleIndex-documents">Index of documents</entry>
     <entry xml:id="metaTitleIndex-indices">Complete Index</entry>
-    <entry xml:id="metaTitleIndex-thematicCommentaries">Index of commentaries</entry>
+	<entry xml:id="metaTitleIndex-thematicCommentaries">Index of explanatory notes</entry>
     <entry xml:id="metaTitleError">That doesn't sound good!</entry>
     <entry xml:id="metaDescriptionError">Error page</entry>
     <!--<entry xml:id="metaTitleDiscoBiblio">Discography – Bibliography</entry>-->
@@ -479,7 +479,7 @@
     <entry xml:id="all_works">All Works</entry>
     <entry xml:id="all_documents">All Documents</entry>
     <entry xml:id="all_places">All Places</entry>
-    <entry xml:id="all_thematicCommentaries">All Commentaries</entry>
+	<entry xml:id="all_thematicCommentaries">All Explanatory Notes</entry>
     <entry xml:id="henzes_person">The Person</entry>
     <entry xml:id="henzes_correspondence">The Correspondence</entry>
     <entry xml:id="henzes_writings">The Writings</entry>
@@ -496,7 +496,7 @@
     <entry xml:id="figure">Figure</entry>
     <entry xml:id="figDesc">Figure Description</entry>
     <entry xml:id="textConstitution">Text Constitution</entry>
-    <entry xml:id="autoCommentaryNodes">Automatical Commentay</entry>
+    <entry xml:id="autoCommentaryNodes">Automatical Commentary</entry>
     <entry xml:id="note_commentary">Commentary</entry>
     <entry xml:id="note_definition">Definition</entry>
     <entry xml:id="note_textConst">Text Constitution</entry>
@@ -508,8 +508,8 @@
     <entry xml:id="searchTerm">search term</entry>
     <entry xml:id="credits">Credits</entry>
     <entry xml:id="calendar">Calendar</entry>
-    <entry xml:id="thematicCommentaries">Commentaries</entry>
-	<entry xml:id="thematicCom">Commentary</entry>
+	<entry xml:id="thematicCommentaries">Explanatory Notes</entry>
+	<entry xml:id="thematicCom">Explanatory Note</entry>
     <entry xml:id="endNotes">Endnotes</entry>
     <entry xml:id="endNote">Endnote</entry>
     <entry xml:id="originalFootnotes">[Original Footnotes]</entry>

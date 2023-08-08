@@ -317,8 +317,8 @@
     <!--<entry xml:id="metaPapersPublications">Eine Liste von Aufsätzen der Mitarbeiter von Henze-Digital.</entry>-->
     <!--<entry xml:id="metaTalksPublications">Eine Liste von Vorträgen, die von Mitarbeitern von Henze-Digital gehalten wurden.</entry>-->
     <entry xml:id="metaDescriptionIndex-biblio">Eine Bibliographie der Henze-Literatur.</entry>
-    <entry xml:id="metaDescriptionIndex-thematicCommentaries">Eine Liste der von Henze-Digital erstellten Kommentare der Herausgebenden. Diese erläutern über Einzelstellenkommentare hinausreichende Sachverhalte und vernetzen dergestalt die verschiedenen Editionen der Briefe Henzes.</entry>
-	<entry xml:id="metaDescriptionSearch">Suche über alle Personen, Briefe, Tagebücher, Kommentare (Hg.), etc. aus der Digitalen Edition von Henze-Digital.</entry>
+    <entry xml:id="metaDescriptionIndex-thematicCommentaries">Eine Liste der von Henze-Digital erstellten Erläuterungen der Herausgebenden. Diese erläutern über Einzelstellenkommentare hinausreichende Sachverhalte und vernetzen dergestalt die verschiedenen Editionen der Briefe Henzes.</entry>
+	<entry xml:id="metaDescriptionSearch">Suche über alle Personen, Briefe, Tagebücher, Erläuterungen, etc. aus der Digitalen Edition von Henze-Digital.</entry>
     <!-- HTML Meta Daten (title) -->
     <entry xml:id="metaTitleIndex-home">Henze-Digital</entry>
     <entry xml:id="metaTitleIndex-search">Suchseite von Henze-Digital</entry>
@@ -334,7 +334,7 @@
     <entry xml:id="metaTitleIndex-biblio">Register der Bibliographieeinträge</entry>
     <entry xml:id="metaTitleIndex-documents">Register der Dokumente</entry>
     <entry xml:id="metaTitleIndex-indices">Vollständiges Register</entry>
-	<entry xml:id="metaTitleIndex-thematicCommentaries">Register der Kommentare der Herausgebenden</entry>
+	<entry xml:id="metaTitleIndex-thematicCommentaries">Register der Erläuterungen der Herausgebenden</entry>
     <entry xml:id="metaTitleError">Das klingt gar nicht gut!</entry>
     <entry xml:id="metaDescriptionError">Fehlerseite</entry>
     <!--    <entry xml:id="metaTitleDiscoBiblio">Discographie – Bibliographie</entry>-->
@@ -488,7 +488,7 @@
     <entry xml:id="all_works">Alle Werke</entry>
     <entry xml:id="all_documents">Alle Dokumente</entry>
     <entry xml:id="all_places">Alle Orte</entry>
-	<entry xml:id="all_thematicCommentaries">Alle Kommentare</entry>
+	<entry xml:id="all_thematicCommentaries">Alle Erläuterungen</entry>
     <entry xml:id="henzes_person">Die Person</entry>
     <entry xml:id="henzes_correspondence">Die Korrespondenz</entry>
     <entry xml:id="henzes_writings">Die Schriften</entry>
@@ -517,8 +517,8 @@
     <entry xml:id="searchTerm">Suchbegriff</entry>
     <entry xml:id="credits">Danksagungen</entry>
     <entry xml:id="calendar">Kalender</entry>
-    <entry xml:id="thematicCommentaries">Kommentare</entry>
-	<entry xml:id="thematicCom">Kommentar</entry>
+	<entry xml:id="thematicCommentaries">Erläuterungen</entry>
+	<entry xml:id="thematicCom">Erläuterung</entry>
     <entry xml:id="endNotes">Einzelnachweise</entry>
     <entry xml:id="endNote">Einzelnachweis</entry>
     <entry xml:id="originalFootnotes">[Originale Fußnoten]</entry>
