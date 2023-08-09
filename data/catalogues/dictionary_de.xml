@@ -273,7 +273,7 @@
     <entry xml:id="approved">bearbeitet</entry>
     <entry xml:id="biblioType">Literaturtyp</entry>
     <entry xml:id="albumblatt">Albumblatt</entry>
-    <entry xml:id="authors">Verfasst von</entry>
+    <entry xml:id="authors">Text</entry>
     <entry xml:id="editors">Herausgegeben von</entry>
     <entry xml:id="publication">Veröffentlicht</entry>
     <entry xml:id="pubPlace">Verlagsort</entry>
@@ -477,7 +477,7 @@
     <entry xml:id="gotoletter">Weiter zum Brief</entry>
     <entry xml:id="wordOfTheDay">Zitat des Tages</entry>
     <entry xml:id="responsibilities">Verantwortlichkeiten</entry>
-    <entry xml:id="identifier">Kennung</entry>
+    <entry xml:id="identifier">ID</entry>
     <entry xml:id="all">alle</entry>
     <entry xml:id="none">keine</entry>
     <entry xml:id="only">nur</entry>
@@ -498,7 +498,7 @@
     <entry xml:id="project">Projekt</entry>
     <entry xml:id="biblio">Bibliographie</entry>
     <entry xml:id="complete_indices">Gesamtes Register</entry>
-    <entry xml:id="composers">Komponiert/Verfasst von</entry>
+    <entry xml:id="composers">Komposition/Text von</entry>
     <entry xml:id="docSource">Datenherkunft</entry>
     <entry xml:id="infoFromGND">Angaben aus der GND</entry>
     <entry xml:id="notatedMusic">Notenbeispiel</entry>
