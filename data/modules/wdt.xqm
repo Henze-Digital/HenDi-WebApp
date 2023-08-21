@@ -577,7 +577,9 @@ declare function wdt:news($item as item()*) as map(*) {
                 case xs:untypedAtomic return crud:doc($item)/tei:TEI
                 case document-node() return $item/tei:TEI
                 default return $item/root()/tei:TEI
-            let $title-element := ($TEI//tei:fileDesc/tei:titleStmt/tei:title[@level = 'a'])[1]
+            let $title-element := if($TEI//tei:fileDesc/tei:titleStmt/tei:title[@level = 'a'][@xml:lang = config:guess-language(())])
+                                  then $TEI//tei:fileDesc/tei:titleStmt/tei:title[@level = 'a'][@xml:lang = config:guess-language(())]
+                                  else ($TEI//tei:fileDesc/tei:titleStmt/tei:title[@level = 'a'])[1]
             return
                 switch($serialization)
                 case 'txt' return str:normalize-space(replace(string-join(str:txtFromTEI($title-element, config:guess-language(())), ''), '\s*\n+\s*(\S+)', '. $1'))
@@ -872,7 +874,9 @@ declare function wdt:thematicCommentaries($item as item()*) as map(*) {
                 case xs:untypedAtomic return crud:doc($item)/tei:TEI
                 case document-node() return $item/tei:TEI
                 default return $item/root()/tei:TEI
-            let $title-element := ($TEI//tei:fileDesc/tei:titleStmt/tei:title[@level = 'a'])[1]
+            let $title-element := if($TEI//tei:fileDesc/tei:titleStmt/tei:title[@level = 'a'][@xml:lang = config:guess-language(())])
+                                  then $TEI//tei:fileDesc/tei:titleStmt/tei:title[@level = 'a'][@xml:lang = config:guess-language(())]
+                                  else ($TEI//tei:fileDesc/tei:titleStmt/tei:title[@level = 'a'])[1]
             return
                 switch($serialization)
                 case 'txt' return str:normalize-space(replace(string-join(str:txtFromTEI($title-element, config:guess-language(())), ''), '\s*\n+\s*(\S+)', '. $1'))
