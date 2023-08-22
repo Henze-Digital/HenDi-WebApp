@@ -740,6 +740,9 @@
     <entry xml:id="physDesc.objectDesc.form.unknown">Unbekannt</entry>
 	<entry xml:id="physDesc.objectDesc.material.copy.carbon">Durchschlag</entry>
 	
+	<!-- hands -->
+	<entry xml:id="handNotes">Schreibstile</entry>
+	
     <entry xml:id="assignmentNotClear">Zuordnung nicht eindeutig</entry>
     <entry xml:id="into">ins</entry>
 	<entry xml:id="translationAids">Übersetzungshilfen</entry>

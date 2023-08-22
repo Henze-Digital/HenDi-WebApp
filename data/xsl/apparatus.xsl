@@ -26,6 +26,27 @@
          <xsl:if test="wega:isNews($docID)">
             <xsl:attribute name="style">display:none</xsl:attribute>
          </xsl:if>
+         <xsl:if test="$doc//tei:profileDesc//tei:handNotes">
+            <xsl:element name="h3">
+               <xsl:attribute name="class">media-heading</xsl:attribute>
+               <xsl:value-of select="wega:getLanguageString('handNotes', $lang)"/>
+            </xsl:element>
+         </xsl:if>
+         <xsl:element name="ul">
+            <xsl:attribute name="class">apparatus textConstitution</xsl:attribute>
+            <xsl:for-each select="$doc//tei:profileDesc//tei:handNote">
+               <xsl:element name="li">
+                  <xsl:element name="div">
+                     <xsl:attribute name="class">row</xsl:attribute>
+                     <xsl:element name="div">
+                        <xsl:attribute name="class">col-1 text-nowrap</xsl:attribute>
+                     </xsl:element>
+                     <xsl:apply-templates select="." mode="apparatus"/>
+                  </xsl:element>
+               </xsl:element>
+            </xsl:for-each>
+         </xsl:element>
+         
          <xsl:if test="$textConstitutionNodes or $doc//tei:notesStmt/tei:note[@type='textConst']">
             <xsl:element name="h3">
                <xsl:attribute name="class">media-heading</xsl:attribute>
@@ -965,6 +986,18 @@
 			<xsl:with-param name="translation" select="."/>
 		</xsl:call-template>
 	</xsl:template>
+	
+	<xsl:template match="tei:handNote" mode="apparatus">
+      <xsl:call-template name="apparatusEntry">
+        <xsl:with-param name="counter-param">
+				<xsl:value-of select="'handNote'"/>
+			</xsl:with-param>
+         <xsl:with-param name="title" select="wega:getLanguageString('handNote',$lang)"/>
+         <xsl:with-param name="explanation">
+            <xsl:sequence select="hendi:getHandNotes(.)"/>
+         </xsl:with-param>
+      </xsl:call-template>
+    </xsl:template>
    
    <!-- template for creating an apparatus entry -->
    <xsl:template name="apparatusEntry">
@@ -980,6 +1013,9 @@
          <xsl:choose>
             <xsl:when test="$counter-param='note'">
                <xsl:number count="tei:note[@type=('commentary', 'definition')] | tei:choice | tei:figDesc | tei:foreign[@xml:id]" level="any"/>
+            </xsl:when>
+            <xsl:when test="$counter-param='handNote'">
+                <xsl:number count="tei:handNote" level="any"/>
             </xsl:when>
             <xsl:otherwise>
             	<xsl:number count="tei:subst | tei:add[not(parent::tei:subst)] | tei:gap[not(@reason='outOfScope' or parent::tei:del)] | tei:sic[not(parent::tei:choice)] | tei:del[not(parent::tei:subst)] | tei:unclear[not(parent::tei:choice)] | tei:note[@type='textConst']  | tei:supplied[parent::tei:damage] | tei:note[@type='internal'] | tei:handShift" level="any"/>
@@ -1062,6 +1098,7 @@
       	</xsl:if>
       </xsl:element>
    </xsl:template>
+   
    <xsl:function name="wega:createID">
       <xsl:param name="elem" as="element()"/>
       <xsl:choose>
@@ -1129,6 +1166,45 @@
          </xsl:when>
          <xsl:otherwise/>
       </xsl:choose>
+   </xsl:function>
+   
+   <xsl:function name="hendi:getHandNotes" as="node()*">
+      <xsl:param name="handNote" as="node()"/>
+      
+      <xsl:variable name="handNoteScript" select="functx:capitalize-first(wega:getLanguageString(concat('handshift',  functx:capitalize-first($handNote/@script)), $lang))"/>
+      <xsl:variable name="handNoteMedium" select="wega:getLanguageString(concat('medium.',$handNote/@medium), $lang)"/>
+      <xsl:variable name="handNoteColor" select="wega:getLanguageString(concat('color.',$handNote/@hendi:color), $lang)"/>
+      <xsl:variable name="handNoteScribe" select="$handNote/@scribe"/>
+      
+     
+     <xsl:value-of select="$handNoteScript"/>
+     <xsl:if test="$handNoteScribe">
+      <xsl:text>, </xsl:text>
+      <xsl:element name="a">
+         <xsl:attribute name="class">
+            <xsl:value-of select="wega:preview-class($handNote)"/>
+         </xsl:attribute>
+         <xsl:attribute name="href" select="wega:createLinkToDoc($handNoteScribe, $lang)"/>
+         <xsl:value-of select="wega:doc($handNoteScribe)//tei:persName[@type='reg']"/>
+      </xsl:element>
+     </xsl:if>
+     <xsl:if test="$handNoteMedium or $handNoteColor">   
+        <xsl:text>, </xsl:text>
+        <xsl:choose>
+           <xsl:when test="$handNoteMedium">
+              <xsl:value-of select="$handNoteMedium"/>
+              <xsl:if test="$handNoteColor">
+                        <xsl:text> (</xsl:text>
+                        <xsl:value-of select="$handNoteColor"/>
+                        <xsl:text>)</xsl:text>
+                    </xsl:if>
+           </xsl:when>
+           <xsl:when test="$handNoteColor">
+                    <xsl:value-of select="$handNoteColor"/>
+                </xsl:when>
+        </xsl:choose>
+     </xsl:if>
+         
    </xsl:function>
 	
    <xsl:variable name="sort-order" as="element()+">
