@@ -67,25 +67,38 @@
                 </xsl:when>
                 <!-- https://www.i2symbol.com/symbols/office-tools -->
                 <xsl:when test="not($marker) and self::tei:figDesc">
-                    <xsl:text>✎</xsl:text>
+                    <xsl:element name="i">
+                        <xsl:attribute name="class">fa-regular fa-image</xsl:attribute>
+                    </xsl:element>                    
                 </xsl:when>
                 <xsl:when test="self::tei:note[@type='internal']">
-                    <xsl:text>!</xsl:text>
+                    <xsl:element name="i">
+                        <xsl:attribute name="class">fa-regular fa-eye</xsl:attribute>
+                    </xsl:element>                    
                 </xsl:when>
                 <xsl:when test="not($marker) and self::tei:app">
                     <xsl:text>Δ</xsl:text>
                 </xsl:when>
                 <xsl:when test="not($marker) and self::tei:handShift[@script='manuscript']">
-                    <!-- https://www.i2symbol.com/symbols/write -->
-                    <xsl:text>✍</xsl:text>
+                    <xsl:element name="i">
+                        <xsl:attribute name="class">fa-regular fa-feather-pointed</xsl:attribute>
+                    </xsl:element>                    
                 </xsl:when>
                 <xsl:when test="not($marker) and self::tei:handShift[@script='typescript']">
-                    <!-- https://www.i2symbol.com/symbols/write -->
-                    <xsl:text>⌨</xsl:text>
+                    <xsl:element name="i">
+                        <xsl:attribute name="class">fa-regular fa-keyboard</xsl:attribute>
+                    </xsl:element>
                 </xsl:when>
                 <!-- https://www.i2symbol.com/symbols/degree -->
-            	<xsl:when test="not($marker) and ((self::tei:persName|self::tei:orgName|self::tei:placeName)[not(@key)]|self::tei:foreign)">
-                    <xsl:text>°</xsl:text>
+            	<xsl:when test="not($marker) and (self::tei:persName|self::tei:orgName|self::tei:placeName)[not(@key)]">
+                    <xsl:element name="i">
+                        <xsl:attribute name="class">fa-regular fa-info</xsl:attribute>
+                    </xsl:element>                    
+                </xsl:when>
+            	<xsl:when test="not($marker) and self::tei:foreign">
+                    <xsl:element name="i">
+                        <xsl:attribute name="class">fa-regular fa-flag</xsl:attribute>
+                    </xsl:element>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:text>‡</xsl:text> <!-- to be changed in apparatus.xsl too if necessary -->
