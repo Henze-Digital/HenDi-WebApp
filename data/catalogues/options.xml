@@ -19,7 +19,7 @@
 		<entry xml:id="iiifPresentationApi">https://henze-digital.zenmem.de/IIIF/</entry><!-- trailing slashes are important! -->
 		<entry xml:id="iiifImageApi">https://henze-digital.zenmem.de/Scaler/IIIF/</entry><!-- trailing slashes are important! -->
 		<entry xml:id="facsimileGreenList">D-B D-Hs CZ-Pk D-LUs S-LI</entry>
-		<entry xml:id="maxNews">2</entry>
+		<entry xml:id="maxNews">3</entry>
 		<entry xml:id="googleWebsiteMetatag">x</entry>
 		<entry xml:id="microsoftBingWebsiteMetatag">x</entry>
 		<entry xml:id="ODDversion">1.0.0</entry>
