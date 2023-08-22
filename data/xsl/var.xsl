@@ -105,6 +105,14 @@
             <xsl:apply-templates/>
         </xsl:element>
     </xsl:template>
+	
+	<xsl:template match="tei:p[starts-with($docID, 'A09')]">
+		<xsl:element name="p">
+			<xsl:attribute name="class">explNotes</xsl:attribute>
+			<xsl:apply-templates select="@xml:id"/>
+			<xsl:apply-templates/>
+		</xsl:element>
+	</xsl:template>
 
     <xsl:template match="tei:ab">
         <xsl:element name="div">
