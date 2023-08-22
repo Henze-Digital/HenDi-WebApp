@@ -167,7 +167,7 @@ declare
     %templates:default("lang", "en") 
     %templates:wrap
     function facets:document-allFilter($node as node(), $model as map(*), $lang as xs:string) as map(*) {
-        let $filterSections := ('personsPlus', 'works', 'places', 'characterNames')
+        let $filterSections := ('persons', 'orgs', 'works', 'places', 'characterNames')
         return
         map {
             'filterSections' : 
