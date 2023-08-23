@@ -143,7 +143,7 @@ declare %private function facets:display-term($facet as xs:string, $term as xs:s
     switch($facet)
     case 'persons' case 'personsPlus' case 'sender' case 'addressee' 
     case 'dedicatees' case 'lyricists' case 'librettists' 
-    case 'composers' case 'authors' case 'editors' return
+    case 'composers' case 'authors' case 'editors' case 'orgs' return
         if(wdt:persons($term)('check')()) then wdt:persons($term)('label-facets')() (:$facets:persons-norm-file//norm:entry[range:eq(@docID,$term)]/normalize-space():)
         else wdt:orgs($term)('label-facets')()
     case 'works' return wdt:works($term)('label-facets')()
@@ -173,7 +173,7 @@ declare
             'filterSections' : 
                 for $filter in $filterSections
                 let $keys := 
-                    if($filter = 'personsPlus') 
+                    if($filter = ('persons','orgs')) 
                     then distinct-values($model('doc')//@key[ancestor::tei:text or ancestor::tei:ab][not(ancestor::tei:note)]/tokenize(., '\s+')[config:get-combined-doctype-by-id(.) = $filter])
                     else distinct-values($model('doc')//@key[ancestor::tei:text or ancestor::tei:ab][not(ancestor::tei:note)]/tokenize(., '\s+')[config:get-doctype-by-id(.) = $filter])
                 let $characterNames := 
