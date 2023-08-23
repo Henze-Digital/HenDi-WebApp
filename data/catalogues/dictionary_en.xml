@@ -351,7 +351,7 @@
     <entry xml:id="inbook">In Book</entry>
     <entry xml:id="mastersthesis">Masters Thesis</entry>
     <!--  Various  -->
-    <entry xml:id="correspondence">Correspondence</entry>
+    <entry xml:id="correspondence">Letters</entry>
     <entry xml:id="writings">Writings</entry>
     <entry xml:id="noWritingsAvailable">No writings available</entry>
     <entry xml:id="journals">Journals</entry>
@@ -480,12 +480,12 @@
     <entry xml:id="all_documents">All Documents</entry>
     <entry xml:id="all_places">All Places</entry>
 	<entry xml:id="all_thematicCommentaries">All Explanatory Notes</entry>
-    <entry xml:id="henzes_person">The Person</entry>
-    <entry xml:id="henzes_correspondence">The Letters</entry>
-    <entry xml:id="henzes_writings">The Writings</entry>
-    <entry xml:id="henzes_diaries">The Diaries</entry>
-    <entry xml:id="henzes_documents">The Documents</entry>
-    <entry xml:id="henzes_works">The Works</entry>
+    <entry xml:id="henzes_person">Person</entry>
+    <entry xml:id="henzes_correspondence">Letters</entry>
+    <entry xml:id="henzes_writings">Writings</entry>
+    <entry xml:id="henzes_diaries">Diaries</entry>
+    <entry xml:id="henzes_documents">Documents</entry>
+    <entry xml:id="henzes_works">Works</entry>
     <entry xml:id="project">Project</entry>
     <entry xml:id="biblio">Bibliography</entry>
     <entry xml:id="complete_indices">Complete Indices</entry>

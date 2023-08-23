@@ -360,7 +360,7 @@
     <entry xml:id="inbook">Buchkapitel</entry>
     <entry xml:id="mastersthesis">Master-/Magisterarbeit</entry>
     <!--  Various  -->
-    <entry xml:id="correspondence">Korrespondenz</entry>
+    <entry xml:id="correspondence">Briefe</entry>
     <entry xml:id="writings">Schriften</entry>
     <entry xml:id="noWritingsAvailable">Keine Schriften verfügbar</entry>
     <entry xml:id="journals">Periodika</entry>
@@ -489,12 +489,12 @@
     <entry xml:id="all_documents">Alle Dokumente</entry>
     <entry xml:id="all_places">Alle Orte</entry>
 	<entry xml:id="all_thematicCommentaries">Alle Erläuterungen</entry>
-    <entry xml:id="henzes_person">Die Person</entry>
-    <entry xml:id="henzes_correspondence">Die Briefe</entry>
-    <entry xml:id="henzes_writings">Die Schriften</entry>
-    <entry xml:id="henzes_diaries">Die Tagebücher</entry>
-    <entry xml:id="henzes_works">Die Werke</entry>
-    <entry xml:id="henzes_documents">Die Dokumente</entry>
+    <entry xml:id="henzes_person">Person</entry>
+    <entry xml:id="henzes_correspondence">Briefe</entry>
+    <entry xml:id="henzes_writings">Schriften</entry>
+    <entry xml:id="henzes_diaries">Tagebücher</entry>
+    <entry xml:id="henzes_works">Werke</entry>
+    <entry xml:id="henzes_documents">Dokumente</entry>
     <entry xml:id="project">Projekt</entry>
     <entry xml:id="biblio">Bibliographie</entry>
     <entry xml:id="complete_indices">Gesamtes Register</entry>
