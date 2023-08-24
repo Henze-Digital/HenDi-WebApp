@@ -1464,9 +1464,21 @@ declare
          let $foot := 
             if(config:is-news($docID)) then app:get-news-foot($doc, $lang)
             else ()
-         
+         let $isEnclosureAlert := if($doc//tei:relation[@name='isEnclosureOf']/@key)
+                                  then(element xhtml:div {
+                                    attribute class {'alert alert-primary'},
+                             	    element xhtml:p {
+                             	        attribute class {'text-center'},
+                             	        lang:get-language-string('isEnclosureOf',$lang) || ' ',
+                             	        element xhtml:b {
+                             	            app:createDocLink(collection('/db/apps/hendi-data')//tei:TEI[@xml:id=$doc//tei:relation[@name='isEnclosureOf']/@key]/root(),$doc//tei:relation[@name='isEnclosureOf']/@key/string(),$lang,())
+                             	        }
+                             	    }
+                             	 })
+                             	 else()
          return 
-            map { 
+            map {
+                'isEnclosureAlert' : $isEnclosureAlert,
                 'transcription' : (wega-util:remove-elements-by-class($body, 'apparatus'),$foot), 
                 'apparatus' : $body/descendant-or-self::*[@class='apparatus']
             }
