@@ -971,7 +971,7 @@ declare
 	            'baptism' : exists($model('doc')//tei:birth/tei:date[@type='baptism']),
 	            'death' : exists($model('doc')//tei:death[not(tei:date) or tei:date[not(@type)]]),
 	            'funeral' : exists($model('doc')//tei:death/tei:date[@type = 'funeral']),
-	            'occupations' : $model('doc')//tei:occupation | $model('doc')//tei:label[.='Art der Institution']/following-sibling::tei:desc,
+	            'occupations' : $model('doc')//tei:occupation,
 	            'residences' : $residences,
 	            'states' : $model('doc')//tei:state[@type='orgType']//tei:term,
 	            'bibls' : $model('doc')//tei:listBibl/tei:bibl,
@@ -2115,7 +2115,8 @@ declare
 
 declare function app:register-dispatch($node as node(), $model as map(*)) {
     switch($model('docType'))
-    case 'persons' case 'orgs' return templates:include($node, $model, 'templates/ajax/contacts.html') (:case 'personsPlus':)
+    case 'persons' return templates:include($node, $model, 'templates/ajax/contacts.html') (:case 'personsPlus':)
+    case 'orgs' return templates:include($node, $model, 'templates/ajax/orgs.html')
     case 'letters' return templates:include($node, $model, 'templates/ajax/correspondence.html')
     default return templates:include($node, $model, 'templates/ajax/' || $model('docType') || '.html')
 };

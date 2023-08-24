@@ -261,6 +261,7 @@
     <entry xml:id="librettists">Librettists</entry>
     <entry xml:id="lyricists">Lyricists</entry>
     <entry xml:id="occupations">Occupations</entry>
+	<entry xml:id="orgtypes">Types of Institution</entry>
     <entry xml:id="alphabetic">Alphabetic</entry>
     <entry xml:id="chronoTo">to</entry>
     <entry xml:id="chronology">Chronology</entry>
@@ -546,6 +547,7 @@
 	<entry xml:id="otherSources">other sources</entry>
 	<entry xml:id="forenames">Forenames</entry>
 	<entry xml:id="surnames">Surnames</entry>
+	<entry xml:id="names">Names</entry>
     <entry xml:id="attributes">Attributes</entry>
     <entry xml:id="members">Members</entry>
     <entry xml:id="status">Status</entry>
