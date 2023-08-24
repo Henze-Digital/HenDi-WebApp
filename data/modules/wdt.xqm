@@ -69,8 +69,11 @@ declare function wdt:orgs($item as item()*) as map(*) {
                 case xs:untypedAtomic return crud:doc($item)
                 case document-node() return $item
                 default return $item/root()
+            let $state := if($doc//tei:state[@type='orgType']/tei:desc/tei:term)
+                          then(' (' || string-join($doc//tei:state[@type='orgType']/tei:desc/tei:term, ' / ') || ')')
+                          else()
             return
-                wdt:orgs($doc)('title')('txt') || ' (' || string-join($doc//tei:state[tei:label='Art der Institution']/tei:desc, ', ') || ')'
+                wdt:orgs($doc)('title')('txt') || $state
         },
         'memberOf' : ('search','indices', 'sitemap', 'unary-docTypes'), (: 'search':)
         'search' : function($query as element(query)) {
