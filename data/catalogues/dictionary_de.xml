@@ -818,4 +818,6 @@
     <entry xml:id="event">Ereignis</entry>
     <entry xml:id="textualSource">Textgrundlage</entry>
     <entry xml:id="furtherDetails">Weitere Angaben</entry>
+	
+	<entry xml:id="textRotation">Text im Uhrzeigersinn gedreht</entry>
 </dictionary>

@@ -809,4 +809,6 @@
     <entry xml:id="event">Event</entry>
     <entry xml:id="textualSource">Textual source</entry>
     <entry xml:id="furtherDetails">Further details</entry>
+	
+	<entry xml:id="textRotation">Text turned clockwise</entry>
 </dictionary>

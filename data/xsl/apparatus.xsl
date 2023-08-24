@@ -558,6 +558,13 @@
                   <xsl:value-of select="wega:getLanguageString('addDefault', $lang)"/>
                </xsl:otherwise>
             </xsl:choose>
+            <xsl:if test="@hendi:rotation">
+                <xsl:text>, </xsl:text>
+            	<xsl:value-of select="wega:getLanguageString('textRotation', $lang)"/>
+            	<xsl:text> (</xsl:text>
+                <xsl:value-of select="@hendi:rotation"/>
+                <xsl:text>°)</xsl:text>
+            </xsl:if>
             <xsl:sequence select="hendi:getHandFeatures(.)"/>
          </xsl:with-param>
       </xsl:call-template>
