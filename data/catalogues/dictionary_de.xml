@@ -761,7 +761,8 @@
     <entry xml:id="hasEnvelope">Mit Briefumschlag</entry>
     <entry xml:id="envelope">Briefumschlag</entry>
 	
-	<entry xml:id="switchDocumentView">Zur Dokumentansicht wechseln</entry>
+	<entry xml:id="previewDocument">Dies ist eine reduzierte Voransicht. Wechseln Sie für weitere Informationen zur</entry>
+	<entry xml:id="switchDocumentView">Edition des Dokuments</entry>
     
     <entry xml:id="workTypeMedium">Medium</entry>
     <entry xml:id="music">Musikalisches Werk</entry>

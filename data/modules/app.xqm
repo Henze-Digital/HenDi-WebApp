@@ -2409,9 +2409,17 @@ declare function app:enclosure($node as node(), $model as map(*))  {
 	            element xhtml:p {
 	                    attribute class {'notAvailable'}
 	            }
-	         else (element xhtml:div {
-	         	element xhtml:p {app:createDocLink($enclosure,lang:get-language-string('switchDocumentView',$lang),$lang,())},
-	         	element xhtml:hr {}},
+	         else (
+	             element xhtml:div {
+	                attribute class {'alert alert-primary'},
+	         	    element xhtml:p {
+	         	        attribute class {'text-center'},
+	         	        lang:get-language-string('previewDocument',$lang) || ' ',
+	         	        element xhtml:b {
+	         	            app:createDocLink($enclosure,lang:get-language-string('switchDocumentView',$lang),$lang,())
+	         	        }
+	         	    }
+	         	 },
 	               wega-util:transform($textRoot, $xslt1, $xslParams))
 	    return
 	        <div class="tab-pane fade" id="enclosure-{$z}">

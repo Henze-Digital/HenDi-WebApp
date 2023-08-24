@@ -752,7 +752,8 @@
     <entry xml:id="hasEnvelope">Has envelope</entry>
     <entry xml:id="envelope">Envelope</entry>
 	
-	<entry xml:id="switchDocumentView">Switch to document view</entry>
+	<entry xml:id="previewDocument">This is a reduced preview. For further information switch to</entry>
+	<entry xml:id="switchDocumentView">the edition of the Dokument</entry>
     
     <entry xml:id="workTypeMedium">Medium</entry>
     <entry xml:id="music">Musical work</entry>
