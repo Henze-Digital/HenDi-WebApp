@@ -490,6 +490,7 @@
     <entry xml:id="biblio">Bibliography</entry>
     <entry xml:id="complete_indices">Complete Indices</entry>
     <entry xml:id="composers">Composers</entry>
+	<entry xml:id="authorsText">Authors</entry>
     <entry xml:id="docSource">Origin of data</entry>
     <entry xml:id="infoFromGND">Details from the GND</entry>
     <entry xml:id="notatedMusic">Sample Notation</entry>
