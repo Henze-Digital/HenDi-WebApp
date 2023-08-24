@@ -261,7 +261,6 @@
     <entry xml:id="librettists">Librettists</entry>
     <entry xml:id="lyricists">Lyricists</entry>
     <entry xml:id="occupations">Occupations</entry>
-	<entry xml:id="orgtypes">Types of Institution</entry>
     <entry xml:id="alphabetic">Alphabetic</entry>
     <entry xml:id="chronoTo">to</entry>
     <entry xml:id="chronology">Chronology</entry>
@@ -583,7 +582,7 @@
     <entry xml:id="julianDate">Julian date</entry>
     <entry xml:id="vorlageform">Vorlageform</entry>
     <entry xml:id="asksam-cat">asksam-cat</entry>
-    <entry xml:id="einrichtungsform">Einrichtungsform</entry>
+    <entry xml:id="einrichtungsform">Types of Institution</entry>
     <entry xml:id="received">received</entry>
     <entry xml:id="descriptions">Descriptions</entry>
     <entry xml:id="sentVersion">Sent letter</entry>
