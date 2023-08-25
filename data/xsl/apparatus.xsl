@@ -40,6 +40,7 @@
                      <xsl:attribute name="class">row</xsl:attribute>
                      <xsl:element name="div">
                         <xsl:attribute name="class">col-1 text-nowrap</xsl:attribute>
+                        <xsl:text>–</xsl:text>
                      </xsl:element>
                      <xsl:apply-templates select="." mode="apparatus"/>
                   </xsl:element>
@@ -1022,7 +1023,7 @@
                <xsl:number count="tei:note[@type=('commentary', 'definition')] | tei:choice | tei:figDesc | tei:foreign[@xml:id]" level="any"/>
             </xsl:when>
             <xsl:when test="$counter-param='handNote'">
-                <xsl:number count="tei:handNote" level="any"/>
+               <xsl:number count="tei:handNote" level="any"/>
             </xsl:when>
             <xsl:otherwise>
             	<xsl:number count="tei:subst | tei:add[not(parent::tei:subst)] | tei:gap[not(@reason='outOfScope' or parent::tei:del)] | tei:sic[not(parent::tei:choice)] | tei:del[not(parent::tei:subst)] | tei:unclear[not(parent::tei:choice)] | tei:note[@type='textConst']  | tei:supplied[parent::tei:damage] | tei:note[@type='internal'] | tei:handShift" level="any"/>
@@ -1178,7 +1179,7 @@
    <xsl:function name="hendi:getHandNotes" as="node()*">
       <xsl:param name="handNote" as="node()"/>
       
-      <xsl:variable name="handNoteScript" select="functx:capitalize-first(wega:getLanguageString(concat('handshift',  functx:capitalize-first($handNote/@script)), $lang))"/>
+      <xsl:variable name="handNoteScript" select="functx:capitalize-first(wega:getLanguageString(concat('handNote',  functx:capitalize-first($handNote/@script)), $lang))"/>
       <xsl:variable name="handNoteMedium" select="wega:getLanguageString(concat('medium.',$handNote/@medium), $lang)"/>
       <xsl:variable name="handNoteColor" select="wega:getLanguageString(concat('color.',$handNote/@hendi:color), $lang)"/>
       <xsl:variable name="handNoteScribe" select="$handNote/@scribe"/>

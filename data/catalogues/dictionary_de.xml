@@ -167,6 +167,10 @@
     <entry xml:id="outofScope">außerhalb des Editionsrahmens</entry>
     <entry xml:id="handshiftManuscript">handschriftlich</entry>
     <entry xml:id="handshiftTypescript">Typoskript</entry>
+    <entry xml:id="handNoteHeadManuscript">Manuskript</entry>
+    <entry xml:id="handNoteHeadTypescript">Typoskript</entry>
+    <entry xml:id="handNoteManuscript">Handschrift</entry>
+    <entry xml:id="handNoteTypescript">Maschinenschrift</entry>
 	<entry xml:id="paperloss">Papierverlust</entry>
 	<entry xml:id="smoke">Beschädigung durch Rauch oder Feuer</entry>
 	<entry xml:id="seal">Beschädigung durch Siegel(einriss)</entry>

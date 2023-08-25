@@ -23,13 +23,18 @@
 						<xsl:apply-templates/>		
 					</xsl:element>
 				</xsl:when>
+				<xsl:when test="not(contains(parent::tei:text/@type,'document'))">
+					<xsl:if test="$doc//tei:handNote[1]/@script">
+						<xsl:element name="h4">
+							<xsl:attribute name="style" select="'padding-top: 0em; padding-bottom: 2em;'"/>
+							<xsl:text>[</xsl:text>
+							<xsl:value-of select="wega:getLanguageString(concat('handNoteHead',  functx:capitalize-first($doc//tei:handNote[1]/@script)), $lang)"/>
+							<xsl:text>]</xsl:text>    
+						</xsl:element>
+					</xsl:if>
+					<xsl:apply-templates/>
+				</xsl:when>
 				<xsl:otherwise>
-					<xsl:element name="h4">
-						<xsl:attribute name="style" select="'padding-top: 0em; padding-bottom: 2em;'"/>
-						<xsl:text>[</xsl:text>
-						<xsl:value-of select="wega:getLanguageString(concat('handshift',  functx:capitalize-first($doc//tei:handNote[1]/@script)), $lang)"/>
-						<xsl:text>]</xsl:text>    
-					</xsl:element>
 					<xsl:apply-templates/>
 				</xsl:otherwise>
 			</xsl:choose>
