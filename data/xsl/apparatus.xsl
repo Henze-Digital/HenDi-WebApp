@@ -789,24 +789,32 @@
       <xsl:call-template name="popover"/>
    </xsl:template>
    
-   <xsl:template match="tei:del[not(parent::tei:subst) and @rend='overtyped']">
+   <xsl:template match="tei:del[not(parent::tei:subst)]">
       <xsl:element name="span">
          <xsl:apply-templates select="@xml:id"/>
-         <xsl:attribute name="class" select="'tei_del_overtyped'"/>
-         <xsl:variable name="delLength" as="xs:integer" select="string-length(text())"/>
-         <xsl:element name="span">
-            <xsl:apply-templates mode="#current"/>
-         </xsl:element>
-         <xsl:element name="span">
-          	<xsl:choose>
-          		<xsl:when test="@style">
-                        <xsl:attribute name="data-overtype" select="@style"/>
-                    </xsl:when>
-          		<xsl:otherwise>
-          		      <xsl:value-of select="string-join(for $x in 1 to $delLength return 'x','')"/>
-          		   </xsl:otherwise>
-          	</xsl:choose>
-         </xsl:element>
+         <xsl:choose>
+            <xsl:when test="@rend='overtyped'">
+             <xsl:attribute name="class" select="'tei_del_overtyped'"/>
+             <xsl:variable name="delLength" as="xs:integer" select="string-length(text())"/>
+             <xsl:element name="span">
+                <xsl:apply-templates mode="#current"/>
+             </xsl:element>
+             <xsl:element name="span">
+              	<xsl:choose>
+              		<xsl:when test="@style">
+                            <xsl:attribute name="data-overtype" select="@style"/>
+                        </xsl:when>
+              		<xsl:otherwise>
+              		      <xsl:value-of select="string-join(for $x in 1 to $delLength return 'x','')"/>
+              		   </xsl:otherwise>
+              	</xsl:choose>
+             </xsl:element>
+            </xsl:when>
+            <xsl:otherwise>
+               <xsl:attribute name="class" select="concat('tei_del_', @rend)"/>
+               <xsl:apply-templates mode="#current"/>
+            </xsl:otherwise>
+         </xsl:choose>
       </xsl:element>
       <xsl:call-template name="popover"/>
    </xsl:template>
