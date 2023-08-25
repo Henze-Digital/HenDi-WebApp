@@ -758,7 +758,7 @@
     <entry xml:id="translations">Übersetzungen</entry>
     <entry xml:id="translationBy">Übersetzung von</entry>
 	<entry xml:id="inLang">Auf</entry>
-	<entry xml:id="isEnclosureOf">Ist Beilage von</entry>
+	<entry xml:id="isEnclosureOf">Ist Beilage zu</entry>
 	<entry xml:id="hasEnclosure">Mit Beilage</entry>
 	<entry xml:id="enclosure">Beilage</entry>
     <entry xml:id="isEnvelopeOf">Ist Briefumschlag von</entry>
