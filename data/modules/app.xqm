@@ -1466,15 +1466,12 @@ declare
             else ()
          let $isEnclosureAlert := if($doc//tei:relation[@name='isEnclosureOf']/@key)
                                   then(element xhtml:div {
-                                    attribute class {'alert alert-primary'},
-                             	    element xhtml:p {
-                             	        attribute class {'text-center'},
+                                    attribute class {'alert alert-primary text-center'},
                              	        lang:get-language-string('isEnclosureOf',$lang) || ' ',
                              	        element xhtml:b {
                              	            app:createDocLink(collection('/db/apps/hendi-data')//tei:TEI[@xml:id=$doc//tei:relation[@name='isEnclosureOf']/@key]/root(),$doc//tei:relation[@name='isEnclosureOf']/@key/string(),$lang,())
                              	        }
-                             	    }
-                             	 })
+                                 	 })
                              	 else()
          return 
             map {
@@ -2430,15 +2427,12 @@ declare function app:enclosure($node as node(), $model as map(*))  {
 	            }
 	         else (
 	             element xhtml:div {
-	                attribute class {'alert alert-primary'},
-	         	    element xhtml:p {
-	         	        attribute class {'text-center'},
+	                attribute class {'alert alert-primary text-center'},
 	         	        lang:get-language-string('previewDocument',$lang) || ' ',
 	         	        element xhtml:b {
 	         	            app:createDocLink($enclosure,lang:get-language-string('switchDocumentView',$lang),$lang,())
 	         	        }
-	         	    }
-	         	 },
+    	         	 },
 	               wega-util:transform($textRoot, $xslt1, $xslParams))
 	    return
 	        <div class="tab-pane fade" id="enclosure-{$z}">
