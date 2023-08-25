@@ -288,7 +288,7 @@
         </xsl:element>
             <xsl:for-each select="tei:material">
                 <xsl:element name="li">
-                    <xsl:value-of select="./text()"/>
+                    <xsl:apply-templates/>
                 </xsl:element>
             </xsl:for-each>
     </xsl:template>
@@ -372,7 +372,7 @@
         </xsl:element>
         <xsl:for-each select="tei:layout">
             <xsl:element name="li">
-                <xsl:value-of select="./text()"/>
+                <xsl:apply-templates/>
             </xsl:element>
         </xsl:for-each>
     </xsl:template>
