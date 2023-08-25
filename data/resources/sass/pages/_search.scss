@@ -23,6 +23,14 @@
         border-right: 15px solid transparent;
         vertical-align: top;
         width: 65px; // max width for images: 50px plus border: 15px
+        filter: invert(16%) sepia(30%) saturate(2674%) hue-rotate(208deg) brightness(90%) contrast(106%);
+    }
+    div.preview-icon:hover {
+        display: table-cell;
+        border-right: 15px solid transparent;
+        vertical-align: top;
+        width: 65px; // max width for images: 50px plus border: 15px
+        filter: invert(10%) sepia(76%) saturate(5510%) hue-rotate(244deg) brightness(91%) contrast(94%);
     }
 
     .media-body {
