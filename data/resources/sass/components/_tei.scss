@@ -104,9 +104,11 @@ text-decoration-line: underline;
 hr.tei_pb-text {
   position: relative;
     border: none;
-    height: 3.5px;
+    height: 10px;
     background: #bbb;
     border-radius: 5px;
+    margin-top: 1.75em;
+    margin-bottom: 2.2em;
 }
 
 hr.tei_pb-text:before {

@@ -575,7 +575,7 @@
             </xsl:choose>
         </xsl:element>
         <xsl:if test="not(parent::tei:list)">
-            <hr data-content="{$pbTitleText}" title="{$pbTitleText}" class="tei_pb-text" style="height: 3.5px; background: #bbb; border-radius: 5px;"/>
+            <hr data-content="{$pbTitleText}" title="{$pbTitleText}" class="tei_pb-text"/>
         </xsl:if>
     </xsl:template>
 
