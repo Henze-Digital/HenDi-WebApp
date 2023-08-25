@@ -16,6 +16,7 @@
     <xsl:param name="dbPath"/>
     <xsl:param name="docID"/>
     <xsl:param name="transcript"/>
+    <xsl:param name="enclosure"/>
     <xsl:param name="smufl-decl"/>
     <xsl:param name="data-collection-path"/>
     <xsl:param name="catalogues-collection-path"/>
@@ -51,60 +52,65 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <xsl:element name="a">
-            <xsl:attribute name="class" select="string-join(('noteMarker', $marker), ' ')"/>
-            <xsl:attribute name="id" select="concat('ref-', $id)"/>
-            <xsl:attribute name="data-toggle">popover</xsl:attribute>
-            <xsl:attribute name="data-trigger">focus</xsl:attribute>
-            <xsl:attribute name="tabindex">0</xsl:attribute>
-            <xsl:attribute name="data-ref" select="concat('#', $id)"/>
-            <xsl:choose>
-                <xsl:when test="$marker eq 'arabic'">
-                    <xsl:value-of select="count(preceding::tei:note[@type=('commentary','definition','textConst','internal')]) + 1"/>
-                </xsl:when>
-                <xsl:when test="not($marker) and self::tei:note[not(@type=('textConst','internal'))]">
-                    <xsl:text>*</xsl:text>
-                </xsl:when>
-                <!-- https://www.i2symbol.com/symbols/office-tools -->
-                <xsl:when test="not($marker) and self::tei:figDesc">
-                    <xsl:element name="i">
-                        <xsl:attribute name="class">fa-regular fa-image</xsl:attribute>
-                    </xsl:element>                    
-                </xsl:when>
-                <xsl:when test="self::tei:note[@type='internal']">
-                    <xsl:element name="i">
-                        <xsl:attribute name="class">fa-regular fa-eye</xsl:attribute>
-                    </xsl:element>                    
-                </xsl:when>
-                <xsl:when test="not($marker) and self::tei:app">
-                    <xsl:text>Δ</xsl:text>
-                </xsl:when>
-                <xsl:when test="not($marker) and self::tei:handShift[@script='manuscript']">
-                    <xsl:element name="i">
-                        <xsl:attribute name="class">fa-regular fa-feather-pointed</xsl:attribute>
-                    </xsl:element>                    
-                </xsl:when>
-                <xsl:when test="not($marker) and self::tei:handShift[@script='typescript']">
-                    <xsl:element name="i">
-                        <xsl:attribute name="class">fa-regular fa-keyboard</xsl:attribute>
-                    </xsl:element>
-                </xsl:when>
-                <!-- https://www.i2symbol.com/symbols/degree -->
-            	<xsl:when test="not($marker) and (self::tei:persName|self::tei:orgName|self::tei:placeName)[not(@key)]">
-                    <xsl:element name="i">
-                        <xsl:attribute name="class">fa-regular fa-info</xsl:attribute>
-                    </xsl:element>                    
-                </xsl:when>
-            	<xsl:when test="not($marker) and self::tei:foreign">
-                    <xsl:element name="i">
-                        <xsl:attribute name="class">fa-regular fa-flag</xsl:attribute>
-                    </xsl:element>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:text>‡</xsl:text> <!-- to be changed in apparatus.xsl too if necessary -->
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:element>
+        <xsl:choose>
+            <xsl:when test="$enclosure"/>
+            <xsl:otherwise>
+                <xsl:element name="a">
+                    <xsl:attribute name="class" select="string-join(('noteMarker', $marker), ' ')"/>
+                    <xsl:attribute name="id" select="concat('ref-', $id)"/>
+                    <xsl:attribute name="data-toggle">popover</xsl:attribute>
+                    <xsl:attribute name="data-trigger">focus</xsl:attribute>
+                    <xsl:attribute name="tabindex">0</xsl:attribute>
+                    <xsl:attribute name="data-ref" select="concat('#', $id)"/>
+                    <xsl:choose>
+                        <xsl:when test="$marker eq 'arabic'">
+                            <xsl:value-of select="count(preceding::tei:note[@type=('commentary','definition','textConst','internal')]) + 1"/>
+                        </xsl:when>
+                        <xsl:when test="not($marker) and self::tei:note[not(@type=('textConst','internal'))]">
+                            <xsl:text>*</xsl:text>
+                        </xsl:when>
+                        <!-- https://www.i2symbol.com/symbols/office-tools -->
+                        <xsl:when test="not($marker) and self::tei:figDesc">
+                            <xsl:element name="i">
+                                <xsl:attribute name="class">fa-regular fa-image</xsl:attribute>
+                            </xsl:element>                    
+                        </xsl:when>
+                        <xsl:when test="self::tei:note[@type='internal']">
+                            <xsl:element name="i">
+                                <xsl:attribute name="class">fa-regular fa-eye</xsl:attribute>
+                            </xsl:element>                    
+                        </xsl:when>
+                        <xsl:when test="not($marker) and self::tei:app">
+                            <xsl:text>Δ</xsl:text>
+                        </xsl:when>
+                        <xsl:when test="not($marker) and self::tei:handShift[@script='manuscript']">
+                            <xsl:element name="i">
+                                <xsl:attribute name="class">fa-regular fa-feather-pointed</xsl:attribute>
+                            </xsl:element>                    
+                        </xsl:when>
+                        <xsl:when test="not($marker) and self::tei:handShift[@script='typescript']">
+                            <xsl:element name="i">
+                                <xsl:attribute name="class">fa-regular fa-keyboard</xsl:attribute>
+                            </xsl:element>
+                        </xsl:when>
+                        <!-- https://www.i2symbol.com/symbols/degree -->
+                    	<xsl:when test="not($marker) and (self::tei:persName|self::tei:orgName|self::tei:placeName)[not(@key)]">
+                            <xsl:element name="i">
+                                <xsl:attribute name="class">fa-regular fa-info</xsl:attribute>
+                            </xsl:element>                    
+                        </xsl:when>
+                    	<xsl:when test="not($marker) and self::tei:foreign">
+                            <xsl:element name="i">
+                                <xsl:attribute name="class">fa-regular fa-flag</xsl:attribute>
+                            </xsl:element>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:text>‡</xsl:text> <!-- to be changed in apparatus.xsl too if necessary -->
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:element>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <xsl:template name="createEndnotes">
