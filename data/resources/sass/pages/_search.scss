@@ -1,0 +1,45 @@
+// Suchergebnisse
+
+.searchForm
+{
+    margin-bottom: 50px;
+}
+
+.searchResults {
+    li.media {
+        margin-bottom: 30px;
+    }
+
+    .row {
+        margin-top: 30px;
+    }
+    
+    h3, p {
+        margin-bottom: 0px;
+    }
+    
+    div.preview-icon {
+        display: table-cell;
+        border-right: 15px solid transparent;
+        vertical-align: top;
+        width: 65px; // max width for images: 50px plus border: 15px
+    }
+
+    .media-body {
+        display: table-cell;
+        .pull-left {
+            margin-top: 0px;
+            width: 20px;
+            margin-right: 10px;
+        }
+    }
+}
+
+*[class*="hi-"], *[class*="hi-"] *, .hi {
+    color: #ffffff !important;
+    background-color: $primary !important;
+}
+
+.pagination.switch-limit {
+    white-space: nowrap;
+}
