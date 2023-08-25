@@ -1427,9 +1427,9 @@ declare
             } )
         let $xslt1 := 
             switch($docType)
-            case 'letters' return doc(concat($config:xsl-collection-path, '/letters.xsl'))
+            case 'letters' case 'documents' return doc(concat($config:xsl-collection-path, '/letters.xsl'))
             case 'works' return doc(concat($config:xsl-collection-path, '/works.xsl'))
-            case 'writings' case 'documents' return doc(concat($config:xsl-collection-path, '/document.xsl'))
+            case 'writings' return doc(concat($config:xsl-collection-path, '/document.xsl'))
             case 'diaries' return doc(concat($config:xsl-collection-path, '/diaries.xsl'))
             default  return doc(concat($config:xsl-collection-path, '/var.xsl'))
         let $textRoot :=
