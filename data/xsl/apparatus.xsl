@@ -33,7 +33,7 @@
             </xsl:element>
          </xsl:if>
          <xsl:element name="ul">
-            <xsl:attribute name="class">apparatus textConstitution</xsl:attribute>
+            <xsl:attribute name="class">apparatus handNotes</xsl:attribute>
             <xsl:for-each select="$doc//tei:profileDesc//tei:handNote">
                <xsl:element name="li">
                   <xsl:element name="div">
@@ -145,7 +145,7 @@
       		</xsl:element>
       	</xsl:if>
       	<xsl:element name="ul">
-      		<xsl:attribute name="class">apparatus commentary</xsl:attribute>
+      		<xsl:attribute name="class">apparatus internalNotes</xsl:attribute>
       		<xsl:for-each select="$internalNodes">
       			<xsl:element name="li">
       				<xsl:element name="div">
@@ -174,7 +174,7 @@
             </xsl:element>
          </xsl:if>
          <xsl:element name="ul">
-            <xsl:attribute name="class">apparatus commentary</xsl:attribute>
+            <xsl:attribute name="class">apparatus autoCommentary</xsl:attribute>
             <xsl:for-each select="$autoCommentaryNodes">
                <xsl:element name="li">
                   <xsl:element name="div">
