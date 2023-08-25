@@ -2415,6 +2415,13 @@ declare function app:enclosure($node as node(), $model as map(*))  {
     let $enclosures := collection('/db/apps/hendi-data')//tei:relation[@name='isEnclosureOf'][@key=$model?docID]/root()
     for $enclosure at $z in $enclosures
     	let $textRoot := $enclosure//tei:text
+    	let $xslParams := config:get-xsl-params( map {
+            'dbPath' : document-uri($doc),
+            'docID' : $docID,
+            'transcript' : 'true',
+            'createSecNos' : (),
+            'enclosure' : 'true'
+            } )
     	let $body := 
 	         if(functx:all-whitespace(<root>{$textRoot}</root>))
 	         then 
