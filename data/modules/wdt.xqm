@@ -729,7 +729,7 @@ declare function wdt:biblio($item as item()*) as map(*) {
                 case xs:untypedAtomic return crud:doc($item)/tei:biblStruct
                 case document-node() return $item/tei:biblStruct
                 default return $item/root()/tei:biblStruct
-            let $html-title := bibl:printCitation($biblStruct, <xhtml:p/>, 'de')
+            let $html-title := ($biblStruct//tei:title)[1] (: bibl:printCitation($biblStruct, <xhtml:p/>, 'de') :)
             return
                 switch($serialization)
                 case 'txt' return str:normalize-space($html-title)
