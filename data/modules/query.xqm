@@ -341,10 +341,10 @@ declare function query:get-facets($collection as node()*, $facet as xs:string) a
     case 'placeOfAddressee' return $collection//tei:settlement[parent::tei:correspAction/@type='received']/@key
     case 'journals' return $collection//tei:title[@level='j'][not(@type='sub')][ancestor::tei:sourceDesc]
     case 'places' return $collection//tei:settlement[ancestor::tei:text or ancestor::tei:ab]/@key
-    case 'dedicatees' return $collection//mei:persName[@role='dte']/@codedval
-    case 'lyricists' return $collection//mei:persName[@role='lyr']/@codedval
-    case 'librettists' return $collection//mei:persName[@role='lbt']/@codedval
-    case 'composers' return $collection//mei:persName[@role='cmp']/@codedval
+    case 'dedicatees' return ($collection//mei:persName[@role='dte']/@codedval | $collection//mei:corpName[@role='dte']/@codedval)
+    case 'lyricists' return ($collection//mei:persName[@role='lyr']/@codedval | $collection//mei:corpName[@role='lyr']/@codedval)
+    case 'librettists' return ($collection//mei:persName[@role='lbt']/@codedval | $collection//mei:corpName[@role='lbt']/@codedval)
+    case 'composers' return ($collection//mei:persName[@role='cmp']/@codedval | $collection//mei:corpName[@role='cmp']/@codedval)
     case 'docSource' return $collection/tei:person/@source
     case 'occupations' return $collection//tei:occupation
     case 'residences' return $collection//tei:settlement[parent::tei:residence or parent::tei:org]/@key | $collection//tei:country[parent::tei:org]/@key

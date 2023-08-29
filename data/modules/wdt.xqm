@@ -405,7 +405,7 @@ declare function wdt:works($item as item()*) as map(*) {
             $item/root()[mei:mei|tei:TEI][descendant::mei:work|descendant::tei:teiHeader]
         },
         'filter-by-person' : function($personID as xs:string) as document-node()* {
-            $item/root()[.//mei:work//mei:persName[@codedval = $personID] or .//tei:biblStruct//(tei:persName|tei:author)[@key = $personID]]
+            $item/root()[.//mei:work//(mei:persName|mei:corpName)[@codedval = $personID] or .//tei:biblStruct//(tei:persName|mei:orgName|tei:author)[@key = $personID]]
         },
         'filter-by-date' : function($dateFrom as xs:date?, $dateTo as xs:date?) as document-node()* {
             if(empty(($dateFrom, $dateTo))) then $item/root() 
