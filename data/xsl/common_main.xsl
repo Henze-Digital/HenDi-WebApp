@@ -85,7 +85,7 @@
                         </xsl:when>
                         <xsl:when test="not($marker) and self::tei:handShift[@script='manuscript']">
                             <xsl:element name="i">
-                                <xsl:attribute name="class">fa-regular fa-feather-pointed</xsl:attribute>
+                                <xsl:attribute name="class">fa-solid fa-feather-pointed</xsl:attribute>
                             </xsl:element>                    
                         </xsl:when>
                         <xsl:when test="not($marker) and self::tei:handShift[@script='typescript']">
