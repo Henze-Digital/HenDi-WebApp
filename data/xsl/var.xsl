@@ -106,6 +106,14 @@
         </xsl:element>
     </xsl:template>
 	
+	<xsl:template match="tei:head[@type='quote']">
+		<xsl:element name="h4">
+			<xsl:apply-templates select="@xml:id"/>
+			<xsl:attribute name="class">quote</xsl:attribute>
+			<xsl:apply-templates/>
+		</xsl:element>
+	</xsl:template>
+	
 	<xsl:template match="tei:p[starts-with($docID, 'A09')]">
 		<xsl:element name="p">
 			<xsl:attribute name="class">explNotes</xsl:attribute>
