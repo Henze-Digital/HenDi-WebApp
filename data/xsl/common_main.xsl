@@ -1116,6 +1116,18 @@
         </xsl:for-each-group>
     </xsl:template>
 
+    <xsl:template match="tei:seg[@rend='symbol']">
+        <xsl:variable name="fontweight">
+            <xsl:choose>
+                <xsl:when test=". = 'feather-pointed'">solid</xsl:when>
+                <xsl:otherwise>regular</xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:element name="i">
+            <xsl:attribute name="class"><xsl:value-of select="concat('fa-', $fontweight,' fa-',.)"/></xsl:attribute>
+        </xsl:element>
+    </xsl:template>
+    
     <!-- Default template for TEI elements -->
     <!-- will be turned into html:span with class tei_elementName_attributeRendValue -->
     <xsl:template match="tei:*" mode="#all">
