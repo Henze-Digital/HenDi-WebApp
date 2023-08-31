@@ -8,3 +8,22 @@
 on `stable`
 
 This repo contains WeGA-WebApp specifics for the Henze Digital Project. The build process updates the source code of the [WeGA-WebApp](https://github.com/Henze-Digital/WeGA-WebApp) and builds the HenDi-WebApp afterwards.
+
+## How to do a release
+
+### release workflow on gitlab
+- check issues and milestone
+- close milestone
+- update submodules
+- create a release branch
+- update CITATION.cff
+- check out and build the app
+- test the app
+- set tag `v\d\.\d\.\d` (if everything is as expected)
+- merge into main
+- merge main into develop
+- create release based on the tag
+
+### release workflow on github
+- go to the mirrored repo on github.com
+- create release based on the latest tag
