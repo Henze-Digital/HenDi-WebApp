@@ -214,9 +214,9 @@
 		<echo>Overwrite WeGA-ODD with the HenDi-ODD data</echo>
 		<mkdir dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/guidelines"/>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/guidelines" overwrite="yes">
-			<fileset dir="${HenDi-WebApp.basedir}/submodules/HenDi-ODD/guidelines-html">
+			<!--<fileset dir="${HenDi-WebApp.basedir}/submodules/HenDi-ODD/guidelines-html">
 				<include name="*.html"/>
-			</fileset>
+			</fileset>-->
 			<fileset dir="${HenDi-WebApp.basedir}/submodules/HenDi-ODD/compiled-ODD">
 				<include name="*.xml"/>
 			</fileset>
