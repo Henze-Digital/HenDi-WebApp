@@ -110,10 +110,6 @@ develop:webapp:
   rules:
     - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_WEBAPP == "true"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-  artifacts:
-    paths:
-      - hendi-pkg-webapp/HenDi-WebApp-*.xar
-    expire_in: 1 week
   after_script:
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ./hendi-pkg-webapp/HenDi-WebApp-*.xar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hendi-webapp/latest/HenDi-WebApp-latest.xar"'
 
@@ -123,12 +119,13 @@ stable:webapp:
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
-    - ant xar-stable -Dsass.path=`which sass` -Dminify.path=`which minify` -Dbuild.env=`ci` -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
-  rules: !reference [.rules-stable, rules]
-  artifacts:
-    paths:
-      - hendi-pkg-webapp-stable/HenDi-WebApp-*.xar
-    expire_in: 1 week
+    - ant xar -Dbuild.env.ci=true -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
+  rules:
+    - if: $CI_COMMIT_BRANCH == "stable" && $BUILD_WEBAPP == "true"
+      when: always
+    - if: $BUILD_WEBAPP_STABLE == "true"
+      when: always
+    - when: never
   after_script:
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ./hendi-pkg-webapp-stable/HenDi-WebApp-*.xar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hendi-webapp/latest/HenDi-WebApp-stable-latest.xar"'
 
@@ -183,7 +180,7 @@ staging:image-deploy:
   rules:
     - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_STAGING == "true"
 
-preview:deploy-webapp:
+preview:image-webapp:
   stage: deploy
   image: curlimages/curl
   variables:
@@ -202,7 +199,7 @@ stable:image-deploy:
     refs:
       - stable
     variables:
-      - ($CI_COMMIT_MESSAGE  =~ /deploy\:/ || $BUILD_PORTAL_STABLE == "true")
+      - ($BUILD_PORTAL_STABLE == "true" || $DEPLOY_PORTAL_STABLE == "true")
   except:
     variables:
       - ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true")
