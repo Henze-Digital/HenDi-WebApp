@@ -121,7 +121,7 @@ stable:webapp:
   script:
     - ant xar -Dbuild.env.ci=true -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   rules:
-    - if: $CI_COMMIT_BRANCH == "stable" && $BUILD_WEBAPP == "true"
+    - if: $CI_COMMIT_BRANCH == "stable"
       when: always
     - if: $BUILD_WEBAPP_STABLE == "true"
       when: always
