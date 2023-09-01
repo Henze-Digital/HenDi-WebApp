@@ -1437,7 +1437,7 @@ declare
             switch($docType)
             case 'diaries' return $doc/tei:ab ! app:inject-query(.)
             case 'works' return $doc/mei:mei ! app:inject-query(.)
-            case 'var' case 'addenda' return ($doc//tei:text/tei:body ! app:inject-query(.))/(tei:div[@xml:lang=$lang] | tei:divGen | tei:div[not(@xml:lang)])
+            case 'var' case 'addenda' case 'news' return ($doc//tei:text/tei:body ! app:inject-query(.))/(tei:div[@xml:lang=$lang] | tei:divGen | tei:div[not(@xml:lang)] | (if(not(tei:div[@xml:lang=$lang])) then(tei:div[@xml:lang]) else()) )
             case 'thematicCommentaries' return ($doc//tei:text/tei:body ! app:inject-query(.))/(tei:div[@xml:lang=$lang] | tei:div[not(@xml:lang)]) | $doc//tei:text/tei:back
             default return $doc//tei:text ! app:inject-query(.)
         let $body := 
@@ -2015,7 +2015,8 @@ declare
     %templates:wrap
     %templates:default("max", "200")
     function app:preview-teaser($node as node(), $model as map(*), $max as xs:string) as xs:string {
-        let $textXML := $model('doc')/tei:ab | $model('doc')//tei:body | $model('doc')//mei:annot[@type='Kurzbeschreibung'] (: letzter Fall für sources :)
+        let $lang := $model('lang')
+        let $textXML := $model('doc')/tei:ab | (if($model('doc')//tei:body[.//tei:div[@xml:lang=$lang]]) then($model('doc')//tei:body//tei:div[@xml:lang=$lang]) else($model('doc')//tei:body)) | $model('doc')//mei:annot[@type='Kurzbeschreibung'] (: letzter Fall für sources :)
         return
             str:shorten-TEI($textXML, number($max), $model?lang)
 };
