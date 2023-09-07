@@ -341,14 +341,18 @@
                 </p>
             </div>
         </div>
-        <div class="row permaLink">
-            <div class="col-md-9" data-template="app-shared:if-matches" data-template-key="lang" data-template-value="de">
-                <h4>Dank</h4>
-            	<p><span data-template="app:credits">Mit freundlicher Genehmigung der Rechtsnachfolge des Urhebers.</span></p>
+    	<div class="row permaLink" data-template="app:credits">
+            <div class="col-md-9" data-template="app-shared:if-exists" data-template-key="credits">
+                <h4 data-template="app-shared:if-matches" data-template-key="lang" data-template-value="de">Dank</h4>
+                <h4 data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">Credits</h4>
+            	<p data-template="app-shared:print" data-template-key="credits">Mit freundlicher Genehmigung der Rechtsnachfolge des Urhebers.</p>
             </div>
-            <div class="col-md-9" data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">
-                <h4>Credits</h4>
-            	<p><span data-template="app:credits">Mit freundlicher Genehmigung der Rechtsnachfolge des Urhebers.</span></p>
+        </div>
+        <div class="row permaLink"  data-template="app:legalNotice">
+            <div class="col-md-9" data-template="app-shared:if-exists" data-template-key="legalNotice">
+                <h4 data-template="app-shared:if-matches" data-template-key="lang" data-template-value="de">Rechtehinweis</h4>
+                <h4 data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">Legal notice</h4>
+            	<p data-template="app-shared:print" data-template-key="legalNotice">Alle Rechte vorbehalten.</p>
             </div>
         </div>
         <div class="row bugreport">
