@@ -22,9 +22,9 @@
 		<entry xml:id="maxNews">2</entry>
 		<entry xml:id="googleWebsiteMetatag">zD8k8hwr5UC9x1C8vUYdDOx7-0Wxe_HA3De9eGvawEQ</entry>
 		<entry xml:id="microsoftBingWebsiteMetatag">x</entry>
-		<entry xml:id="ODDversion">1.0.0</entry>
+		<entry xml:id="ODDversion">1.0.1</entry>
 		<entry xml:id="versionNews">A05009FF</entry>
-		<entry xml:id="versionDate">2023-09-01</entry>
+		<entry xml:id="versionDate">2023-09-07</entry>
 		<entry xml:id="entriesPerPage">10</entry>
 		<entry xml:id="resourceImgPath">/resources/img/</entry>
 		<entry xml:id="logoFileName">logo_hendi.png</entry>
