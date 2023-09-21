@@ -135,7 +135,7 @@ declare function api:code-findByElement($model as map(*)) {
 };
 
 declare function api:application-status($model as map(*)*) as map(*) {
-    let $healthy := core:getOrCreateColl('persons', 'A001000A', true())//tei:persName[@type='reg']
+    let $healthy := crud:doc('A001000A')//tei:persName[@type='reg']/tei:surname = 'Henze'
     return
         map:merge(( 
             if(not($healthy)) then map:entry('code', 500) else (),
