@@ -209,7 +209,7 @@ declare %private function img:wikipedia-images($model as map(*), $lang as xs:str
         return 
             if($thumbURI castable as xs:anyURI) then
                 map {
-                    'caption' : normalize-space(concat($caption,' (', lang:get-language-string('sourceWikipedia', $lang), ')')),
+                    'caption' : normalize-space(concat($caption[1],' (', lang:get-language-string('sourceWikipedia', $lang), ')')),
                     'linkTarget' : $linkTarget,
                     'source' : 'Wikimedia',
                     'url' : function($size) {
