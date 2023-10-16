@@ -2,6 +2,8 @@ FROM stadlerpeter/existdb:6.2.0
 
 ARG CI_JOB_TOKEN
 ENV EXIST_ENV=production
+ENV EXIST_CONTEXT_PATH=/
+ENV EXIST_DEFAULT_APP_PATH=xmldb:exist:///db/apps/HenDi-WebApp
 
 RUN curl --output WeGA-WebApp-lib-1.9.0.xar --location "https://github.com/Edirom/WeGA-WebApp-lib/releases/download/v1.9.0/WeGA-WebApp-lib-1.9.0.xar" &&\
     mv WeGA-WebApp-lib-1.9.0.xar ${EXIST_HOME}/autodeploy
