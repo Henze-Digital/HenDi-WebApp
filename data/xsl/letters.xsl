@@ -229,7 +229,7 @@
 				</xsl:element>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:element name="p">
+				<xsl:element name="div">
 					<xsl:attribute name="class">
 						<xsl:choose>
 							<xsl:when test="@rend">
@@ -273,7 +273,9 @@
 	<xsl:template match="tei:addrLine">
 		<xsl:element name="span">
 			<xsl:attribute name="class">
-				<xsl:text>d-flex</xsl:text>
+				<xsl:if test="@rend=('inlineApart','right','left','center')">
+					<xsl:text>d-flex</xsl:text>
+				</xsl:if>
 				<xsl:choose>
 					<xsl:when test="@rend='inlineApart'">
 						<xsl:attribute name="style"> justify-content-between</xsl:attribute>
@@ -290,6 +292,7 @@
 				</xsl:choose>
 			</xsl:attribute>
 			<xsl:apply-templates/>
+			<xsl:element name="br"/>
 		</xsl:element>
 	</xsl:template>
 	
