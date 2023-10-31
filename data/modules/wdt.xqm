@@ -259,6 +259,56 @@ declare function wdt:letters($item as item()*) as map(*) {
     }
 };
 
+declare function wdt:corresp($item as item()*) as map(*) {
+    let $prefix := substring(config:get-option('correspIdPattern'), 1, 3)
+    
+    return 
+    map {
+        'name' : 'corresp',
+        'prefix' : $prefix,
+        'check' : function() as xs:boolean {
+            if($item castable as xs:string) then matches($item, config:wrap-regex('correspIdPattern'))
+            else false()
+        },
+        'filter' : function() as document-node()* {
+            $item/root()/tei:TEI[starts-with(@xml:id, $prefix)]
+        },
+        'filter-by-person' : function($personID as xs:string) as document-node()* {
+            typeswitch($item) (: remove call to function `root()` when document-node()s are passed as input :)
+            case document-node()+ return $item//tei:*[contains(@key, $personID)][ancestor::tei:correspAction][not(ancestor-or-self::tei:note)]/root()
+            default return $item/root()//tei:*[contains(@key, $personID)][ancestor::tei:correspAction][not(ancestor-or-self::tei:note)]/root()
+        },
+        'filter-by-date' : function($dateFrom as xs:date?, $dateTo as xs:date?) as document-node()* {
+            $wdt:filter-by-date($item, $dateFrom, $dateTo)[parent::tei:correspAction]/root()
+        },
+        'sort' : function($params as map(*)?) as document-node()* {
+            if(sort:has-index('corresp')) then ()
+            else (wdt:corresp(())('init-sortIndex')()),
+            for $i in wdt:corresp($item)('filter')() order by sort:index('corresp', $i) ascending return $i
+        },
+        'init-collection' : function() as document-node()* {
+            crud:data-collection('corresp')/descendant::tei:correspAction/root()
+        },
+        'init-sortIndex' : function() as item()* {
+            sort:create-index-callback('corresp', wdt:corresp(())('init-collection')(), function($node) {
+                let $normDate := query:get-normalized-date($node)
+                let $n :=  functx:pad-integer-to-length(($node//tei:correspAction[@type='sent']/tei:date)[1]/data(@n), 4)
+                return
+                    (if(exists($normDate)) then $normDate else 'xxxx-xx-xx') || $n
+            }, ())
+        },
+        'title' : 'TITEL',
+        'memberOf' : ('search', 'indices', 'sitemap', 'unary-docTypes'),
+        'search' : function($query as element(query)) {
+            $item[tei:TEI]//tei:correspDesc[ft:query(., $query)] | 
+            $item[tei:TEI]//tei:title[ft:query(., $query)] |
+            $item[tei:TEI]//tei:note[ft:query(., $query)][@type = ('summary', 'editorial', 'incipit')] |
+            $item[tei:TEI]/tei:TEI[ft:query(., $query)]
+        }
+    }
+};
+
+
 declare function wdt:translations($item as item()*) as map(*) {
     let $text-types := tokenize(config:get-option('textTypes'), '\s+')
     let $constructTranslationHead := function($TEI as element(tei:TEI)) as element(tei:title) {
