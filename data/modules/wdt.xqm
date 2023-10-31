@@ -261,7 +261,12 @@ declare function wdt:letters($item as item()*) as map(*) {
 
 declare function wdt:corresp($item as item()*) as map(*) {
     let $prefix := substring(config:get-option('correspIdPattern'), 1, 3)
-    
+    let $constructTranslationHead := function($TEI as element(tei:TEI)) as element(tei:title) {
+        let $id := $TEI/data(@xml:id)
+        let $lang := config:guess-language(())
+        let $title := 'TITEL der Korrespondenz'
+        return (element tei:title {$title})
+    }
     return 
     map {
         'name' : 'corresp',
@@ -297,7 +302,20 @@ declare function wdt:corresp($item as item()*) as map(*) {
                     (if(exists($normDate)) then $normDate else 'xxxx-xx-xx') || $n
             }, ())
         },
-        'title' : 'TITEL',
+        'title' : function($serialization as xs:string) as item()? {
+            let $TEI := 
+                typeswitch($item)
+                case xs:string return crud:doc($item)/tei:TEI
+                case xs:untypedAtomic return crud:doc($item)/tei:TEI
+                case document-node() return $item/tei:TEI
+                default return $item/root()/tei:TEI
+            let $title-element := $constructTranslationHead($TEI) 
+            return
+                switch($serialization)
+                case 'txt' return str:normalize-space(replace(string-join(str:txtFromTEI($title-element, config:guess-language(())), ''), '\s*\n+\s*(\S+)', '. $1'))
+                case 'html' return wega-util:transform($title-element, doc(concat($config:xsl-collection-path, '/common_main.xsl')), config:get-xsl-params(())) 
+                default return wega-util:log-to-file('error', 'wdt:translations()("title"): unsupported serialization "' || $serialization || '"')
+        },
         'memberOf' : ('search', 'indices', 'sitemap', 'unary-docTypes'),
         'search' : function($query as element(query)) {
             $item[tei:TEI]//tei:correspDesc[ft:query(., $query)] | 
