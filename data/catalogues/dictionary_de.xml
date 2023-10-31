@@ -366,6 +366,7 @@
     <entry xml:id="mastersthesis">Master-/Magisterarbeit</entry>
     <!--  Various  -->
     <entry xml:id="correspondence">Briefe</entry>
+    <entry xml:id="corresp">Briefwechsel</entry>
     <entry xml:id="writings">Schriften</entry>
     <entry xml:id="noWritingsAvailable">Keine Schriften verfügbar</entry>
     <entry xml:id="journals">Periodika</entry>

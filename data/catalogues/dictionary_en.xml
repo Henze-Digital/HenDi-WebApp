@@ -356,6 +356,7 @@
     <entry xml:id="mastersthesis">Masters Thesis</entry>
     <!--  Various  -->
     <entry xml:id="correspondence">Letters</entry>
+    <entry xml:id="corresp">Correspondence</entry>
     <entry xml:id="writings">Writings</entry>
     <entry xml:id="noWritingsAvailable">No writings available</entry>
     <entry xml:id="journals">Journals</entry>
