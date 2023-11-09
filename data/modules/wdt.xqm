@@ -264,7 +264,7 @@ declare function wdt:corresp($item as item()*) as map(*) {
     let $constructTranslationHead := function($TEI as element(tei:TEI)) as element(tei:title) {
         let $id := $TEI/data(@xml:id)
         let $lang := config:guess-language(())
-        let $title := 'TITEL der Korrespondenz'
+        let $title := $TEI//tei:fileDesc/tei:titleStmt/tei:title[@xml:lang=$lang]/string()
         return (element tei:title {$title})
     }
     return 
@@ -276,7 +276,7 @@ declare function wdt:corresp($item as item()*) as map(*) {
             else false()
         },
         'filter' : function() as document-node()* {
-            $item/root()/tei:TEI[starts-with(@xml:id, $prefix)]
+            $item/root()/tei:TEI[starts-with(@xml:id, $prefix)]/root()
         },
         'filter-by-person' : function($personID as xs:string) as document-node()* {
             typeswitch($item) (: remove call to function `root()` when document-node()s are passed as input :)
@@ -320,7 +320,7 @@ declare function wdt:corresp($item as item()*) as map(*) {
         'search' : function($query as element(query)) {
             $item[tei:TEI]//tei:correspDesc[ft:query(., $query)] | 
             $item[tei:TEI]//tei:title[ft:query(., $query)] |
-            $item[tei:TEI]//tei:note[ft:query(., $query)][@type = ('summary', 'editorial', 'incipit')] |
+            $item[tei:TEI]//tei:note[ft:query(., $query)][@type = ('annotation')] |
             $item[tei:TEI]/tei:TEI[ft:query(., $query)]
         }
     }
