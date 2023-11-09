@@ -819,4 +819,5 @@
     <entry xml:id="furtherDetails">Further details</entry>
 	
 	<entry xml:id="textRotation">Text turned clockwise</entry>
+    <entry xml:id="annotation">Annotation</entry>
 </dictionary>
