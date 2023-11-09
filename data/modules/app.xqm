@@ -2496,12 +2496,6 @@ declare function app:download-modal($node as node(), $model as map(*))  {
 
 declare 
     %templates:wrap
-    function app:corresp-title($node as node(), $model as map(*)) as xs:string {
-        query:title($model('docID'))
-};
-
-declare 
-    %templates:wrap
     %templates:default("lang", "en")
     function app:corresp-basic-data($node as node(), $model as map(*), $lang as xs:string) as map(*) {
 	        map{
