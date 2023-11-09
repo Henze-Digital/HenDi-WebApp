@@ -2487,3 +2487,25 @@ declare function app:download-modal($node as node(), $model as map(*))  {
 		then templates:include($node, $model, 'templates/includes/download-modal-restricted.html')
 		else templates:include($node, $model, 'templates/includes/download-modal-tei.html')
 };
+
+(:
+ : ****************************
+ : Corresp register pages
+ : ****************************
+:)
+
+declare 
+    %templates:wrap
+    function app:corresp-title($node as node(), $model as map(*)) as xs:string {
+        query:title($model('docID'))
+};
+
+declare 
+    %templates:wrap
+    %templates:default("lang", "en")
+    function app:corresp-basic-data($node as node(), $model as map(*), $lang as xs:string) as map(*) {
+	        map{
+	            'correspPartners' : distinct-values($model('doc')//tei:correspAction//(tei:persName|tei:orgName) ! string-join(str:txtFromTEI(., $lang), '')),
+	            'annotation' : $model('doc')//tei:notesStmt/tei:note[@type = 'annotation'] ! string-join(str:txtFromTEI(., $lang), '')
+	        }
+};
