@@ -1,0 +1,32 @@
+<div xmlns="http://www.w3.org/1999/xhtml" data-template="app:preview">
+    <div class="preview-icon">
+        <a class="pull-left" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="docURL">
+            <img src="$resources/img/icons/icon_corresp.png" class="img-fluid" alt="preview-icon"/>
+        </a>
+    </div>
+    <div class="media-body" data-template="app:preview-details">
+        <h3 class="media-heading">
+            <a data-template="app:corresp-title">Henze | Enzensberger</a>
+        </h3>
+        <ol class="media" data-template="app:corresp-basic-data">
+            <li class="media" data-template="app-shared:each" data-template-from="correspPartners" data-template-to="correspPartner">
+                <div class="pull-left">
+                    <i class="fa fa-user"/>
+                </div>
+                <div class="media-body" data-template="app-shared:print" data-template-key="correspPartner">Hans Werner Henze</div>
+            </li>
+        </ol>
+        <div data-template="app:corresp-basic-data">
+            <p data-template="app-shared:if-exists" data-template-key="annotation">
+                <strong>
+                    <span data-template="lang:translate">annotation</span>: </strong> 
+                <span data-template="app-shared:output" data-template-key="annotation">In dieser Korresponenz werden Auden und Kallman als Einheit behandelt.</span>
+            </p>
+        </div>
+        <p>
+            <strong>
+                <span data-template="lang:translate">identifier</span>:</strong> <span data-template="app-shared:print" data-template-key="docID">A991234A</span> <span data-template="app:status" class="docStatus">in Bearbeitung</span>
+        </p>
+        <div class="kwic" data-template="search:kwic"/>
+    </div>
+</div>
