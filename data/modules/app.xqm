@@ -2500,6 +2500,6 @@ declare
     function app:corresp-basic-data($node as node(), $model as map(*), $lang as xs:string) as map(*) {
 	        map{
 	            'correspPartners' : distinct-values($model('doc')//tei:correspAction//(tei:persName|tei:orgName) ! string-join(str:txtFromTEI(., $lang), '')),
-	            'annotation' : $model('doc')//tei:notesStmt/tei:note[@type = 'annotation'] ! string-join(str:txtFromTEI(., $lang), '')
+	            'annotation' : $model('doc')//tei:notesStmt/tei:note[@type = 'annotation']/string()
 	        }
 };
