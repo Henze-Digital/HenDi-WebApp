@@ -446,6 +446,7 @@ declare function controller:path-to-resource($doc as document-node()?, $lang as 
         if($docType = ('persons', 'orgs', 'places')) then str:join-path-elements(('/', $lang, $docID))
         else if($docType = 'var') then str:join-path-elements(('/', $lang, lang:get-language-string('project', $lang), $docID))
         else if($docType = 'addenda') then str:join-path-elements(('/', $lang, lang:get-language-string('project', $lang), lang:get-language-string('volContents', $lang), $docID))
+        else if ($docType = 'corresp') then str:join-path-elements(('/', $lang, lang:get-language-string('corresp', $lang), $docID))
         else if(count($authorID) gt 0 and $displayName) then $authorID ! str:join-path-elements(('/', $lang, ., $displayName, $docID))
         else wega-util:log-to-file('error', 'controller:path-to-resource(): could not create path for ' || $docID)
 };
