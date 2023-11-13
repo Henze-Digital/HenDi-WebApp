@@ -1,0 +1,367 @@
+<div xmlns="http://www.w3.org/1999/xhtml" data-template="templates:surround" data-template-with="templates/page.html" data-template-at="content">
+    <div class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="document" data-template="app:document-title">CARL MARIA VON WEBER AN
+                        BREITKOPF UND HÄRTEL IN LEIPZIG SALZBURG, MONTAG, 3. SEPTEMBER 1798</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="colored borderBottom">
+        <div class="container">
+            <div data-template="templates:if-parameter-unset" data-template-param="q">
+                <div class="row">
+                    <div class="col-12 col-md-10">
+                        <ol class="breadcrumb">
+                            <li>
+                                <a href="$link/index">Home</a>
+                            </li>
+                            <li>
+                                <a data-template="app:breadcrumb-person">Carl Maria von Weber</a>
+                            </li>
+                            <li>
+                                <a data-template="app:breadcrumb-docType">Korrespondenz</a>
+                            </li>
+                            <li>
+                                <span data-template="app-shared:print" data-template-key="docID">A040080</span> <span data-template="app-shared:if-not-matches" data-template-key="docType" data-template-value="news" data-template-wrap="no">
+                                    <span data-template="app:status" class="docStatus">in Bearbeitung</span>
+                                </span>
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="col-2 col-sm-2 d-none d-lg-block backLinkInBreadcrumb" onclick="history.back();">
+                        <i class="fa fa-arrow-left"/>
+                        <span data-template="lang:translate">back</span>
+                    </div>
+                </div>
+            </div>
+            <div data-template="templates:if-parameter-set" data-template-param="q">
+                <div class="row breadcrumb" data-template="search:get-session-for-singleview">
+                    <div class="col-md-4">
+                        <a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-prev-item-url">
+                            <i class="fa fa-arrow-left"/> <span data-template="lang:translate">prevMatch</span>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <span data-template="app-shared:print" data-template-key="index-of-current-doc">15</span> / <a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-backlink">
+                            <span data-template="search:results-count">124 Suchergebnisse</span> (»<span data-template="app-shared:print" data-template-key="query-string-org">Carl Weber</span>«)</a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-next-item-url">
+                            <span data-template="lang:translate">nextMatch</span> <i class="fa fa-arrow-right"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container documentText paddingTopIcon paddingBottomIcon" data-template="app:doc-details">
+        <div class="row">
+            <div class="col-md-3 order-2 side-col">
+                <div class="allFilter" data-template="facets:document-allFilter">
+                    <div data-template="templates:include" data-template-path="templates/includes/settings.html"/>
+                    <div data-template="app-shared:if-matches" data-template-key="docType" data-template-value="diaries">
+                        <h2>
+                            <a href="#datePicker" data-template="lang:translate" class="collapseSingle collapsed" aria-expanded="false" data-toggle="collapse">calendar</a>
+                        </h2>
+                        <div class="panel-collapse collapse" id="datePicker" data-template="app:inject-api-base"/>
+                    </div>
+                    <div>
+                        <h2>
+                            <a href="#dokument" data-template="lang:translate" class="collapseSingle collapsed" aria-expanded="false" data-toggle="collapse">document</a>
+                        </h2>
+                        <div id="dokument" class="panel-collapse collapse">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item gradient-light">
+                                    <a class="nav-link active" href="#transcription" data-toggle="tab">Text</a>
+                                </li>
+                                <li class="nav-item gradient-light">
+                                    <a class="nav-link" href="#translation" data-toggle="tab" data-template="app:translation-tab" id="translation-tab">translation</a>
+                                </li>
+                                <li data-template="app:envelope-tab"/>
+                                <li data-template="app:enclosure-tab"/>
+                                <div data-template="app-shared:if-not-matches" data-template-key="docType" data-template-value="news" data-template-wrap="no">
+                                    <li class="nav-item gradient-light">
+                                        <a class="nav-link" href="#editorial" data-toggle="tab" data-template="lang:translate">editorial</a>
+                                    </li>
+                                </div>
+                                <li class="nav-item gradient-light">
+                                    <a class="nav-link" href="#facsimile" data-toggle="tab" data-template="app:facsimile-tab" id="facsimile-tab">facsimile</a>
+                                </li>
+                                <li class="nav-item gradient-light">
+                                    <a class="nav-link" href="#backlinks" data-toggle="tab" data-template="app:ajax-tab" data-tab-callback="removeFilter">backlinks</a>
+                                </li>
+                                <li class="nav-item gradient-light">
+                                    <a class="nav-link" href="#XMLPreview" data-toggle="tab" data-template="app:ajax-tab">XML-Preview</a>
+                                </li>
+                            	<li class="nav-item gradient-light">
+                            		<a class="nav-link" href="#" data-toggle="modal" data-target="#downloadModal">Download</a>
+                            	</li>
+                            </ul>
+                        </div>
+                    </div>
+                	<div data-template="app:download-modal"/>
+                    <div data-template="app:context">
+                        <h2>
+                            <a href="#kontext" data-template="lang:translate" class="collapseSingle collapsed" aria-expanded="false" data-toggle="collapse">context</a>
+                        </h2>
+                        <div id="kontext" class="panel-collapse collapse borderBox">
+                                <div data-template="app-shared:if-matches" data-template-key="docType" data-template-value="letters">            
+                                    <div data-template="app:csLink"/>
+                                    <script type="text/javascript" src="$resources/lib/csLink/dist/static/js/cslink.js"/>                                
+                                </div>
+                            <div id="relatedItems" data-template="app-shared:if-exists" data-template-key="context-relatedItems">
+                                <h3 data-template="lang:translate">relatedItems</h3>
+                                <ul>
+                                    <li data-template="app-shared:each" data-template-from="context-relatedItems" data-template-to="context-relatedItem">
+                                        <h4 data-template="app:print-context-relatedItem-type">Draft</h4> 
+                                        <p>
+                                            <a href="#" data-template="app:print-context-relatedItem">Brief an Weber</a>
+                                        </p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <div data-template="app-shared:if-exists" data-template-key="context-letter-absolute-prev context-letter-absolute-next" data-template-wrap="no">
+                                   <h3 data-template="lang:translate">absouluteChronology</h3>
+                                   <h4 data-template="lang:translate">prevLetters</h4>
+                                   <ul>
+                                       <li data-template="app-shared:each" data-template-from="context-letter-absolute-prev" data-template-to="letter-norm-entry">
+                                           <span data-template="app:print-letter-context">
+                                                <a href="/de/A002068/Korrespondenz/A040086">1799-01-01</a>: An <span class="noDataFound">unbekannt</span>
+                                            </span>
+                                       </li>
+                                   </ul>
+                                   <h4 data-template="lang:translate">nextLetters</h4>
+                                   <ul>
+                                       <li data-template="app-shared:each" data-template-from="context-letter-absolute-next" data-template-to="letter-norm-entry">
+                                           <span data-template="app:print-letter-context">
+                                                <a href="/de/A002068/Korrespondenz/A040086">1799-01-01</a>: An <span class="noDataFound">unbekannt</span>
+                                            </span>
+                                       </li>
+                                   </ul>
+                                </div>
+                                <hr/>
+                                <div data-template="app-shared:if-exists" data-template-key="context-letter-korrespondenzstelle-prev context-letter-korrespondenzstelle-next" data-template-wrap="no">
+                                    <h3 data-template="lang:translate">korrespondenzstelle</h3>
+                                    <h4 data-template="lang:translate">prevLetters</h4>
+                                    <ul>
+                                        <li data-template="app-shared:each" data-template-from="context-letter-korrespondenzstelle-prev" data-template-to="letter-norm-entry">
+                                            <span data-template="app:print-letter-context">
+                                                <a href="/de/A002068/Korrespondenz/A040086">1799-01-01</a>: An <span class="noDataFound">unbekannt</span>
+                                            </span>
+                                        </li>
+                                    </ul>
+                                    <h4 data-template="lang:translate">nextLetters</h4>
+                                    <ul>
+                                        <li data-template="app-shared:each" data-template-from="context-letter-korrespondenzstelle-next" data-template-to="letter-norm-entry">
+                                            <span data-template="app:print-letter-context">
+                                                <a href="/de/A002068/Korrespondenz/A040086">1799-01-01</a>: An <span class="noDataFound">unbekannt</span>
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-template="app-shared:each" data-template-from="filterSections" data-template-to="filterSection" class="filtersection">
+                        <h2>
+                            <a class="collapseSingle collapsed" data-toggle="collapse" aria-expanded="false" data-template="facets:filter-head" href="#">Personen</a>
+                        </h2>
+                        <div class="panel-collapse collapse" data-template="facets:filter-body">
+                            <div data-toggle="buttons" class="btn-group" data-template="facets:filter-options">
+                                <label class="btn btn-checkbox" data-template="app-shared:each" data-template-from="filterOptions" data-template-to="filterOption">
+                                    <input type="checkbox" name="options" data-template="facets:filter-value"/> <span data-template="facets:filter-label">Weber, Carl Maria von</span> 
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 main-col" data-template="app:prepare-text">
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane active fade in" id="transcription">
+                        <div data-template="app-shared:output" data-template-key="isEnclosureAlert"/>
+                        <div data-template="app-shared:output" data-template-key="transcription"/>
+                    </div>
+                    <div data-template="app:translation"/>
+                    <div data-template="app:envelope"/>
+                    <div data-template="app:enclosure"/>
+                    <div class="tab-pane fade" id="editorial" data-template="app:check-apparatus">
+                        <h2 data-template="lang:translate">editorial</h2>
+                        <!--<div>
+                            <h3 data-template="lang:translate">series</h3>
+                            <p data-template="app:series">WeGA, Briefe, Digitale Edition</p>
+                        </div>-->
+                        
+                        <div data-template="app-shared:if-exists" data-template-key="authors">
+                            <h3 data-template="lang:translate" class="media-heading">authors</h3>
+                            <ul class="inline-list">
+                                <li data-template="app-shared:each" data-template-from="authors" data-template-to="author">
+                                    <span data-template="app-shared:output" data-template-key="author"/>
+                                </li>
+                            </ul>
+                        </div>
+                    	
+                        
+                        <div data-template="app-shared:if-exists" data-template-key="summary">
+                            <h3 data-template="lang:translate" class="media-heading">summary</h3>
+                            <div data-template="app:print-summary"/>
+                        </div>
+                        
+                        <div data-template="app-shared:if-exists" data-template-key="incipit">
+                            <h3 data-template="lang:translate" class="media-heading">incipit</h3>
+                            <div data-template="app:print-incipit"/>
+                        </div>
+                        
+                        <div data-template="app-shared:if-exists" data-template-key="generalRemark">
+                            <h3 data-template="lang:translate" class="media-heading">generalRemark</h3>
+                            <div data-template="app:print-generalRemark"/>
+                        </div>
+                        
+                        <div data-template="app-shared:if-matches" data-template-key="docType" data-template-value="writings documents">
+                            <h3 data-template="lang:translate" class="media-heading">creation</h3>
+                            <div>
+                                <p data-template="app:print-creation"/>
+                            </div>
+                        </div>
+                    	
+                        
+                        <div>
+                            <h3 data-template="lang:translate" class="media-heading">responsibilities</h3>
+                        	<dl data-template="app:editors"/>
+                            <dl data-template="app:respStmts"/>
+                        </div>                        
+                        
+                        <div data-template="app:textSources">
+                            <h3 class="media-heading">
+                                <span data-template="lang:translate">tradition</span>
+                                <em class="small" data-template="app-shared:print" data-template-key="textSourcesCountString"/>
+                            </h3>
+                            <ul>
+                                <li data-template="app-shared:each" data-template-from="textSources" data-template-to="textSource">
+                                    <div data-template="app:print-Source" data-template-key="textSource">
+                                        <strong>
+                                            <span data-template="app-shared:print" data-template-key="title"/>:</strong>
+                                        <span data-template="app-shared:if-exists" data-template-key="sourceCategory" data-template-wrap="no">
+                                            <span data-template="app-shared:print" data-template-key="sourceCategory"/>: 
+                                        </span>
+                                        <span data-template="app-shared:output" data-template-key="sourceLink-content" class="collapse"/>
+                                        <span data-template="app-shared:if-matches" data-template-key="collapse" data-template-value="true">
+                                            <a data-template="app-shared:set-attr" data-template-attr="href" data-template-key="sourceLink" data-toggle="collapse" aria-expanded="false" title="Details" class="collapseMarker collapse show"/>                                                                                                                                                                               
+                                        </span>                                      
+                                        <div data-template="app-shared:set-attr" data-template-attr="id" data-template-key="sourceId" class="collapse show apparatus-details">
+                                            <div data-template="app-shared:output" data-template-key="sourceData-content"/>
+                                            <!-- Processing tei:additional for every source -->
+                                            <div data-template="app:additionalSources">
+                                                <div data-template="app-shared:if-exists" data-template-key="additionalSources" data-template-wrap="no">
+                                                    <h4 data-template="lang:translate" class="media-heading">correspondingSources</h4>
+                                                </div>
+                                                <ul class="tei_list" data-template="app-shared:if-exists" data-template-key="additionalSources">
+                                                    <li data-template="app-shared:each" data-template-from="additionalSources" data-template-to="additionalSource">
+                                                        <div data-template="app:print-Source" data-template-key="additionalSource">
+                                                            <span data-template="app-shared:if-exists" data-template-key="sourceCategory" data-template-wrap="no">
+                                                                <span data-template="app-shared:print" data-template-key="sourceCategory"/>: 
+                                                            </span>
+                                                            <span data-template="app-shared:output" data-template-key="sourceLink-content" class="collapse"/>
+                                                            <span data-template="app-shared:if-matches" data-template-key="collapse" data-template-value="true">
+                                                                <a data-template="app-shared:set-attr" data-template-attr="href" data-template-key="sourceLink" data-toggle="collapse" aria-expanded="false" title="Details" class="collapseMarker collapsed apparatus-details"/>
+                                                            </span>  
+                                                            <div data-template="app-shared:set-attr" data-template-attr="id" data-template-key="sourceId" class="collapse">
+                                                                <div data-template="app-shared:output" data-template-key="sourceData-content"/>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- processing (external) facsimile references for every source -->
+                                    <div data-template="app:externalImageURLs">
+                                        <div data-template="app-shared:if-exists" data-template-key="externalImageURLs" data-template-wrap="no">
+                                            <h5 data-template="lang:translate" class="media-heading">facsimile</h5>
+                                        </div>
+                                        <ul class="tei_list" data-template="app-shared:if-exists" data-template-key="externalImageURLs">
+                                            <li data-template="app-shared:each" data-template-from="externalImageURLs" data-template-to="externalImageURL">
+                                                <a data-template="app-shared:set-attr" data-template-attr="href" data-template-key="externalImageURL">
+                                                    <span data-template="app-shared:print" data-template-key="externalImageURL">some URL</span>
+                                                    <i class="fa fa-external-link" aria-hidden="true"/>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>                                                                    
+                                </li>
+                            </ul>
+                        </div>                   
+                        
+                        <div data-template="app-shared:if-exists" data-template-key="thematicCommentaries">
+                            <h3 data-template="lang:translate" class="media-heading">thematicCommentaries</h3>
+                            <ul class="tei_list">
+                                <li data-template="app-shared:each" data-template-from="thematicCommentaries" data-template-to="thematicCom">
+                                    <a data-template="app:print-thematicCom"/>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div data-template="app-shared:output" data-template-key="apparatus"/>
+                    </div>
+                    <div class="tab-pane fade" id="facsimile" style="width:100%;height:1000px;">
+                        <div id="map" data-template="app:init-facsimile" data-url="" data-originalMaxSize="" style="width:100%;height:100%;position:relative;"/>
+                    </div>
+                    <div class="tab-pane fade" id="backlinks">
+                        <h2 data-template="lang:translate">backlinks</h2>
+                        <!-- loaded via AJAX request to ./backlinks.html -->
+                    </div>
+                    <div class="tab-pane fade" id="XMLPreview">
+                        <h2>XML</h2>
+                        <!-- loaded via AJAX request to ./xml.html -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container documentFooter" data-template="app:documentFooter">
+        <div class="row permaLink">
+            <div class="col-md-9" data-template="app-shared:if-matches" data-template-key="lang" data-template-value="de">
+                <h4>Empfohlene Zitierweise</h4>
+            	<p>Hans Werner Henzes künstlerisches Netzwerk. Digitale Briefedition, <span data-template="app-shared:print" data-template-key="permalink">http://www.henze-digital.zenmem.de/ID</span> (<span data-template="app-shared:output" data-template-key="versionNews">Version NUMBER vom DATE</span>)
+<!--            		<br/>-->
+            		<!--                    <span data-template="app-shared:print" data-template-key="latestChange">Letzte Änderung dieses Dokuments am 22. Mai 2014 durch Peter Stadler</span>-->
+            	</p>
+            </div>
+            <div class="col-md-9" data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">
+                <h4>Proposed citation</h4>
+                <p>Hans Werner Henze's network of artists. Digital letter edition, <span data-template="app-shared:print" data-template-key="permalink">https://henze-digital.zenmem.de/ID</span> (<span data-template="app-shared:output" data-template-key="versionNews">Version NUMBER vom DATE</span>)
+<!--                    <br/>-->
+<!--                    <span data-template="app-shared:print" data-template-key="latestChange">Letzte Änderung dieses Dokuments am DATE durch EDITOR</span>-->
+                </p>
+            </div>
+        </div>
+    	<div class="row permaLink" data-template="app:credits">
+            <div class="col-md-9" data-template="app-shared:if-exists" data-template-key="credits">
+                <h4 data-template="app-shared:if-matches" data-template-key="lang" data-template-value="de">Dank</h4>
+                <h4 data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">Credits</h4>
+            	<p data-template="app-shared:print" data-template-key="credits">Mit freundlicher Genehmigung der Rechtsnachfolge des Urhebers.</p>
+            </div>
+        </div>
+        <div class="row permaLink"  data-template="app:legalNotice">
+            <div class="col-md-9" data-template="app-shared:if-exists" data-template-key="legalNotice">
+                <h4 data-template="app-shared:if-matches" data-template-key="lang" data-template-value="de">Rechtehinweis</h4>
+                <h4 data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">Legal notice</h4>
+            	<p data-template="app-shared:print" data-template-key="legalNotice">Alle Rechte vorbehalten.</p>
+            </div>
+        </div>
+        <div class="row bugreport">
+            <div class="col-md-9">
+                <p data-template="app-shared:if-matches" data-template-key="lang" data-template-value="de">Wenn Ihnen auf dieser Seite ein Fehler oder eine Ungenauigkeit aufgefallen ist, <br/>so bitten wir um eine kurze Nachricht an
+                    <a href="#" class="obfuscate-email" data-template="app-shared:print" data-template-key="bugEmail">bugEmail</a>.</p>
+                <p data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">If you've spotted some error or inaccurateness please do not hesitate to inform us via 
+                    <a href="#" class="obfuscate-email" data-template="app-shared:print" data-template-key="bugEmail">bugEmail</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
