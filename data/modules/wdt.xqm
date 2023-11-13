@@ -316,6 +316,15 @@ declare function wdt:corresp($item as item()*) as map(*) {
                 case 'html' return wega-util:transform($title-element, doc(concat($config:xsl-collection-path, '/common_main.xsl')), config:get-xsl-params(())) 
                 default return wega-util:log-to-file('error', 'wdt:translations()("title"): unsupported serialization "' || $serialization || '"')
         },
+        'label-facets' : function() as xs:string? {
+          typeswitch($item)
+          case xs:string return str:normalize-space(crud:doc($item)//tei:fileDesc/tei:titleStmt/tei:title[1])
+          case xs:untypedAtomic return str:normalize-space(crud:doc($item)//tei:fileDesc/tei:titleStmt/tei:title[1])
+          case document-node() return str:normalize-space($item//tei:fileDesc/tei:titleStmt/tei:title[1])
+          case element() return str:normalize-space($item//tei:fileDesc/tei:titleStmt/tei:title[1])
+          default return wega-util:log-to-file('error', 'wdt:corresp()("label-facests"): failed to get string')
+        },
+        'postals' : 'IDs of postals which are part of this correpondence',
         'memberOf' : ('search', 'indices', 'sitemap', 'unary-docTypes'),
         'search' : function($query as element(query)) {
             $item[tei:TEI]//tei:correspDesc[ft:query(., $query)] | 
