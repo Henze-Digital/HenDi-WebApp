@@ -324,7 +324,6 @@ declare function wdt:corresp($item as item()*) as map(*) {
           case element() return str:normalize-space($item//tei:fileDesc/tei:titleStmt/tei:title[1])
           default return wega-util:log-to-file('error', 'wdt:corresp()("label-facests"): failed to get string')
         },
-        'postals' : 'IDs of postals which are part of this correpondence',
         'memberOf' : ('search', 'indices', 'sitemap', 'unary-docTypes'),
         'search' : function($query as element(query)) {
             $item[tei:TEI]//tei:correspDesc[ft:query(., $query)] | 
