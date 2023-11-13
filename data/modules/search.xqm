@@ -327,6 +327,7 @@ declare %private function search:filter-result($collection as document-node()*, 
             else if($filter = 'textType') then search:textType-filter($collection, $filters($filter)[1])
             else if($filter = 'hideRevealed') then search:revealed-filter($collection)
             else if($filter = 'facsimile') then search:facsimile-filter($collection, $filters($filter)[1])
+            else if($filter = 'corresp') then search:corresp-filter($collection, $filters($filter)[1])
             (: exact search for terms -> range:eq :)
             else if($filter = ('journals', 'forenames', 'surnames', 'sex', 'occupations')) then query:get-facets($collection, $filter)[range:eq(.,$filters($filter)[1])]/root()
             (: range:contains for tokens within key values  :)
@@ -392,6 +393,12 @@ declare %private function search:facsimile-filter($collection as document-node()
             case 'internal' return $facsimiles?*[.?value='internal']?documents
             case 'external' return $facsimiles?*[.?value='external']?documents
             default return $facsimiles?*[.?value='without']?documents
+};
+
+declare %private function search:corresp-filter($collection as document-node()*, $corresps as xs:string*) as document-node()* {
+    for $corresp in $corresps
+    return
+        $collection//tei:relation[@name='correspondence'][@key=$corresp]/root()
 };
 
 (:~
