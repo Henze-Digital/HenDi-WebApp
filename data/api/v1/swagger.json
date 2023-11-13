@@ -593,6 +593,7 @@
                 "type": "string",
                 "enum": [
                     "biblio",
+                    "corresp",
                     "documents",
                     "letters",
                     "news",
@@ -611,6 +612,7 @@
             "items": {
                 "enum": [
                     "biblio",
+                    "corresp",
                     "documents",
                     "letters",
                     "news",
