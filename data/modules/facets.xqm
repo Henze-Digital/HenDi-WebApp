@@ -66,6 +66,7 @@ declare function facets:facets($nodes as node()*, $facet as xs:string, $max as x
     switch($facet)
     case 'textType' return facets:from-docType($nodes, $facet, $lang)
     case 'facsimile' return facets:facsimile($nodes, $facet, $lang)
+    case 'corresp' return facets:corresp($nodes, $facet, $lang)
     default return facets:createFacets($nodes, $facet, $max, $lang)
 };
 
@@ -117,6 +118,21 @@ declare %private function facets:facsimile($collection as node()*, $facet as xs:
 };
 
 
+declare %private function facets:corresp($collection as node()*, $facet as xs:string, $lang as xs:string) as array(*) {
+    [
+        for $i in $collection
+        let $key := $i/root()/node()/@xml:id
+        let $label := wdt:lookup($facet, $key)('label-facets')()
+        let $log := wega-util:log-to-file('debug','key: ' || $key)
+        return 
+            map {
+                'value' : $facet,
+                'label' : $label,
+                'frequency' : count($i)
+            }
+    ]
+};
+
 (:~
  : Create facets
  :
@@ -146,6 +162,7 @@ declare %private function facets:display-term($facet as xs:string, $term as xs:s
     case 'composers' case 'authors' case 'editors' case 'orgs' return
         if(wdt:persons($term)('check')()) then wdt:persons($term)('label-facets')() (:$facets:persons-norm-file//norm:entry[range:eq(@docID,$term)]/normalize-space():)
         else wdt:orgs($term)('label-facets')()
+    case 'corresp' return wdt:corresp($term)('label-facets')()
     case 'works' return wdt:works($term)('label-facets')()
     case 'placeOfAddressee' case 'placeOfSender' case 'residences' case 'places' return wdt:places($term)('title')('txt')
     case 'sex' return 
