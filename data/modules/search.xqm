@@ -44,7 +44,8 @@ declare variable $search:valid-params := (
     'undated',
     'orderby',
     'orderdir',
-    'orgs'
+    'orgs',
+    'corresp'
 );
 
 (:~
