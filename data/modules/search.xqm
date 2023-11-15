@@ -396,10 +396,10 @@ declare %private function search:facsimile-filter($collection as document-node()
             default return $facsimiles?*[.?value='without']?documents
 };
 
-declare %private function search:corresp-filter($collection as document-node()*, $corresps as xs:string*) as document-node()* {
-    for $corresp in $corresps
+declare %private function search:corresp-filter($collection as document-node()*, $corresp as xs:string*) as document-node()* {
+    for $each in $corresp
     return
-        $collection//tei:relation[@name='correspondence'][@key=$corresp]/root()
+        $collection//tei:relation[@name='correspondence'][@key=$each]/root()
 };
 
 (:~
