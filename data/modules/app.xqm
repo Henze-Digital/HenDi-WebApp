@@ -1188,8 +1188,8 @@ declare
         let $search-results as document-node()* := collection('/db/apps/hendi-data/letters')//tei:relation[@name='correspondence'][@key=$model('docID')]/root()
         let $dates := $search-results//tei:correspDesc//tei:date
         let $datesStrings := for $date in $dates return date:getOneNormalizedDate($date, false())
-        let $letterEarliest := date:format-date(min($datesStrings), '[FNn], [D]. [MNn] [Y]', $lang)
-        let $letterLatest := date:format-date(max($datesStrings), '[FNn], [D]. [MNn] [Y]', $lang)
+        let $letterEarliest := if(count($datesStrings) gt 0) then(date:format-date(min($datesStrings), '[D]. [MNn] [Y]', $lang)) else()
+        let $letterLatest := if(count($datesStrings) gt 0) then(date:format-date(max($datesStrings), '[D]. [MNn] [Y]', $lang)) else()
         let $correspPartners := distinct-values($model('doc')//tei:correspAction//(tei:persName|tei:orgName) ! string-join(str:txtFromTEI(., $lang), ''))
         return
 	        map{
