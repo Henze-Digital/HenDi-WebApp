@@ -96,8 +96,8 @@
 				<div class="col-md-10 col-12">
 					<nav class="greedy">
 						<ul class="resp-tabs-list links easyResponsiveTabs">
-							<li data-template="app-shared:if-matches" data-template-key="docType" data-template-value="persons">
-								<a data-template="app:person-main-tab" href="#general">general</a>
+							<li class="resp-tab-active">
+								<a data-template="app:person-main-tab" href="#biographies">general</a>
 							</li>
 							<li>
 								<a data-template="app:person-main-tab" href="#correspondence" data-target="$docID/correspondence.html">correspondence</a>
@@ -127,7 +127,7 @@
 					<div class="col-12 ">
 						<div class="resp-tabs-container colored easyResponsiveTabs">
 							<!-- Biographie-->
-							<div class="biografien paddingTopIcon paddingBottomIcon textBlock" id="general">
+							<div class="biografien paddingTopIcon paddingBottomIcon textBlock" id="biographies">
 								<div class="row">
 									<div class="col-md-3 order-2 side-col">
 										<div class="allFilter">
@@ -150,18 +150,13 @@
 										<!-- Tab panes -->
 										<div class="tab-content">
 											<div class="tab-pane active fade in" id="hendiInfo">
-												<h2 data-template="lang:translate">tabTitle_bio</h2>
-												<div data-template="app:print-wega-bio">
-													<!-- Wenn in der Personendatei keine bioSummary gefunden wird, dann wird der folgende Standardtext gewählt-->
+												<div data-template="app:print-corresp-intro">
+													<!-- Wenn kein Text gefunden wird, dann wird der folgende Standardtext gewählt-->
 													<p>
-														<i data-template="lang:translate">noBioFound</i>
+														<i data-template="lang:translate">noTextFound</i>
 													</p>
 												</div>
-												<div data-template="app-shared:if-matches" data-template-key="docID" data-template-value="A002068">
-													<p data-template="app-shared:if-matches" data-template-key="lang" data-template-value="de">Einen ausführlichen Lebenslauf finden Sie in der <a href="$link/A002068/bio.html">erweiterten Biographie</a>
-													</p>
-													<p data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">More detailed information can be found in the <a href="$link/A002068/bio.html">extended biography</a> (German)</p>
-												</div>
+												<div data-template="app:print-corresp-intro-readmore">read more</div>
 											</div>
 											<div class="tab-pane fade" id="XMLPreview">
 												<h2>XML</h2>

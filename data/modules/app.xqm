@@ -1050,6 +1050,27 @@ declare
 };
 
 declare 
+    %templates:default("lang", "en")
+    function app:print-corresp-intro($node as node(), $model as map(*), $lang as xs:string) as element(xhtml:div)* {
+        let $themComm:= app:inject-query($model?doc/*)
+        let $intro := collection('/db/apps/hendi-data/thematicCommentaries')/node()[@xml:id=$themComm//tei:relation[@name='introduction']/@key]
+        let $text-transformed := wega-util:transform($intro//tei:text//tei:div[@xml:lang=$lang][position() = 1 or position() = 2 or position() = 3], doc(concat($config:xsl-collection-path, '/var.xsl')), config:get-xsl-params(()))
+        return
+            $text-transformed
+};
+
+declare 
+    %templates:default("lang", "en")
+    function app:print-corresp-intro-readmore($node as node(), $model as map(*), $lang as xs:string) as element(xhtml:div)* {
+        let $intro-id := app:inject-query($model?doc/*)//tei:relation[@name='introduction']/@key
+        let $link-to-intro := '/' || $lang || '/' || $intro-id
+        return
+            <div xmlns="http://www.w3.org/1999/xhtml">
+                <a href="{$link-to-intro}">Zum vollständigen Artikel</a>
+            </div>
+};
+
+declare 
     %templates:wrap
     function app:printPlaceOfBirthOrDeath($node as node(), $model as map(*), $key as xs:string) as xs:string* {
     let $placeNames :=

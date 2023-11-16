@@ -834,4 +834,6 @@
 	<entry xml:id="general">Allgemein</entry>
 	<entry xml:id="correspPartners">Korrespondenzpartner*innen</entry>
 	<entry xml:id="timePeriod">Zeitraum</entry>
+	<entry xml:id="noTextFound">Kein Text verfügbar.</entry>
+	
 </dictionary>
