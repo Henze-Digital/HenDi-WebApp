@@ -824,4 +824,5 @@
 	<entry xml:id="introduction">Introduction</entry>
 	<entry xml:id="general">General</entry>
 	<entry xml:id="correspPartners">Correspondence partner</entry>
+	<entry xml:id="timePeriod">Time period</entry>
 </dictionary>
