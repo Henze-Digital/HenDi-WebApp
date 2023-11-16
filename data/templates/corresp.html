@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h1 data-template="app:person-title">Weber, Carl Maria von</h1>
+                    <h1 data-template="app:corresp-title">Weber, Carl Maria von</h1>
                 </div>
             </div>
         </div>
@@ -53,14 +53,13 @@
             </div>
         </div>
     </div>
-    <div class="container paddingTopIcon paddingBottomIcon" data-template="app:person-basic-data">
+    <div class="container paddingTopIcon paddingBottomIcon" data-template="app:corresp-basic-data">
         <div data-template="templates:include" data-template-path="templates/includes/download-modal-tei.html"/>
         <div class="row" id="meta" data-template="img:iconography">
             <div class="col-md-3 col-sm-6">
-                <!--<img id="portrait-placeholder" class="img-fluid" src="$resources/img/icons/icon_person_unbekannt_gross.png" alt="Placeholder Image" width="260" height="340"/>-->
                 <div class="portrait large">
                     <div class="front">
-                        <img class="img-fluid" src="$resources/img/icons/icon_person_placeholder.png" alt="Placeholder Image" data-template="img:portrait" data-template-size="large"/>
+                        <img class="img-fluid" src="$resources/img/icons/icon_corresp.png" alt="Placeholder Image" data-template="img:portrait" data-template-size="large"/>
                     </div>
                     <div class="back colored">
                         <h3 data-template="lang:translate">imageSource</h3>
@@ -71,156 +70,37 @@
             <div class="col-md paddingBottomIcon col-sm-6 basicdata">
                 <h2 data-template="lang:translate">basic_data</h2>
                 <ol class="media">
-                   <li class="media fullnames" data-template="app-shared:each" data-template-from="fullnames" data-template-to="fullname">
-                        <div class="pull-left">
-                            <i class="fa fa-user"/>
-                        </div>
-                        <div class="media-body" data-template="app-shared:print" data-template-key="fullname"> Weber, Carl Maria Friedrich Ernst von </div>
+                   <li class="media date">
+                   	<strong data-template="lang:translate">Beginn</strong>: <span data-template="app-shared:print" data-template-key="letterEarliest">Datum des ersten Dokuments</span>
                     </li>
-                   <li class="media realnames" data-template="app-shared:each" data-template-from="realnames" data-template-to="realname">
-                        <div class="pull-left">
-                            <i class="fa fa-user"/>
-                        </div>
-                       <div class="media-body"> <span data-template="app-shared:print" data-template-key="realname">Weber, Carl Maria Friedrich Ernst von</span> <span class="nameDesc" data-template="lang:translate">realName</span>
-                        </div>
+                   <li class="media date">
+                   	<strong data-template="lang:translate">Ende</strong>: <span data-template="app-shared:print" data-template-key="letterLatest">Datum des letzten Dokuments</span>
                     </li>
-                   <li class="media birthnames" data-template="app-shared:each" data-template-from="birthnames" data-template-to="birthname">
-                        <div class="pull-left">
-                            <i class="fa fa-user"/>
-                        </div>
-                       <div class="media-body"> <span data-template="app-shared:print" data-template-key="birthname">Weber, Carl Maria Friedrich Ernst von</span> <span class="nameDesc" data-template="lang:translate">birthName</span>
-                        </div>
-                    </li>
-                   <li class="media marriednames" data-template="app-shared:each" data-template-from="marriednames" data-template-to="marriedname">
-                        <div class="pull-left">
-                            <i class="fa fa-user"/>
-                        </div>
-                       <div class="media-body"> <span data-template="app-shared:print" data-template-key="marriedname">Weber, Carl Maria Friedrich Ernst von</span> <span class="nameDesc" data-template="lang:translate">marriedName</span>
-                        </div>
-                    </li>
-                   <li class="media pseudonyme" data-template="app-shared:if-exists" data-template-key="pseudonyme">
-                        <div class="pull-left">
-                            <i class="fa fa-user"/>
-                        </div>
-                       <div class="media-body"> <span data-template="app-shared:join" data-template-key="pseudonyme" data-template-separator="; ">Weber, Carl Maria Friedrich Ernst von</span> <span class="nameDesc" data-template="lang:translate">pseudonyme</span>
-                        </div>
-                    </li>
-                    <li class="media altnames" data-template="app-shared:if-exists" data-template-key="altnames">
-                        <div class="pull-left">
-                            <i class="fa fa-user"/>
-                        </div>
-                        <div class="media-body"> <span data-template="app-shared:join" data-template-key="altnames" data-template-separator="; ">Weber, Carl Maria Friedrich Ernst von</span> <span class="nameDesc" data-template="lang:translate">altNames</span>
-                        </div>
-                    </li>
-                    <li class="media" data-template="app-shared:if-exists" data-template-key="birth">
-                        <div class="pull-left">
-                            <i class="fa fa-asterisk "/>
-                        </div>
-                        <div class="media-body">
-                            <span data-template="app:printDatesOfBirthOrDeath" data-template-key="birth">20.11.1786</span>
-                            <span data-template="app:printPlaceOfBirthOrDeath" data-template-key="birth">in Eutin</span>
-                            <!--Quelle 1: 20.11.1786 in Eutin Quelle 2: 22.10.1786
-                            in Eudin Unsicher: 22.10.1786 in Eudin--> </div>
-                    </li>
-                    <li class="media baptism" data-template="app-shared:if-exists" data-template-key="baptism">
-                        <div class="pull-left">
-                            <img src="$resources/img/baptism.gif" alt="baptism-icon"/>
-                        </div>
-                        <div class="media-body">
-                            <span data-template="app:printDatesOfBirthOrDeath" data-template-key="baptism">20.11.1786</span>
-                            <span data-template="app:printPlaceOfBirthOrDeath" data-template-key="birth">in Eutin</span>
-                        </div>
-                    </li>
-                    <li class="media" data-template="app-shared:if-exists" data-template-key="death">
-                        <div class="pull-left">
-                            <strong>†</strong>
-                        </div>
-                        <div class="media-body">
-                            <span data-template="app:printDatesOfBirthOrDeath" data-template-key="death">20.11.1786</span>
-                            <span data-template="app:printPlaceOfBirthOrDeath" data-template-key="death">in Eutin</span>
-                        </div>
-                    </li>
-                    <li class="media funeral" data-template="app-shared:if-exists" data-template-key="funeral">
-                        <div class="pull-left">
-                            <img src="$resources/img/funeral.gif" alt="funeral-icon"/>
-                        </div>
-                        <div class="media-body">
-                            <span data-template="app:printDatesOfBirthOrDeath" data-template-key="funeral">20.11.1786</span>
-                            <span data-template="app:printPlaceOfBirthOrDeath" data-template-key="death">in Eutin</span>
-                        </div>
-                    </li>
-                   <li class="media occupations" data-template="app-shared:if-exists" data-template-key="occupations">
-                      <div class="pull-left">                  
-                         <i class="fa fa-briefcase"/>
-                      </div>
-                      <div class="media-body" data-template="app-shared:join" data-template-key="occupations">
-                          Schauspielerin, Sängerin
-                      </div>
-                   </li>
-                   <li class="media residences" data-template="app-shared:if-exists" data-template-key="residences">
-                      <div class="pull-left">                  
-                         <i class="fa fa-map-marker"/>
-                      </div>
-                      <div class="media-body" data-template="app-shared:join" data-template-key="residences">
-                         Köln, Gotha
-                      </div>
-                   </li>
-                    <li class="media states" data-template="app-shared:if-exists" data-template-key="states">
-                        <div class="pull-left">                  
-                            <i class="fa fa-university"/> <!-- fa-industry -->
-                        </div>
-                        <div class="media-body" data-template="app-shared:join" data-template-key="states">
-                            Weiterbildungsanstalt
-                        </div>
-                    </li>
-                    <li class="media bibls" data-template="app-shared:each" data-template-from="bibls" data-template-to="bibl">
-                        <div class="pull-left">
-                            <i class="fa fa-book"/>
-                        </div>
-                        <div class="media-body"> <span data-template="app-shared:print" data-template-key="bibl">https://henze-digital.zenmem.de</span>
-                        </div>
-                    </li>
+                	<li class="media correspPartners" data-template="app-shared:each" data-template-from="correspPartners" data-template-to="correspPartner">
+                		<div class="pull-left">
+                			<i class="fa fa-user"/>
+                		</div>
+                		<div class="media-body" data-template="app-shared:print" data-template-key="correspPartner">Henze, Hans Werner</div>
+                	</li>
+                	<li class="media annotation">
+                		<strong data-template="lang:translate">annotation</strong>: <span data-template="app-shared:output" data-template-key="annotation">Eine Anmerkung</span>
+                	</li>
                 </ol>
-            </div>
-            <div class="col-md col-sm-12 iconographie" data-template="app-shared:if-not-exists" data-template-key="addrLines">
-                <div data-template="app-shared:if-exists" data-template-key="iconographyImages" data-template-wrap="no">
-                    <h2 data-template="lang:translate">iconography</h2>
-                </div>
-                <div class="iconographythumbnail" data-template="app-shared:each" data-template-from="iconographyImages" data-template-to="iconographyImage" data-template-max="30">
-                    <img data-template="img:iconographyImage" src="dummy.jpg"/>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-12 address" data-template="app-shared:if-exists" data-template-key="addrLines">
-                <h2 data-template="lang:translate">address</h2>
-                <ul>
-                    <li data-template="app-shared:each" data-template-from="addrLines" data-template-to="addrLine">
-                        <span data-template="app:person-addrLine">Adresszeile</span>
-                    </li>
-                </ul>
             </div>
         </div>
     </div>
     <!-- Nav tabs -->
-    <div id="details" data-template="app:person-details">
+    <div id="details" data-template="app:corresp-details">
         <div class="container">
             <div class="row">
                 <div class="col-md-10 col-12">
                     <nav class="greedy">
                         <ul class="resp-tabs-list links easyResponsiveTabs">
                             <li data-template="app-shared:if-matches" data-template-key="docType" data-template-value="persons">
-                                <a data-template="app:person-main-tab" href="#biographies">biographies</a>
-                            </li>
-                            <li data-template="app-shared:if-matches" data-template-key="docType" data-template-value="orgs">
-                                <a data-template="app:person-main-tab" href="#biographies">history</a>
+                            	<a data-template="app:person-main-tab" href="#general">general</a>
                             </li>
                             <li>
                                 <a data-template="app:person-main-tab" href="#correspondence" data-target="$docID/correspondence.html">correspondence</a>
-                            </li>
-                            <li>
-                                <a data-template="app:person-main-tab" href="#writings" data-target="$docID/writings.html">writings</a>
-                            </li>
-                            <li>
-                                <a data-template="app:person-main-tab" href="#diaries" data-target="$docID/diaries.html">diaries</a>
                             </li>
                             <li>
                                 <a data-template="app:person-main-tab" href="#works" data-target="$docID/works.html">works</a>
@@ -229,19 +109,10 @@
                                 <a data-template="app:person-main-tab" href="#biblio" data-target="$docID/biblio.html">biblio</a>
                             </li>
                             <li>
-                                <a data-template="app:person-main-tab" href="#thematicCommentaries" data-target="$docID/thematicCommentaries.html">thematicCommentaries</a>
-                            </li>
-                            <li>
                                 <a data-template="app:person-main-tab" href="#documents" data-target="$docID/documents.html">documents</a>
                             </li>
                             <li>
-                                <a data-template="app:person-main-tab" href="#news" data-target="$docID/news.html">news</a>
-                            </li>
-                            <li>
                                 <a data-template="app:person-main-tab" href="#contacts" data-target="$docID/contacts.html">contacts</a>
-                            </li>
-                            <li>
-                                <a data-template="app:person-main-tab" href="#backlinks" data-target="$docID/backlinks.html">backlinks</a>
                             </li>
                         </ul>
                         <button data-template="lang:translate">more</button>
@@ -256,7 +127,7 @@
                     <div class="col-12 ">
                         <div class="resp-tabs-container colored easyResponsiveTabs">
                             <!-- Biographie-->
-                            <div class="biografien paddingTopIcon paddingBottomIcon textBlock" id="biographies">
+                            <div class="biografien paddingTopIcon paddingBottomIcon textBlock" id="general">
                                 <div class="row">
                                     <div class="col-md-3 order-2 side-col">
                                         <div class="allFilter">
@@ -264,22 +135,7 @@
                                             <!-- Nav tabs -->
                                             <ul class="nav nav-tabs">
                                                 <li class="nav-item gradient-light">
-                                                    <a class="nav-link active" data-toggle="tab" href="#hendiInfo">HenDi Info</a>
-                                                </li>
-                                                <li class="nav-item gradient-light">
-                                                    <a class="nav-link" data-toggle="tab" href="#wikipediaText" data-template="app:ajax-tab">wikipedia-article</a>
-                                                </li>
-                                                <li class="nav-item gradient-light">
-                                                    <a class="nav-link" data-toggle="tab" href="#adbText" data-template="app:ajax-tab">adb-article</a>
-                                                </li>
-                                                <li class="nav-item gradient-light">
-                                                    <a class="nav-link" data-toggle="tab" href="#ndbText" data-template="app:ajax-tab">ndb-article</a>
-                                                </li>
-                                                <li class="nav-item gradient-light">
-                                                    <a class="nav-link" data-toggle="tab" href="#gndText" data-template="app:ajax-tab">gnd-entry</a>
-                                                </li>
-                                                <li class="nav-item gradient-light">
-                                                    <a class="nav-link" data-toggle="tab" href="#gnd-beacon" data-template="app:ajax-tab">gnd-beacon</a>
+                                                	<a class="nav-link active" data-toggle="tab" href="#hendiInfo" data-template="lang:translate">introduction</a>
                                                 </li>
                                                 <li class="nav-item gradient-light">
                                                     <a class="nav-link" data-toggle="tab" href="#XMLPreview" data-template="app:ajax-tab">XML-Preview</a>
@@ -294,12 +150,7 @@
                                         <!-- Tab panes -->
                                         <div class="tab-content">
                                         	<div class="tab-pane active fade in" id="hendiInfo">
-                                                <span data-template="app-shared:if-matches" data-template-key="docType" data-template-value="persons" data-template-wrap="no">
-                                                    <h2 data-template="lang:translate">tabTitle_bio</h2>
-                                                </span>
-                                                <span data-template="app-shared:if-matches" data-template-key="docType" data-template-value="orgs" data-template-wrap="no">
-                                                    <h2 data-template="lang:translate">tabTitle_bioOrgs</h2>
-                                                </span>
+                                                <h2 data-template="lang:translate">tabTitle_bio</h2>
                                                 <div data-template="app:print-wega-bio">
                                                     <!-- Wenn in der Personendatei keine bioSummary gefunden wird, dann wird der folgende Standardtext gewählt-->
                                                     <p>
@@ -311,21 +162,6 @@
                                                     </p>
                                                     <p data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">More detailed information can be found in the <a href="$link/A002068/bio.html">extended biography</a> (German)</p>
                                                 </div>
-                                            </div>
-                                            <div class="tab-pane fade" id="wikipediaText">
-                                                <h2>Wikipedia</h2>
-                                            </div>
-                                            <div class="tab-pane fade" id="adbText">
-                                                <h2>ADB</h2>
-                                            </div>
-                                            <div class="tab-pane fade" id="ndbText">
-                                                <h2>NDB</h2>
-                                            </div>
-                                            <div class="tab-pane fade" id="gndText">
-                                                <h2>GND</h2>
-                                            </div>
-                                            <div class="tab-pane fade" id="gnd-beacon">
-                                                <h2>GND Beacon Links</h2>
                                             </div>
                                             <div class="tab-pane fade" id="XMLPreview">
                                                 <h2>XML</h2>
@@ -339,14 +175,6 @@
                             <div class="tab-pane paddingTopIcon paddingBottomIcon textBlock korrespondenz" id="correspondence">
                                 <!-- loaded via ajax -->
                             </div>
-                            <!-- Schriften-->
-                            <div class="schriften paddingTopIcon paddingBottomIcon textBlock" id="writings">
-                                <!-- loaded via ajax -->
-                            </div>
-                            <!-- Tagebücher-->
-                            <div class="tagebuecher paddingTopIcon paddingBottomIcon textBlock" id="diaries">
-                                <!-- loaded via ajax -->
-                            </div>
                             <!-- Werke -->
                             <div class="werke paddingTopIcon paddingBottomIcon textBlock" id="works">
                                 <!-- loaded via ajax -->
@@ -355,24 +183,12 @@
                             <div class="biblio paddingTopIcon paddingBottomIcon textBlock" id="biblio">
                                 <!-- loaded via ajax -->
                             </div>
-                            <!-- thematicCommentaries -->
-                            <div class="thematicCommentaries paddingTopIcon paddingBottomIcon textBlock" id="thematicCommentaries">
-                                <!-- loaded via ajax -->
-                            </div>
                             <!-- documents -->
                             <div class="documents paddingTopIcon paddingBottomIcon textBlock" id="documents">
                                 <!-- loaded via ajax -->
                             </div>
-                            <!-- news -->
-                            <div class="news paddingTopIcon paddingBottomIcon textBlock" id="news">
-                                <!-- loaded via ajax -->
-                            </div>
                             <!-- Kontakte -->
                             <div class="kontakte paddingTopIcon paddingBottomIcon textBlock" id="contacts">
-                                <!-- loaded via ajax -->
-                            </div>
-                            <!-- Backlinks -->
-                            <div class="backlinks paddingTopIcon paddingBottomIcon textBlock" id="backlinks">
                                 <!-- loaded via ajax -->
                             </div>
                         </div>

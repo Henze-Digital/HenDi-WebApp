@@ -314,7 +314,7 @@ declare function wdt:corresp($item as item()*) as map(*) {
                 switch($serialization)
                 case 'txt' return str:normalize-space(replace(string-join(str:txtFromTEI($title-element, config:guess-language(())), ''), '\s*\n+\s*(\S+)', '. $1'))
                 case 'html' return wega-util:transform($title-element, doc(concat($config:xsl-collection-path, '/common_main.xsl')), config:get-xsl-params(())) 
-                default return wega-util:log-to-file('error', 'wdt:translations()("title"): unsupported serialization "' || $serialization || '"')
+                default return wega-util:log-to-file('error', 'wdt:corresp()("title"): unsupported serialization "' || $serialization || '"')
         },
         'label-facets' : function() as xs:string? {
           typeswitch($item)

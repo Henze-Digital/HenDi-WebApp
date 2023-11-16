@@ -285,7 +285,7 @@ declare
     function app:person-main-tab($node as node(), $model as map(*), $lang as xs:string) as element()? {
         let $tabTitle := normalize-space($node)
         let $count := count($model($tabTitle))
-        let $alwaysShowNoCount := $tabTitle = ('biographies', 'history', 'descriptions')
+        let $alwaysShowNoCount := $tabTitle = ('biographies', 'history', 'descriptions', 'general')
         return
             if($count gt 0 or $alwaysShowNoCount) then
                 element {node-name($node)} {
@@ -1167,6 +1167,53 @@ declare
             'authors' : $model('doc')//tei:fileDesc/tei:titleStmt/tei:author
             }
 };
+
+(:
+ : ****************************
+ : Corresp pages
+ : ****************************
+ : @author: Dennis Ried
+:)
+
+declare 
+    %templates:wrap
+    function app:corresp-title($node as node(), $model as map(*)) as xs:string {
+        query:title($model('docID'))
+};
+
+declare 
+    %templates:wrap
+    %templates:default("lang", "en")
+    function app:corresp-basic-data($node as node(), $model as map(*), $lang as xs:string) as map(*) {
+        let $search-results as document-node()* := core:getOrCreateColl('letters', $model('docID'), true())
+        let $sorted-results := wdt:lookup($model('docType'), $search-results)('sort')( map { 'letterID' : $model('docID')} )
+        let $letterEarliest := search:get-earliest-date($sorted-results, 'letters')
+        let $letterLatest := search:get-latest-date($sorted-results, 'letters')
+        let $correspPartners := 'correspPartners'
+        return
+	        map{
+	            'letterEarliest' : $letterEarliest,
+	            'letterLatest' : $letterLatest,
+	            'correspPartners' : distinct-values($model('doc')//tei:correspAction//(tei:persName|tei:orgName) ! string-join(str:txtFromTEI(., $lang), '')),
+	            'annotation' : $model('doc')//tei:notesStmt/tei:note[@type = 'annotation']/string()
+	        }
+};
+
+declare 
+    %templates:wrap
+    function app:corresp-details($node as node(), $model as map(*)) as map(*) {
+    let $coll-letters := core:getOrCreateColl('letters', $model('docID'), true())[.//tei:relation[@name='correspondence'][@key=$model('docID')]]
+    return
+	    map{
+	        'correspondence' : $coll-letters,
+	        'works' : core:getOrCreateColl('works', $model('docID'), true()),
+	        'contacts' : core:getOrCreateColl('contacts', $model('docID'), true()),
+	        'biblio' : core:getOrCreateColl('biblio', $model('docID'), true()),
+	        'documents' : core:getOrCreateColl('documents', $model('docID'), true()),
+	        'xml-download-url' : replace(controller:create-url-for-doc($model('doc'), $model('lang')), '\.html', '.xml')
+	    }
+};
+
 
 (:~
  : Main Function for wikipedia.html
@@ -2494,20 +2541,4 @@ declare function app:download-modal($node as node(), $model as map(*))  {
 		if(exists($model('doc')//tei:availability/tei:licence[. = 'noDownload']) = true())
 		then templates:include($node, $model, 'templates/includes/download-modal-restricted.html')
 		else templates:include($node, $model, 'templates/includes/download-modal-tei.html')
-};
-
-(:
- : ****************************
- : Corresp register pages
- : ****************************
-:)
-
-declare 
-    %templates:wrap
-    %templates:default("lang", "en")
-    function app:corresp-basic-data($node as node(), $model as map(*), $lang as xs:string) as map(*) {
-	        map{
-	            'correspPartners' : distinct-values($model('doc')//tei:correspAction//(tei:persName|tei:orgName) ! string-join(str:txtFromTEI(., $lang), '')),
-	            'annotation' : $model('doc')//tei:notesStmt/tei:note[@type = 'annotation']/string()
-	        }
 };
