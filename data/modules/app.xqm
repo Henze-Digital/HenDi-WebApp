@@ -1185,10 +1185,9 @@ declare
     %templates:wrap
     %templates:default("lang", "en")
     function app:corresp-basic-data($node as node(), $model as map(*), $lang as xs:string) as map(*) {
-        let $search-results as document-node()* := core:getOrCreateColl('letters', $model('docID'), true())
-        let $sorted-results := wdt:lookup($model('docType'), $search-results)('sort')( map { 'letterID' : $model('docID')} )
-        let $letterEarliest := search:get-earliest-date-public($sorted-results, 'letters')
-        let $letterLatest := search:get-latest-date-public($sorted-results, 'letters')
+        let $search-results as document-node()* := collection('/db/apps/hendi-data/letters')//tei:relation[@name='correspondence'][@key=$model('docID')]/root()
+        let $letterEarliest := $search-results//tei:correspDesc//tei:date[1]
+        let $letterLatest := $search-results//tei:correspDesc//tei:date[1]
         let $correspPartners := distinct-values($model('doc')//tei:correspAction//(tei:persName|tei:orgName) ! string-join(str:txtFromTEI(., $lang), ''))
         return
 	        map{
