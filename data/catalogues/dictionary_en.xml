@@ -419,6 +419,7 @@
     <entry xml:id="hide">hide</entry>
     <entry xml:id="to">To</entry>
     <entry xml:id="from">From</entry>
+	<entry xml:id="till">Till</entry>
     <entry xml:id="fromTo">from %1 to %2</entry>
     <entry xml:id="fromToUnknown">from %1 to unknown</entry>
     <entry xml:id="unknownTo">from unknown to %1</entry>
@@ -822,4 +823,5 @@
     <entry xml:id="annotation">Annotation</entry>
 	<entry xml:id="introduction">Introduction</entry>
 	<entry xml:id="general">General</entry>
+	<entry xml:id="correspPartners">Correspondence partner</entry>
 </dictionary>

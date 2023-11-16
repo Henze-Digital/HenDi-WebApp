@@ -429,6 +429,7 @@
     <entry xml:id="hide">ausblenden</entry>
     <entry xml:id="to">An</entry>
     <entry xml:id="from">Von</entry>
+	<entry xml:id="till">Bis</entry>
     <entry xml:id="fromTo">vom %1 bis %2</entry>
     <entry xml:id="fromToUnknown">vom %1 bis unbekannt</entry>
     <entry xml:id="unknownTo">von unbekannt bis %1</entry>
@@ -831,4 +832,5 @@
     <entry xml:id="annotation">Anmerkung</entry>
 	<entry xml:id="introduction">Einführung</entry>
 	<entry xml:id="general">Allgemein</entry>
+	<entry xml:id="correspPartners">Korrespondenzpartner*innen</entry>
 </dictionary>
