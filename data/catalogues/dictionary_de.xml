@@ -829,4 +829,6 @@
 	
 	<entry xml:id="textRotation">Text im Uhrzeigersinn gedreht</entry>
     <entry xml:id="annotation">Anmerkung</entry>
+	<entry xml:id="introduction">Einführung</entry>
+	<entry xml:id="general">Allgemein</entry>
 </dictionary>
