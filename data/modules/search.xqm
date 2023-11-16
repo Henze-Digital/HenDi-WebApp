@@ -417,6 +417,10 @@ declare %private function search:get-earliest-date($coll as document-node()*, $d
     else ()
 };
 
+declare function search:get-earliest-date-public($coll as document-node()*, $docType as xs:string) as xs:string? {
+	search:get-earliest-date($coll, $docType)
+};
+
 (:~
  : 
 ~:)
@@ -430,6 +434,10 @@ declare %private function search:get-latest-date($coll as document-node()*, $doc
         case 'places' return ()
         default return ()
     else ()
+};
+
+declare function search:get-latest-date-public($coll as document-node()*, $docType as xs:string) as xs:string? {
+	search:get-latest-date($coll, $docType)
 };
 
 (:~
