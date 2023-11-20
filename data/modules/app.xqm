@@ -1224,12 +1224,15 @@ declare
 declare 
     %templates:wrap
     function app:corresp-details($node as node(), $model as map(*)) as map(*) {
-    let $coll-letters := core:getOrCreateColl('letters', $model('docID'), true())[.//tei:relation[@name='correspondence'][@key=$model('docID')]]
+    let $coll-letters := crud:data-collection('letters')[.//tei:relation[@name='correspondence'][@key=$model('docID')]]
+    let $coll-letters-ids := $coll-letters//tei:TEI/@xml:id/string()
+    
     return
 	    map{
 	        'correspondence' : $coll-letters,
 	        'works' : core:getOrCreateColl('works', $model('docID'), true()),
 	        'contacts' : core:getOrCreateColl('contacts', $model('docID'), true()),
+	        'places' : core:getOrCreateColl('places', $model('docID'), true()),
 	        'biblio' : core:getOrCreateColl('biblio', $model('docID'), true()),
 	        'documents' : core:getOrCreateColl('documents', $model('docID'), true()),
 	        'xml-download-url' : replace(controller:create-url-for-doc($model('doc'), $model('lang')), '\.html', '.xml')

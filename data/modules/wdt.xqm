@@ -292,14 +292,11 @@ declare function wdt:corresp($item as item()*) as map(*) {
             for $i in wdt:corresp($item)('filter')() order by sort:index('corresp', $i) ascending return $i
         },
         'init-collection' : function() as document-node()* {
-            crud:data-collection('corresp')/descendant::tei:correspAction/root()
+            crud:data-collection('corresp')/descendant::tei:TEI[starts-with(@xml:id, $prefix)]/root()
         },
         'init-sortIndex' : function() as item()* {
             sort:create-index-callback('corresp', wdt:corresp(())('init-collection')(), function($node) {
-                let $normDate := query:get-normalized-date($node)
-                let $n :=  functx:pad-integer-to-length(($node//tei:correspAction[@type='sent']/tei:date)[1]/data(@n), 4)
-                return
-                    (if(exists($normDate)) then $normDate else 'xxxx-xx-xx') || $n
+                hwh-util:prepareTitleForSorting($node//tei:fileDesc/tei:titleStmt/tei:title[1])
             }, ())
         },
         'title' : function($serialization as xs:string) as item()? {
