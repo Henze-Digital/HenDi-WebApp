@@ -303,6 +303,7 @@
     <entry xml:id="metaDescriptionIndex-writings">A list of writings, collected and (partially) edited by Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-diaries">A list of diary entries, collected and edited by Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-letters">A list of correspondence material (mostly letters), collected and (partially) edited by Henze-Digital</entry>
+    <entry xml:id="metaDescriptionIndex-corresp">A list of correspondences edited by Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-documents">A list of documents, collected and edited by Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-places">Index of places of Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-indices">A complete index of all documents of the digital edition of Henze-Digital</entry>
@@ -321,6 +322,7 @@
     <entry xml:id="metaTitleIndex-persons">Index of persons</entry>
 	<entry xml:id="metaTitleIndex-orgs">Index of organizations</entry>
     <entry xml:id="metaTitleIndex-letters">Index of letters</entry>
+    <entry xml:id="metaTitleIndex-corresp">Index of correspondences</entry>
     <entry xml:id="metaTitleIndex-places">Index of places</entry>
     <entry xml:id="metaTitleIndex-writings">Index of writings</entry>
     <entry xml:id="metaTitleIndex-diaries">Index of diaries</entry>
@@ -356,6 +358,7 @@
     <entry xml:id="mastersthesis">Masters Thesis</entry>
     <!--  Various  -->
     <entry xml:id="correspondence">Letters</entry>
+    <entry xml:id="corresp">Correspondence</entry>
     <entry xml:id="writings">Writings</entry>
     <entry xml:id="noWritingsAvailable">No writings available</entry>
     <entry xml:id="journals">Journals</entry>
@@ -416,6 +419,7 @@
     <entry xml:id="hide">hide</entry>
     <entry xml:id="to">To</entry>
     <entry xml:id="from">From</entry>
+	<entry xml:id="till">Till</entry>
     <entry xml:id="fromTo">from %1 to %2</entry>
     <entry xml:id="fromToUnknown">from %1 to unknown</entry>
     <entry xml:id="unknownTo">from unknown to %1</entry>
@@ -816,4 +820,10 @@
     <entry xml:id="furtherDetails">Further details</entry>
 	
 	<entry xml:id="textRotation">Text turned clockwise</entry>
+    <entry xml:id="annotation">Annotation</entry>
+	<entry xml:id="introduction">Introduction</entry>
+	<entry xml:id="general">General</entry>
+	<entry xml:id="correspPartners">Correspondence partner</entry>
+	<entry xml:id="timePeriod">Time period</entry>
+	<entry xml:id="noTextFound">No text available.</entry>
 </dictionary>

@@ -13,6 +13,7 @@ import module namespace functx="http://www.functx.com";
 import module namespace crud="http://xquery.weber-gesamtausgabe.de/modules/crud" at "crud.xqm";
 import module namespace query="http://xquery.weber-gesamtausgabe.de/modules/query" at "query.xqm";
 import module namespace config="http://xquery.weber-gesamtausgabe.de/modules/config" at "config.xqm";
+import module namespace core="http://xquery.weber-gesamtausgabe.de/modules/core" at "core.xqm";
 import module namespace wega-util="http://xquery.weber-gesamtausgabe.de/modules/wega-util" at "wega-util.xqm";
 import module namespace hwh-util="http://henze-digital.zenmem.de/modules/hwh-util" at "hwh-util.xqm";
 import module namespace bibl="http://xquery.weber-gesamtausgabe.de/modules/bibl" at "bibl.xqm";
@@ -32,7 +33,14 @@ declare function wdt:orgs($item as item()*) as map(*) {
             $item[descendant-or-self::tei:org][descendant-or-self::tei:orgName]/root() | $item[ancestor-or-self::tei:org]/root()
         },
         'filter-by-person' : function($personID as xs:string) as document-node()* {
-            ()
+            if(matches($personID, config:wrap-regex('correspIdPattern')))
+            then(
+                 let $personIDs := crud:data-collection('letters')//tei:*[contains(@key, $personID)][ancestor::tei:listRelation]/root()//@key[matches(., config:wrap-regex('orgsIdPattern'))]/string()
+                    => distinct-values()
+                 return
+                     $item/node()[functx:contains-any-of(@xml:id, $personIDs)]/root()
+             )
+            else()
         },
         'filter-by-date' : function($dateFrom as xs:date?, $dateTo as xs:date?) as document-node()* {
             $wdt:filter-by-date($item, $dateFrom, $dateTo)[ancestor-or-self::tei:org]/root()
@@ -211,9 +219,17 @@ declare function wdt:letters($item as item()*) as map(*) {
             $item/root()/descendant::tei:text[@type = $text-types]/root()[not(descendant::tei:relation[@name='isEnvelopeOf'])]
         },
         'filter-by-person' : function($personID as xs:string) as document-node()* {
-            typeswitch($item) (: remove call to function `root()` when document-node()s are passed as input :)
+            if(matches($personID, config:get-option('correspIdPattern')))
+            then(
+                typeswitch($item) (: remove call to function `root()` when document-node()s are passed as input :)
+	            case document-node()+ return $item//tei:*[contains(@key, $personID)][ancestor::tei:listRelation]/root()
+	            default return $item/root()//tei:*[contains(@key, $personID)][ancestor::tei:listRelation]/root()
+            )
+            else(
+            	typeswitch($item) (: remove call to function `root()` when document-node()s are passed as input :)
             case document-node()+ return $item//tei:*[contains(@key, $personID)][ancestor::tei:correspAction][not(ancestor-or-self::tei:note)]/root()
             default return $item/root()//tei:*[contains(@key, $personID)][ancestor::tei:correspAction][not(ancestor-or-self::tei:note)]/root()
+            )
         },
         'filter-by-date' : function($dateFrom as xs:date?, $dateTo as xs:date?) as document-node()* {
             $wdt:filter-by-date($item, $dateFrom, $dateTo)[parent::tei:correspAction]/root()
@@ -258,6 +274,79 @@ declare function wdt:letters($item as item()*) as map(*) {
         }
     }
 };
+
+declare function wdt:corresp($item as item()*) as map(*) {
+    let $prefix := substring(config:get-option('correspIdPattern'), 1, 3)
+    let $constructTranslationHead := function($TEI as element(tei:TEI)) as element(tei:title) {
+        let $id := $TEI/data(@xml:id)
+        let $lang := config:guess-language(())
+        let $title := $TEI//tei:fileDesc/tei:titleStmt/tei:title[@xml:lang=$lang]/string()
+        return (element tei:title {$title})
+    }
+    return 
+    map {
+        'name' : 'corresp',
+        'prefix' : $prefix,
+        'check' : function() as xs:boolean {
+            if($item castable as xs:string) then matches($item, config:wrap-regex('correspIdPattern'))
+            else false()
+        },
+        'filter' : function() as document-node()* {
+            $item/root()/tei:TEI[starts-with(@xml:id, $prefix)]/root()
+        },
+        'filter-by-person' : function($personID as xs:string) as document-node()* {
+            typeswitch($item) (: remove call to function `root()` when document-node()s are passed as input :)
+            case document-node()+ return $item//tei:*[contains(@key, $personID)][ancestor::tei:correspAction][not(ancestor-or-self::tei:note)]/root()
+            default return $item/root()//tei:*[contains(@key, $personID)][ancestor::tei:correspAction][not(ancestor-or-self::tei:note)]/root()
+        },
+        'filter-by-date' : function($dateFrom as xs:date?, $dateTo as xs:date?) as document-node()* {
+            $wdt:filter-by-date($item, $dateFrom, $dateTo)[parent::tei:correspAction]/root()
+        },
+        'sort' : function($params as map(*)?) as document-node()* {
+            if(sort:has-index('corresp')) then ()
+            else (wdt:corresp(())('init-sortIndex')()),
+            for $i in wdt:corresp($item)('filter')() order by sort:index('corresp', $i) ascending return $i
+        },
+        'init-collection' : function() as document-node()* {
+            crud:data-collection('corresp')/descendant::tei:TEI[starts-with(@xml:id, $prefix)]/root()
+        },
+        'init-sortIndex' : function() as item()* {
+            sort:create-index-callback('corresp', wdt:corresp(())('init-collection')(), function($node) {
+                hwh-util:prepareTitleForSorting($node//tei:fileDesc/tei:titleStmt/tei:title[1])
+            }, ())
+        },
+        'title' : function($serialization as xs:string) as item()? {
+            let $TEI := 
+                typeswitch($item)
+                case xs:string return crud:doc($item)/tei:TEI
+                case xs:untypedAtomic return crud:doc($item)/tei:TEI
+                case document-node() return $item/tei:TEI
+                default return $item/root()/tei:TEI
+            let $title-element := $constructTranslationHead($TEI) 
+            return
+                switch($serialization)
+                case 'txt' return str:normalize-space(replace(string-join(str:txtFromTEI($title-element, config:guess-language(())), ''), '\s*\n+\s*(\S+)', '. $1'))
+                case 'html' return wega-util:transform($title-element, doc(concat($config:xsl-collection-path, '/common_main.xsl')), config:get-xsl-params(())) 
+                default return wega-util:log-to-file('error', 'wdt:corresp()("title"): unsupported serialization "' || $serialization || '"')
+        },
+        'label-facets' : function() as xs:string? {
+          typeswitch($item)
+          case xs:string return str:normalize-space(crud:doc($item)//tei:fileDesc/tei:titleStmt/tei:title[1])
+          case xs:untypedAtomic return str:normalize-space(crud:doc($item)//tei:fileDesc/tei:titleStmt/tei:title[1])
+          case document-node() return str:normalize-space($item//tei:fileDesc/tei:titleStmt/tei:title[1])
+          case element() return str:normalize-space($item//tei:fileDesc/tei:titleStmt/tei:title[1])
+          default return wega-util:log-to-file('error', 'wdt:corresp()("label-facests"): failed to get string')
+        },
+        'memberOf' : ('search', 'indices', 'sitemap', 'unary-docTypes'),
+        'search' : function($query as element(query)) {
+            $item[tei:TEI]//tei:correspDesc[ft:query(., $query)] | 
+            $item[tei:TEI]//tei:title[ft:query(., $query)] |
+            $item[tei:TEI]//tei:note[ft:query(., $query)][@type = ('annotation')] |
+            $item[tei:TEI]/tei:TEI[ft:query(., $query)]
+        }
+    }
+};
+
 
 declare function wdt:translations($item as item()*) as map(*) {
     let $text-types := tokenize(config:get-option('textTypes'), '\s+')
@@ -405,7 +494,14 @@ declare function wdt:works($item as item()*) as map(*) {
             $item/root()[mei:mei|tei:TEI][descendant::mei:work|descendant::tei:teiHeader]
         },
         'filter-by-person' : function($personID as xs:string) as document-node()* {
-            $item/root()[.//mei:work//(mei:persName|mei:corpName)[@codedval = $personID] or .//tei:biblStruct//(tei:persName|mei:orgName|tei:author)[@key = $personID]]
+            if(matches($personID, config:wrap-regex('correspIdPattern')))
+            then(
+                 let $personIDs := crud:data-collection('letters')//tei:*[contains(@key, $personID)][ancestor::tei:listRelation]/root()//@key[matches(., config:wrap-regex('worksIdPattern'))]/string()
+                    => distinct-values()
+                 return
+                     $item/node()[functx:contains-any-of(@xml:id, $personIDs)]/root()
+             )
+            else($item/root()[.//mei:work//(mei:persName|mei:corpName)[@codedval = $personID] or .//tei:biblStruct//(tei:persName|mei:orgName|tei:author)[@key = $personID]])
         },
         'filter-by-date' : function($dateFrom as xs:date?, $dateTo as xs:date?) as document-node()* {
             if(empty(($dateFrom, $dateTo))) then $item/root() 
@@ -758,7 +854,14 @@ declare function wdt:places($item as item()*) as map(*) {
             $item/root()[tei:place][descendant::tei:placeName]
         },
         'filter-by-person' : function($personID as xs:string) as document-node()* {
-            $item
+            if(matches($personID, config:wrap-regex('correspIdPattern')))
+            then(
+                 let $personIDs := crud:data-collection('letters')//tei:*[contains(@key, $personID)][ancestor::tei:listRelation]/root()//@key[matches(., config:wrap-regex('placesIdPattern'))]/string()
+                    => distinct-values()
+                 return
+                     $item/node()[functx:contains-any-of(@xml:id, $personIDs)]/root()
+             )
+            else($item)
         },
         'filter-by-date' : function($dateFrom as xs:date?, $dateTo as xs:date?) as document-node()* {
             ()
@@ -912,7 +1015,16 @@ declare function wdt:documents($item as item()*) as map(*) {
             $filter($item)
         },
         'filter-by-person' : function($personID as xs:string) as document-node()* {
-            $item/root()//tei:author[@key = $personID][ancestor::tei:fileDesc]/root() => $filter()
+            if(matches($personID, config:wrap-regex('correspIdPattern')))
+            then(
+                 let $personIDs := crud:data-collection('letters')//tei:*[contains(@key, $personID)][ancestor::tei:listRelation]/root()//@key[matches(., config:wrap-regex('documentsIdPattern'))]/string()
+                    => distinct-values()
+                 return
+                     $item/node()[functx:contains-any-of(@xml:id, $personIDs)]/root()
+             )
+            else(
+            	$item/root()//tei:author[@key = $personID][ancestor::tei:fileDesc]/root() => $filter()
+            )
         },
         'filter-by-date' : function($dateFrom as xs:date?, $dateTo as xs:date?) as document-node()* {
             $wdt:filter-by-date($item, $dateFrom, $dateTo)[parent::tei:creation]/root() => $filter()
@@ -1038,7 +1150,16 @@ declare function wdt:contacts($item as item()*) as map(*) {
             ()
         },
         'filter-by-person' : function($personID as xs:string) as document-node()* {
-            map:keys(query:correspondence-partners($personID)) ! crud:doc(.)
+            if(matches($personID, config:wrap-regex('correspIdPattern')))
+            then(
+                 let $personIDs := crud:data-collection('letters')//tei:*[contains(@key, $personID)][ancestor::tei:listRelation]/root()//@key[matches(., config:wrap-regex('personsIdPattern'))]/string()
+                    => distinct-values()
+                 return
+                     $item/node()[functx:contains-any-of(@xml:id, $personIDs)]/root()
+             )
+            else(
+            	map:keys(query:correspondence-partners($personID)) ! crud:doc(.)
+            )
         },
         'filter-by-date' : function($dateFrom as xs:date?, $dateTo as xs:date?) as document-node()* {
             ()

@@ -224,6 +224,14 @@ declare
     %templates:default("lang", "en")
     function app:breadcrumb-register2($node as node(), $model as map(*), $lang as xs:string) as element(xhtml:a)? {
         if($model('docType') = 'indices') then ()
+        else if ($model('docType') = 'corresp')
+        then (
+            element {node-name($node)} {
+                $node/@*[not(local-name(.) eq 'href')],
+                attribute href {config:link-to-current-app(controller:path-to-register('corresp', $lang))},
+                lang:get-language-string($model('docType'), $lang)
+            }
+            )
         else 
             element {node-name($node)} {
                 $node/@*,
@@ -277,7 +285,7 @@ declare
     function app:person-main-tab($node as node(), $model as map(*), $lang as xs:string) as element()? {
         let $tabTitle := normalize-space($node)
         let $count := count($model($tabTitle))
-        let $alwaysShowNoCount := $tabTitle = ('biographies', 'history', 'descriptions')
+        let $alwaysShowNoCount := $tabTitle = ('biographies', 'history', 'descriptions', 'general')
         return
             if($count gt 0 or $alwaysShowNoCount) then
                 element {node-name($node)} {
@@ -1042,6 +1050,27 @@ declare
 };
 
 declare 
+    %templates:default("lang", "en")
+    function app:print-corresp-intro($node as node(), $model as map(*), $lang as xs:string) as element(xhtml:div)* {
+        let $themComm:= app:inject-query($model?doc/*)
+        let $intro := collection('/db/apps/hendi-data/thematicCommentaries')/node()[@xml:id=$themComm//tei:relation[@name='introduction']/@key]
+        let $text-transformed := wega-util:transform($intro//tei:text//tei:div[@xml:lang=$lang][position() = 1 or position() = 2 or position() = 3], doc(concat($config:xsl-collection-path, '/var.xsl')), config:get-xsl-params(()))
+        return
+            $text-transformed
+};
+
+declare 
+    %templates:default("lang", "en")
+    function app:print-corresp-intro-readmore($node as node(), $model as map(*), $lang as xs:string) as element(xhtml:div)* {
+        let $intro-id := app:inject-query($model?doc/*)//tei:relation[@name='introduction']/@key
+        let $link-to-intro := '/' || $lang || '/' || $intro-id
+        return
+            <div xmlns="http://www.w3.org/1999/xhtml">
+                <a href="{$link-to-intro}">Zum vollständigen Artikel</a>
+            </div>
+};
+
+declare 
     %templates:wrap
     function app:printPlaceOfBirthOrDeath($node as node(), $model as map(*), $key as xs:string) as xs:string* {
     let $placeNames :=
@@ -1159,6 +1188,51 @@ declare
             'authors' : $model('doc')//tei:fileDesc/tei:titleStmt/tei:author
             }
 };
+
+(:
+ : ****************************
+ : Corresp pages
+ : ****************************
+ : @author: Dennis Ried
+:)
+
+declare 
+    %templates:wrap
+    function app:corresp-title($node as node(), $model as map(*)) as xs:string {
+        query:title($model('docID'))
+};
+
+declare 
+    %templates:wrap
+    %templates:default("lang", "en")
+    function app:corresp-basic-data($node as node(), $model as map(*), $lang as xs:string) as map(*) {
+        let $search-results as document-node()* := core:getOrCreateColl('letters', $model('docID'), true())
+        let $dates := $search-results//tei:correspDesc//tei:date
+        let $datesStrings := for $date in $dates return date:getOneNormalizedDate($date, false())
+        let $letterEarliest := if(count($datesStrings) gt 0) then(date:format-date(min($datesStrings), '[D]. [MNn] [Y]', $lang)) else()
+        let $letterLatest := if(count($datesStrings) gt 0) then(date:format-date(max($datesStrings), '[D]. [MNn] [Y]', $lang)) else()
+        let $correspPartners := $search-results//tei:correspAction//(tei:persName|tei:orgName) ! string-join(str:txtFromTEI(., $lang), '') => distinct-values()
+        return
+	        map{
+	            'letterEarliest' : $letterEarliest,
+	            'letterLatest' : $letterLatest,
+	            'correspPartners' : $correspPartners,
+	            'annotation' : $model('doc')//tei:notesStmt/tei:note[@type = 'annotation']/string()
+	        }
+};
+
+declare 
+    %templates:wrap
+    function app:corresp-details($node as node(), $model as map(*)) as map(*) {
+	    map{
+	        'correspondence' : core:getOrCreateColl('letters', $model('docID'), true()),
+	        'documents' : core:getOrCreateColl('documents', $model('docID'), true()),
+	        'works' : core:getOrCreateColl('works', $model('docID'), true()),
+	        'places' : core:getOrCreateColl('places', $model('docID'), true()),
+	        'xml-download-url' : replace(controller:create-url-for-doc($model('doc'), $model('lang')), '\.html', '.xml')
+	    }
+};
+
 
 (:~
  : Main Function for wikipedia.html

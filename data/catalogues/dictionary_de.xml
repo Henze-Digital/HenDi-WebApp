@@ -307,6 +307,7 @@
     <entry xml:id="metaDescriptionIndex-writings">Eine Liste von Schriften, gesammelt und (teilweise) ediert durch Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-diaries">Eine Liste von Tagebucheinträgen, gesammelt und ediert durch Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-letters">Eine Liste von Briefen, gesammelt und (teilweise) ediert durch Henze-Digital</entry>
+    <entry xml:id="metaDescriptionIndex-corresp">Eine Liste von Briefwechseln, ediert durch Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-indices">Vollständiges Register aller Dokumente der Digitalen Edition von Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-documents">Eine Liste von Dokumenten, gesammelt und (teilweise) ediert durch Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-places">Ortsregister von Henze-Digital</entry>
@@ -331,6 +332,7 @@
     <entry xml:id="metaTitleIndex-persons">Register der Personen</entry>
     <entry xml:id="metaTitleIndex-orgs">Register der Organisationen</entry>
     <entry xml:id="metaTitleIndex-letters">Register der Briefe</entry>
+    <entry xml:id="metaTitleIndex-corresp">Register der Briefwechsel</entry>
     <entry xml:id="metaTitleIndex-places">Register der Orte</entry>
     <entry xml:id="metaTitleIndex-writings">Register der Schriften</entry>
     <entry xml:id="metaTitleIndex-diaries">Register der Tagebücher</entry>
@@ -366,6 +368,7 @@
     <entry xml:id="mastersthesis">Master-/Magisterarbeit</entry>
     <!--  Various  -->
     <entry xml:id="correspondence">Briefe</entry>
+    <entry xml:id="corresp">Briefwechsel</entry>
     <entry xml:id="writings">Schriften</entry>
     <entry xml:id="noWritingsAvailable">Keine Schriften verfügbar</entry>
     <entry xml:id="journals">Periodika</entry>
@@ -426,6 +429,7 @@
     <entry xml:id="hide">ausblenden</entry>
     <entry xml:id="to">An</entry>
     <entry xml:id="from">Von</entry>
+	<entry xml:id="till">Bis</entry>
     <entry xml:id="fromTo">vom %1 bis %2</entry>
     <entry xml:id="fromToUnknown">vom %1 bis unbekannt</entry>
     <entry xml:id="unknownTo">von unbekannt bis %1</entry>
@@ -825,4 +829,11 @@
     <entry xml:id="furtherDetails">Weitere Angaben</entry>
 	
 	<entry xml:id="textRotation">Text im Uhrzeigersinn gedreht</entry>
+    <entry xml:id="annotation">Anmerkung</entry>
+	<entry xml:id="introduction">Einführung</entry>
+	<entry xml:id="general">Allgemein</entry>
+	<entry xml:id="correspPartners">Korrespondenzpartner*innen</entry>
+	<entry xml:id="timePeriod">Zeitraum</entry>
+	<entry xml:id="noTextFound">Kein Text verfügbar.</entry>
+	
 </dictionary>
