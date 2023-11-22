@@ -1206,12 +1206,12 @@ declare
     %templates:wrap
     %templates:default("lang", "en")
     function app:corresp-basic-data($node as node(), $model as map(*), $lang as xs:string) as map(*) {
-        let $search-results as document-node()* := collection('/db/apps/hendi-data/letters')//tei:relation[@name='correspondence'][@key=$model('docID')]/root()
+        let $search-results as document-node()* := core:getOrCreateColl('letters', $model('docID'), true())
         let $dates := $search-results//tei:correspDesc//tei:date
         let $datesStrings := for $date in $dates return date:getOneNormalizedDate($date, false())
         let $letterEarliest := if(count($datesStrings) gt 0) then(date:format-date(min($datesStrings), '[D]. [MNn] [Y]', $lang)) else()
         let $letterLatest := if(count($datesStrings) gt 0) then(date:format-date(max($datesStrings), '[D]. [MNn] [Y]', $lang)) else()
-        let $correspPartners := distinct-values($model('doc')//tei:correspAction//(tei:persName|tei:orgName) ! string-join(str:txtFromTEI(., $lang), ''))
+        let $correspPartners := $search-results//tei:correspAction//(tei:persName|tei:orgName) ! string-join(str:txtFromTEI(., $lang), '') => distinct-values()
         return
 	        map{
 	            'letterEarliest' : $letterEarliest,
