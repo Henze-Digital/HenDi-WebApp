@@ -211,9 +211,17 @@ declare function wdt:letters($item as item()*) as map(*) {
             $item/root()/descendant::tei:text[@type = $text-types]/root()[not(descendant::tei:relation[@name='isEnvelopeOf'])]
         },
         'filter-by-person' : function($personID as xs:string) as document-node()* {
-            typeswitch($item) (: remove call to function `root()` when document-node()s are passed as input :)
+            if(matches($personID, config:get-option('correspIdPattern')))
+            then(
+                typeswitch($item) (: remove call to function `root()` when document-node()s are passed as input :)
+	            case document-node()+ return $item//tei:*[contains(@key, $personID)][ancestor::tei:listRelation]/root()
+	            default return $item/root()//tei:*[contains(@key, $personID)][ancestor::tei:listRelation]/root()
+            )
+            else(
+            	typeswitch($item) (: remove call to function `root()` when document-node()s are passed as input :)
             case document-node()+ return $item//tei:*[contains(@key, $personID)][ancestor::tei:correspAction][not(ancestor-or-self::tei:note)]/root()
             default return $item/root()//tei:*[contains(@key, $personID)][ancestor::tei:correspAction][not(ancestor-or-self::tei:note)]/root()
+            )
         },
         'filter-by-date' : function($dateFrom as xs:date?, $dateTo as xs:date?) as document-node()* {
             $wdt:filter-by-date($item, $dateFrom, $dateTo)[parent::tei:correspAction]/root()
