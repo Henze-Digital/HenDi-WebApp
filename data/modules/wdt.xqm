@@ -13,6 +13,7 @@ import module namespace functx="http://www.functx.com";
 import module namespace crud="http://xquery.weber-gesamtausgabe.de/modules/crud" at "crud.xqm";
 import module namespace query="http://xquery.weber-gesamtausgabe.de/modules/query" at "query.xqm";
 import module namespace config="http://xquery.weber-gesamtausgabe.de/modules/config" at "config.xqm";
+import module namespace core="http://xquery.weber-gesamtausgabe.de/modules/core" at "core.xqm";
 import module namespace wega-util="http://xquery.weber-gesamtausgabe.de/modules/wega-util" at "wega-util.xqm";
 import module namespace hwh-util="http://henze-digital.zenmem.de/modules/hwh-util" at "hwh-util.xqm";
 import module namespace bibl="http://xquery.weber-gesamtausgabe.de/modules/bibl" at "bibl.xqm";
@@ -32,7 +33,14 @@ declare function wdt:orgs($item as item()*) as map(*) {
             $item[descendant-or-self::tei:org][descendant-or-self::tei:orgName]/root() | $item[ancestor-or-self::tei:org]/root()
         },
         'filter-by-person' : function($personID as xs:string) as document-node()* {
-            ()
+            if(matches($personID, config:wrap-regex('correspIdPattern')))
+            then(
+                 let $personIDs := crud:data-collection('letters')//tei:*[contains(@key, $personID)][ancestor::tei:listRelation]/root()//@key[matches(., config:wrap-regex('orgsIdPattern'))]/string()
+                    => distinct-values()
+                 return
+                     $item/node()[functx:contains-any-of(@xml:id, $personIDs)]/root()
+             )
+            else()
         },
         'filter-by-date' : function($dateFrom as xs:date?, $dateTo as xs:date?) as document-node()* {
             $wdt:filter-by-date($item, $dateFrom, $dateTo)[ancestor-or-self::tei:org]/root()
@@ -486,11 +494,14 @@ declare function wdt:works($item as item()*) as map(*) {
             $item/root()[mei:mei|tei:TEI][descendant::mei:work|descendant::tei:teiHeader]
         },
         'filter-by-person' : function($personID as xs:string) as document-node()* {
-            let $personID := if(matches($personID, config:wrap-regex('correspIdPattern')))
-                             then('A001000A')
-                             else($personID)
-            return
-                $item/root()[.//mei:work//(mei:persName|mei:corpName)[@codedval = $personID] or .//tei:biblStruct//(tei:persName|mei:orgName|tei:author)[@key = $personID]]
+            if(matches($personID, config:wrap-regex('correspIdPattern')))
+            then(
+                 let $personIDs := crud:data-collection('letters')//tei:*[contains(@key, $personID)][ancestor::tei:listRelation]/root()//@key[matches(., config:wrap-regex('worksIdPattern'))]/string()
+                    => distinct-values()
+                 return
+                     $item/node()[functx:contains-any-of(@xml:id, $personIDs)]/root()
+             )
+            else($item/root()[.//mei:work//(mei:persName|mei:corpName)[@codedval = $personID] or .//tei:biblStruct//(tei:persName|mei:orgName|tei:author)[@key = $personID]])
         },
         'filter-by-date' : function($dateFrom as xs:date?, $dateTo as xs:date?) as document-node()* {
             if(empty(($dateFrom, $dateTo))) then $item/root() 
@@ -843,7 +854,14 @@ declare function wdt:places($item as item()*) as map(*) {
             $item/root()[tei:place][descendant::tei:placeName]
         },
         'filter-by-person' : function($personID as xs:string) as document-node()* {
-            $item
+            if(matches($personID, config:wrap-regex('correspIdPattern')))
+            then(
+                 let $personIDs := crud:data-collection('letters')//tei:*[contains(@key, $personID)][ancestor::tei:listRelation]/root()//@key[matches(., config:wrap-regex('placesIdPattern'))]/string()
+                    => distinct-values()
+                 return
+                     $item/node()[functx:contains-any-of(@xml:id, $personIDs)]/root()
+             )
+            else($item)
         },
         'filter-by-date' : function($dateFrom as xs:date?, $dateTo as xs:date?) as document-node()* {
             ()
@@ -997,7 +1015,16 @@ declare function wdt:documents($item as item()*) as map(*) {
             $filter($item)
         },
         'filter-by-person' : function($personID as xs:string) as document-node()* {
-            $item/root()//tei:author[@key = $personID][ancestor::tei:fileDesc]/root() => $filter()
+            if(matches($personID, config:wrap-regex('correspIdPattern')))
+            then(
+                 let $personIDs := crud:data-collection('letters')//tei:*[contains(@key, $personID)][ancestor::tei:listRelation]/root()//@key[matches(., config:wrap-regex('documentsIdPattern'))]/string()
+                    => distinct-values()
+                 return
+                     $item/node()[functx:contains-any-of(@xml:id, $personIDs)]/root()
+             )
+            else(
+            	$item/root()//tei:author[@key = $personID][ancestor::tei:fileDesc]/root() => $filter()
+            )
         },
         'filter-by-date' : function($dateFrom as xs:date?, $dateTo as xs:date?) as document-node()* {
             $wdt:filter-by-date($item, $dateFrom, $dateTo)[parent::tei:creation]/root() => $filter()
@@ -1123,7 +1150,16 @@ declare function wdt:contacts($item as item()*) as map(*) {
             ()
         },
         'filter-by-person' : function($personID as xs:string) as document-node()* {
-            map:keys(query:correspondence-partners($personID)) ! crud:doc(.)
+            if(matches($personID, config:wrap-regex('correspIdPattern')))
+            then(
+                 let $personIDs := crud:data-collection('letters')//tei:*[contains(@key, $personID)][ancestor::tei:listRelation]/root()//@key[matches(., config:wrap-regex('personsIdPattern'))]/string()
+                    => distinct-values()
+                 return
+                     $item/node()[functx:contains-any-of(@xml:id, $personIDs)]/root()
+             )
+            else(
+            	map:keys(query:correspondence-partners($personID)) ! crud:doc(.)
+            )
         },
         'filter-by-date' : function($dateFrom as xs:date?, $dateTo as xs:date?) as document-node()* {
             ()
