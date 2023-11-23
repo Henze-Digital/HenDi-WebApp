@@ -123,14 +123,13 @@ declare %private function facets:corresp($collection as node()*, $facet as xs:st
     return
         array {
             for $relation in $relations
-                let $log := wega-util:log-to-file('debug', '$relation: ' || $relation)
                 let $correspID := $relation/@key/data()
-                    return 
-                        map {
-                            'value' : $correspID,
-                            'label' : wdt:corresp($correspID)('label-facets')(),
-                            'frequency' : count($collection[.//tei:relation[@name='correspondence'][@key=$correspID]])
-                        }
+                return 
+                    map {
+                        'value' : $correspID,
+                        'label' : wdt:corresp($correspID)('label-facets')(),
+                        'frequency' : count($collection[.//tei:relation[@name='correspondence'][@key=$correspID]])
+                    }
         }
 };
 
