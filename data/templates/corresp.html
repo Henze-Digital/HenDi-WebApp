@@ -70,18 +70,24 @@
 			<div class="col-md paddingBottomIcon col-sm-6 basicdata">
 				<h2 data-template="lang:translate">basic_data</h2>
 				<ol class="media">
-					<li><strong><span data-template="lang:translate">timePeriod</span>:</strong></li>
+					<li>
+						<strong>
+							<span data-template="lang:translate">timePeriod</span>:</strong>
+					</li>
 					<li class="media date">
 						<span data-template="app-shared:print" data-template-key="letterEarliest">Datum des ersten Dokuments</span>–<span data-template="app-shared:print" data-template-key="letterLatest">Datum des letzten Dokuments</span>
 					</li>
-					<li><strong><span data-template="lang:translate">correspPartners</span>:</strong></li>
-					<li class="media correspPartners" data-template="app-shared:each" data-template-from="correspPartners" data-template-to="correspPartner">
-						<div class="pull-left">
-							<i class="fa fa-user"/>
-						</div>
-						<div class="media-body" data-template="app-shared:print" data-template-key="correspPartner">Henze, Hans Werner</div>
+					<li>
+						<strong>
+							<span data-template="lang:translate">correspPartners</span>:</strong>
 					</li>
-					<li><strong><span data-template="lang:translate">annotation</span>:</strong></li>
+					<li class="media correspPartners" data-template="app-shared:each" data-template-from="correspPartners" data-template-to="correspPartner">
+						<span class="pull-left"><i class="fa fa-user"/></span>&#160;<span class="media-body" data-template="app:preview-correspPartner-name" data-template-popover="true">Henze, Hans Werner</span>
+					</li>
+					<li>
+						<strong>
+							<span data-template="lang:translate">annotation</span>:</strong>
+					</li>
 					<li class="media annotation">
 						<span data-template="app-shared:print" data-template-key="annotation">Eine Anmerkung</span>
 					</li>

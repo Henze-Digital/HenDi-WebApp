@@ -1203,6 +1203,22 @@ declare
 };
 
 declare 
+    %templates:default("lang", "en")
+    %templates:default("popover", "false")
+    function app:preview-correspPartner-name($node as node(), $model as map(*), $lang as xs:string, $popover as xs:string) as element() {
+        let $key := $model('correspPartner')
+        let $myPopover := wega-util-shared:semantic-boolean($popover)
+        let $doc2keyAvailable := crud:docAvailable($key)
+        return
+            if($key and $myPopover and $doc2keyAvailable)
+            then app:createDocLink(crud:doc($key), crud:doc($key)//(tei:persName|tei:orgName)[@type='reg'] ! string-join(str:txtFromTEI(., $lang), ''), $lang, (), true())
+            else element xhtml:span {
+                if($key and $doc2keyAvailable) then wdt:lookup(config:get-doctype-by-id($key), data($key))?title('txt')
+                else str:normalize-space($model('correspPartner'))
+            }
+};
+
+declare 
     %templates:wrap
     %templates:default("lang", "en")
     function app:corresp-basic-data($node as node(), $model as map(*), $lang as xs:string) as map(*) {
@@ -1211,7 +1227,10 @@ declare
         let $datesStrings := for $date in $dates return date:getOneNormalizedDate($date, false())
         let $letterEarliest := if(count($datesStrings) gt 0) then(date:format-date(min($datesStrings), '[D]. [MNn] [Y]', $lang)) else()
         let $letterLatest := if(count($datesStrings) gt 0) then(date:format-date(max($datesStrings), '[D]. [MNn] [Y]', $lang)) else()
-        let $correspPartners := $search-results//tei:correspAction//(tei:persName|tei:orgName) ! string-join(str:txtFromTEI(., $lang), '') => distinct-values()
+        let $correspPartners := for $value in distinct-values($search-results//tei:correspAction//(tei:persName|tei:orgName)/@key)
+                                    order by crud:doc($value)//(tei:persName|tei:orgName)[@type='reg'] ! string-join(str:txtFromTEI(., $lang), '')
+                                    return
+                                        $value
         return
 	        map{
 	            'letterEarliest' : $letterEarliest,

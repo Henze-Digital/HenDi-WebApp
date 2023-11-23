@@ -9,11 +9,8 @@
             <a data-template="app:preview-title">Henze | Enzensberger</a>
         </h3>
         <ol class="media" data-template="app:corresp-basic-data">
-            <li class="media" data-template="app-shared:each" data-template-from="correspPartners" data-template-to="correspPartner">
-                <div class="pull-left">
-                    <i class="fa fa-user"/>
-                </div>
-                <div class="media-body" data-template="app-shared:print" data-template-key="correspPartner">Hans Werner Henze</div>
+            <li class="media correspPartners" data-template="app-shared:each" data-template-from="correspPartners" data-template-to="correspPartner">
+                <span class="pull-left"><i class="fa fa-user"/></span>&#160;<span class="media-body" data-template="app:preview-correspPartner-name" data-template-popover="false">Henze, Hans Werner</span>
             </li>
             <li class="media" data-template="app-shared:if-exists" data-template-key="annotation">
                 <strong>
