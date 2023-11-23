@@ -117,18 +117,18 @@ declare %private function facets:facsimile($collection as node()*, $facet as xs:
         }
 };
 
-
 declare %private function facets:corresp($collection as node()*, $facet as xs:string, $lang as xs:string) as array(*) {
     [
         for $i in $collection[.//tei:relation[@name='correspondence']]
-        let $correspRelKey := $i//tei:relation/@key/data()
-        let $label := wdt:corresp($correspRelKey)('label-facets')()
-        return 
-            map {
-                'value' : str:normalize-space($correspRelKey),
-                'label' : $label,
-                'frequency' : count($i)
-            }
+            group by $correspID := $i//tei:relation[@name='correspondence']/@key
+            let $correspID := $correspID/string()
+            let $log := wega-util:log-to-file('debug', '$correspID: ' || $correspID)
+            return 
+                map {
+                    'value' : $correspID,
+                    'label' : wdt:corresp($correspID)('label-facets')(),
+                    'frequency' : count($i)
+                }
     ]
 };
 
