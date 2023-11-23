@@ -516,6 +516,7 @@ declare %private function img:get-generic-portrait($model as map(*), $lang as xs
                     case 'longPlay' return config:link-to-current-app('resources/img/icons/icon_vinyl.svg')
                     case 'compactDisc' return config:link-to-current-app('resources/img/icons/icon_compactDisc.svg')
                     case 'otherWork' return config:link-to-current-app('resources/img/icons/icon_biblio.png')
+                    case 'corresp' return config:link-to-current-app('resources/img/icons/icon_corresp.svg')
                     default return config:link-to-current-app('resources/img/icons/icon_person.svg')
                 default return 
                     switch($sex)
@@ -529,7 +530,7 @@ declare %private function img:get-generic-portrait($model as map(*), $lang as xs
                     case 'longPlay' return config:link-to-current-app('resources/img/icons/icon_vinyl.svg')
                     case 'compactDisc' return config:link-to-current-app('resources/img/icons/icon_compactDisc.svg')
                     case 'otherWork' return config:link-to-current-app('resources/img/icons/icon_biblio.png')
-                    case 'corresp' return config:link-to-current-app('resources/img/icons/icon_corresp.png')
+                    case 'corresp' return config:link-to-current-app('resources/img/icons/icon_corresp.svg')
                     default return config:link-to-current-app('resources/img/icons/icon_person.svg')
             }
         }
