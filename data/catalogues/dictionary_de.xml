@@ -293,15 +293,17 @@
     <!-- HTML Meta Daten (description) -->
     <entry xml:id="bioInfoAbout">Biographische Informationen zu</entry>
     <entry xml:id="metaDescriptionIndex">Henze-digital erarbeitet ausgewählte Briefe Henzes in einer wissenschaftlich-kritischen Ausgabe. Alle Textteile werden zunächst auf diesen Seiten als Digitale Edition publiziert.</entry>
-    <!--<entry xml:id="metaLettersPersons">Eine Liste von Briefen aus der Korrespondenz von %1,
-        gesammelt und (teilweise) ediert durch Henze-Digital</entry>-->
+    <entry xml:id="metaLettersPersons">Eine Liste von Briefen aus der Korrespondenz von %1,
+        gesammelt und (teilweise) ediert durch Henze-Digital</entry>
     <!--<entry xml:id="metaDiariesPersons">Eine Liste von Tagebucheinträgen aus den Tagebüchern von %1,
         gesammelt und (teilweise) ediert durch Henze-Digital</entry>-->
     <!--<entry xml:id="metaWritingsPersons">Eine Liste von Schriften von %1, gesammelt und (teilweise)
         ediert durch Henze-Digital</entry>-->
-    <!--<entry xml:id="metaWorksPersons">Eine Liste von Werken von %1, gesammelt und (teilweise) ediert
-        durch Henze-Digital</entry>-->
+    <entry xml:id="metaWorksPersons">Eine Liste von Werken von %1, gesammelt und (teilweise) ediert
+        durch Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-personsPlus">Eine Liste von (historischen) Personen aus dem Umfeld der Editionen von Henze-Digital</entry>
+    <entry xml:id="metaDescriptionIndex-persons">Eine Liste von (historischen) Personen aus dem Umfeld der Editionen von Henze-Digital</entry>
+    <entry xml:id="metaDescriptionIndex-orgs">Eine Liste von (historischen) Organisationen aus dem Umfeld der Editionen von Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-news">Eine Liste von aktuellen Nachrichten, herausgegeben Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-works">Eine Liste von Werken, gesammelt und (teilweise) ediert durch Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-writings">Eine Liste von Schriften, gesammelt und (teilweise) ediert durch Henze-Digital</entry>

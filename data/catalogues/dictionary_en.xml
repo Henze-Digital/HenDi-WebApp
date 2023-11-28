@@ -293,11 +293,13 @@
     <!-- HTML Meta Daten -->
     <entry xml:id="bioInfoAbout">Biographical information about</entry>
     <entry xml:id="metaDescriptionIndex">Henze-Digital aims at editing a scholarly edition of Henze’s letters. All textual parts are being published as digital edition on this website in the first instance.</entry>
-    <!--<entry xml:id="metaLettersPersons">A list of letters from the correspondence of %1, collected and (partially) edited by Henze-Digital</entry>-->
+    <entry xml:id="metaLettersPersons">A list of letters from the correspondence of %1, collected and (partially) edited by Henze-Digital</entry>
     <!--<entry xml:id="metaDiariesPersons">A list of diary entries from the diaries of %1, collected and (partially) edited by Henze-Digital</entry>-->
     <!--<entry xml:id="metaWritingsPersons">A list of writings of %1, collected and (partially) edited by Henze-Digital</entry>-->
-    <!--<entry xml:id="metaWorksPersons">A list of works of %1, collected and (partially) edited by Henze-Digital</entry>-->
+    <entry xml:id="metaWorksPersons">A list of works of %1, collected and (partially) edited by Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-personsPlus">A list of (historic) persons from the editions of Henze-Digital</entry>
+    <entry xml:id="metaDescriptionIndex-persons">A list of (historic) persons from the editions of Henze-Digital</entry>
+    <entry xml:id="metaDescriptionIndex-orgs">A list of (historic) organizations from the editions of Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-news">A list of news items published by Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-works">A list of works, collected and (partially) edited by Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-writings">A list of writings, collected and (partially) edited by Henze-Digital</entry>
