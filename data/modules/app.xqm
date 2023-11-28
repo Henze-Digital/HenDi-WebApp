@@ -982,7 +982,7 @@ declare
 	            'funeral' : exists($model('doc')//tei:death/tei:date[@type = 'funeral']),
 	            'occupations' : $model('doc')//tei:occupation,
 	            'residences' : $residences,
-	            'states' : $model('doc')//tei:state[@type='orgType']//tei:term,
+	            'states' : for $each in $model('doc')//tei:state[@type='orgType']//tei:term return lang:get-language-string('orgType.' || $each, $lang),
 	            'bibls' : $model('doc')//tei:listBibl/tei:bibl,
 	            'addrLines' : $model('doc')//tei:addrLine[ancestor::tei:affiliation[tei:orgName='Carl-Maria-von-Weber-Gesamtausgabe']] 
 	        }
