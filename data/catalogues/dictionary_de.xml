@@ -602,7 +602,7 @@
     <entry xml:id="julianDate">Julianisches Datum</entry>
     <entry xml:id="vorlageform">Vorlageform</entry>
     <entry xml:id="asksam-cat">asksam-cat</entry>
-    <entry xml:id="orgType">Einrichtungsformen</entry>
+    <entry xml:id="orgType">Art der Einrichtung</entry>
     <entry xml:id="received">erhalten</entry>
     <entry xml:id="descriptions">Beschreibungen</entry>
     <entry xml:id="sentVersion">Übermittelter Brief</entry>
@@ -850,7 +850,7 @@
 	<entry xml:id="orgType.group">Gruppe</entry>
 	<entry xml:id="orgType.library">Bibliothek</entry>
 	<entry xml:id="orgType.military">militärisch</entry>
-	<entry xml:id="orgType.music">Musik</entry>
+	<entry xml:id="orgType.music">musikalisch</entry>
 	<entry xml:id="orgType.orchestra">Orchester</entry>
 	<entry xml:id="orgType.organizer">Organizer</entry>
 	<entry xml:id="orgType.political">politisch</entry>
