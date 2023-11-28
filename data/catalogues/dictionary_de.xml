@@ -600,7 +600,7 @@
     <entry xml:id="julianDate">Julianisches Datum</entry>
     <entry xml:id="vorlageform">Vorlageform</entry>
     <entry xml:id="asksam-cat">asksam-cat</entry>
-    <entry xml:id="einrichtungsform">Einrichtungsformen</entry>
+    <entry xml:id="orgType">Einrichtungsformen</entry>
     <entry xml:id="received">erhalten</entry>
     <entry xml:id="descriptions">Beschreibungen</entry>
     <entry xml:id="sentVersion">Übermittelter Brief</entry>
@@ -836,4 +836,28 @@
 	<entry xml:id="timePeriod">Zeitraum</entry>
 	<entry xml:id="noTextFound">Kein Text verfügbar.</entry>
 	
+	<entry xml:id="orgType.academy">Bildungseinrichtung</entry>
+	<entry xml:id="orgType.administration">Behörde</entry>
+	<entry xml:id="orgType.archive">Archiv</entry>
+	<entry xml:id="orgType.association">Gesellschaft</entry>
+	<entry xml:id="orgType.broadcaster">Sendeanstalt</entry>
+	<entry xml:id="orgType.choir">Chor</entry>
+	<entry xml:id="orgType.company">Unternehmen</entry>
+	<entry xml:id="orgType.festival">Festival</entry>
+	<entry xml:id="orgType.foundation">Stiftung</entry>
+	<entry xml:id="orgType.group">Gruppe</entry>
+	<entry xml:id="orgType.library">Bibliothek</entry>
+	<entry xml:id="orgType.military">militärisch</entry>
+	<entry xml:id="orgType.music">Musik</entry>
+	<entry xml:id="orgType.orchestra">Orchester</entry>
+	<entry xml:id="orgType.organizer">Organizer</entry>
+	<entry xml:id="orgType.political">politisch</entry>
+	<entry xml:id="orgType.press">Presse</entry>
+	<entry xml:id="orgType.publisher">Verlag</entry>
+	<entry xml:id="orgType.radio">Radio</entry>
+	<entry xml:id="orgType.religious">religiös</entry>
+	<entry xml:id="orgType.representative">Interessensvertretung</entry>
+	<entry xml:id="orgType.shop">Geschäft</entry>
+	<entry xml:id="orgType.television">Fernsehen</entry>
+	<entry xml:id="orgType.theater">Theater</entry>
 </dictionary>

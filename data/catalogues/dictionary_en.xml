@@ -590,7 +590,7 @@
     <entry xml:id="julianDate">Julian date</entry>
     <entry xml:id="vorlageform">Vorlageform</entry>
     <entry xml:id="asksam-cat">asksam-cat</entry>
-    <entry xml:id="einrichtungsform">Types of Institution</entry>
+    <entry xml:id="orgType">Types of Institution</entry>
     <entry xml:id="received">received</entry>
     <entry xml:id="descriptions">Descriptions</entry>
     <entry xml:id="sentVersion">Sent letter</entry>
@@ -826,4 +826,29 @@
 	<entry xml:id="correspPartners">Correspondence partner</entry>
 	<entry xml:id="timePeriod">Time period</entry>
 	<entry xml:id="noTextFound">No text available.</entry>
+	
+	<entry xml:id="orgType.academy">Academy</entry>
+	<entry xml:id="orgType.administration">Administration</entry>
+	<entry xml:id="orgType.archive">Archive</entry>
+	<entry xml:id="orgType.association">Association</entry>
+	<entry xml:id="orgType.broadcaster">Broadcaster</entry>
+	<entry xml:id="orgType.choir">Choir</entry>
+	<entry xml:id="orgType.company">Company</entry>
+	<entry xml:id="orgType.festival">Festival</entry>
+	<entry xml:id="orgType.foundation">Foundation</entry>
+	<entry xml:id="orgType.group">Group</entry>
+	<entry xml:id="orgType.library">Library</entry>
+	<entry xml:id="orgType.military">Military</entry>
+	<entry xml:id="orgType.music">Musical</entry>
+	<entry xml:id="orgType.orchestra">Orchestra</entry>
+	<entry xml:id="orgType.organizer">Organizer</entry>
+	<entry xml:id="orgType.political">Political</entry>
+	<entry xml:id="orgType.press">Press</entry>
+	<entry xml:id="orgType.publisher">Publisher</entry>
+	<entry xml:id="orgType.radio">Radio</entry>
+	<entry xml:id="orgType.religious">Religious</entry>
+	<entry xml:id="orgType.representative">Representative</entry>
+	<entry xml:id="orgType.shop">Shop</entry>
+	<entry xml:id="orgType.television">Television</entry>
+	<entry xml:id="orgType.theater">Theater</entry>
 </dictionary>

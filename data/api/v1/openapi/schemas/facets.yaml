@@ -13,7 +13,7 @@ enum:
   - docStatus
   - docTypeSubClass
   - editors
-  - einrichtungsform
+  - orgType
   - facsimile
   - forenames
   - geonamesFeatureClass

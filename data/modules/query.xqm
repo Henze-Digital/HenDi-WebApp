@@ -362,7 +362,7 @@ declare function query:get-facets($collection as node()*, $facet as xs:string) a
     case 'sex' return $collection//tei:sex
     case 'forenames' return $collection//tei:forename[not(@full)]
     case 'surnames' return $collection//tei:surname | $collection//tei:orgName[@type]
-    case 'einrichtungsform' return $collection//tei:term[ancestor::tei:state[@type='orgType']]
+    case 'orgType' return $collection//tei:term[ancestor::tei:state[@type='orgType']]
     case 'vorlageform' return $collection//mei:term[@label='vorlageform']
     case 'asksam-cat' return $collection//mei:term[@label='asksam-cat']
     case 'placenames' return $collection//tei:placeName[@type='reg']
