@@ -852,7 +852,7 @@
 	<entry xml:id="orgType.military">militärisch</entry>
 	<entry xml:id="orgType.music">musikalisch</entry>
 	<entry xml:id="orgType.orchestra">Orchester</entry>
-	<entry xml:id="orgType.organizer">Organizer</entry>
+	<entry xml:id="orgType.organizer">Veranstalter</entry>
 	<entry xml:id="orgType.political">politisch</entry>
 	<entry xml:id="orgType.press">Presse</entry>
 	<entry xml:id="orgType.publisher">Verlag</entry>
