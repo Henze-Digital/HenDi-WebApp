@@ -292,7 +292,13 @@
 	</target>
 	
 	<target name="update-hendi-docker" depends="xar">
-		<delete file="${HenDi-WebApp.basedir}/../hendi-docker/autodeploy/${hendi.project.app}-*.xar"/>
+		<echo>Delete old packages</echo>
+		<delete>
+			<fileset dir="${HenDi-WebApp.basedir}/../hendi-docker/autodeploy">
+				<include name="${hendi.project.app}-${hendi.project.version}*.xar"/>
+			</fileset>
+		</delete>
+		<echo>Delete new package</echo>
 		<copy file="${HenDi-WebApp.basedir}/hendi-pkg-webapp/${hendi.project.app}-${hendi.project.version}-${local.revision}.xar" todir="${HenDi-WebApp.basedir}/../hendi-docker/autodeploy" overwrite="yes"/>
 	</target>
 	
