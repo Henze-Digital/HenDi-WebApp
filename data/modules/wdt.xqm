@@ -152,31 +152,31 @@ declare function wdt:letters($item as item()*) as map(*) {
         let $id := $TEI/data(@xml:id)
         let $lang := config:guess-language(())
         let $dateFormat := function($lang as xs:string) { 
-            if ($lang = 'de') then '[FNn], [D]. [MNn] [Y]'
-            else '[FNn], [MNn] [D], [Y]'
+            if ($lang = 'de') then '[D]. [MNn] [Y]'
+            else '[MNn] [D], [Y]'
         }
-        let $dateSender := for $date in $TEI//tei:correspAction[@type='sent']/tei:date
+        let $dateSender := for $date in $TEI//tei:correspAction[@type='sent'][1]/tei:date
                             return date:printDate($date, $lang, lang:get-language-string#3, $dateFormat)
         let $dateSender := $dateSender => string-join('/')
-        let $dateAddressee := for $date in $TEI//tei:correspAction[@type='received']/tei:date
+        let $dateAddressee := for $date in $TEI//tei:correspAction[@type='received'][1]/tei:date
                                 return date:printDate($date, $lang, lang:get-language-string#3, $dateFormat)
         let $dateAddressee := $dateAddressee => string-join('/')
         let $date := 
             if($dateSender) then $dateSender
             else if($dateAddressee) then (lang:get-language-string('received', $lang) || ' ' || $dateAddressee)
             else ()
-        let $senders := for $senderElem in $TEI//tei:correspAction[@type='sent']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name or self::tei:rs[@type=('person', 'persons', 'org', 'orgs')]]
+        let $senders := for $senderElem in $TEI//tei:correspAction[@type='sent'][1]/tei:*[self::tei:persName or self::tei:orgName or self::tei:name or self::tei:rs[@type=('person', 'persons', 'org', 'orgs')]]
                         return wega-util:print-forename-surname-from-nameLike-element($senderElem) 
-        let $sender := $senders => string-join('/')
-        let $addressees := for $addresseeElem in $TEI//tei:correspAction[@type='received']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name or self::tei:rs[@type=('person', 'persons', 'org', 'orgs')]]
+        let $sendersShorten := for $sender in $senders
+                                return
+                                    hwh-util:shorten-fullnames($sender)
+        let $sender := $sendersShorten => string-join('/')
+        let $addressees := for $addresseeElem in $TEI//tei:correspAction[@type='received'][1]/tei:*[self::tei:persName or self::tei:orgName or self::tei:name or self::tei:rs[@type=('person', 'persons', 'org', 'orgs')]]
                             return wega-util:print-forename-surname-from-nameLike-element($addresseeElem)
-        let $addressee := $addressees => string-join('/') 
-        let $placeSender := 
-            if(query:placeName-elements($TEI//tei:correspAction[@type='sent'])/@key) then query:title((query:placeName-elements($TEI//tei:correspAction[@type='sent'])/@key)[1])
-            else str:normalize-space(query:placeName-elements($TEI//tei:correspAction[@type='sent'])[1])
-        let $placeAddressee := 
-            if(query:placeName-elements($TEI//tei:correspAction[@type='received'])/@key) then query:title((query:placeName-elements($TEI//tei:correspAction[@type='received'])/@key)[1])
-            else str:normalize-space(query:placeName-elements($TEI//tei:correspAction[@type='received'])[1])
+        let $addresseesShorten := for $addressee in $addressees
+                                return
+                                    hwh-util:shorten-fullnames($addressee)
+        let $addressee := $addresseesShorten => string-join('/') 
         let $letterClass := if($TEI//tei:msDesc[1]//tei:objectDesc[1]/@form)
         					then(lang:get-language-string(concat('physDesc.objectDesc.form.', $TEI//tei:msDesc[1]//tei:objectDesc[1]/@form),$lang))
         					else(lang:get-language-string('physDesc.objectDesc.form.document', $lang))
@@ -191,16 +191,12 @@ declare function wdt:letters($item as item()*) as map(*) {
         let $letterClass := if($letterEnvelope or $letterEnclosures)
         					then($letterClass || ' (' || lang:get-language-string('with',$lang) || ' ' || string-join(($letterEnvelope, $letterEnclosures), concat(' ', lang:get-language-string('and',$lang),' ')) || ')')
         					else($letterClass)
-        let $letterClass := if($TEI//tei:msDesc[1]//tei:objectDesc[1]//tei:material[@function='copy.carbon']) then($letterClass || ' [' || lang:get-language-string('physDesc.objectDesc.material.copy.carbon',$lang) || ']')
-                            else($letterClass)
+        let $letterClass := if($TEI//tei:msDesc[1]//tei:objectDesc[1]//tei:material[@function='copy.carbon']) then($letterClass || ' [' || lang:get-language-string('physDesc.objectDesc.material.copy.carbon',$lang) || '] ' || lang:get-language-string('from', $lang) || ' ')
+                            else($letterClass || ' ' || lower-case(lang:get-language-string('from', $lang)) || ' ')
         return (
             element tei:title {
-                if($letterClass) then ($letterClass,<tei:lb/>) else(),
-                concat($sender, ' ', lower-case(lang:get-language-string('to',$lang)), ' ', $addressee),
-                if($placeAddressee) then concat(' ', lower-case(lang:get-language-string('in',$lang)), ' ', $placeAddressee) else(),
-                <tei:lb/>,
-                if($placeSender) then string-join(($placeSender, $date), ', ')
-                else $date
+                if($letterClass) then ($letterClass) else(),
+                concat($sender, ' ', lower-case(lang:get-language-string('to',$lang)), ' ', $addressee, ','), $date
             }
         )
     }
