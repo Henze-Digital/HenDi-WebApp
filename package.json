@@ -1,6 +1,6 @@
 {
   "name": "HenDi-WebApp",
-  "version": "0.2.0",
+  "version": "2.0.0",
   "description": "Web application for the digital edition of the correspondance of Hans Werner Henze",
   "main": "controller.xql",
   "repository": "https://git.uni-paderborn.de/vife/henze-digital/hwh-webapp.git",
