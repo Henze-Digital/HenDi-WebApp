@@ -285,7 +285,8 @@
 		<zip destfile="${HenDi-WebApp.basedir}/${hendi.build.dir}/${hendi.project.app}-${hendi.project.version}-${local.revision}.xar">
 			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}">
 				<exclude name="*.tmpl"/>
-				<exclude name="resources/sass"/>
+				<exclude name="resources/sass/**"/>
+				<exclude name="resources/css/styles.css.map"/>
 			</fileset>
 		</zip>
 <!--		<antcall target="wega:clean"/>-->
