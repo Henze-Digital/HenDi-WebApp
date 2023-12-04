@@ -526,6 +526,9 @@ declare function config:entries-per-page() as xs:int {
             'limit': 10,
             'rdg-marker': false(),
             'textConst-marker': true(),
+            'additions-marker': true(),
+            'deletions-marker': true(),
+            'corrections-marker': true(),
             'supplied-marker': true(),
             'note-marker': true(),
             'thematicCommentaries-marker': true()
@@ -550,6 +553,9 @@ declare function config:set-preferences($settings as map(*)) as map(*) {
             'limit': 10,
             'rdg-marker': false(),
             'textConst-marker': true(),
+            'additions-marker': true(),
+            'deletions-marker': true(),
+            'corrections-marker': true(),
             'supplied-marker': true(),
             'note-marker': true(),
             'thematicCommentaries-marker': true()

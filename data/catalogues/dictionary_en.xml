@@ -853,4 +853,8 @@
 	<entry xml:id="orgType.shop">Shop</entry>
 	<entry xml:id="orgType.television">Television</entry>
 	<entry xml:id="orgType.theater">Theater</entry>
+	
+	<entry xml:id="additions">Additions</entry>
+	<entry xml:id="deletions">Deletions</entry>
+	<entry xml:id="corrections">Corrections</entry>
 </dictionary>

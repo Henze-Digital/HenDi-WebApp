@@ -862,4 +862,8 @@
 	<entry xml:id="orgType.shop">Geschäft</entry>
 	<entry xml:id="orgType.television">Fernsehen</entry>
 	<entry xml:id="orgType.theater">Theater</entry>
+	
+	<entry xml:id="additions">Hinzufügungen</entry>
+	<entry xml:id="deletions">Streichungen</entry>
+	<entry xml:id="corrections">Korrekturen</entry>
 </dictionary>

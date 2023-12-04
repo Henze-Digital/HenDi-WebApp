@@ -20,8 +20,16 @@ properties:
     default: false
   textConst-marker:
     type: boolean
-    description: Show text constitution markers within the text view 
+    description: Show markers for changes within the text view 
     default: false
+  additions-marker:
+    type: boolean
+    description: Show text constitution markers within the text view 
+    default: true
+  deletions-marker:
+    type: boolean
+    description: Show text constitution markers within the text view 
+    default: true
   supplied-marker:
     type: boolean
     description: Show supplied markers within the text view 
