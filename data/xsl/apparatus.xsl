@@ -661,7 +661,6 @@
             <xsl:when test="tei:sic">
                <xsl:apply-templates select="tei:sic" mode="#current"/>
                <xsl:element name="span">
-                  <xsl:attribute name="class">brackets_supplied</xsl:attribute>
                <xsl:text>[sic]</xsl:text>
                </xsl:element>
             </xsl:when>
@@ -774,7 +773,6 @@
    <xsl:template match="tei:sic[parent::tei:title or parent::tei:author]" priority="2">
       <xsl:apply-templates/>
       <xsl:element name="span">
-         <xsl:attribute name="class">brackets_supplied</xsl:attribute>
          <xsl:text>[sic]</xsl:text>
       </xsl:element>
    </xsl:template>
@@ -782,7 +780,7 @@
    <xsl:template match="tei:sic[not(parent::tei:choice)]">
       <xsl:element name="span">
          <xsl:apply-templates select="@xml:id"/>
-         <xsl:attribute name="class" select="concat('brackets_supplied tei_', local-name())"/>
+      	<xsl:attribute name="class" select="concat('tei_', local-name())"/>
          <xsl:apply-templates mode="#current"/>
          <xsl:text>[sic]</xsl:text>
       </xsl:element>
