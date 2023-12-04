@@ -146,8 +146,8 @@
     <entry xml:id="popoverTitle.del">Löschung</entry>
     <entry xml:id="delGap">gelöschter Text nicht lesbar</entry>
     <entry xml:id="delStrikethrough">durchgestrichen</entry>
-    <entry xml:id="delOverwritten">überschrieben</entry>
-    <entry xml:id="delOvertyped">maschinell überschrieben</entry>
+    <entry xml:id="delOverwritten">gelöscht durch Überschreibung</entry>
+    <entry xml:id="delOvertyped">gelöscht durch Überschriebung</entry>
     <entry xml:id="substDel">ersetzt durch</entry>
     <entry xml:id="substDelOverwritten">überschrieben mit</entry>
     <entry xml:id="substDelStrikethrough">durchgestrichen und ersetzt mit</entry>
