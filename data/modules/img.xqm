@@ -494,6 +494,7 @@ declare %private function img:get-generic-portrait($model as map(*), $lang as xs
         else if(config:is-work($model('docID')) and hwh-util:get-work-type($model('docID')) = 'cd') then 'compactDisc'
         else if(config:is-work($model('docID')) and hwh-util:get-work-type($model('docID')) = 'film') then 'film'
         else if(config:is-work($model('docID')) and hwh-util:get-work-type($model('docID')) = 'lp') then 'longPlay'
+        else if(config:is-work($model('docID')) and $model('doc')//tei:biblStruct[@type='painting']) then 'painting'
         else if(config:is-work($model('docID'))) then 'otherWork'
         else if(config:is-corresp($model('docID'))) then 'corresp'
         else $model('doc')//tei:sex/text()
@@ -517,6 +518,7 @@ declare %private function img:get-generic-portrait($model as map(*), $lang as xs
                     case 'compactDisc' return config:link-to-current-app('resources/img/icons/icon_compactDisc.svg')
                     case 'otherWork' return config:link-to-current-app('resources/img/icons/icon_biblio.png')
                     case 'corresp' return config:link-to-current-app('resources/img/icons/icon_corresp.svg')
+                    case 'painting' return config:link-to-current-app('resources/img/icons/icon_painting.svg')
                     default return config:link-to-current-app('resources/img/icons/icon_person.svg')
                 default return 
                     switch($sex)
@@ -530,6 +532,7 @@ declare %private function img:get-generic-portrait($model as map(*), $lang as xs
                     case 'longPlay' return config:link-to-current-app('resources/img/icons/icon_vinyl.svg')
                     case 'compactDisc' return config:link-to-current-app('resources/img/icons/icon_compactDisc.svg')
                     case 'otherWork' return config:link-to-current-app('resources/img/icons/icon_biblio.png')
+                    case 'painting' return config:link-to-current-app('resources/img/icons/icon_painting.svg')
                     case 'corresp' return config:link-to-current-app('resources/img/icons/icon_corresp.svg')
                     default return config:link-to-current-app('resources/img/icons/icon_person.svg')
             }
