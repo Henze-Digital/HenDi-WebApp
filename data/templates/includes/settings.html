@@ -11,17 +11,19 @@
         <div class="custom-control custom-switch">
             <input class="custom-control-input" type="checkbox" id="textConst-marker" checked="checked" data-toggle-class=".noteMarker:contains('‡'), .tei_del" data-template="app:init-custom-switch"/>
             <label class="custom-control-label" for="textConst-marker"><span data-template="lang:translate">textConstitution</span> ‡</label>
-        	<div class="custom-control custom-switch">
-        		<input class="custom-control-input" type="checkbox" id="additions-marker" checked="checked" data-toggle-class=".tei_add" data-template="app:init-custom-switch"/>
-        		<label class="custom-control-label" for="additions-marker"><span data-template="lang:translate">additions</span></label>
-        	</div>
-        	<div class="custom-control custom-switch">
-        		<input class="custom-control-input" type="checkbox" id="deletions-marker" checked="checked" data-toggle-class=".tei_del" data-template="app:init-custom-switch"/>
-        		<label class="custom-control-label" for="deletions-marker"><span data-template="lang:translate">deletions</span></label>
-        	</div>
-        	<div class="custom-control custom-switch">
-        		<input class="custom-control-input" type="checkbox" id="corrections-marker" checked="checked" data-toggle-class=".tei_cor" data-template="app:init-custom-switch"/>
-        		<label class="custom-control-label" for="corrections-marker"><span data-template="lang:translate">corrections</span></label>
+        	<div class="input-group facet-group checkbox" data-template="app-shared:if-matches" data-template-key="environment" data-template-value="development">
+	        	<div class="custom-control custom-switch">
+	        		<input class="custom-control-input" type="checkbox" id="additions-marker" checked="checked" data-toggle-class=".tei_add" data-template="app:init-custom-switch"/>
+	        		<label class="custom-control-label" for="additions-marker"><span data-template="lang:translate">additions</span></label>
+	        	</div>
+	        	<div class="custom-control custom-switch">
+	        		<input class="custom-control-input" type="checkbox" id="deletions-marker" checked="checked" data-toggle-class=".tei_del" data-template="app:init-custom-switch"/>
+	        		<label class="custom-control-label" for="deletions-marker"><span data-template="lang:translate">deletions</span></label>
+	        	</div>
+	        	<div class="custom-control custom-switch">
+	        		<input class="custom-control-input" type="checkbox" id="corrections-marker" checked="checked" data-toggle-class=".tei_cor" data-template="app:init-custom-switch"/>
+	        		<label class="custom-control-label" for="corrections-marker"><span data-template="lang:translate">corrections</span></label>
+	        	</div>
         	</div>
         </div>
         <div class="custom-control custom-switch">
