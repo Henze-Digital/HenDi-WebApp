@@ -370,6 +370,7 @@
     <entry xml:id="online">Online-Veröffentlichung</entry>
     <entry xml:id="inbook">Buchkapitel</entry>
     <entry xml:id="mastersthesis">Master-/Magisterarbeit</entry>
+	<entry xml:id="painting">Gemälde</entry>
     <!--  Various  -->
     <entry xml:id="correspondence">Briefe</entry>
     <entry xml:id="corresp">Briefwechsel</entry>
@@ -795,6 +796,7 @@
     <!-- marc relators -->
     <entry xml:id="act">Schauspiel</entry>
     <entry xml:id="ard">Inszenierung</entry>
+    <entry xml:id="art">Künstler*in</entry>
     <entry xml:id="arr">Bearbeitung</entry>
     <entry xml:id="aus">Drehbuch</entry>
     <entry xml:id="aut">Verfasst von</entry>

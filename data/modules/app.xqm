@@ -874,7 +874,7 @@ declare
                     wega-util:transform($segment, doc(concat($config:xsl-collection-path, '/works.xsl')), config:get-xsl-params(()))
             }</span>
         }
-        let $workType := ($model?doc//(mei:term|mei:work[not(parent::mei:componentList)]|tei:biblStruct)[1]/data(@class|@type))[1]
+        let $workType := ($model?doc//(mei:term|mei:work[not(parent::mei:componentList)]|tei:biblStruct)[1]/(@class|@type)/data())[1]
         return
         map {
             'ids' : $model?doc//mei:altId[not(@type=('gnd', 'wikidata', 'dracor.einakter'))],
