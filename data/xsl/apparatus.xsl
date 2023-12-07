@@ -768,7 +768,6 @@
       </xsl:call-template>
    </xsl:template>
    
-
    <!-- special template rule for <sic> within bibliographic contexts -->
    <xsl:template match="tei:sic[parent::tei:title or parent::tei:author]" priority="2">
       <xsl:apply-templates/>
@@ -837,14 +836,13 @@
 	</xsl:template>
 	
 	<xsl:template match="tei:supplied[parent::tei:damage]" mode="apparatus">
-		<xsl:variable name="data-title" select="(ancestor::tei:damage/@agent, 'damageDefault')[1]" as="xs:string"/>
 		<xsl:call-template name="apparatusEntry">
-			<xsl:with-param name="title" select="wega:getLanguageString($data-title,$lang)"/>
+			<xsl:with-param name="title" select="wega:getLanguageString('damageDefault',$lang)"/>
 			<xsl:with-param name="lemma">
 				<xsl:apply-templates mode="lemma"/>
 			</xsl:with-param>
 			<xsl:with-param name="explanation">
-				<xsl:value-of select="wega:getLanguageString('supplied',$lang)"/>
+				<xsl:value-of select="wega:getLanguageString('textLoss.punch',$lang)"/>
 			   <xsl:sequence select="hendi:getHandFeatures(.)"/>
 			</xsl:with-param>
 		</xsl:call-template>
