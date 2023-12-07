@@ -263,7 +263,7 @@ declare %private function lod:DC.subject($model as map(*), $lang as xs:string) a
         default return
             switch($model('docType'))
             case 'persons' return lang:get-language-string('bio', $lang)
-            case 'letters' return for $each in $model('doc')//tei:text[1]/@type return lang:get-language-string($each, $lang) => string-join(', ')
+            case 'letters' return lang:get-language-string(concat('physDesc.objectDesc.form.', $model('doc')//tei:text/@type), $lang)
             case 'thematicCommentaries' case 'documents' return lang:get-language-string($model('doc')//tei:text/@type, $lang)
             case 'writings' return 'Historic Newspaper; Writing'
             case 'diaries' return string-join((lang:get-language-string('diary', $lang), query:get-authorName($model('doc'))), '; ')
