@@ -360,6 +360,7 @@
     <entry xml:id="online">Online</entry>
     <entry xml:id="inbook">In Book</entry>
     <entry xml:id="mastersthesis">Masters Thesis</entry>
+    <entry xml:id="painting">Painting</entry>
     <!--  Various  -->
     <entry xml:id="correspondence">Letters</entry>
     <entry xml:id="corresp">Correspondence</entry>
@@ -786,6 +787,7 @@
     <!-- other marc relators -->
     <entry xml:id="act">Actor</entry>
     <entry xml:id="ard">Artistic director</entry>
+    <entry xml:id="art">Artist</entry>
     <entry xml:id="arr">Arranger</entry>
     <entry xml:id="aus">Screenwriter</entry>
     <entry xml:id="aut">Author</entry>
