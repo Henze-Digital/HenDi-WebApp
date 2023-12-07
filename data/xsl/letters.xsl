@@ -115,7 +115,7 @@
 	<xsl:template match="tei:salute">
 		<xsl:choose>
 			<xsl:when test="parent::node()/name() = 'opener'">
-				<xsl:element name="p">
+				<xsl:element name="span">
 					<xsl:apply-templates select="@xml:id"/>
 					<xsl:attribute name="class">teiLetter_salute</xsl:attribute>
 					<xsl:choose>
