@@ -186,6 +186,10 @@ declare %private function lod:jsonld-entity($elem as element(), $lang as xs:stri
  : Helper function for creating the page description
 ~:)
 declare %private function lod:DC.description($model as map(*), $lang as xs:string) as xs:string? {
+    let $orgTypes := for $each in $model('doc')//tei:state[@type='orgType']/tei:desc/tei:term
+                        return
+                            lang:get-language-string(concat('orgType.',$each/text()), $lang)
+    return
     if($model?specID) then lang:get-language-string('metaDescriptionGuidelinesSpecs', ($model?specID), $lang)
     else if($model?chapID) then 
         switch($model?chapID)
@@ -216,7 +220,7 @@ declare %private function lod:DC.description($model as map(*), $lang as xs:strin
             case 'letters' case 'writings' case 'documents' return str:normalize-space($model('doc')//tei:note[@type='summary'])
             case 'diaries' return str:shorten-TEI($model('doc')/tei:ab, 150, $lang)
             case 'news' case 'var' case 'thematicCommentaries' return str:shorten-TEI($model('doc')//tei:text//tei:p[not(starts-with(., 'Sorry'))], 150, $lang)
-            case 'orgs' return wdt:orgs($model('doc'))('title')('txt') || ': ' || str:list($model('doc')//tei:state[@type='orgType']/tei:desc/tei:term, $lang, 0, lang:get-language-string#2)
+            case 'orgs' return wdt:orgs($model('doc'))('title')('txt') || ': ' || str:list($orgTypes, $lang, 0, lang:get-language-string#2)
             case 'corresp' return lang:get-language-string('corresp', $lang)
             case 'places' return lang:get-language-string('place', $lang)
             case 'works' return lang:get-language-string('workName', $lang)
