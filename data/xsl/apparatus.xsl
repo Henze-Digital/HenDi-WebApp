@@ -2,7 +2,7 @@
 
    <xsl:variable name="doc" select="wega:doc($docID)"/>
 	<xsl:variable name="textConstitutionNodes" as="node()*" select=".//tei:subst | .//tei:add[not(parent::tei:subst)] | .//tei:gap[not(@reason='outOfScope' or parent::tei:del)] | .//tei:sic[not(parent::tei:choice)] | .//tei:del[not(parent::tei:subst)] | .//tei:unclear[not(parent::tei:choice)] | .//tei:note[@type='textConst'] | .//tei:handShift | .//tei:supplied[parent::tei:damage] | .//tei:damage[not(node())]"/>
-	<xsl:variable name="commentaryNodes" as="node()*" select=".//tei:note[@type=('commentary', 'definition')] | .//tei:choice | .//tei:figDesc | .//tei:foreign[@xml:id]"/>
+	<xsl:variable name="commentaryNodes" as="node()*" select=".//tei:note[@type=('commentary', 'definition')] | .//tei:choice | .//tei:figDesc | .//tei:stamp | .//tei:foreign[@xml:id]"/>
 	<xsl:variable name="autoCommentaryNodes" as="node()*" select=".//tei:persName[not(@key)] | .//tei:orgName[not(@key)] | .//tei:placeName[not(@key)]"/>
 	<xsl:variable name="internalNodes" as="node()*" select=".//tei:note[@type='internal']"/>
    <xsl:variable name="rdgNodes" as="node()*" select=".//tei:app"/>
@@ -250,6 +250,46 @@
       </xsl:call-template>
    </xsl:template>
 	
+    <xsl:template match="tei:stamp">
+        <xsl:element name="span">
+			<xsl:attribute name="class">
+				<xsl:value-of select="concat('stamp-',@type)"/>
+			</xsl:attribute>
+			<xsl:attribute name="style">display: inline-block;
+  border-radius: 60px;
+  box-shadow: 0 0 2px #888;
+  padding: 0.5em 0.6em;</xsl:attribute>
+			<i class="fa-solid fa-stamp"></i>
+		</xsl:element>
+        <xsl:call-template name="popover"/>
+	</xsl:template>
+   
+	<xsl:template match="tei:stamp" mode="apparatus">
+       <xsl:variable name="id" select="wega:createID(.)"/>
+      <xsl:call-template name="apparatusEntry">
+         <xsl:with-param name="title" select="wega:getLanguageString('note_commentary', $lang)"/>
+         <xsl:with-param name="counter-param">
+            <xsl:value-of select="'note'"/>
+         </xsl:with-param>
+         <xsl:with-param name="lemmaAlt">
+            <xsl:choose>
+               <xsl:when test="preceding::tei:ptr[@target=concat('#', $id)]">
+                  <!-- When ein ptr existiert, dann wird dieser ausgewertet -->
+                  <xsl:apply-templates select="preceding::tei:ptr[@target=concat('#', $id)]" mode="apparatus"/>
+               </xsl:when>
+               <xsl:otherwise>
+                  <xsl:text>[</xsl:text>
+                  <xsl:value-of select="@type"/>
+                  <xsl:text>]</xsl:text>
+               </xsl:otherwise>
+            </xsl:choose>
+         </xsl:with-param>
+         <xsl:with-param name="explanation">
+            <xsl:apply-templates/>
+         </xsl:with-param>
+      </xsl:call-template>
+   </xsl:template>
+   
    <xsl:template match="tei:note[@type=('internal')]">
       <xsl:call-template name="popover">
       	<xsl:with-param name="marker" select="'bg-danger'"/>
@@ -925,6 +965,7 @@
     
    <xsl:template match="tei:note" mode="lemma"/>
    <xsl:template match="tei:figDesc" mode="lemma"/>
+   <xsl:template match="tei:stamp" mode="lemma"/>
 	<xsl:template match="tei:foreign" mode="lemma"/>
 	<xsl:template match="tei:lb" mode="lemma">
       <xsl:text> </xsl:text>
@@ -1032,7 +1073,7 @@
       <xsl:variable name="counter">
          <xsl:choose>
             <xsl:when test="$counter-param='note'">
-               <xsl:number count="tei:note[@type=('commentary', 'definition')] | tei:choice | tei:figDesc | tei:foreign[@xml:id]" level="any"/>
+               <xsl:number count="tei:note[@type=('commentary', 'definition')] | tei:choice | tei:figDesc | tei:stamp | tei:foreign[@xml:id]" level="any"/>
             </xsl:when>
             <xsl:when test="$counter-param='handNote'">
                <xsl:number count="tei:handNote" level="any"/>
