@@ -177,6 +177,8 @@
 	<entry xml:id="water">Wasserschaden</entry>
 	<entry xml:id="ink">Tintenfleck</entry>
 	<entry xml:id="damageDefault">Beschädigung</entry>
+	<entry xml:id="textLoss.punch">Textverlust durch Lochung</entry>
+	<entry xml:id="textLoss.ink">Textverlust durch Tinte</entry>
 	<entry xml:id="illegible">unleserliche Stelle</entry>
     <!--  doc_singleView  -->
     <entry xml:id="docSingleViewTitle">Dokumentansicht von %1</entry>
