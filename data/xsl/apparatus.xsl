@@ -252,10 +252,7 @@
 	
     <xsl:template match="tei:stamp">
         <xsl:element name="span">
-			<xsl:attribute name="class">
-				<xsl:value-of select="concat('tei_', replace(@type, '\.', '-'))"/>
-			</xsl:attribute>
-			        <xsl:attribute name="style">display: inline-block; border-radius: 50px; box-shadow: 0 0 3px #555; padding: 0.5em 0.3em;</xsl:attribute>
+			<xsl:attribute name="class">tei_stamp</xsl:attribute>
 			<xsl:choose>
 			    <xsl:when test="@type='stamp'"><i class="fa-solid fa-image"></i></xsl:when>
 			    <xsl:otherwise><i class="fa-solid fa-stamp"></i></xsl:otherwise>

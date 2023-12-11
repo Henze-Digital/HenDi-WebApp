@@ -375,3 +375,10 @@ li.listSubTitle {
     font-weight: normal;
     font-variant: small-caps;
 }
+
+.tei_stamp {
+	display: inline-block;
+	border-radius: 50px;
+	box-shadow: 0 0 3px #555;
+	padding: 0.5em 0.3em;
+}
