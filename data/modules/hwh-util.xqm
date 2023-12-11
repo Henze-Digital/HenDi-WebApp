@@ -114,7 +114,7 @@ declare function hwh-util:iterateResults($results as node()*, $sortParam as node
 declare function hwh-util:prepareTitleForSorting($title as node()) as xs:string?{
     $title//text()
     => string-join(' ')
-    => replace("|","")
+    => replace("\|","")
     => normalize-space()
     => tokenize(' ')
     => string-join('_')
