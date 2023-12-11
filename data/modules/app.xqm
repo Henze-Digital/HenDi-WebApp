@@ -2396,10 +2396,10 @@ let $references :=
         </div>
 };
 
-declare function app:get-file-ids-for-enrichment($Elems as node()*, $type as xs:string) as node()* {
-	for $Elem in $Elems
-	let $name := $Elem/text()
-	let $fileID := $Elem/root()/node()/@xml:id/string()
+declare function app:get-file-ids-for-enrichment($elems as node()*, $type as xs:string) as node()* {
+	for $elem in $elems
+	let $name := $elem/text()
+	let $fileID := $elem/root()/node()/@xml:id/string()
 	group by $name
 	order by $name
 	return
@@ -2413,8 +2413,8 @@ declare function app:get-file-ids-for-enrichment($Elems as node()*, $type as xs:
         </tr>
 };
 
-declare function app:get-file-ids-for-enrichment2($name as xs:string, $workElems as node()*, $correspID as xs:string, $type as xs:string) as node()* {
-    if($workElems)
+declare function app:get-file-ids-for-enrichment2($name as xs:string, $elems as node()*, $correspID as xs:string, $type as xs:string) as node()* {
+    if($elems)
     then(
     <div name="{$name}">
              <div class="card">
@@ -2433,7 +2433,7 @@ declare function app:get-file-ids-for-enrichment2($name as xs:string, $workElems
                               <th>IDs</th>
                             </tr>
             {
-                app:get-file-ids-for-enrichment($workElems, $type)
+                app:get-file-ids-for-enrichment($elems, $type)
             }
             </table>
                     </div>
