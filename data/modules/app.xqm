@@ -2208,11 +2208,14 @@ declare
         let $myPopover := wega-util-shared:semantic-boolean($popover)
         let $doc2keyAvailable := crud:docAvailable($key)
         let $relators-translation-lang :=
-            if($relator/self::mei:*[@role[. = 'trl'] and @label])
-            then ('(' || lang:get-language-string('into', $lang) || ' ' || lang:get-language-string($relator/data(@label), $lang) || (if($lang = 'de') then ('e') else()) ||')')
-            else if($relator/self::tei:*[@role[. = 'trl'] and @label])
-            then ('(' || lang:get-language-string('into', $lang) || ' ' || lang:get-language-string($relator/data(@label), $lang) || (if($lang = 'de') then ('e') else()) ||')')
-            else wega-util:log-to-file('warn', 'app:preview-relator-trlLang(): Failed to reckognize label')
+        	if($relator/(self::mei:*|self::tei:*)[@role[. = 'trl'] and @label])
+        	then(
+	            if($relator/self::mei:*[@role[. = 'trl'] and @label])
+	            then ('(' || lang:get-language-string('into', $lang) || ' ' || lang:get-language-string($relator/data(@label), $lang) || (if($lang = 'de') then ('e') else()) ||')')
+	            else if($relator/self::tei:*[@role[. = 'trl'] and @label])
+	            then ('(' || lang:get-language-string('into', $lang) || ' ' || lang:get-language-string($relator/data(@label), $lang) || (if($lang = 'de') then ('e') else()) ||')')
+	            else wega-util:log-to-file('warn', 'app:preview-relator-trlLang(): Failed to reckognize label'))
+            else()
         return
             if($key and $myPopover and $doc2keyAvailable)
             then (if($i gt 1)
