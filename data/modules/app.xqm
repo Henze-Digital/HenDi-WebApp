@@ -875,8 +875,8 @@ declare
             }</span>
         }
         let $workType := ($model?doc//(mei:term|mei:work[not(parent::mei:componentList)]|tei:biblStruct)[1]/(@class|@type)/data())[1]
-        let $relators := query:relators($model?doc)[self::mei:*/@role[. = ('cmp', 'lbt', 'lyr', 'arr', 'aut', 'trl')] or self::tei:*/@role[. = ('arr', 'trl')] or self::tei:author or (self::mei:persName|self::mei:corpName)[@role = 'mus'][parent::mei:contributor]]
-        let $relatorsGrouped := for $each in $relators
+        let $relators := query:relators($model?doc)[(self::mei:*|self::tei:*)/@role[not(. = ('edt'))] or self::tei:author or (self::mei:persName|self::mei:corpName)[@role][parent::mei:contributor]]
+        let $relatorsGrouped := for $each in functx:distinct-deep($relators)
                                     let $role := $each/@role/string()
                                     group by $role
                                     return
