@@ -517,8 +517,10 @@ declare function wdt:works($item as item()*) as map(*) {
                 if($node//mei:fileDesc/mei:titleStmt/mei:title)
                 then(hwh-util:prepareTitleForSorting($node//mei:fileDesc/mei:titleStmt/mei:title[1]))
                 else if($node//mei:work)
-                then(hwh-util:prepareTitleForSorting($node//mei:work/mei:title//mei:titlePart[@type='main']))
-                else(hwh-util:prepareTitleForSorting(($node//tei:biblStruct//tei:title)[1]))
+                then(hwh-util:prepareTitleForSorting(($node//mei:work/mei:title)[1]//mei:titlePart[@type='main']))
+                else if($node//tei:biblStruct//tei:title)
+                then(hwh-util:prepareTitleForSorting(($node//tei:biblStruct//tei:title)[1]))
+                else('zzzzz')
             }, ())
         },
         (: Sollte beim Titel noch der Komponist etc. angegeben werden? :)
