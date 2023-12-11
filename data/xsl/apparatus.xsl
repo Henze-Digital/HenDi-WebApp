@@ -253,13 +253,13 @@
     <xsl:template match="tei:stamp">
         <xsl:element name="span">
 			<xsl:attribute name="class">
-				<xsl:value-of select="concat('stamp-',@type)"/>
+				<xsl:value-of select="concat('tei_', replace(@type, '\.', '-'))"/>
 			</xsl:attribute>
-			<xsl:attribute name="style">display: inline-block;
-  border-radius: 60px;
-  box-shadow: 0 0 2px #888;
-  padding: 0.5em 0.6em;</xsl:attribute>
-			<i class="fa-solid fa-stamp"></i>
+			        <xsl:attribute name="style">display: inline-block; border-radius: 50px; box-shadow: 0 0 3px #555; padding: 0.5em 0.3em;</xsl:attribute>
+			<xsl:choose>
+			    <xsl:when test="@type='stamp'"><i class="fa-solid fa-image"></i></xsl:when>
+			    <xsl:otherwise><i class="fa-solid fa-stamp"></i></xsl:otherwise>
+			</xsl:choose>
 		</xsl:element>
         <xsl:call-template name="popover"/>
 	</xsl:template>
@@ -279,7 +279,7 @@
                </xsl:when>
                <xsl:otherwise>
                   <xsl:text>[</xsl:text>
-                  <xsl:value-of select="@type"/>
+                  <xsl:value-of select="wega:getLanguageString(concat('stamp.',@type), $lang)"/>
                   <xsl:text>]</xsl:text>
                </xsl:otherwise>
             </xsl:choose>

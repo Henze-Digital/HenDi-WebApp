@@ -857,4 +857,11 @@
 	<entry xml:id="orgType.shop">Shop</entry>
 	<entry xml:id="orgType.television">Television</entry>
 	<entry xml:id="orgType.theater">Theater</entry>
+	
+	<entry xml:id="stamp.round">Stamp (round)</entry>
+	<entry xml:id="stamp.square">Stamp (square)</entry>
+	<entry xml:id="stamp.oneline">Stamp (oneline)</entry>
+	<entry xml:id="stamp.rollerDate">Stamp (date)</entry> <!-- "roller_date_stamp" -->
+	<entry xml:id="stamp.stamp">Postage stamp</entry>
+	
 </dictionary>

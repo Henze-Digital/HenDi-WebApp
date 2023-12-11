@@ -866,4 +866,11 @@
 	<entry xml:id="orgType.shop">Geschäft</entry>
 	<entry xml:id="orgType.television">Fernsehen</entry>
 	<entry xml:id="orgType.theater">Theater</entry>
+	
+	<entry xml:id="stamp.round">Rundstempel</entry>
+	<entry xml:id="stamp.square">Stempel (rechteckig)</entry>
+	<entry xml:id="stamp.oneline">Stempel (einzeilig)</entry>
+	<entry xml:id="stamp.rollerDate">Datumsstempel</entry> <!-- "roller_date_stamp" -->
+	<entry xml:id="stamp.stamp">Briefmarke</entry>
+	
 </dictionary>
