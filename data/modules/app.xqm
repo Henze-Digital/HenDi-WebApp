@@ -2421,7 +2421,7 @@ declare function app:get-file-ids-for-enrichment2($name as xs:string, $workElems
                 <div class="card-header" id="heading-{$correspID}-{$name}">
                   <h2 class="mb-0">
                     <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse-{$correspID}-{$name}" aria-expanded="true" aria-controls="collapse-{$correspID}-{$name}">
-                      {$name}
+                      {$name} ({count(functx:distinct-deep($elems))} Einträge)
                     </button>
                   </h2>
                 </div>
