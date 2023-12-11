@@ -2396,6 +2396,85 @@ let $references :=
         </div>
 };
 
+declare function app:get-file-ids-for-enrichment($Elems as node()*, $type as xs:string) as node()* {
+	for $Elem in $Elems
+	let $name := $Elem/text()
+	let $fileID := $Elem/root()/node()/@xml:id/string()
+	group by $name
+	order by $name
+	return
+	    <tr>
+              <td>{$name}</td>
+              <td>
+                  {for $each at $i in distinct-values($fileID)
+        			return
+        			    (<a href="/{$each}">{$each}</a>, if($i = count(distinct-values($fileID))) then() else (<span> | </span>))}
+		    </td>
+        </tr>
+};
+
+declare function app:get-file-ids-for-enrichment2($name as xs:string, $workElems as node()*, $correspID as xs:string, $type as xs:string) as node()* {
+    if($workElems)
+    then(
+    <div name="{$name}">
+             <div class="card">
+                <div class="card-header" id="heading-{$correspID}-{$name}">
+                  <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse-{$correspID}-{$name}" aria-expanded="true" aria-controls="collapse-{$correspID}-{$name}">
+                      {$name}
+                    </button>
+                  </h2>
+                </div>
+                <div id="collapse-{$correspID}-{$name}" class="collapse" aria-labelledby="heading-{$correspID}-{$name}" data-parent="#accordEnrichResults">
+                    <div class="card-body">
+                        <table style="width: 100%;">
+                            <tr>
+                              <th>Title</th> 
+                              <th>IDs</th>
+                            </tr>
+            {
+                app:get-file-ids-for-enrichment($workElems, $type)
+            }
+            </table>
+                    </div>
+                </div>
+             </div>
+        </div>
+    )
+    else()
+};
+
+declare function app:missing-keys-datasets($node as node(), $model as map(*))  {
+
+let $corresps := crud:data-collection('corresp')
+
+for $corresp in $corresps
+    let $correspTitle := $corresp//tei:fileDesc/tei:titleStmt/tei:title[1]/text()
+    let $correspID := $corresp/tei:TEI/@xml:id/string()
+    
+    let $collPostals :=  crud:data-collection('letters')/tei:TEI[.//tei:relation[@key=$correspID]]
+
+    let $placeElems := $collPostals//(tei:settlement|tei:placeName|tei:bloc|tei:region|tei:district|tei:geogName)[not(@key)][not(./tei:*)] | $collPostals//tei:country[not(@key)][not(./tei:*)][not(ancestor::tei:publisher)]
+    let $persNameElems := $collPostals//(tei:persName|tei:rs[@type='person']|tei:name[@type='person'])[not(@key)][not(./tei:*)]
+    let $orgNameElems := $collPostals//(tei:orgName|tei:rs[@type='org']|tei:name[@type='org'])[not(@key)][not(./tei:*)]
+    let $workElems := $collPostals//(tei:rs[@type='work']|tei:name[@type='work'])[not(@key)][not(./tei:*)]
+    
+    return
+        <div class="row">
+            <div class="col-md-3 order-2 side-col"/>
+            <div class="col-md-9 main-col">
+                <h1>{$correspTitle}</h1>
+                <div class="accordion" id="accordEnrichResults">
+                    {app:get-file-ids-for-enrichment2('Werke', $workElems, $correspID, 'works'),
+                    app:get-file-ids-for-enrichment2('Personen', $persNameElems, $correspID, 'persons'),
+                    app:get-file-ids-for-enrichment2('Organisationen', $orgNameElems, $correspID, 'orgs'),
+                    app:get-file-ids-for-enrichment2('Orte', $placeElems, $correspID, 'places')
+                    }
+                </div>
+            </div>
+        </div>
+};
+
 declare function app:guidelines-preview($node as node(), $model as map(*))  {
 
 let $targets := for $each in xmldb:get-child-resources('/db/apps/HenDi-WebApp/guidelines/')
