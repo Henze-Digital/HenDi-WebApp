@@ -266,11 +266,13 @@
 				<xsl:apply-templates/>
 			</xsl:element>
 			</xsl:when>
-			<xsl:otherwise><xsl:apply-templates/></xsl:otherwise>
+			<xsl:otherwise>
+                <xsl:apply-templates/>
+            </xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 	
-	<xsl:template match="tei:addrLine">
+	<xsl:template match="tei:addrLine | tei:opener[@rend] | tei:dateline[@rend]">
 		<xsl:element name="span">
 			<xsl:attribute name="class">
 				<xsl:if test="@rend=('inlineApart','right','left','center')">
@@ -292,7 +294,7 @@
 				</xsl:choose>
 			</xsl:attribute>
 			<xsl:apply-templates/>
-			<xsl:element name="br"/>
+			<xsl:if test="tei:addrLine"><xsl:element name="br"/></xsl:if>
 		</xsl:element>
 	</xsl:template>
 	
