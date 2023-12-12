@@ -552,7 +552,7 @@ declare function wdt:works($item as item()*) as map(*) {
             case xs:untypedAtomic return str:normalize-space((crud:doc($item)//mei:work[1]/mei:title/mei:titlePart[@type='main']|(crud:doc($item)//tei:biblStruct)[1]//tei:title)[1])
             case document-node() return str:normalize-space(($item//mei:work[1]/mei:title/mei:titlePart[@type='main']|($item//tei:biblStruct)[1]//tei:title)[1])
             case element() return str:normalize-space(($item//mei:work[1]/mei:title/mei:titlePart[@type='main']|($item//tei:biblStruct)[1]//tei:title)[1])
-            default return wega-util:log-to-file('error', 'wdt:works()("label-facests"): failed to get string')
+            default return wega-util:log-to-file('error', 'wdt:works()("label-facets"): failed to get string')
         },
         'memberOf' : ('search', 'indices', 'unary-docTypes', 'sitemap'),
         'search' : function($query as element(query)) {
