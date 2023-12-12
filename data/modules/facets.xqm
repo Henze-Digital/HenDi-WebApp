@@ -181,7 +181,7 @@ declare %private function facets:display-term($facet as xs:string, $term as xs:s
     switch($facet)
     case 'persons' case 'personsPlus' case 'sender' case 'addressee' 
     case 'dedicatees' case 'lyricists' case 'librettists' 
-    case 'composers' case 'authors' case 'editors' case 'orgs' return
+    case 'composers' case 'authors' case 'authorsText' case 'editors' case 'orgs' return
         if(wdt:persons($term)('check')()) then wdt:persons($term)('label-facets')() (:$facets:persons-norm-file//norm:entry[range:eq(@docID,$term)]/normalize-space():)
         else wdt:orgs($term)('label-facets')()
     case 'corresp' return wdt:corresp($term)('label-facets')()
