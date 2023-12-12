@@ -1142,6 +1142,16 @@ declare function api:validate-workTitle($model as map(*)) as map(*)? {
 };
 
 (:~
+ : Check parameter workType
+ : multiple values allowed as input, either by providing multiple URL parameters
+ : or by sending a comma separated list as the value of one URL parameter
+~:)
+declare function api:validate-workType($model as map(*)) as map(*)? {
+    if(every $i in $model?workType ! tokenize(., ',') satisfies $i castable as xs:string) then map { 'workType': ($model?workType ! tokenize(., ',')) ! xmldb:decode-uri(.) }
+    else error($api:INVALID_PARAMETER, 'Unsupported value for parameter "workType".' )
+};
+
+(:~
  : Fallback for unknown API parameters 
  : Simply returns an error message
 ~:)

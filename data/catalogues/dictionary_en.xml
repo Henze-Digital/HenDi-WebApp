@@ -865,8 +865,4 @@
 	<entry xml:id="stamp.stamp">Postage stamp</entry>
 	
 	<entry xml:id="workType">Type of Work</entry>
-	<entry xml:id="workType.music">Music</entry>
-	<entry xml:id="workType.film">Film</entry>
-	<entry xml:id="workType.literature">Literature</entry>
-	<entry xml:id="workType.recording">Recording</entry>
 </dictionary>

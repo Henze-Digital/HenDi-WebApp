@@ -874,8 +874,4 @@
 	<entry xml:id="stamp.stamp">Briefmarke</entry>
 	
 	<entry xml:id="workType">Art des Werkes</entry>
-	<entry xml:id="workType.music">Musik</entry>
-	<entry xml:id="workType.film">Film</entry>
-	<entry xml:id="workType.literature">Literatur</entry>
-	<entry xml:id="workType.recording">Einspielung</entry>
 </dictionary>

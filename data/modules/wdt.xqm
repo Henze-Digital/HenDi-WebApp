@@ -340,7 +340,6 @@ declare function wdt:corresp($item as item()*) as map(*) {
     }
 };
 
-
 declare function wdt:translations($item as item()*) as map(*) {
     let $text-types := tokenize(config:get-option('textTypes'), '\s+')
     let $constructTranslationHead := function($TEI as element(tei:TEI)) as element(tei:title) {
@@ -406,7 +405,6 @@ declare function wdt:translations($item as item()*) as map(*) {
         'search' : ()
     }
 };
-
 
 declare function wdt:writings($item as item()*) as map(*) {
     let $filter := function($docs as document-node()*) as document-node()* {
@@ -555,6 +553,16 @@ declare function wdt:works($item as item()*) as map(*) {
             case document-node() return str:normalize-space(($item//mei:work[1]/mei:title/mei:titlePart[@type='main']|($item//tei:biblStruct)[1]//tei:title)[1])
             case element() return str:normalize-space(($item//mei:work[1]/mei:title/mei:titlePart[@type='main']|($item//tei:biblStruct)[1]//tei:title)[1])
             default return wega-util:log-to-file('error', 'wdt:works()("label-facests"): failed to get string')
+        },
+        'label-facets-workType' : function() as xs:string? {
+            let $facetLabel := str:normalize-space((crud:doc($item)//mei:work[1]/@class|(crud:doc($item)//tei:biblStruct)[1]/@type)[1])
+            return
+                typeswitch($item)
+                    case xs:string return $facetLabel
+                    case xs:untypedAtomic return $facetLabel
+                    case document-node() return $facetLabel
+                    case element() return $facetLabel
+                    default return wega-util:log-to-file('error', 'wdt:works()("label-facests-workType"): failed to get string')
         },
         'memberOf' : ('search', 'indices', 'unary-docTypes', 'sitemap'),
         'search' : function($query as element(query)) {
