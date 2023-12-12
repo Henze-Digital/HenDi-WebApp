@@ -174,7 +174,7 @@ declare %private function facets:display-term($facet as xs:string, $term as xs:s
     case 'repository' return facets:display-term-repository($term)
     case 'geonamesFeatureClass' return lang:get-language-string('geonamesFeatureClass_' || $term, $lang)
     case 'orgType' return lang:get-language-string('orgType.' || $term, $lang)
-    case 'workType' return wdt:works($term)('label-facets-workType')()
+    case 'workType' return lang:get-language-string($term, $lang) (: wdt:works($term)('label-facets-workType')() :)
     default return str:normalize-space($term)
 };
 

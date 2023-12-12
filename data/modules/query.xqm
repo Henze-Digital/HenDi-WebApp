@@ -355,7 +355,7 @@ declare function query:get-facets($collection as node()*, $facet as xs:string) a
     case 'persons' return ($collection//tei:persName[ancestor::tei:text or ancestor::tei:ab]/@key | $collection//tei:rs[@type='person'][ancestor::tei:text or ancestor::tei:ab]/@key)
     case 'works' return $collection//tei:name[@type="work"][ancestor::tei:text or ancestor::tei:ab]/@key[string-length(.) = 8] | $collection//tei:rs[@type='work'][ancestor::tei:text or ancestor::tei:ab]/@key[string-length(.) = 8]
     case 'authors' return $collection//tei:author/@key
-    case 'authorsText' return ($collection//tei:author[ancestor::tei:biblStruct]/@key | $collection//mei:persName[@role=('lyr','lbt')]/@codedval)
+    case 'authorsText' return ($collection//tei:author[@role="aut"][ancestor::tei:biblStruct]/@key | $collection//mei:persName[@role='lyr' or @role='lbt']/@codedval)
     case 'editors' return $collection//tei:editor/@key
     case 'biblioType' return $collection/tei:biblStruct/@type
     case 'docTypeSubClass' return $collection//tei:text/@type
@@ -371,7 +371,7 @@ declare function query:get-facets($collection as node()*, $facet as xs:string) a
     case 'keywords' return $collection//tei:term[parent::tei:keywords]
     case 'docLang' return $collection//tei:language/@ident
     case 'workTitle' return ($collection//mei:title[parent::mei:titleStmt] | $collection//tei:title[ancestor::tei:biblStruct])
-    case 'workType' return $collection//mei:work/@class
+    case 'workType' return ($collection//mei:work/@class | $collection//tei:biblStruct/@type)
     case 'geonamesFeatureClass' return $collection//tei:place/@typeof
     default return ()
 };
