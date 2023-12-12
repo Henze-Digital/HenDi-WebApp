@@ -67,6 +67,7 @@ declare function facets:facets($nodes as node()*, $facet as xs:string, $max as x
     case 'textType' return facets:from-docType($nodes, $facet, $lang)
     case 'facsimile' return facets:facsimile($nodes, $facet, $lang)
     case 'corresp' return facets:corresp($nodes, $facet, $lang)
+    case 'workType' return facets:workType($nodes, $facet, $lang)
     default return facets:createFacets($nodes, $facet, $max, $lang)
 };
 
@@ -129,6 +130,27 @@ declare %private function facets:corresp($collection as node()*, $facet as xs:st
                         'value' : $correspID,
                         'label' : wdt:corresp($correspID)('label-facets')(),
                         'frequency' : count($collection[.//tei:relation[@name='correspondence'][@key=$correspID]])
+                    }
+        }
+};
+
+declare %private function facets:workType($collection as node()*, $facet as xs:string, $lang as xs:string) as array(*) {
+    
+    let $workTypes := $collection//mei:work/@class => functx:distinct-deep()
+    return
+        array {
+            for $workType in $workTypes
+                let $workTypeSwitch := switch ($workType)
+                                        case 'music' return 'workType.music'
+                                        case 'lp' case 'tape' case 'cd' return 'workType.recording'
+                                        case 'film' return 'workType.film'
+                                        default return 'workType.literature'
+                let $workTypeTranslated := lang:get-language-string($workTypeSwitch, $lang)
+                return 
+                    map {
+                        'value' : $workType,
+                        'label' : $workTypeTranslated,
+                        'frequency' : count($collection//mei:work[@class=$workType])
                     }
         }
 };
