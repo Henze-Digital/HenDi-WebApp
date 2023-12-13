@@ -294,7 +294,9 @@
 				</xsl:choose>
 			</xsl:attribute>
 			<xsl:apply-templates/>
-			<xsl:if test="tei:addrLine"><xsl:element name="br"/></xsl:if>
+			<xsl:if test="self::tei:addrLine">
+                <xsl:element name="br"/>
+            </xsl:if>
 		</xsl:element>
 	</xsl:template>
 	
