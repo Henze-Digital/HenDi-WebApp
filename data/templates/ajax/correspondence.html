@@ -4,8 +4,8 @@
         <!-- Facetten Filter-->
         <div class="allFilter panel-collapse collapse show" id="allFilter">
         	<div class="input-group facet-group checkbox" data-template="app-shared:if-matches" data-template-key="environment" data-template-value="development">
-            <h4 data-template="lang:translate">chronology</h4>
-            <input type="text" class="rangeSlider" name="chronology-slider" data-template="app:set-slider-range"/>
+	            <h4 data-template="lang:translate">chronology</h4>
+	            <input type="text" class="rangeSlider" name="chronology-slider" data-template="app:set-slider-range"/>
                 <input type="checkbox" name="undated" id="undatedLetters" data-template="app:set-facet-checkbox" data-template-key="undated"/>
                 <label for="undatedLetters" data-template="lang:translate">showUndatedDocuments</label>
             </div>
@@ -15,12 +15,12 @@
             <select multiple="multiple" data-template="facets:select" name="sender"/>
             <h4 data-template="lang:translate">addressees</h4>
             <select multiple="multiple" data-template="facets:select" name="addressee"/>
-<!--        	<div data-template="app-shared:if-matches" data-template-key="environment" data-template-value="development">-->
-        	<h4 data-template="lang:translate">placeOfSender</h4>
-            <select multiple="multiple" data-template="facets:select" name="placeOfSender"/>
-            <h4 data-template="lang:translate">placeOfAddressee</h4>
-            <select multiple="multiple" data-template="facets:select" name="placeOfAddressee"/>
-        	<!--</div>-->
+        	<div data-template="app-shared:if-matches" data-template-key="environment" data-template-value="development">
+	        	<h4 data-template="lang:translate">placeOfSender</h4>
+	            <select multiple="multiple" data-template="facets:select" name="placeOfSender"/>
+	            <h4 data-template="lang:translate">placeOfAddressee</h4>
+	            <select multiple="multiple" data-template="facets:select" name="placeOfAddressee"/>
+        	</div>
             <h4 data-template="lang:translate">persons_mentioned</h4>
             <select multiple="multiple" data-template="facets:select" name="persons"/>
             <h4 data-template="lang:translate">works_mentioned</h4>
