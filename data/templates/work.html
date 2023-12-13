@@ -118,6 +118,11 @@
 						<strong data-template="lang:translate">publisher</strong>: <span data-template="app-shared:output" data-template-key="title">Verlag</span>
 					</li>
 				</ol>
+				<ol class="media" data-template="app-shared:each" data-template-from="annotations" data-template-to="annotation">
+					<li>
+						<strong data-template="lang:translate">annotation</strong>: <span data-template="app-shared:output" data-template-key="annotation">Anmerkungstext</span>
+					</li>
+				</ol>
 			</div>
 			<div class="col-md col-sm-12 iconographie">
 				<div data-template="app-shared:if-exists" data-template-key="iconographyImages" data-template-wrap="no">

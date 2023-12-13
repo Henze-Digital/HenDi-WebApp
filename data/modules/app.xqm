@@ -860,6 +860,10 @@ declare
                     wega-util:transform($author, doc(concat($config:xsl-collection-path, '/works.xsl')), config:get-xsl-params(()))
             }</span>
         }
+        let $annotations := function($doc as document-node()) {
+            for $note in ($doc//tei:notesStmt/tei:note|$doc//mei:notesStmt/mei:annot)
+            return <span xmlns="http://www.w3.org/1999/xhtml">{wega-util:transform($note, doc(concat($config:xsl-collection-path, '/works.xsl')), config:get-xsl-params(()))}</span>
+        }
         let $publication := function($doc as document-node(), $alt as xs:boolean) {
             for $pubDate in ($doc//tei:sourceDesc/tei:biblStruct//tei:date)
             return <span xmlns="http://www.w3.org/1999/xhtml">{$pubDate/string(@when)}</span>
@@ -893,6 +897,7 @@ declare
             'authors' : $print-authors($model?doc, false()),
             'altTitles' : $print-titles($model?doc, true()),
             'descTitles' : $print-titles-desc($model?doc),
+            'annotations' : $annotations($model?doc),
             'publication': $publication($model?doc, true()),
             'publisher': $publisher($model?doc, true()),
             'pubPlace': $pubPlace($model?doc, true())
