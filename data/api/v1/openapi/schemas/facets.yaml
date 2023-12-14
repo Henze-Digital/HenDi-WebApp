@@ -4,6 +4,7 @@ enum:
   - addressee
   - asksam-cat
   - authors
+  - authorsText
   - biblioType
   - composers
   - corresp
