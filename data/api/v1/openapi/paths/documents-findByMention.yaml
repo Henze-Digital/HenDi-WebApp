@@ -9,7 +9,7 @@ get:
     - name: docID
       in: path
       description: |
-        The document ID that is to be mentioned. Accepted ID formats are WeGA, e.g. A002068 or http://weber-gesamtausgabe.de/A002068, VIAF, e.g. http://viaf.org/viaf/14959938, Wikidata, e.g. http://www.wikidata.org/entity/Q154812, or GND, e.g. http://d-nb.info/gnd/118629662
+        The document ID that is to be mentioned. Accepted ID formats are HenDi, e.g. A001000A or https://henze-digital.zenmem.de/A001000A, VIAF, e.g. https://viaf.org/viaf/97898884, Wikidata, e.g. https://www.wikidata.org/entity/Q76915, or GND, e.g. https://d-nb.info/gnd/118549383
       required: true
       schema:
         type: string

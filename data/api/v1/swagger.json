@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "title": "HenDi API",
-        "description": "⚠️<b>DEPRECATION WARNING</b>⚠️<br/>This version of the WeGA API specification is outdated and superseded by [version 1.1.0](https://weber-gesamtausgabe.de/api/v1/openapi.json).  <br/> <br/> For feedback or requests about this API please contact stadler@weber-gesamtausgabe.de or start the discussion at https://github.com/Edirom/WeGA-WebApp",
+        "description": "⚠️<b>DEPRECATION WARNING</b>⚠️<br/>This version of the HenDi API specification is outdated and superseded by [version 1.1.0](https://weber-gesamtausgabe.de/api/v1/openapi.json).  <br/> <br/> For feedback or requests about this API please contact stadler@weber-gesamtausgabe.de or start the discussion at https://github.com/Edirom/HenDi-WebApp",
         "version": "1.0.0"
     },
     "host": "",
@@ -10,11 +10,11 @@
     "tags": [
         {
             "name": "Documents",
-            "description": "Access to the documents of the WeGA digital edition"
+            "description": "Access to the documents of the HenDi digital edition"
         },
         {
             "name": "Search",
-            "description": "Access to search functions of the WeGA digital edition"
+            "description": "Access to search functions of the HenDi digital edition"
         },
         {
             "name": "Code Samples",
@@ -34,7 +34,7 @@
         "/documents": {
             "get": {
                 "summary": "Lists all documents",
-                "description": "The Documents endpoint returns a list of all documents from the WeGA digital edition.\n",
+                "description": "The Documents endpoint returns a list of all documents from the HenDi digital edition.\n",
                 "tags": ["Documents"],
                 "produces": ["application/json"],
                 "parameters": [
@@ -65,7 +65,7 @@
         },
         "/search/entity": {
             "get": {
-                "summary": "Search for a WeGA entity",
+                "summary": "Search for a HenDi entity",
                 "description": "This endpoint returns the search results for an entity's name or title.\n",
                 "tags": ["Search"],
                 "produces": ["application/json"],
@@ -99,7 +99,7 @@
         "/documents/{docID}": {
             "get": {
                 "summary": "Returns documents by ID",
-                "description": "This endpoint returns documents, indicated by an ID.\n Accepted ID formats are WeGA, e.g. A002068 or http://weber-gesamtausgabe.de/A002068, VIAF, e.g. http://viaf.org/viaf/14959938, or  GND, e.g. http://d-nb.info/gnd/118629662\n",
+                "description": "This endpoint returns documents, indicated by an ID.\n Accepted ID formats are HenDi, e.g. A001000A or https://henze-digital.zenmem.de/A001000A, VIAF, e.g. https://viaf.org/viaf/97898884, Wikidata, e.g. https://www.wikidata.org/entity/Q76915, or GND, e.g. https://d-nb.info/gnd/118549383\n",
                 "tags": ["Documents"],
                 "produces": ["application/json"],
                 "parameters": [
@@ -186,7 +186,7 @@
                     {
                         "name": "docID",
                         "in": "path",
-                        "description": "The document ID that is to be mentioned. Accepted ID formats are WeGA, e.g. A002068 or http://weber-gesamtausgabe.de/A002068, VIAF, e.g. http://viaf.org/viaf/14959938, or  GND, e.g. http://d-nb.info/gnd/118629662\n",
+                        "description": "The document ID that is to be mentioned. Accepted ID formats are HenDi, e.g. A001000A or https://henze-digital.zenmem.de/A001000A, VIAF, e.g. https://viaf.org/viaf/97898884, Wikidata, e.g. https://www.wikidata.org/entity/Q76915, or GND, e.g. https://d-nb.info/gnd/118549383\n",
                         "type": "string",
                         "required": true,
                         "default": "A001000A"
@@ -226,7 +226,7 @@
                     {
                         "name": "authorID",
                         "in": "path",
-                        "description": "The author ID to search for. Accepted ID formats are WeGA, e.g. A002068 or http://weber-gesamtausgabe.de/A002068, VIAF, e.g. http://viaf.org/viaf/14959938, or  GND, e.g. http://d-nb.info/gnd/118629662\n",
+                        "description": "The author ID to search for. Accepted ID formats are HenDi, e.g. A001000A or https://henze-digital.zenmem.de/A001000A, VIAF, e.g. https://viaf.org/viaf/97898884, Wikidata, e.g. https://www.wikidata.org/entity/Q76915, or GND, e.g. https://d-nb.info/gnd/118549383\n",
                         "type": "string",
                         "required": true,
                         "default": "A001000A"
@@ -305,7 +305,7 @@
         },
         "/application/status": {
             "get": {
-                "summary": "Get status information about the running WeGA-WebApp",
+                "summary": "Get status information about the running HenDi-WebApp",
                 "description": "",
                 "tags": ["Application"],
                 "produces": ["application/json"],
@@ -318,16 +318,16 @@
                                 "status": {
                                     "type": "string",
                                     "default": "healthy",
-                                    "description": "Status (healthy|unhealthy) of the currently running WeGA-WebApp"
+                                    "description": "Status (healthy|unhealthy) of the currently running HenDi-WebApp"
                                 },
                                 "svnRevision": {
                                     "type": "integer",
-                                    "description": "The Subversion revision of the currently installed WeGA-data"
+                                    "description": "The Subversion revision of the currently installed HenDi-data"
                                 },
                                 "deployment": {
                                     "type": "string",
                                     "format": "date-time",
-                                    "description": "The datetime of the deployment of the WeGA-WebApp"
+                                    "description": "The datetime of the deployment of the HenDi-WebApp"
                                 },
                                 "version": {
                                     "type": "string",
@@ -344,16 +344,16 @@
                                 "status": {
                                     "type": "string",
                                     "default": "unhealthy",
-                                    "description": "Status (healthy|unhealthy) of the currently running WeGA-WebApp"
+                                    "description": "Status (healthy|unhealthy) of the currently running HenDi-WebApp"
                                 },
                                 "svnRevision": {
                                     "type": "integer",
-                                    "description": "The Subversion revision of the currently installed WeGA-data"
+                                    "description": "The Subversion revision of the currently installed HenDi-data"
                                 },
                                 "deployment": {
                                     "type": "string",
                                     "format": "date-time",
-                                    "description": "The datetime of the deployment of the WeGA-WebApp"
+                                    "description": "The datetime of the deployment of the HenDi-WebApp"
                                 },
                                 "version": {
                                     "type": "string",
@@ -438,7 +438,7 @@
                     {
                         "name": "scope",
                         "in": "query",
-                        "description": "The scope of the result set, i.e. 'indices' or a WeGA ID",
+                        "description": "The scope of the result set, i.e. 'indices' or a HenDi ID",
                         "type": "string",
                         "pattern": "^(indices)|(A[A-F0-9]{7})$",
                         "required": true
@@ -485,11 +485,11 @@
                 },
                 "docID": {
                     "type": "string",
-                    "description": "The WeGA document identifier representing a specific document"
+                    "description": "The HenDi document identifier representing a specific document"
                 },
                 "docType": {
                     "type": "string",
-                    "description": "The WeGA document type"
+                    "description": "The HenDi document type"
                 },
                 "title": {
                     "type": "string",
@@ -506,7 +506,7 @@
                 },
                 "docID": {
                     "type": "string",
-                    "description": "The WeGA document identifier representing a specific document"
+                    "description": "The HenDi document identifier representing a specific document"
                 },
                 "codeSample": {
                     "type": "string",
@@ -520,7 +520,7 @@
                 "value": {
                     "type": "string",
                     "pattern": "^A[A-F0-9]{7}$",
-                    "description": "the WeGA ID"
+                    "description": "the HenDi ID"
                 },
                 "label": {
                     "type": "string",
