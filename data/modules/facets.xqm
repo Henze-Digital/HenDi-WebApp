@@ -161,7 +161,9 @@ declare %private function facets:display-term($facet as xs:string, $term as xs:s
     case 'dedicatees' case 'lyricists' case 'librettists' 
     case 'composers' case 'authors' case 'authorsText' case 'editors' case 'orgs' return
         if(wdt:persons($term)('check')()) then wdt:persons($term)('label-facets')()
-        else wdt:orgs($term)('label-facets')()
+        else if(wdt:orgs($term)('check')())
+        then(wdt:orgs($term)('label-facets')())
+        else(str:normalize-space($term))
     case 'corresp' return wdt:corresp($term)('label-facets')()
     case 'works' return wdt:works($term)('label-facets')()
     case 'placeOfAddressee' case 'placeOfSender' case 'residences' case 'places' return wdt:places($term)('title')('txt')
