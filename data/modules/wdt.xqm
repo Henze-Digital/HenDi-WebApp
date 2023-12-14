@@ -340,7 +340,6 @@ declare function wdt:corresp($item as item()*) as map(*) {
     }
 };
 
-
 declare function wdt:translations($item as item()*) as map(*) {
     let $text-types := tokenize(config:get-option('textTypes'), '\s+')
     let $constructTranslationHead := function($TEI as element(tei:TEI)) as element(tei:title) {
@@ -406,7 +405,6 @@ declare function wdt:translations($item as item()*) as map(*) {
         'search' : ()
     }
 };
-
 
 declare function wdt:writings($item as item()*) as map(*) {
     let $filter := function($docs as document-node()*) as document-node()* {
@@ -1132,7 +1130,6 @@ declare function wdt:addenda($item as item()*) as map(*) {
         }
     }
 };
-
 
 declare function wdt:contacts($item as item()*) as map(*) {
     map {
