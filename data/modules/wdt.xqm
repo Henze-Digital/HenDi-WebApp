@@ -463,7 +463,7 @@ declare function wdt:writings($item as item()*) as map(*) {
                 case 'html' return wega-util:transform($title-element, doc(concat($config:xsl-collection-path, '/common_main.xsl')), config:get-xsl-params(())) 
                 default return wega-util:log-to-file('error', 'wdt:letters()("title"): unsupported serialization "' || $serialization || '"')
         },
-        'memberOf' : ('search', 'indices', 'sitemap', 'unary-docTypes'),
+        'memberOf' : ('indices', 'sitemap', 'unary-docTypes'),
         'search' : function($query as element(query)) {
             $item[tei:TEI]//tei:body[ft:query(., $query)] | 
             $item[tei:TEI]//tei:title[ft:query(., $query)] |
@@ -825,7 +825,7 @@ declare function wdt:biblio($item as item()*) as map(*) {
                 case 'html' return $html-title 
                 default return wega-util:log-to-file('error', 'wdt:biblio()("title"): unsupported serialization "' || $serialization || '"')
         },
-        'memberOf' : ('search', 'indices', 'unary-docTypes'),
+        'memberOf' : ('indices', 'unary-docTypes'),
         'search' : function($query as element(query)) {
             $item[tei:biblStruct]//tei:biblStruct[ft:query(., $query)] | 
             $item[tei:biblStruct]//tei:title[ft:query(., $query)] | 
