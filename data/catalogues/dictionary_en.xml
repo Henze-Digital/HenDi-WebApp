@@ -485,6 +485,7 @@
     <entry xml:id="all">all</entry>
     <entry xml:id="none">none</entry>
     <entry xml:id="only">only</entry>
+    <entry xml:id="all_corresp">All Correspondences</entry>
     <entry xml:id="all_diaries">All Diaries</entry>
     <entry xml:id="all_writings">All Writings</entry>
     <entry xml:id="all_letters">All Letters</entry>

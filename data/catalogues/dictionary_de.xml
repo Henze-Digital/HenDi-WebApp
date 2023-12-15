@@ -495,6 +495,7 @@
     <entry xml:id="all">alle</entry>
     <entry xml:id="none">keine</entry>
     <entry xml:id="only">nur</entry>
+    <entry xml:id="all_corresp">Alle Briefwechsel</entry>
     <entry xml:id="all_diaries">Alle Tagebücher</entry>
     <entry xml:id="all_writings">Alle Schriften</entry>
     <entry xml:id="all_letters">Alle Briefe</entry>
