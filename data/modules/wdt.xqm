@@ -1190,7 +1190,7 @@ declare function wdt:backlinks($item as item()*) as map(*) {
                 crud:data-collection('news')//tei:author[@key = $personID][ancestor::tei:fileDesc]/root()  |
                 crud:data-collection('thematicCommentaries')//tei:author[@key = $personID][ancestor::tei:fileDesc]/root()  |
                 crud:data-collection('documents')//tei:author[@key = $personID][ancestor::tei:fileDesc]/root() |
-                crud:data-collection('works')//mei:persName[@codedval = $personID][ancestor::mei:respStmt]/root()
+                crud:data-collection('works')//(mei:persName[@codedval = $personID][ancestor::mei:composer]|tei:author[@key = $personID])/root()
                 (: Not necessary to exclude keys from works encoded in tei :)
             let $docsMentioned := 
                 crud:data-collection('letters')//tei:*[contains(@key,$personID)][not(ancestor::tei:publicationStmt)]/root() | 
@@ -1203,7 +1203,8 @@ declare function wdt:backlinks($item as item()*) as map(*) {
                 crud:data-collection('biblio')//tei:term[.=$personID]/root() |
                 crud:data-collection('thematicCommentaries')//tei:*[contains(@key,$personID)][not(ancestor::tei:publicationStmt)]/root() |
                 crud:data-collection('documents')//tei:*[contains(@key,$personID)][not(ancestor::tei:publicationStmt)]/root() |
-                crud:data-collection('var')//tei:*[contains(@key,$personID)][not(ancestor::tei:publicationStmt)]/root()
+                crud:data-collection('var')//tei:*[contains(@key,$personID)][not(ancestor::tei:publicationStmt)]/root() |
+                crud:data-collection('works')//(mei:*[contains(@codedval, $personID)][ancestor::mei:work]|tei:*[contains(@key, $personID)][ancestor::tei:biblStruct])/root()
             return
                 $docsMentioned except $docsAuthor
         },
