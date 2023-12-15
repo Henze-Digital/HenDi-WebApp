@@ -7,12 +7,10 @@
         </h2>
         <!-- Facetten Filter-->
         <div class="allFilter panel-collapse collapse show" id="allFilter">
-            <div class="input-group facet-group checkbox" data-template="app-shared:if-matches" data-template-key="environment" data-template-value="development">
-                <h4 data-template="lang:translate">sender</h4>
-                <select multiple="multiple" data-template="facets:select" name="sender"/>
-                <h4 data-template="lang:translate">addressees</h4>
-                <select multiple="multiple" data-template="facets:select" name="addressee"/>
-            </div>
+            <h4 data-template="lang:translate">sender</h4>
+            <select multiple="multiple" data-template="facets:select" name="sender"/>
+            <h4 data-template="lang:translate">addressees</h4>
+            <select multiple="multiple" data-template="facets:select" name="addressee"/>
         </div>
     </div>
     <div data-template="templates:include" data-template-path="templates/includes/search-results.html"/>
