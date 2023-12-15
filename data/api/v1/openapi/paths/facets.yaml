@@ -15,7 +15,7 @@ get:
         $ref: '../schemas/facets.yaml'
     - name: scope
       in: query
-      description: 'The scope of the result set, i.e. ''indices'' or a WeGA ID'
+      description: 'The scope of the result set, i.e. ''indices'' or a HenDi ID'
       required: true
       schema:
         pattern: '^(indices)|(A[A-F0-9]{7})$'

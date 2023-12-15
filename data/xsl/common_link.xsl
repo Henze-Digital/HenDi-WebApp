@@ -15,12 +15,12 @@
         because HTML does not support nested links (aka html:a elements) we need to attach the link to the deepest element; 
         thus exclude all elements with the following child elements 
     -->
-    <xsl:variable name="linkableElements" as="xs:string+" select="('persName', 'rs', 'name', 'characterName', 'orgName', 'country', 'bloc', 'geogName', 'sic', 'del', 'add', 'subst', 'damage', 'choice', 'unclear', 'app', 'note', 'settlement', 'bibl')"/>
+	<xsl:variable name="linkableElements" as="xs:string+" select="('persName', 'rs', 'name', 'characterName', 'orgName', 'country', 'district', 'bloc', 'geogName', 'sic', 'del', 'add', 'subst', 'damage', 'choice', 'unclear', 'app', 'note', 'region', 'settlement', 'bibl')"/>
     
     <!--  *********************************************  -->
     <!--  *                  Templates                *  -->
     <!--  *********************************************  -->
-	<xsl:template match="tei:persName | tei:author | tei:orgName | tei:country | tei:bloc | tei:geogName | mei:persName | tei:name | tei:settlement | mei:settlement | mei:geogName | mei:corpName | mei:title[@codedval] | tei:placeName[@key] | tei:bibl[@key]" 
+	<xsl:template match="tei:persName | tei:author | tei:orgName | tei:country | tei:district | tei:bloc | tei:geogName | mei:persName | tei:name | tei:region | tei:settlement | mei:settlement | mei:geogName | mei:corpName | mei:title[@codedval] | tei:placeName[@key] | tei:bibl[@key]" 
         mode="#all">
         <xsl:choose>
             <xsl:when test="@key or @codedval">

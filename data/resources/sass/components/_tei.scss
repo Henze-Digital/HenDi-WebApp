@@ -90,6 +90,10 @@ text-decoration-line: underline;
   grid-row-start: 1;
 }
 
+.tei_del_erased {
+	color: lightgrey;
+}
+
 .tei_cb {
     cursor: help;
 }
@@ -302,7 +306,8 @@ li.listSubTitle {
     p { margin-bottom: 0px; }
 }
 
-.teiLetter_opener p {
+.teiLetter_opener {
+    display: inline;
     margin-bottom: 0px;
 }
 

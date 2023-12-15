@@ -852,6 +852,16 @@ declare function api:validate-sender($model as map(*)) as map(*)? {
 }; 
 
 (:~
+ : Check parameter corresp
+ : multiple values allowed as input, either by providing multiple URL parameters
+ : or by sending a comma separated list as the value of one URL parameter
+~:)
+declare function api:validate-corresp($model as map(*)) as map(*)? {
+    if(every $i in $model?corresp ! tokenize(., ',') satisfies wdt:corresp($i)('check')()) then map { 'corresp': $model?corresp ! tokenize(., ',') }
+    else error($api:INVALID_PARAMETER, 'Unsupported value for parameter "corresp". It must be a corresp ID.' )
+}; 
+
+(:~
  : Check parameter textType
  : multiple values allowed as input, either by providing multiple URL parameters
  : or by sending a comma separated list as the value of one URL parameter
@@ -970,13 +980,13 @@ declare function api:validate-vorlageform($model as map(*)) as map(*)? {
 }; 
 
 (:~
- : Check parameter einrichtungsform
+ : Check parameter orgType
  : multiple values allowed as input, either by providing multiple URL parameters
  : or by sending a comma separated list as the value of one URL parameter
 ~:)
-declare function api:validate-einrichtungsform($model as map(*)) as map(*)? {
-    if(every $i in $model?einrichtungsform ! tokenize(., ',') satisfies $i castable as xs:string) then map { 'einrichtungsform': ($model?einrichtungsform ! tokenize(., ',')) ! xmldb:decode-uri(.) }
-    else error($api:INVALID_PARAMETER, 'Unsupported value for parameter "einrichtungsform".' )
+declare function api:validate-orgType($model as map(*)) as map(*)? {
+    if(every $i in $model?orgType ! tokenize(., ',') satisfies $i castable as xs:string) then map { 'orgType': ($model?orgType ! tokenize(., ',')) ! xmldb:decode-uri(.) }
+    else error($api:INVALID_PARAMETER, 'Unsupported value for parameter "orgType".' )
 }; 
 
 (:~

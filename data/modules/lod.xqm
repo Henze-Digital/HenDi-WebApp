@@ -147,6 +147,7 @@ declare %private function lod:schema.org-type($model as map(*)) as xs:string {
         case 'persons' return 'Person'
         case 'orgs' return 'Organization'
         case 'places' return 'Place'
+        case 'corresp' return 'Correspondence'
         case 'addenda' case 'thematicCommentary' return 'Article'
         default return 'CreativeWork'
 };
@@ -185,6 +186,10 @@ declare %private function lod:jsonld-entity($elem as element(), $lang as xs:stri
  : Helper function for creating the page description
 ~:)
 declare %private function lod:DC.description($model as map(*), $lang as xs:string) as xs:string? {
+    let $orgTypes := for $each in $model('doc')//tei:state[@type='orgType']/tei:desc/tei:term
+                        return
+                            lang:get-language-string(concat('orgType.',$each/text()), $lang)
+    return
     if($model?specID) then lang:get-language-string('metaDescriptionGuidelinesSpecs', ($model?specID), $lang)
     else if($model?chapID) then 
         switch($model?chapID)
@@ -215,7 +220,8 @@ declare %private function lod:DC.description($model as map(*), $lang as xs:strin
             case 'letters' case 'writings' case 'documents' return str:normalize-space($model('doc')//tei:note[@type='summary'])
             case 'diaries' return str:shorten-TEI($model('doc')/tei:ab, 150, $lang)
             case 'news' case 'var' case 'thematicCommentaries' return str:shorten-TEI($model('doc')//tei:text//tei:p[not(starts-with(., 'Sorry'))], 150, $lang)
-            case 'orgs' return wdt:orgs($model('doc'))('title')('txt') || ': ' || str:list($model('doc')//tei:state[tei:label='Art der Institution']/tei:desc, $lang, 0, lang:get-language-string#2)
+            case 'orgs' return wdt:orgs($model('doc'))('title')('txt') || ': ' || str:list($orgTypes, $lang, 0, lang:get-language-string#2)
+            case 'corresp' return lang:get-language-string('corresp', $lang)
             case 'places' return lang:get-language-string('place', $lang)
             case 'works' return lang:get-language-string('workName', $lang)
             case 'addenda' return lang:get-language-string($model?docType, $lang)
@@ -241,7 +247,7 @@ declare %private function lod:page-title($model as map(*), $lang as xs:string) a
         default return  
             switch($model('docType'))
             case 'persons' return concat(str:print-forename-surname(query:title($model('docID'))), ' – ', lang:get-language-string('tabTitle_bio', $lang))
-            case 'letters' case 'writings' case 'news' case 'var' case 'thematicCommentaries' case 'documents' case 'places' case 'works' case 'addenda' return wdt:lookup($model('docType'), $model('doc'))('title')('txt')
+            case 'letters' case 'corresp' case 'writings' case 'news' case 'var' case 'thematicCommentaries' case 'documents' case 'places' case 'works' case 'addenda' return wdt:lookup($model('docType'), $model('doc'))('title')('txt')
             case 'diaries' return concat(query:get-authorName($model('doc')), ' – ', lang:get-language-string('diarySingleViewTitle', wdt:lookup($model('docType'), $model('doc'))('title')('txt'), $lang))
             case 'orgs' return query:title($model('docID')) || ' (' || str:list($model('doc')//tei:state[tei:label='Art der Institution']/tei:desc, $lang, 0, lang:get-language-string#2) || ') – ' || lang:get-language-string('tabTitle_bioOrgs', $lang)
             case 'error' return lang:get-language-string('metaTitleError', $lang)
@@ -256,18 +262,18 @@ declare %private function lod:DC.subject($model as map(*), $lang as xs:string) a
     else 
         switch($model('docID'))
         case 'indices' return 'Index'
-        case 'home' return 'Carl Maria von Weber; Digitale Edition; Gesamtausgabe; Collected Works; Digital Edition'
+        case 'home' return 'Hans Werner Henzes künstlerisches Netzwerk; Digitale Edition; Henze-Digital; HenDi; Digital Edition'
         case 'search' return lang:get-language-string('search', $lang)
         default return
             switch($model('docType'))
             case 'persons' return lang:get-language-string('bio', $lang)
-            case 'letters' return for $each in $model('doc')//tei:text[1]/@type return lang:get-language-string($each, $lang) => string-join(', ')
+            case 'letters' return lang:get-language-string(concat('physDesc.objectDesc.form.', $model('doc')//tei:text/@type), $lang)
             case 'thematicCommentaries' case 'documents' return lang:get-language-string($model('doc')//tei:text/@type, $lang)
             case 'writings' return 'Historic Newspaper; Writing'
             case 'diaries' return string-join((lang:get-language-string('diary', $lang), query:get-authorName($model('doc'))), '; ')
             case 'news' return string-join($model('doc')//tei:keywords/tei:term, '; ')
             case 'var' return 'Varia'
-            case 'orgs' case 'works' case 'addenda' return lang:get-language-string($model?docType, $lang)
+            case 'orgs' case 'corresp' case 'works' case 'addenda' return lang:get-language-string($model?docType, $lang)
             case 'places' return 'Geographica'
             default return ()
 };
@@ -278,7 +284,7 @@ declare %private function lod:DC.subject($model as map(*), $lang as xs:string) a
 declare %private function lod:DC.creator($model as map(*)) as xs:string? {
     if($model('docID') = ('indices', 'home', 'search')) then 'Henze-Digital'
     else if($model?specID or $model?chapID) then 'Henze-Digital'
-    else if(config:get-doctype-by-id($model('docID'))) then map:get(config:get-svn-props($model('docID')), 'author')
+    else if(config:get-doctype-by-id($model('docID'))) then $model('doc')//(tei:fileDesc/tei:titleStmt/tei:editor | mei:respStmt[@n="HWH"]/mei:persName[@role="edt"])/text()
     else ()
 };
 
@@ -286,10 +292,7 @@ declare %private function lod:DC.creator($model as map(*)) as xs:string? {
  : Helper function for collecting date information
 ~:)
 declare %private function lod:DC.date($model as map(*)) as xs:string? {
-    if($model('docID') = ('indices', 'home', 'search')) then string(config:getDateTimeOfLastDBUpdate())
-    else if($model?specID or $model?chapID) then string(config:getDateTimeOfLastDBUpdate())
-    else if(config:get-doctype-by-id($model('docID')) and exists(config:get-svn-props($model('docID')))) then map:get(config:get-svn-props($model('docID')), 'dateTime')
-    else ()
+    config:get-option('versionDate')
 };
 
 (:~
@@ -297,7 +300,7 @@ declare %private function lod:DC.date($model as map(*)) as xs:string? {
 ~:)
 declare %private function lod:DC.identifier($model as map(*)) as xs:string? {
     if($model('docID') = ('indices', 'search')) then request:get-url()
-    else if($model('docID') = 'home') then 'http://weber-gesamtausgabe.de'
+    else if($model('docID') = 'home') then 'https://henze-digital.zenmem.de/de/Index'
     else if($model?specID or $model?chapID) then request:get-url()
     else if(config:get-doctype-by-id($model('docID'))) then config:permalink($model('docID'))
     else ()

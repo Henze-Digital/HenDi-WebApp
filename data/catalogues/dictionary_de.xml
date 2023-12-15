@@ -146,8 +146,8 @@
     <entry xml:id="popoverTitle.del">Löschung</entry>
     <entry xml:id="delGap">gelöschter Text nicht lesbar</entry>
     <entry xml:id="delStrikethrough">durchgestrichen</entry>
-    <entry xml:id="delOverwritten">überschrieben</entry>
-    <entry xml:id="delOvertyped">maschinell überschrieben</entry>
+    <entry xml:id="delOverwritten">gelöscht durch Überschreibung</entry>
+    <entry xml:id="delOvertyped">gelöscht durch Überschriebung</entry>
     <entry xml:id="substDel">ersetzt durch</entry>
     <entry xml:id="substDelOverwritten">überschrieben mit</entry>
     <entry xml:id="substDelStrikethrough">durchgestrichen und ersetzt mit</entry>
@@ -177,6 +177,8 @@
 	<entry xml:id="water">Wasserschaden</entry>
 	<entry xml:id="ink">Tintenfleck</entry>
 	<entry xml:id="damageDefault">Beschädigung</entry>
+	<entry xml:id="textLoss.punch">Textverlust durch Lochung</entry>
+	<entry xml:id="textLoss.ink">Textverlust durch Tinte</entry>
 	<entry xml:id="illegible">unleserliche Stelle</entry>
     <!--  doc_singleView  -->
     <entry xml:id="docSingleViewTitle">Dokumentansicht von %1</entry>
@@ -293,20 +295,23 @@
     <!-- HTML Meta Daten (description) -->
     <entry xml:id="bioInfoAbout">Biographische Informationen zu</entry>
     <entry xml:id="metaDescriptionIndex">Henze-digital erarbeitet ausgewählte Briefe Henzes in einer wissenschaftlich-kritischen Ausgabe. Alle Textteile werden zunächst auf diesen Seiten als Digitale Edition publiziert.</entry>
-    <!--<entry xml:id="metaLettersPersons">Eine Liste von Briefen aus der Korrespondenz von %1,
-        gesammelt und (teilweise) ediert durch Henze-Digital</entry>-->
+    <entry xml:id="metaLettersPersons">Eine Liste von Briefen aus der Korrespondenz von %1,
+        gesammelt und (teilweise) ediert durch Henze-Digital</entry>
     <!--<entry xml:id="metaDiariesPersons">Eine Liste von Tagebucheinträgen aus den Tagebüchern von %1,
         gesammelt und (teilweise) ediert durch Henze-Digital</entry>-->
     <!--<entry xml:id="metaWritingsPersons">Eine Liste von Schriften von %1, gesammelt und (teilweise)
         ediert durch Henze-Digital</entry>-->
-    <!--<entry xml:id="metaWorksPersons">Eine Liste von Werken von %1, gesammelt und (teilweise) ediert
-        durch Henze-Digital</entry>-->
+    <entry xml:id="metaWorksPersons">Eine Liste von Werken von %1, gesammelt und (teilweise) ediert
+        durch Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-personsPlus">Eine Liste von (historischen) Personen aus dem Umfeld der Editionen von Henze-Digital</entry>
+    <entry xml:id="metaDescriptionIndex-persons">Eine Liste von (historischen) Personen aus dem Umfeld der Editionen von Henze-Digital</entry>
+    <entry xml:id="metaDescriptionIndex-orgs">Eine Liste von (historischen) Organisationen aus dem Umfeld der Editionen von Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-news">Eine Liste von aktuellen Nachrichten, herausgegeben Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-works">Eine Liste von Werken, gesammelt und (teilweise) ediert durch Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-writings">Eine Liste von Schriften, gesammelt und (teilweise) ediert durch Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-diaries">Eine Liste von Tagebucheinträgen, gesammelt und ediert durch Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-letters">Eine Liste von Briefen, gesammelt und (teilweise) ediert durch Henze-Digital</entry>
+    <entry xml:id="metaDescriptionIndex-corresp">Eine Liste von Briefwechseln, ediert durch Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-indices">Vollständiges Register aller Dokumente der Digitalen Edition von Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-documents">Eine Liste von Dokumenten, gesammelt und (teilweise) ediert durch Henze-Digital</entry>
     <entry xml:id="metaDescriptionIndex-places">Ortsregister von Henze-Digital</entry>
@@ -331,6 +336,7 @@
     <entry xml:id="metaTitleIndex-persons">Register der Personen</entry>
     <entry xml:id="metaTitleIndex-orgs">Register der Organisationen</entry>
     <entry xml:id="metaTitleIndex-letters">Register der Briefe</entry>
+    <entry xml:id="metaTitleIndex-corresp">Register der Briefwechsel</entry>
     <entry xml:id="metaTitleIndex-places">Register der Orte</entry>
     <entry xml:id="metaTitleIndex-writings">Register der Schriften</entry>
     <entry xml:id="metaTitleIndex-diaries">Register der Tagebücher</entry>
@@ -364,8 +370,10 @@
     <entry xml:id="online">Online-Veröffentlichung</entry>
     <entry xml:id="inbook">Buchkapitel</entry>
     <entry xml:id="mastersthesis">Master-/Magisterarbeit</entry>
+	<entry xml:id="painting">Gemälde</entry>
     <!--  Various  -->
     <entry xml:id="correspondence">Briefe</entry>
+    <entry xml:id="corresp">Briefwechsel</entry>
     <entry xml:id="writings">Schriften</entry>
     <entry xml:id="noWritingsAvailable">Keine Schriften verfügbar</entry>
     <entry xml:id="journals">Periodika</entry>
@@ -426,6 +434,7 @@
     <entry xml:id="hide">ausblenden</entry>
     <entry xml:id="to">An</entry>
     <entry xml:id="from">Von</entry>
+	<entry xml:id="till">Bis</entry>
     <entry xml:id="fromTo">vom %1 bis %2</entry>
     <entry xml:id="fromToUnknown">vom %1 bis unbekannt</entry>
     <entry xml:id="unknownTo">von unbekannt bis %1</entry>
@@ -486,6 +495,7 @@
     <entry xml:id="all">alle</entry>
     <entry xml:id="none">keine</entry>
     <entry xml:id="only">nur</entry>
+    <entry xml:id="all_corresp">Alle Briefwechsel</entry>
     <entry xml:id="all_diaries">Alle Tagebücher</entry>
     <entry xml:id="all_writings">Alle Schriften</entry>
     <entry xml:id="all_letters">Alle Briefe</entry>
@@ -596,7 +606,7 @@
     <entry xml:id="julianDate">Julianisches Datum</entry>
     <entry xml:id="vorlageform">Vorlageform</entry>
     <entry xml:id="asksam-cat">asksam-cat</entry>
-    <entry xml:id="einrichtungsform">Einrichtungsformen</entry>
+    <entry xml:id="orgType">Art der Einrichtung</entry>
     <entry xml:id="received">erhalten</entry>
     <entry xml:id="descriptions">Beschreibungen</entry>
     <entry xml:id="sentVersion">Übermittelter Brief</entry>
@@ -787,6 +797,7 @@
     <!-- marc relators -->
     <entry xml:id="act">Schauspiel</entry>
     <entry xml:id="ard">Inszenierung</entry>
+    <entry xml:id="art">Künstler*in</entry>
     <entry xml:id="arr">Bearbeitung</entry>
     <entry xml:id="aus">Drehbuch</entry>
     <entry xml:id="aut">Verfasst von</entry>
@@ -825,4 +836,35 @@
     <entry xml:id="furtherDetails">Weitere Angaben</entry>
 	
 	<entry xml:id="textRotation">Text im Uhrzeigersinn gedreht</entry>
+    <entry xml:id="annotation">Anmerkung</entry>
+	<entry xml:id="introduction">Einführung</entry>
+	<entry xml:id="general">Allgemein</entry>
+	<entry xml:id="correspPartners">Korrespondenzpartner*innen</entry>
+	<entry xml:id="timePeriod">Zeitraum</entry>
+	<entry xml:id="noTextFound">Kein Text verfügbar.</entry>
+	
+	<entry xml:id="orgType.academy">Bildungseinrichtung</entry>
+	<entry xml:id="orgType.administration">Behörde</entry>
+	<entry xml:id="orgType.archive">Archiv</entry>
+	<entry xml:id="orgType.association">Gesellschaft</entry>
+	<entry xml:id="orgType.broadcaster">Sendeanstalt</entry>
+	<entry xml:id="orgType.choir">Chor</entry>
+	<entry xml:id="orgType.company">Unternehmen</entry>
+	<entry xml:id="orgType.festival">Festival</entry>
+	<entry xml:id="orgType.foundation">Stiftung</entry>
+	<entry xml:id="orgType.group">Gruppe</entry>
+	<entry xml:id="orgType.library">Bibliothek</entry>
+	<entry xml:id="orgType.military">militärisch</entry>
+	<entry xml:id="orgType.music">musikalisch</entry>
+	<entry xml:id="orgType.orchestra">Orchester</entry>
+	<entry xml:id="orgType.organizer">Veranstalter</entry>
+	<entry xml:id="orgType.political">politisch</entry>
+	<entry xml:id="orgType.press">Presse</entry>
+	<entry xml:id="orgType.publisher">Verlag</entry>
+	<entry xml:id="orgType.radio">Radio</entry>
+	<entry xml:id="orgType.religious">religiös</entry>
+	<entry xml:id="orgType.representative">Interessensvertretung</entry>
+	<entry xml:id="orgType.shop">Geschäft</entry>
+	<entry xml:id="orgType.television">Fernsehen</entry>
+	<entry xml:id="orgType.theater">Theater</entry>
 </dictionary>

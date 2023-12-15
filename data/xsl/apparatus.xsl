@@ -1,7 +1,7 @@
 <xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:functx="http://www.functx.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" xmlns:hendi="http://henze-digital.zenmem.de/ns/1.0" exclude-result-prefixes="xs" version="3.1">
 
    <xsl:variable name="doc" select="wega:doc($docID)"/>
-	<xsl:variable name="textConstitutionNodes" as="node()*" select=".//tei:subst | .//tei:add[not(parent::tei:subst)] | .//tei:gap[not(@reason='outOfScope' or parent::tei:del)] | .//tei:sic[not(parent::tei:choice)] | .//tei:del[not(parent::tei:subst)] | .//tei:unclear[not(parent::tei:choice)] | .//tei:note[@type='textConst'] | .//tei:handShift | .//tei:supplied[parent::tei:damage]"/>
+	<xsl:variable name="textConstitutionNodes" as="node()*" select=".//tei:subst | .//tei:add[not(parent::tei:subst)] | .//tei:gap[not(@reason='outOfScope' or parent::tei:del)] | .//tei:sic[not(parent::tei:choice)] | .//tei:del[not(parent::tei:subst)] | .//tei:unclear[not(parent::tei:choice)] | .//tei:note[@type='textConst'] | .//tei:handShift | .//tei:supplied[parent::tei:damage] | .//tei:damage[not(node())]"/>
 	<xsl:variable name="commentaryNodes" as="node()*" select=".//tei:note[@type=('commentary', 'definition')] | .//tei:choice | .//tei:figDesc | .//tei:foreign[@xml:id]"/>
 	<xsl:variable name="autoCommentaryNodes" as="node()*" select=".//tei:persName[not(@key)] | .//tei:orgName[not(@key)] | .//tei:placeName[not(@key)]"/>
 	<xsl:variable name="internalNodes" as="node()*" select=".//tei:note[@type='internal']"/>
@@ -612,18 +612,6 @@
       </xsl:call-template>
    </xsl:template>
 
-	<!--
-      whitespace is preserved for tei:damage via xsl:preserve-space;
-      we'll suppress it though when there's only one child element 
-   -->
-	<xsl:template match="tei:damage[count(*) eq 1]">
-		<xsl:element name="span">
-			<xsl:apply-templates select="@xml:id"/>
-			<xsl:attribute name="class">tei_damage</xsl:attribute>
-			<xsl:apply-templates select="*"/>
-		</xsl:element>
-	</xsl:template>
-	
    <xsl:template match="tei:gap">
       <xsl:element name="span">
          <xsl:text>[…]</xsl:text>
@@ -661,7 +649,6 @@
             <xsl:when test="tei:sic">
                <xsl:apply-templates select="tei:sic" mode="#current"/>
                <xsl:element name="span">
-                  <xsl:attribute name="class">brackets_supplied</xsl:attribute>
                <xsl:text>[sic]</xsl:text>
                </xsl:element>
             </xsl:when>
@@ -678,6 +665,9 @@
             </xsl:when>
             <xsl:when test="tei:reg">
                <xsl:apply-templates select="tei:reg" mode="#current"/>
+            </xsl:when>
+            <xsl:when test="tei:supplied">
+               <xsl:apply-templates select="tei:supplied" mode="#current"/>
             </xsl:when>
          </xsl:choose>
          <xsl:call-template name="popover"/>
@@ -769,12 +759,10 @@
       </xsl:call-template>
    </xsl:template>
    
-
    <!-- special template rule for <sic> within bibliographic contexts -->
    <xsl:template match="tei:sic[parent::tei:title or parent::tei:author]" priority="2">
       <xsl:apply-templates/>
       <xsl:element name="span">
-         <xsl:attribute name="class">brackets_supplied</xsl:attribute>
          <xsl:text>[sic]</xsl:text>
       </xsl:element>
    </xsl:template>
@@ -782,7 +770,7 @@
    <xsl:template match="tei:sic[not(parent::tei:choice)]">
       <xsl:element name="span">
          <xsl:apply-templates select="@xml:id"/>
-         <xsl:attribute name="class" select="concat('brackets_supplied tei_', local-name())"/>
+      	<xsl:attribute name="class" select="concat('tei_', local-name())"/>
          <xsl:apply-templates mode="#current"/>
          <xsl:text>[sic]</xsl:text>
       </xsl:element>
@@ -839,15 +827,31 @@
 	</xsl:template>
 	
 	<xsl:template match="tei:supplied[parent::tei:damage]" mode="apparatus">
-		<xsl:variable name="data-title" select="(ancestor::tei:damage/@agent, 'damageDefault')[1]" as="xs:string"/>
 		<xsl:call-template name="apparatusEntry">
-			<xsl:with-param name="title" select="wega:getLanguageString($data-title,$lang)"/>
+			<xsl:with-param name="title" select="wega:getLanguageString('damageDefault',$lang)"/>
 			<xsl:with-param name="lemma">
 				<xsl:apply-templates mode="lemma"/>
 			</xsl:with-param>
 			<xsl:with-param name="explanation">
-				<xsl:value-of select="wega:getLanguageString('supplied',$lang)"/>
-			   <xsl:sequence select="hendi:getHandFeatures(.)"/>
+				<xsl:value-of select="wega:getLanguageString('textLoss.punch',$lang)"/>
+			</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
+	<xsl:template match="tei:damage[not(node())]">
+		<xsl:element name="span">
+         <xsl:text>[ ]</xsl:text>
+        <xsl:call-template name="popover"/>
+      </xsl:element>
+	</xsl:template>
+	
+	<xsl:template match="tei:damage[not(node())]" mode="apparatus">
+		<xsl:variable name="agent" select="concat('textLoss.', ./@agent/string())"/>
+		<xsl:call-template name="apparatusEntry">
+			<xsl:with-param name="title" select="wega:getLanguageString('damageDefault',$lang)"/>
+			<xsl:with-param name="lemma"/>
+			<xsl:with-param name="explanation">
+				<xsl:value-of select="wega:getLanguageString($agent,$lang)"/>
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -1034,7 +1038,7 @@
                <xsl:number count="tei:handNote" level="any"/>
             </xsl:when>
             <xsl:otherwise>
-            	<xsl:number count="tei:subst | tei:add[not(parent::tei:subst)] | tei:gap[not(@reason='outOfScope' or parent::tei:del)] | tei:sic[not(parent::tei:choice)] | tei:del[not(parent::tei:subst)] | tei:unclear[not(parent::tei:choice)] | tei:note[@type='textConst']  | tei:supplied[parent::tei:damage] | tei:note[@type='internal'] | tei:handShift" level="any"/>
+            	<xsl:number count="tei:subst | tei:add[not(parent::tei:subst)] | tei:gap[not(@reason='outOfScope' or parent::tei:del)] | tei:sic[not(parent::tei:choice)] | tei:del[not(parent::tei:subst)] | tei:unclear[not(parent::tei:choice)] | tei:note[@type='textConst']  | tei:supplied[parent::tei:damage] | tei:damage[not(node())] | tei:note[@type='internal'] | tei:handShift" level="any"/>
             </xsl:otherwise>
          </xsl:choose>
       </xsl:variable>

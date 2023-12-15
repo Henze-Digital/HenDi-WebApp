@@ -336,6 +336,7 @@ declare function query:get-facets($collection as node()*, $facet as xs:string) a
     switch($facet)
     case 'sender' return $collection//tei:correspAction[range:eq(@type,'sent')]//@key[parent::tei:persName or parent::name or parent::tei:orgName]
     case 'addressee' return $collection//tei:correspAction[range:eq(@type,'received')]//@key[parent::tei:persName or parent::name or parent::tei:orgName]
+    case 'corresp' return $collection//tei:fileDesc/tei:titleStmt/tei:title[1]
     case 'docStatus' return $collection/*/@status | $collection//tei:revisionDesc/@status
     case 'placeOfSender' return $collection//tei:settlement[parent::tei:correspAction/@type='sent']/@key
     case 'placeOfAddressee' return $collection//tei:settlement[parent::tei:correspAction/@type='received']/@key
@@ -361,7 +362,7 @@ declare function query:get-facets($collection as node()*, $facet as xs:string) a
     case 'sex' return $collection//tei:sex
     case 'forenames' return $collection//tei:forename[not(@full)]
     case 'surnames' return $collection//tei:surname | $collection//tei:orgName[@type]
-    case 'einrichtungsform' return $collection//tei:term[ancestor::tei:state[@type='orgType']]
+    case 'orgType' return $collection//tei:term[ancestor::tei:state[@type='orgType']]
     case 'vorlageform' return $collection//mei:term[@label='vorlageform']
     case 'asksam-cat' return $collection//mei:term[@label='asksam-cat']
     case 'placenames' return $collection//tei:placeName[@type='reg']
@@ -645,7 +646,8 @@ declare function query:relators($doc as document-node()?) as element()* {
  :  @return licence as xs:anyURI if given in the document, 'https://creativecommons.org/licenses/by/4.0/' otherwise
 ~:)
 declare function query:licence($doc as document-node()?) as xs:anyURI {
-    if($doc//tei:licence/@target castable as xs:anyURI) then xs:anyURI($doc//tei:licence/@target)
+    if($doc//tei:licence[@n='legalNote']/text() != '') then($doc//tei:licence[@n='legalNote']/text())
+    else if($doc//tei:licence/@target castable as xs:anyURI) then xs:anyURI($doc//tei:licence/@target)
     else xs:anyURI('https://creativecommons.org/licenses/by/4.0/') 
 };
 

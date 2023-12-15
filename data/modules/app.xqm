@@ -224,6 +224,14 @@ declare
     %templates:default("lang", "en")
     function app:breadcrumb-register2($node as node(), $model as map(*), $lang as xs:string) as element(xhtml:a)? {
         if($model('docType') = 'indices') then ()
+        else if ($model('docType') = 'corresp')
+        then (
+            element {node-name($node)} {
+                $node/@*[not(local-name(.) eq 'href')],
+                attribute href {config:link-to-current-app(controller:path-to-register('corresp', $lang))},
+                lang:get-language-string($model('docType'), $lang)
+            }
+            )
         else 
             element {node-name($node)} {
                 $node/@*,
@@ -277,7 +285,7 @@ declare
     function app:person-main-tab($node as node(), $model as map(*), $lang as xs:string) as element()? {
         let $tabTitle := normalize-space($node)
         let $count := count($model($tabTitle))
-        let $alwaysShowNoCount := $tabTitle = ('biographies', 'history', 'descriptions')
+        let $alwaysShowNoCount := $tabTitle = ('biographies', 'history', 'descriptions', 'general')
         return
             if($count gt 0 or $alwaysShowNoCount) then
                 element {node-name($node)} {
@@ -852,6 +860,10 @@ declare
                     wega-util:transform($author, doc(concat($config:xsl-collection-path, '/works.xsl')), config:get-xsl-params(()))
             }</span>
         }
+        let $annotations := function($doc as document-node()) {
+            for $note in ($doc//tei:notesStmt/tei:note|$doc//mei:notesStmt/mei:annot)
+            return <span xmlns="http://www.w3.org/1999/xhtml">{wega-util:transform($note, doc(concat($config:xsl-collection-path, '/works.xsl')), config:get-xsl-params(()))}</span>
+        }
         let $publication := function($doc as document-node(), $alt as xs:boolean) {
             for $pubDate in ($doc//tei:sourceDesc/tei:biblStruct//tei:date)
             return <span xmlns="http://www.w3.org/1999/xhtml">{$pubDate/string(@when)}</span>
@@ -866,17 +878,26 @@ declare
                     wega-util:transform($segment, doc(concat($config:xsl-collection-path, '/works.xsl')), config:get-xsl-params(()))
             }</span>
         }
-        let $workType := ($model?doc//(mei:term|mei:work[not(parent::mei:componentList)]|tei:biblStruct)[1]/data(@class|@type))[1]
+        let $workType := ($model?doc//(mei:term|mei:work[not(parent::mei:componentList)]|tei:biblStruct)[1]/(@class|@type)/data())[1]
+        let $relators := query:relators($model?doc)[(self::mei:*|self::tei:*)/@role[not(. = ('edt'))] or self::tei:author or (self::mei:persName|self::mei:corpName)[@role][parent::mei:contributor]]
+        let $relatorsGrouped := for $each in functx:distinct-deep($relators)
+                                    let $role := $each/@role/string()
+                                    group by $role
+                                    return
+                                        <relators role="{$role}">
+                                            {$each}
+                                        </relators>
         return
         map {
             'ids' : $model?doc//mei:altId[not(@type=('gnd', 'wikidata', 'dracor.einakter'))],
-            'relators' : query:relators($model?doc)[self::mei:*/@role[. = ('cmp', 'lbt', 'lyr', 'arr', 'aut', 'trl')] or self::tei:*/@role[. = ('arr', 'trl')] or self::tei:author or (self::mei:persName|self::mei:corpName)[@role = 'mus'][parent::mei:contributor]],
+            'relatorGrps' : $relatorsGrouped,
             'workType' : $workType,
             'workTypeLabel' : if($workType) then(lang:get-language-string($workType, config:guess-language(()))) else(),
             'titles' : $print-titles($model?doc, false()),
             'authors' : $print-authors($model?doc, false()),
             'altTitles' : $print-titles($model?doc, true()),
             'descTitles' : $print-titles-desc($model?doc),
+            'annotations' : $annotations($model?doc),
             'publication': $publication($model?doc, true()),
             'publisher': $publisher($model?doc, true()),
             'pubPlace': $pubPlace($model?doc, true())
@@ -974,7 +995,7 @@ declare
 	            'funeral' : exists($model('doc')//tei:death/tei:date[@type = 'funeral']),
 	            'occupations' : $model('doc')//tei:occupation,
 	            'residences' : $residences,
-	            'states' : $model('doc')//tei:state[@type='orgType']//tei:term,
+	            'states' : for $each in $model('doc')//tei:state[@type='orgType']//tei:term return lang:get-language-string('orgType.' || $each, $lang),
 	            'bibls' : $model('doc')//tei:listBibl/tei:bibl,
 	            'addrLines' : $model('doc')//tei:addrLine[ancestor::tei:affiliation[tei:orgName='Carl-Maria-von-Weber-Gesamtausgabe']] 
 	        }
@@ -1039,6 +1060,27 @@ declare
                     if($bio instance of xs:string) then <p xmlns="http://www.w3.org/1999/xhtml">{$bio}</p>
                     else templates:process($node/node(), $model)
                 }
+};
+
+declare 
+    %templates:default("lang", "en")
+    function app:print-corresp-intro($node as node(), $model as map(*), $lang as xs:string) as element(xhtml:div)* {
+        let $themComm:= app:inject-query($model?doc/*)
+        let $intro := collection('/db/apps/hendi-data/thematicCommentaries')/node()[@xml:id=$themComm//tei:relation[@name='introduction']/@key]
+        let $text-transformed := wega-util:transform($intro//tei:text//tei:div[@xml:lang=$lang][position() = 1 or position() = 2 or position() = 3], doc(concat($config:xsl-collection-path, '/var.xsl')), config:get-xsl-params(()))
+        return
+            $text-transformed
+};
+
+declare 
+    %templates:default("lang", "en")
+    function app:print-corresp-intro-readmore($node as node(), $model as map(*), $lang as xs:string) as element(xhtml:div)* {
+        let $intro-id := app:inject-query($model?doc/*)//tei:relation[@name='introduction']/@key
+        let $link-to-intro := '/' || $lang || '/' || $intro-id
+        return
+            <div xmlns="http://www.w3.org/1999/xhtml">
+                <a href="{$link-to-intro}">Zum vollständigen Artikel</a>
+            </div>
 };
 
 declare 
@@ -1159,6 +1201,70 @@ declare
             'authors' : $model('doc')//tei:fileDesc/tei:titleStmt/tei:author
             }
 };
+
+(:
+ : ****************************
+ : Corresp pages
+ : ****************************
+ : @author: Dennis Ried
+:)
+
+declare 
+    %templates:wrap
+    function app:corresp-title($node as node(), $model as map(*)) as xs:string {
+        query:title($model('docID'))
+};
+
+declare 
+    %templates:default("lang", "en")
+    %templates:default("popover", "false")
+    function app:preview-correspPartner-name($node as node(), $model as map(*), $lang as xs:string, $popover as xs:string) as element() {
+        let $key := $model('correspPartner')
+        let $myPopover := wega-util-shared:semantic-boolean($popover)
+        let $doc2keyAvailable := crud:docAvailable($key)
+        return
+            if($key and $myPopover and $doc2keyAvailable)
+            then app:createDocLink(crud:doc($key), crud:doc($key)//(tei:persName|tei:orgName)[@type='reg'] ! string-join(str:txtFromTEI(., $lang), ''), $lang, (), true())
+            else element xhtml:span {
+                if($key and $doc2keyAvailable) then wdt:lookup(config:get-doctype-by-id($key), data($key))?title('txt')
+                else str:normalize-space($model('correspPartner'))
+            }
+};
+
+declare 
+    %templates:wrap
+    %templates:default("lang", "en")
+    function app:corresp-basic-data($node as node(), $model as map(*), $lang as xs:string) as map(*) {
+        let $search-results as document-node()* := core:getOrCreateColl('letters', $model('docID'), true())
+        let $dates := $search-results//tei:correspDesc//tei:date
+        let $datesStrings := for $date in $dates return date:getOneNormalizedDate($date, false())
+        let $letterEarliest := if(count($datesStrings) gt 0) then(date:format-date(min($datesStrings), '[D]. [MNn] [Y]', $lang)) else()
+        let $letterLatest := if(count($datesStrings) gt 0) then(date:format-date(max($datesStrings), '[D]. [MNn] [Y]', $lang)) else()
+        let $correspPartners := for $value in distinct-values($search-results//tei:correspAction//(tei:persName|tei:orgName)/@key)
+                                    order by crud:doc($value)//(tei:persName|tei:orgName)[@type='reg'] ! string-join(str:txtFromTEI(., $lang), '')
+                                    return
+                                        $value
+        return
+	        map{
+	            'letterEarliest' : $letterEarliest,
+	            'letterLatest' : $letterLatest,
+	            'correspPartners' : $correspPartners,
+	            'annotation' : $model('doc')//tei:notesStmt/tei:note[@type = 'annotation']/string()
+	        }
+};
+
+declare 
+    %templates:wrap
+    function app:corresp-details($node as node(), $model as map(*)) as map(*) {
+	    map{
+	        'correspondence' : core:getOrCreateColl('letters', $model('docID'), true()),
+	        'documents' : core:getOrCreateColl('documents', $model('docID'), true()),
+	        'works' : core:getOrCreateColl('works', $model('docID'), true()),
+	        'places' : core:getOrCreateColl('places', $model('docID'), true()),
+	        'xml-download-url' : replace(controller:create-url-for-doc($model('doc'), $model('lang')), '\.html', '.xml')
+	    }
+};
+
 
 (:~
  : Main Function for wikipedia.html
@@ -1945,6 +2051,14 @@ declare
     %templates:default("lang", "en")
     function app:preview($node as node(), $model as map(*), $lang as xs:string) as map(*) {
         let $workType := ($model('result-page-entry')//(mei:term|mei:work[not(parent::mei:componentList)]|tei:biblStruct)[1]/data(@class))[1]
+        let $relators := query:relators($model('result-page-entry'))[self::mei:*/@role[. = ('cmp', 'lbt', 'lyr', 'arr')] or self::tei:*/@role[. = ('arr', 'trl')] or self::tei:author or (self::mei:persName|self::mei:corpName)[@role = 'mus'][parent::mei:contributor]]
+        let $relatorsGrouped := for $each in $relators
+                                    let $role := $each/@role/string()
+                                    group by $role
+                                    return
+                                        <relators role="{$role}">
+                                            {$each}
+                                        </relators>
         return
             map {
             'doc' : $model('result-page-entry'),
@@ -1953,7 +2067,7 @@ declare
                 if(config:is-person($model?parent-docID)) then controller:create-url-for-doc-in-context($model?result-page-entry, $lang, $model?parent-docID)
                 else controller:create-url-for-doc($model('result-page-entry'), $lang),
             'docType' : config:get-doctype-by-id($model('result-page-entry')/root()/*/data(@xml:id)),
-            'relators' : query:relators($model('result-page-entry'))[self::mei:*/@role[. = ('cmp', 'lbt', 'lyr', 'arr')] or self::tei:*/@role[. = ('arr', 'trl')] or self::tei:author or (self::mei:persName|self::mei:corpName)[@role = 'mus'][parent::mei:contributor]],
+            'relatorGrps' : $relatorsGrouped,
             'biblioType' : $model('result-page-entry')/tei:biblStruct/data(@type),
             'workType' : $workType,
             'workTypeLabel' : if($workType) then(lang:get-language-string($workType, $lang)) else(),
@@ -2074,21 +2188,9 @@ declare
     %templates:wrap
     %templates:default("lang", "en")
     function app:preview-relator-role($node as node(), $model as map(*), $lang as xs:string) as xs:string? {
-        if($model('relator')/self::mei:*/@role) then lang:get-language-string($model('relator')/data(@role), $lang)
-        else if($model('relator')/self::tei:*/@role) then lang:get-language-string($model('relator')/data(@role), $lang)
-        else if($model('relator')/self::tei:author) then lang:get-language-string('aut', $lang)
+        if($model('relatorGrp')/@role) then lang:get-language-string($model('relatorGrp')/data(@role), $lang)
+        else if($model('relatorGrp')/node()/tei:author) then lang:get-language-string('aut', $lang)
         else wega-util:log-to-file('warn', 'app:preview-relator-role(): Failed to reckognize role')
-};
-
-declare 
-    %templates:wrap
-    %templates:default("lang", "en")
-    function app:preview-relator-trlLang($node as node(), $model as map(*), $lang as xs:string) as xs:string? {
-        if($model('relator')/self::mei:*[@role[. = 'trl'] and @label])
-        then ('(' || lang:get-language-string('into', $lang) || ' ' || lang:get-language-string($model('relator')/data(@label), $lang) || (if($lang = 'de') then ('e') else()) ||')')
-        else if($model('relator')/self::tei:*[@role[. = 'trl'] and @label])
-        then ('(' || lang:get-language-string('into', $lang) || ' ' || lang:get-language-string($model('relator')/data(@label), $lang) || (if($lang = 'de') then ('e') else()) ||')')
-        else wega-util:log-to-file('warn', 'app:preview-relator-trlLang(): Failed to reckognize label')
 };
 
 declare 
@@ -2104,16 +2206,40 @@ declare
 declare 
     %templates:default("lang", "en")
     %templates:default("popover", "false")
-    function app:preview-relator-name($node as node(), $model as map(*), $lang as xs:string, $popover as xs:string) as element() {
-        let $key := $model('relator')/@codedval | $model('relator')/@key
+    function app:preview-relator-name($node as node(), $model as map(*), $lang as xs:string, $popover as xs:string) as element()* {
+        
+    for $relator at $i in $model('relatorGrp')/node()
+        let $key := $relator/@codedval | $relator/@key
         let $myPopover := wega-util-shared:semantic-boolean($popover)
         let $doc2keyAvailable := crud:docAvailable($key)
+        let $relators-translation-lang :=
+        	if($relator/(self::mei:*|self::tei:*)[@role[. = 'trl'] and @label])
+        	then(
+	            if($relator/self::mei:*[@role[. = 'trl'] and @label])
+	            then ('(' || lang:get-language-string('into', $lang) || ' ' || lang:get-language-string($relator/data(@label), $lang) || (if($lang = 'de') then ('e') else()) ||')')
+	            else if($relator/self::tei:*[@role[. = 'trl'] and @label])
+	            then ('(' || lang:get-language-string('into', $lang) || ' ' || lang:get-language-string($relator/data(@label), $lang) || (if($lang = 'de') then ('e') else()) ||')')
+	            else wega-util:log-to-file('warn', 'app:preview-relator-trlLang(): Failed to reckognize label'))
+            else()
         return
             if($key and $myPopover and $doc2keyAvailable)
-            then app:createDocLink(crud:doc($key), query:title($key), $lang, (), true())
+            then (if($i gt 1)
+                  then(element xhtml:span {' | '})
+                  else(),
+                  app:createDocLink(crud:doc($key), query:title($key), $lang, (), true()),
+                  if($relators-translation-lang)
+                  then(element xhtml:span {' ', $relators-translation-lang})
+                  else())
             else element xhtml:span {
-                if($key and $doc2keyAvailable) then wdt:lookup(config:get-doctype-by-id($key), data($key))?title('txt')
-                else str:normalize-space($model('relator'))
+                if($i gt 1)
+                    then(element xhtml:span {' | '})
+                    else(),
+                if($key and $doc2keyAvailable)
+                    then wdt:lookup(config:get-doctype-by-id($key), data($key))?title('txt')
+                    else (str:normalize-space($relator),
+                if($relators-translation-lang)
+                    then(element xhtml:span {' ', $relators-translation-lang})
+                    else())
             }
 };
 
@@ -2271,6 +2397,85 @@ let $references :=
                              </div>
                         </div>
                 }
+            </div>
+        </div>
+};
+
+declare function app:get-file-ids-for-enrichment($elems as node()*, $type as xs:string) as node()* {
+	for $elem in $elems
+	let $name := $elem/text()
+	let $fileID := $elem/root()/node()/@xml:id/string()
+	group by $name
+	order by $name
+	return
+	    <tr>
+              <td>{$name}</td>
+              <td>
+                  {for $each at $i in distinct-values($fileID)
+        			return
+        			    (<a href="/{$each}">{$each}</a>, if($i = count(distinct-values($fileID))) then() else (<span> | </span>))}
+		    </td>
+        </tr>
+};
+
+declare function app:get-file-ids-for-enrichment2($name as xs:string, $elems as node()*, $correspID as xs:string, $type as xs:string) as node()* {
+    if($elems)
+    then(
+    <div name="{$name}">
+             <div class="card">
+                <div class="card-header" id="heading-{$correspID}-{$name}">
+                  <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse-{$correspID}-{$name}" aria-expanded="true" aria-controls="collapse-{$correspID}-{$name}">
+                      {$name} ({count(functx:distinct-deep($elems))} Einträge)
+                    </button>
+                  </h2>
+                </div>
+                <div id="collapse-{$correspID}-{$name}" class="collapse" aria-labelledby="heading-{$correspID}-{$name}" data-parent="#accordEnrichResults">
+                    <div class="card-body">
+                        <table style="width: 100%;">
+                            <tr>
+                              <th>Title</th> 
+                              <th>IDs</th>
+                            </tr>
+            {
+                app:get-file-ids-for-enrichment($elems, $type)
+            }
+            </table>
+                    </div>
+                </div>
+             </div>
+        </div>
+    )
+    else()
+};
+
+declare function app:missing-keys-datasets($node as node(), $model as map(*))  {
+
+let $corresps := crud:data-collection('corresp')
+
+for $corresp in $corresps
+    let $correspTitle := $corresp//tei:fileDesc/tei:titleStmt/tei:title[1]/text()
+    let $correspID := $corresp/tei:TEI/@xml:id/string()
+    
+    let $collPostals :=  crud:data-collection('letters')/tei:TEI[.//tei:relation[@key=$correspID]]
+
+    let $placeElems := $collPostals//(tei:settlement|tei:placeName|tei:bloc|tei:region|tei:district|tei:geogName)[not(@key)][not(./tei:*)] | $collPostals//tei:country[not(@key)][not(./tei:*)][not(ancestor::tei:publisher)]
+    let $persNameElems := $collPostals//(tei:persName|tei:rs[@type='person']|tei:name[@type='person'])[not(@key)][not(./tei:*)]
+    let $orgNameElems := $collPostals//(tei:orgName|tei:rs[@type='org']|tei:name[@type='org'])[not(@key)][not(./tei:*)]
+    let $workElems := $collPostals//(tei:rs[@type='work']|tei:name[@type='work'])[not(@key)][not(./tei:*)]
+    
+    return
+        <div class="row">
+            <div class="col-md-3 order-2 side-col"/>
+            <div class="col-md-9 main-col">
+                <h1>{$correspTitle}</h1>
+                <div class="accordion" id="accordEnrichResults">
+                    {app:get-file-ids-for-enrichment2('Werke', $workElems, $correspID, 'works'),
+                    app:get-file-ids-for-enrichment2('Personen', $persNameElems, $correspID, 'persons'),
+                    app:get-file-ids-for-enrichment2('Organisationen', $orgNameElems, $correspID, 'orgs'),
+                    app:get-file-ids-for-enrichment2('Orte', $placeElems, $correspID, 'places')
+                    }
+                </div>
             </div>
         </div>
 };

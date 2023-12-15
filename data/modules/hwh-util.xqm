@@ -114,6 +114,7 @@ declare function hwh-util:iterateResults($results as node()*, $sortParam as node
 declare function hwh-util:prepareTitleForSorting($title as node()) as xs:string?{
     $title//text()
     => string-join(' ')
+    => replace("\|","")
     => normalize-space()
     => tokenize(' ')
     => string-join('_')
@@ -133,4 +134,21 @@ declare function hwh-util:prepareTitleForSorting($title as node()) as xs:string?
 :)
 declare function hwh-util:get-work-type($docID as xs:string) as xs:string?{
     (crud:doc($docID)//(mei:term|mei:work[not(parent::mei:componentList)]|tei:biblStruct)[1]/data(@class))[1]
+};
+
+(:~
+ : Returns a namestring with Initals, e.g., E. T. A. Hoffmann
+ : @author  Dennis Ried
+ : @param   $nameStr The name to be shorten
+:)
+declare function hwh-util:shorten-fullnames($nameStr as xs:string?) as xs:string? {
+    let $tokens := tokenize($nameStr,' ')
+    let $count := count($tokens)
+    let $forenames := for $forename at $i in $tokens
+                        where $i lt $count
+                        return
+                            substring($forename, 1, 1) || '.'
+    let $surname := subsequence(tokenize($nameStr,' '), $count, 1)
+    return
+        string-join(($forenames,$surname),' ')
 };

@@ -1,15 +1,15 @@
 openapi: 3.0.1
 info:
   title: HenDi API
-  description: 'The OpenAPI documentation for the RESTful interface of the Carl-Maria-von-Weber-Gesamtausgabe. <br/> (No registration, authentication, or API key is required) <br/> For feedback or requests about this API please contact stadler@weber-gesamtausgabe.de or start the discussion at https://github.com/Edirom/WeGA-WebApp'
+  description: 'The OpenAPI documentation for the RESTful interface of Henze-Digital (HenDi) (adapted from Carl-Maria-von-Weber-Gesamtausgabe). <br/> (No registration, authentication, or API key is required) <br/> For feedback or requests about this API please contact dennis.ried@unipaderborn.de or stadler@weber-gesamtausgabe.de or start the discussion at https://github.com/Edirom/WeGA-WebApp'
   version: 1.1.0
 servers:
   - url: '/api/v1'
 tags:
   - name: Documents
-    description: Access to the documents of the WeGA digital edition
+    description: Access to the documents of the HenDi digital edition
   - name: Search
-    description: Access to search functions of the WeGA digital edition
+    description: Access to search functions of the HenDi digital edition
   - name: Code Samples
     description: Access to encoding features
   - name: Application
@@ -17,7 +17,7 @@ tags:
   - name: Facets
     description: Access to facets for filtering result sets
   - name: Repositories
-    description: Access to items within the WeGA digital edition by repository
+    description: Access to items within the HenDi digital edition by repository
 paths:
   /documents:
     $ref: "./openapi/paths/documents.yaml"

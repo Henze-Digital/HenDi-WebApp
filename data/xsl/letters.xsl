@@ -1,7 +1,7 @@
 <xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:functx="http://www.functx.com" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" version="2.0">
 	<xsl:output encoding="UTF-8" method="html" omit-xml-declaration="yes" indent="no"/>
 	<xsl:strip-space elements="*"/>
-	<xsl:preserve-space elements="tei:q tei:quote tei:item tei:cell tei:p tei:dateline tei:closer tei:opener tei:hi tei:addrLine tei:settlement tei:persName tei:rs tei:name tei:placeName tei:country tei:bloc tei:seg tei:l tei:head tei:salute tei:date tei:subst tei:add tei:orgName tei:lem tei:rdg tei:provenance tei:acquisition tei:damage tei:bibl"/>
+	<xsl:preserve-space elements="tei:q tei:quote tei:item tei:cell tei:p tei:dateline tei:closer tei:opener tei:hi tei:addrLine tei:settlement tei:persName tei:rs tei:name tei:placeName tei:country tei:district tei:bloc tei:seg tei:l tei:head tei:salute tei:date tei:subst tei:add tei:orgName tei:lem tei:rdg tei:provenance tei:acquisition tei:damage tei:bibl"/>
 	<xsl:include href="common_link.xsl"/>
 	<xsl:include href="common_main.xsl"/>
 	<xsl:include href="apparatus.xsl"/>
@@ -115,7 +115,7 @@
 	<xsl:template match="tei:salute">
 		<xsl:choose>
 			<xsl:when test="parent::node()/name() = 'opener'">
-				<xsl:element name="p">
+				<xsl:element name="span">
 					<xsl:apply-templates select="@xml:id"/>
 					<xsl:attribute name="class">teiLetter_salute</xsl:attribute>
 					<xsl:choose>
@@ -229,7 +229,7 @@
 				</xsl:element>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:element name="p">
+				<xsl:element name="div">
 					<xsl:attribute name="class">
 						<xsl:choose>
 							<xsl:when test="@rend">
@@ -266,14 +266,18 @@
 				<xsl:apply-templates/>
 			</xsl:element>
 			</xsl:when>
-			<xsl:otherwise><xsl:apply-templates/></xsl:otherwise>
+			<xsl:otherwise>
+                <xsl:apply-templates/>
+            </xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 	
-	<xsl:template match="tei:addrLine">
+	<xsl:template match="tei:addrLine | tei:opener[@rend] | tei:dateline[@rend]">
 		<xsl:element name="span">
 			<xsl:attribute name="class">
-				<xsl:text>d-flex</xsl:text>
+				<xsl:if test="@rend=('inlineApart','right','left','center')">
+					<xsl:text>d-flex</xsl:text>
+				</xsl:if>
 				<xsl:choose>
 					<xsl:when test="@rend='inlineApart'">
 						<xsl:attribute name="style"> justify-content-between</xsl:attribute>
@@ -290,6 +294,9 @@
 				</xsl:choose>
 			</xsl:attribute>
 			<xsl:apply-templates/>
+			<xsl:if test="self::tei:addrLine">
+                <xsl:element name="br"/>
+            </xsl:if>
 		</xsl:element>
 	</xsl:template>
 	

@@ -12,17 +12,17 @@
 	</div>
 	<div xml:id="various">
 		<entry xml:id="anonymusID">A001058B</entry>
-		<entry xml:id="errorLogFile">wega.webapp</entry>
+		<entry xml:id="errorLogFile">hendi.webapp</entry>
 		<entry xml:id="bugEmail">henze-digital [@] zenmem.de</entry>
-		<entry xml:id="permaLinkPrefix">http://henze-digital.zenmem.de</entry>
+		<entry xml:id="permaLinkPrefix">https://henze-digital.zenmem.de</entry>
 		<entry xml:id="environment">development</entry>
 		<entry xml:id="iiifPresentationApi">https://henze-digital.zenmem.de/IIIF/</entry><!-- trailing slashes are important! -->
 		<entry xml:id="iiifImageApi">https://henze-digital.zenmem.de/Scaler/IIIF/</entry><!-- trailing slashes are important! -->
 		<entry xml:id="facsimileGreenList">D-B D-Hs CZ-Pk D-LUs S-LI</entry>
 		<entry xml:id="maxNews">2</entry>
-		<entry xml:id="googleWebsiteMetatag">zD8k8hwr5UC9x1C8vUYdDOx7-0Wxe_HA3De9eGvawEQ</entry>
+		<entry xml:id="googleWebsiteMetatag">x</entry>
 		<entry xml:id="microsoftBingWebsiteMetatag">x</entry>
-		<entry xml:id="ODDversion">1.0.1</entry>
+		<entry xml:id="ODDversion">2.0.0</entry>
 		<entry xml:id="versionNews">A05009FF</entry>
 		<entry xml:id="versionDate">2023-09-07</entry>
 		<entry xml:id="entriesPerPage">10</entry>
@@ -68,6 +68,7 @@
 		<entry xml:id="translationsIdPattern">A14[0-9A-F]{5}</entry>
 		<entry xml:id="documentsIdPattern">A10[0-9A-F]{5}</entry>
 		<entry xml:id="addendaIdPattern">A12[0-9A-F]{5}</entry>
+		<entry xml:id="correspIdPattern">A15[0-9A-F]{5}</entry>
 		<!-- insert textType values as whitespace seperated list -->
 		<entry xml:id="textTypes">card.business card.letter card.postal document envelope fax letter note.telephone note.conversation telegram unknown</entry>
 		<!--        <entry xml:id="textTypes">card.business card.letter card.postal contract document envelope fax formCommitment letter note.telephone note.conversation statement statement.fee telegram unknown</entry>-->

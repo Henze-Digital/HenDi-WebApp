@@ -4,14 +4,13 @@
         <!-- Facetten Filter-->
         <div class="allFilter panel-collapse collapse show" id="allFilter">
         	<div class="input-group facet-group checkbox" data-template="app-shared:if-matches" data-template-key="environment" data-template-value="development">
-            <h4 data-template="lang:translate">chronology</h4>
-            <input type="text" class="rangeSlider" name="chronology-slider" data-template="app:set-slider-range"/>
+	            <h4 data-template="lang:translate">chronology</h4>
+	            <input type="text" class="rangeSlider" name="chronology-slider" data-template="app:set-slider-range"/>
                 <input type="checkbox" name="undated" id="undatedLetters" data-template="app:set-facet-checkbox" data-template-key="undated"/>
                 <label for="undatedLetters" data-template="lang:translate">showUndatedDocuments</label>
-                <br/>
-                <input type="checkbox" name="hideRevealed" id="hideRevealed" data-template="app:set-facet-checkbox" data-template-key="hideRevealed"/>
-                <label for="hideRevealed" data-template="lang:translate">hideRevealedLetters</label>
             </div>
+            <h4 data-template="lang:translate">corresp</h4>
+            <select multiple="multiple" data-template="facets:select" name="corresp"/>
             <h4 data-template="lang:translate">sender</h4>
             <select multiple="multiple" data-template="facets:select" name="sender"/>
             <h4 data-template="lang:translate">addressees</h4>
@@ -28,12 +27,10 @@
             <select multiple="multiple" data-template="facets:select" name="works"/>
             <h4 data-template="lang:translate">places_mentioned</h4>
             <select multiple="multiple" data-template="facets:select" name="places"/>
-        	<div data-template="app-shared:if-matches" data-template-key="environment" data-template-value="development">
-        		<h4 data-template="lang:translate">docType</h4>
-            	<select multiple="multiple" data-template="facets:select" name="docTypeSubClass"/>
-        	</div>
-	            <h4 data-template="lang:translate">repository</h4>
-	            <select multiple="multiple" data-template="facets:select" name="repository"/>
+        	<h4 data-template="lang:translate">docType</h4>
+            <select multiple="multiple" data-template="facets:select" name="docTypeSubClass"/>
+            <h4 data-template="lang:translate">repository</h4>
+            <select multiple="multiple" data-template="facets:select" name="repository"/>
         	<div data-template="app-shared:if-matches" data-template-key="environment" data-template-value="development">
 	            <h4 data-template="lang:translate">facsimile</h4>
 	            <select multiple="multiple" data-template="facets:select" name="facsimile"/>
@@ -45,5 +42,4 @@
         </div>
     </div>
 	<div data-template="templates:include" data-template-path="templates/includes/search-results.html"/>
-	<div data-template="templates:include" data-template-path="templates/includes/introduction-modal.html"/>
 </div>
