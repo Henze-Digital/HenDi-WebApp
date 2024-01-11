@@ -818,14 +818,18 @@ declare function wdt:biblio($item as item()*) as map(*) {
                 case xs:untypedAtomic return crud:doc($item)/tei:biblStruct
                 case document-node() return $item/tei:biblStruct
                 default return $item/root()/tei:biblStruct
-            let $html-title := bibl:printCitation($biblStruct, <xhtml:p/>, 'de')
+            (: bibl:printCitation($biblStruct, <xhtml:p/>, 'de') :)
+            let $html-title := <xhtml:p>{
+                (if($biblStruct//tei:author) then(string-join($biblStruct//tei:author, '/') || ': ') else()) ||
+                ($biblStruct//tei:title)[1] ||
+                (if($biblStruct//tei:editor) then(', hg. v. ' || string-join($biblStruct//tei:editor, '/')) else())}</xhtml:p>
             return
                 switch($serialization)
                 case 'txt' return str:normalize-space($html-title)
                 case 'html' return $html-title 
                 default return wega-util:log-to-file('error', 'wdt:biblio()("title"): unsupported serialization "' || $serialization || '"')
         },
-        'memberOf' : ('indices', 'unary-docTypes'),
+        'memberOf' : ('indices', 'unary-docTypes','search'),
         'search' : function($query as element(query)) {
             $item[tei:biblStruct]//tei:biblStruct[ft:query(., $query)] | 
             $item[tei:biblStruct]//tei:title[ft:query(., $query)] | 
