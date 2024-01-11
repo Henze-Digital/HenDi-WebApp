@@ -818,11 +818,7 @@ declare function wdt:biblio($item as item()*) as map(*) {
                 case xs:untypedAtomic return crud:doc($item)/tei:biblStruct
                 case document-node() return $item/tei:biblStruct
                 default return $item/root()/tei:biblStruct
-            (: bibl:printCitation($biblStruct, <xhtml:p/>, 'de') :)
-            let $html-title := <xhtml:p>{
-                (if($biblStruct//tei:author) then(string-join($biblStruct//tei:author, '/') || ': ') else()) ||
-                ($biblStruct//tei:title)[1] ||
-                (if($biblStruct//tei:editor) then(', hg. v. ' || string-join($biblStruct//tei:editor, '/')) else())}</xhtml:p>
+            let $html-title := <xhtml:p>{($biblStruct//tei:title)[1]/text()}</xhtml:p>
             return
                 switch($serialization)
                 case 'txt' return str:normalize-space($html-title)

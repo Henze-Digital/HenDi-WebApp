@@ -954,6 +954,72 @@ declare
 
 (:
  : ****************************
+ : Biblio pages
+ : ****************************
+:)
+
+declare 
+    %templates:wrap
+    function app:biblio-basic-data($node as node(), $model as map(*)) as map(*) {
+        let $print-authors := function($doc as document-node(), $alt as xs:boolean) {
+            for $author in ($doc//tei:biblStruct/node()[1]/tei:author)
+            return <span xmlns="http://www.w3.org/1999/xhtml">{
+                    wega-util:transform($author, doc(concat($config:xsl-collection-path, '/works.xsl')), config:get-xsl-params(()))
+            }</span>
+        }
+        let $annotations := function($doc as document-node()) {
+            for $note in ($doc//tei:notesStmt/tei:note|$doc//mei:notesStmt/mei:annot)
+            return <span xmlns="http://www.w3.org/1999/xhtml">{wega-util:transform($note, doc(concat($config:xsl-collection-path, '/works.xsl')), config:get-xsl-params(()))}</span>
+        }
+        let $publication := function($doc as document-node(), $alt as xs:boolean) {
+            for $pubDate in ($doc//tei:biblStruct/node()[1]/tei:imprint/tei:date)
+            return <span xmlns="http://www.w3.org/1999/xhtml">{$pubDate/@when/string()}</span>
+        }
+        let $pubPlace := function($doc as document-node(), $alt as xs:boolean) {
+            for $pubPlace in ($doc//tei:biblStruct/node()[1]/tei:imprint/tei:pubPlace)
+            return <span xmlns="http://www.w3.org/1999/xhtml">{$pubPlace/text()}</span>
+        }
+        let $publisher := function($doc as document-node(), $alt as xs:boolean) {
+            for $segment in ($doc//tei:biblStruct/node()[1]/tei:imprint/tei:publisher)
+            return <span xmlns="http://www.w3.org/1999/xhtml">{
+                    wega-util:transform($segment, doc(concat($config:xsl-collection-path, '/works.xsl')), config:get-xsl-params(()))
+            }</span>
+        }
+        let $biblioType := $model?doc/tei:biblStruct/@type/data()
+        let $relators := query:relators($model?doc)[self::tei:*/@role[not(. = ('edt'))] or self::tei:author]
+        let $relatorsGrouped := for $each in functx:distinct-deep($relators)
+                                    let $role := $each/@role/string()
+                                    group by $role
+                                    return
+                                        <relators role="{$role}">
+                                            {$each}
+                                        </relators>
+        return
+        map {
+            'ids' : $model?doc//tei:biblStruct,
+            'relatorGrps' : $relatorsGrouped,
+            'biblioType' : $biblioType,
+            'biblioTypeLabel' : if($biblioType) then(lang:get-language-string($biblioType, config:guess-language(()))) else(),
+            'authors' : $print-authors($model?doc, false()),
+            'annotations' : $annotations($model?doc),
+            'publication': $publication($model?doc, true()),
+            'publisher': $publisher($model?doc, true()),
+            'pubPlace': $pubPlace($model?doc, true())
+        }
+};
+
+declare 
+    %templates:wrap
+    function app:biblio-details($node as node(), $model as map(*)) as map(*) {
+        map {
+            'backlinks' : core:getOrCreateColl('backlinks', $model('docID'), true()),
+            'gnd' : query:get-gnd($model('doc')),
+            'xml-download-url' : replace(controller:create-url-for-doc($model('doc'), $model('lang')), '\.html', '.xml')
+        }
+};
+
+(:
+ : ****************************
  : Person pages
  : ****************************
 :)
