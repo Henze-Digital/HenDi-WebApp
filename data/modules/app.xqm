@@ -971,16 +971,16 @@ declare
             for $note in ($doc//tei:notesStmt/tei:note|$doc//mei:notesStmt/mei:annot)
             return <span xmlns="http://www.w3.org/1999/xhtml">{wega-util:transform($note, doc(concat($config:xsl-collection-path, '/works.xsl')), config:get-xsl-params(()))}</span>
         }
-        let $publication := function($doc as document-node(), $alt as xs:boolean) {
-            for $pubDate in ($doc//tei:biblStruct/node()[1]/tei:imprint/tei:date)
+        let $publication := function($doc as document-node()) {
+            for $pubDate in ($doc//tei:biblStruct/tei:*/tei:imprint/tei:date)
             return <span xmlns="http://www.w3.org/1999/xhtml">{$pubDate/@when/string()}</span>
         }
         let $pubPlace := function($doc as document-node(), $alt as xs:boolean) {
-            for $pubPlace in ($doc//tei:biblStruct/node()[1]/tei:imprint/tei:pubPlace)
+            for $pubPlace in ($doc//tei:biblStruct/tei:*/tei:imprint/tei:pubPlace)
             return <span xmlns="http://www.w3.org/1999/xhtml">{$pubPlace/text()}</span>
         }
         let $publisher := function($doc as document-node(), $alt as xs:boolean) {
-            for $segment in ($doc//tei:biblStruct/node()[1]/tei:imprint/tei:publisher)
+            for $segment in ($doc//tei:biblStruct/tei:*/tei:imprint/tei:publisher)
             return <span xmlns="http://www.w3.org/1999/xhtml">{
                     wega-util:transform($segment, doc(concat($config:xsl-collection-path, '/works.xsl')), config:get-xsl-params(()))
             }</span>
@@ -1002,7 +1002,7 @@ declare
             'biblioTypeLabel' : if($biblioType) then(lang:get-language-string($biblioType, config:guess-language(()))) else(),
             'authors' : $print-authors($model?doc, false()),
             'annotations' : $annotations($model?doc),
-            'publication': $publication($model?doc, true()),
+            'publication': $publication($model?doc),
             'publisher': $publisher($model?doc, true()),
             'pubPlace': $pubPlace($model?doc, true())
         }
