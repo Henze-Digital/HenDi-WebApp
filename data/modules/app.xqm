@@ -612,7 +612,7 @@ declare
     %templates:wrap
     %templates:default("lang", "en")
     function app:word-of-the-day($node as node(), $model as map(*), $lang as xs:string) as map(*) {
-        let $words := core:getOrCreateColl('letters', 'A002068', true())//tei:seg[@type='wordOfTheDay']
+        let $words := core:getOrCreateColl('letters', 'A001000A', true())//tei:seg[@type='wordOfTheDay']
         let $random :=
             if(count($words) gt 1) then util:random(count($words) - 1) + 1 (: util:random may return 0 and takes as argument positiveInteger! :)
             else if(count($words) eq 1) then 1
