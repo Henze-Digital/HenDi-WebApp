@@ -148,6 +148,7 @@ declare %private function lod:schema.org-type($model as map(*)) as xs:string {
         case 'orgs' return 'Organization'
         case 'places' return 'Place'
         case 'corresp' return 'Correspondence'
+        case 'biblio' return 'Bibliography'
         case 'addenda' case 'thematicCommentary' return 'Article'
         default return 'CreativeWork'
 };
@@ -222,6 +223,7 @@ declare %private function lod:DC.description($model as map(*), $lang as xs:strin
             case 'news' case 'var' case 'thematicCommentaries' return str:shorten-TEI($model('doc')//tei:text//tei:p[not(starts-with(., 'Sorry'))], 150, $lang)
             case 'orgs' return wdt:orgs($model('doc'))('title')('txt') || ': ' || str:list($orgTypes, $lang, 0, lang:get-language-string#2)
             case 'corresp' return lang:get-language-string('corresp', $lang)
+            case 'biblio' return lang:get-language-string('biblio', $lang)
             case 'places' return lang:get-language-string('place', $lang)
             case 'works' return lang:get-language-string('workName', $lang)
             case 'addenda' return lang:get-language-string($model?docType, $lang)
@@ -247,7 +249,7 @@ declare %private function lod:page-title($model as map(*), $lang as xs:string) a
         default return  
             switch($model('docType'))
             case 'persons' return concat(str:print-forename-surname(query:title($model('docID'))), ' – ', lang:get-language-string('tabTitle_bio', $lang))
-            case 'letters' case 'corresp' case 'writings' case 'news' case 'var' case 'thematicCommentaries' case 'documents' case 'places' case 'works' case 'addenda' return wdt:lookup($model('docType'), $model('doc'))('title')('txt')
+            case 'letters' case 'corresp' case 'biblio' case 'writings' case 'news' case 'var' case 'thematicCommentaries' case 'documents' case 'places' case 'works' case 'addenda' return wdt:lookup($model('docType'), $model('doc'))('title')('txt')
             case 'diaries' return concat(query:get-authorName($model('doc')), ' – ', lang:get-language-string('diarySingleViewTitle', wdt:lookup($model('docType'), $model('doc'))('title')('txt'), $lang))
             case 'orgs' return query:title($model('docID')) || ' (' || str:list($model('doc')//tei:state[tei:label='Art der Institution']/tei:desc, $lang, 0, lang:get-language-string#2) || ') – ' || lang:get-language-string('tabTitle_bioOrgs', $lang)
             case 'error' return lang:get-language-string('metaTitleError', $lang)
@@ -273,7 +275,7 @@ declare %private function lod:DC.subject($model as map(*), $lang as xs:string) a
             case 'diaries' return string-join((lang:get-language-string('diary', $lang), query:get-authorName($model('doc'))), '; ')
             case 'news' return string-join($model('doc')//tei:keywords/tei:term, '; ')
             case 'var' return 'Varia'
-            case 'orgs' case 'corresp' case 'works' case 'addenda' return lang:get-language-string($model?docType, $lang)
+            case 'orgs' case 'corresp' case'biblio' case 'works' case 'addenda' return lang:get-language-string($model?docType, $lang)
             case 'places' return 'Geographica'
             default return ()
 };

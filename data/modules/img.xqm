@@ -162,6 +162,20 @@ declare %private function img:iconography4corresp($node as node(), $model as map
 };
 
 (:~
+ : Helper function for img:iconography()
+ : Creates the iconography for biblio
+ :
+~:)
+declare %private function img:iconography4biblio($node as node(), $model as map(*), $lang as xs:string) as map(*) {
+    let $wikidata-images := img:wikidata-images($model, $lang)
+    return 
+    map { 
+        'iconographyImages' : $wikidata-images,
+        'portrait' : ($wikidata-images, img:get-generic-portrait($model, $lang) )[1]
+    }
+};
+
+(:~
  : Helper function for grabbing images from wikidata
  :
  : @author Peter Stadler 
@@ -497,6 +511,7 @@ declare %private function img:get-generic-portrait($model as map(*), $lang as xs
         else if(config:is-work($model('docID')) and $model('doc')//tei:biblStruct[@type='painting']) then 'painting'
         else if(config:is-work($model('docID'))) then 'otherWork'
         else if(config:is-corresp($model('docID'))) then 'corresp'
+        else if(config:is-biblio($model('docID'))) then 'biblio'
         else $model('doc')//tei:sex/text()
     return
         map {
@@ -516,7 +531,7 @@ declare %private function img:get-generic-portrait($model as map(*), $lang as xs
                     case 'film' return config:link-to-current-app('resources/img/icons/icon_film.svg')
                     case 'longPlay' return config:link-to-current-app('resources/img/icons/icon_vinyl.svg')
                     case 'compactDisc' return config:link-to-current-app('resources/img/icons/icon_compactDisc.svg')
-                    case 'otherWork' return config:link-to-current-app('resources/img/icons/icon_biblio.svg')
+                    case 'otherWork' case 'biblio' return config:link-to-current-app('resources/img/icons/icon_biblio.svg')
                     case 'corresp' return config:link-to-current-app('resources/img/icons/icon_corresp.svg')
                     case 'painting' return config:link-to-current-app('resources/img/icons/icon_painting.svg')
                     default return config:link-to-current-app('resources/img/icons/icon_person.svg')
@@ -531,7 +546,7 @@ declare %private function img:get-generic-portrait($model as map(*), $lang as xs
                     case 'film' return config:link-to-current-app('resources/img/icons/icon_film.svg')
                     case 'longPlay' return config:link-to-current-app('resources/img/icons/icon_vinyl.svg')
                     case 'compactDisc' return config:link-to-current-app('resources/img/icons/icon_compactDisc.svg')
-                    case 'otherWork' return config:link-to-current-app('resources/img/icons/icon_biblio.svg')
+                    case 'otherWork' case 'biblio' return config:link-to-current-app('resources/img/icons/icon_biblio.svg')
                     case 'painting' return config:link-to-current-app('resources/img/icons/icon_painting.svg')
                     case 'corresp' return config:link-to-current-app('resources/img/icons/icon_corresp.svg')
                     default return config:link-to-current-app('resources/img/icons/icon_person.svg')

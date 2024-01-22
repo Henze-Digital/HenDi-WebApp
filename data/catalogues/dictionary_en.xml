@@ -289,7 +289,8 @@
     <entry xml:id="dedication">Dedication</entry>
     <entry xml:id="weisung">Weisung</entry>
     <entry xml:id="eingabe">Eingabe</entry>
-    <entry xml:id="vortrag">Vortrag</entry>
+    <entry xml:id="vortrag">Talk</entry>
+	<entry xml:id="informationAboutTheBiblio">Information about the bibliographic item</entry>
     <!--  Development  -->
     <entry xml:id="common">Common</entry>
     <!-- HTML Meta Daten -->
@@ -606,6 +607,7 @@
     <entry xml:id="country">Country</entry>
     <entry xml:id="placenames">Place names</entry>
     <entry xml:id="informationAboutTheWork">Information about the work</entry>
+    
     <entry xml:id="noWorkDetailsFound">No detailed work description recorded</entry>
     <entry xml:id="noWorkDetailsFoundReason">Further information about the work not available due to one of the following causes:</entry>
     <entry xml:id="noWorkDetailsFoundReason3">It is a well known work where enough information is available online elsewhere, see e.g Wikipedia</entry>
