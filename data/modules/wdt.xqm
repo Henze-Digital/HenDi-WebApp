@@ -818,7 +818,8 @@ declare function wdt:biblio($item as item()*) as map(*) {
                 case xs:untypedAtomic return crud:doc($item)/tei:biblStruct
                 case document-node() return $item/tei:biblStruct
                 default return $item/root()/tei:biblStruct
-            let $html-title := <xhtml:p>{($biblStruct//tei:title)[1]/text()}</xhtml:p>
+            let $html-title := wega-util:transform(($biblStruct//tei:title)[1], doc(concat($config:xsl-collection-path, '/common_main.xsl')), config:get-xsl-params(()))
+(:            let $html-title := <xhtml:p>{($biblStruct//tei:title)[1]//text()}</xhtml:p>:)
             return
                 switch($serialization)
                 case 'txt' return str:normalize-space($html-title)
