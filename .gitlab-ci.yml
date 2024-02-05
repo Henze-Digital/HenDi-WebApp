@@ -188,7 +188,7 @@ staging:image-deploy:
   rules:
     - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_STAGING == "true"
 
-preview:image-webapp:
+preview:image-deploy:
   stage: deploy
   image: curlimages/curl
   variables:
