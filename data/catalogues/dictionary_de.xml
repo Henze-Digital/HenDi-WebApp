@@ -100,7 +100,7 @@
     <entry xml:id="facsimile">Faksimile</entry>
     <entry xml:id="editorial">Apparat</entry>
     <entry xml:id="series">Reihe</entry>
-    <entry xml:id="transcription">Übertragung</entry>
+    <entry xml:id="transcription">Übertragen von</entry>
     <entry xml:id="textSource">Textzeuge</entry>
     <entry xml:id="textSources">Textzeugen</entry>
     <entry xml:id="correspondingSources">Dazugehörige Textwiedergaben</entry>
@@ -280,7 +280,7 @@
     <entry xml:id="approved">bearbeitet</entry>
     <entry xml:id="biblioType">Literaturtyp</entry>
     <entry xml:id="albumblatt">Albumblatt</entry>
-    <entry xml:id="authors">Text</entry>
+    <entry xml:id="authors">Text von</entry>
     <entry xml:id="editors">Herausgegeben von</entry>
     <entry xml:id="publication">Veröffentlicht</entry>
     <entry xml:id="pubPlace">Verlagsort</entry>

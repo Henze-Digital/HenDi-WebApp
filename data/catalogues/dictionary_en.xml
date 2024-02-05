@@ -100,7 +100,7 @@
     <entry xml:id="facsimile">Facsimile</entry>
     <entry xml:id="editorial">Editorial</entry>
     <entry xml:id="series">Series</entry>
-    <entry xml:id="transcription">Transcription</entry>
+    <entry xml:id="transcription">Transcribed by</entry>
     <entry xml:id="textSource">Text Source</entry>
     <entry xml:id="textSources">Text Sources</entry>
     <entry xml:id="correspondingSources">Corresponding sources</entry>
@@ -280,8 +280,8 @@
     <entry xml:id="approved">approved</entry>
     <entry xml:id="biblioType">Entry type</entry>
     <entry xml:id="albumblatt">Albumblatt</entry>
-    <entry xml:id="authors">Authors</entry>
-    <entry xml:id="editors">Editor</entry>
+    <entry xml:id="authors">Author(s)</entry>
+    <entry xml:id="editors">Editor(s)</entry>
     <entry xml:id="publication">Published</entry>
     <entry xml:id="pubPlace">Publication Place</entry>
     <entry xml:id="publisher">Publisher</entry>
