@@ -716,8 +716,7 @@
     <entry xml:id="medium.pencil.colored">Buntstift</entry>
     <entry xml:id="medium.pencil.ink">Tuschestift</entry>
     <entry xml:id="medium.pen">Füller</entry>
-    <entry xml:id="medium.pen.felt">Filzstift</entry>
-    <entry xml:id="medium.pen.fine">Fineliner</entry>
+    <entry xml:id="medium.pen.felt">Filzstift/Fineliner</entry>
     <entry xml:id="medium.pen.ball">Kugelschreiber</entry>
     <entry xml:id="medium.ribbon">Farbband (Schreibmaschine)</entry>
     
