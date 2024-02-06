@@ -351,17 +351,19 @@
     <entry xml:id="confirm">Confirm</entry>
     <!--  Biblio Typen  -->
     <entry xml:id="article">Article</entry>
+    <entry xml:id="book">Book</entry>
+    <entry xml:id="inbook">In Book</entry>
     <entry xml:id="incollection">In Collection</entry>
     <entry xml:id="inproceedings">In Proceedings</entry>
-    <entry xml:id="score">Score</entry>
+    <entry xml:id="journal">Journal/Newspaper</entry>
+    <entry xml:id="thesis">Thesis</entry>
     <entry xml:id="misc">Misc</entry>
-    <entry xml:id="book">Book</entry>
-    <entry xml:id="review">Review</entry>
-    <entry xml:id="phdthesis">PhD Thesis</entry>
-    <entry xml:id="online">Online</entry>
-    <entry xml:id="inbook">In Book</entry>
-    <entry xml:id="mastersthesis">Masters Thesis</entry>
+    <entry xml:id="online">Online ressource</entry>
     <entry xml:id="painting">Painting</entry>
+    <entry xml:id="poem">Poem</entry>
+    <entry xml:id="libretto">Libretto</entry>
+    <entry xml:id="review">Review</entry>
+    <entry xml:id="score">Score</entry>
     <!--  Various  -->
     <entry xml:id="correspondence">Letters</entry>
     <entry xml:id="corresp">Correspondence</entry>

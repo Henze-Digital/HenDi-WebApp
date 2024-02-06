@@ -361,17 +361,19 @@
     <entry xml:id="confirm">Abschicken</entry>
     <!--  Biblio Typen  -->
     <entry xml:id="article">Zeitschriftenaufsatz</entry>
+    <entry xml:id="book">Monographie</entry>
+    <entry xml:id="inbook">Buchkapitel</entry>
     <entry xml:id="incollection">Sammelbandbeitrag</entry>
     <entry xml:id="inproceedings">Aufsatz in Konferenzbericht</entry>
-    <entry xml:id="score">Notenband</entry>
+	<entry xml:id="journal">Zeitung/Zeitschrift</entry>
+    <entry xml:id="thesis">Abschlussarbeit</entry>
     <entry xml:id="misc">Varia</entry>
-    <entry xml:id="book">Monographie</entry>
-    <entry xml:id="review">Rezension</entry>
-    <entry xml:id="phdthesis">Dissertation</entry>
     <entry xml:id="online">Online-Veröffentlichung</entry>
-    <entry xml:id="inbook">Buchkapitel</entry>
-    <entry xml:id="mastersthesis">Master-/Magisterarbeit</entry>
 	<entry xml:id="painting">Gemälde</entry>
+	<entry xml:id="poem">Gerdicht</entry>
+	<entry xml:id="libretto">Libretto</entry>
+    <entry xml:id="review">Rezension</entry>
+    <entry xml:id="score">Notenband</entry>
     <!--  Various  -->
     <entry xml:id="correspondence">Briefe</entry>
     <entry xml:id="corresp">Briefwechsel</entry>

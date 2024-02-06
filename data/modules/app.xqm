@@ -986,6 +986,7 @@ declare
             }</span>
         }
         let $biblioType := $model?doc/tei:biblStruct/@type/data()
+        let $biblioTypeLabel := if($biblioType) then(lang:get-language-string($biblioType, config:guess-language(()))) else()
         let $relators := query:relators($model?doc)[self::tei:*/@role[not(. = ('edt'))] or self::tei:author]
         let $relatorsGrouped := for $each in functx:distinct-deep($relators)
                                     let $role := $each/@role/string()
@@ -999,7 +1000,7 @@ declare
             'ids' : $model?doc//tei:biblStruct,
             'relatorGrps' : $relatorsGrouped,
             'biblioType' : $biblioType,
-            'biblioTypeLabel' : if($biblioType) then(lang:get-language-string($biblioType, config:guess-language(()))) else(),
+            'biblioTypeLabel' : $biblioTypeLabel,
             'authors' : $print-authors($model?doc, false()),
             'annotations' : $annotations($model?doc),
             'publication': $publication($model?doc),
@@ -2117,6 +2118,8 @@ declare
     %templates:default("lang", "en")
     function app:preview($node as node(), $model as map(*), $lang as xs:string) as map(*) {
         let $workType := ($model('result-page-entry')//(mei:term|mei:work[not(parent::mei:componentList)]|tei:biblStruct)[1]/data(@class))[1]
+        let $biblioType := $model('result-page-entry')/tei:biblStruct/data(@type)
+        let $biblioTypeLabel := if($biblioType) then(lang:get-language-string($biblioType, config:guess-language(()))) else()
         let $relators := query:relators($model('result-page-entry'))[self::mei:*/@role[. = ('cmp', 'lbt', 'lyr', 'arr')] or self::tei:*/@role[. = ('arr', 'trl')] or self::tei:author or (self::mei:persName|self::mei:corpName)[@role = 'mus'][parent::mei:contributor]]
         let $relatorsGrouped := for $each in $relators
                                     let $role := $each/@role/string()
@@ -2134,7 +2137,8 @@ declare
                 else controller:create-url-for-doc($model('result-page-entry'), $lang),
             'docType' : config:get-doctype-by-id($model('result-page-entry')/root()/*/data(@xml:id)),
             'relatorGrps' : $relatorsGrouped,
-            'biblioType' : $model('result-page-entry')/tei:biblStruct/data(@type),
+            'biblioType' : $biblioType,
+            'biblioTypeLabel' : $biblioTypeLabel,
             'workType' : $workType,
             'workTypeLabel' : if($workType) then(lang:get-language-string($workType, $lang)) else(),
             'newsDate' : date:printDate($model('result-page-entry')//tei:date[parent::tei:publicationStmt], $lang, lang:get-language-string#3, $config:default-date-picture-string)
