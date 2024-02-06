@@ -1082,7 +1082,7 @@
       			   </xsl:choose>
       			</xsl:element>
       			<xsl:text> </xsl:text>
-      			<xsl:sequence select="$lemmaLang/parent::node()//text()"/>
+      			<xsl:sequence select="$lemmaLang/parent::node()//text()[not(parent::tei:del)]"/>
       		</xsl:element>
       	</xsl:if>
          <xsl:if test="$explanation">
