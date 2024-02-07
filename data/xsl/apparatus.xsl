@@ -518,12 +518,9 @@
                <xsl:when test="@place='below'">
                   <xsl:text> tei_hi_subscript</xsl:text>
                </xsl:when>
-               <!--<xsl:when test="./tei:add[@place='margin']">
-                        <xsl:text>Ersetzung am Rand. </xsl:text>
-                    </xsl:when>-->
-               <!--<xsl:when test="./tei:add[@place='mixed']">
-                        <xsl:text>Ersetzung an mehreren Stellen. </xsl:text>
-                        </xsl:when>-->
+               <xsl:when test="starts-with(@place,'margin')">
+                  <xsl:text> tei_hi_backgroundGray</xsl:text>
+               </xsl:when>
             </xsl:choose>
          </xsl:attribute>
          <xsl:apply-templates/>
@@ -552,7 +549,7 @@
          </xsl:with-param>
          <xsl:with-param name="explanation">
             <xsl:choose>
-               <xsl:when test="@place=('margin', 'inline', 'above', 'below', 'mixed')">
+               <xsl:when test="@place=('margin', 'inline', 'above', 'below', 'mixed', 'margin-left', 'margin-right', 'margin-top', 'margin-bottom')">
                   <xsl:value-of select="wega:getLanguageString(concat('add', functx:capitalize-first(@place)), $lang)"/>
                </xsl:when>
                <xsl:otherwise>
