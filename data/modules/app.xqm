@@ -2527,12 +2527,12 @@ for $corresp in $corresps
     let $correspTitle := $corresp//tei:fileDesc/tei:titleStmt/tei:title[1]/text()
     let $correspID := $corresp/tei:TEI/@xml:id/string()
     
-    let $collPostals :=  crud:data-collection('letters')/tei:TEI[.//tei:relation[@key=$correspID]]
+    let $colls :=  crud:data-collection('letters')/tei:TEI[.//tei:relation[@key=$correspID]] | crud:data-collection('documents')/tei:TEI[.//tei:relation[@key=$correspID]] | crud:data-collection('var')/tei:TEI
 
-    let $placeElems := $collPostals//(tei:settlement|tei:placeName|tei:bloc|tei:region|tei:district|tei:geogName)[not(@key)][not(./tei:*)] | $collPostals//tei:country[not(@key)][not(./tei:*)][not(ancestor::tei:publisher)]
-    let $persNameElems := $collPostals//(tei:persName|tei:rs[@type='person']|tei:name[@type='person'])[not(@key)][not(./tei:*)]
-    let $orgNameElems := $collPostals//(tei:orgName|tei:rs[@type='org']|tei:name[@type='org'])[not(@key)][not(./tei:*)]
-    let $workElems := $collPostals//(tei:rs[@type='work']|tei:name[@type='work'])[not(@key)][not(./tei:*)]
+    let $placeElems := $colls//(tei:settlement|tei:placeName|tei:bloc|tei:region|tei:district|tei:geogName)[not(@key)][not(./tei:*)] | $colls//tei:country[not(@key)][not(./tei:*)][not(ancestor::tei:publisher)]
+    let $persNameElems := $colls//(tei:persName|tei:rs[@type='person']|tei:name[@type='person'])[not(@key)][not(./tei:*)]
+    let $orgNameElems := $colls//(tei:orgName|tei:rs[@type='org']|tei:name[@type='org'])[not(@key)][not(./tei:*)]
+    let $workElems := $colls//(tei:rs[@type='work']|tei:name[@type='work'])[not(@key)][not(./tei:*)]
     
     return
         <div class="row">
