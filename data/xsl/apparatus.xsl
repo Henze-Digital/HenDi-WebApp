@@ -1205,7 +1205,7 @@
             <xsl:value-of select="wega:preview-class($handNote)"/>
          </xsl:attribute>
          <xsl:attribute name="href" select="wega:createLinkToDoc($handNoteScribe, $lang)"/>
-         <xsl:value-of select="wega:doc($handNoteScribe)//tei:persName[@type='reg']"/>
+         <xsl:value-of select="wega:doc($handNoteScribe)//tei:persName[@type='reg']/normalize-space(.)"/>
       </xsl:element>
      </xsl:if>
      <xsl:if test="$handNoteMedium or $handNoteColor">   
