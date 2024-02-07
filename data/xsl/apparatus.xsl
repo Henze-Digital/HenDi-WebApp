@@ -925,7 +925,9 @@
     
    <xsl:template match="tei:note" mode="lemma"/>
    <xsl:template match="tei:figDesc" mode="lemma"/>
-	<xsl:template match="tei:foreign" mode="lemma"/>
+	<xsl:template match="tei:foreign" mode="lemma">
+		<xsl:apply-templates/>
+	</xsl:template>
 	<xsl:template match="tei:lb" mode="lemma">
       <xsl:text> </xsl:text>
    </xsl:template>
