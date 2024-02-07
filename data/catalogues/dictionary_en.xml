@@ -131,6 +131,10 @@
     <entry xml:id="generalRemark">General Remark</entry>
     <!--  XSL-Ausgaben  -->
     <entry xml:id="addMargin">added in the margin</entry>
+	<entry xml:id="addMargin-right">added in the right margin</entry>
+	<entry xml:id="addMargin-left">added in the left margin</entry>
+	<entry xml:id="addMargin-top">added at the top margin</entry>
+	<entry xml:id="addMargin-bottom">added at the bottom margin</entry>
     <entry xml:id="addInline">added inline</entry>
     <entry xml:id="addBelow">added below</entry>
     <entry xml:id="addAbove">added above</entry>
