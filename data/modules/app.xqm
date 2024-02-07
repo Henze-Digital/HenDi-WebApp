@@ -995,6 +995,23 @@ declare
                                         <relators role="{$role}">
                                             {$each}
                                         </relators>
+        let $isPartOf := function($doc as document-node(), $linking as xs:boolean) {
+            let $key := $model?doc/tei:biblStruct/tei:monogr/@sameAs
+            let $title := if($key) then(crud:doc($key/string())//tei:title[1]/text()) else()
+            return
+                <a href="/{$key}.html" xmlns="http://www.w3.org/1999/xhtml">{$title}</a>
+        }
+        let $hasParts := function($doc as document-node(), $linking as xs:boolean) {
+            let $files := crud:data-collection('biblio')[.//tei:monogr[@sameAs = $doc/tei:biblStruct/@xml:id]]
+            let $titles := for $file in $files/tei:biblStruct
+                            let $id := $file/@xml:id
+                            let $title := $file//tei:title[1]/text()
+                            return
+                                <a href="/{$id}.html" xmlns="http://www.w3.org/1999/xhtml">{$title}</a>
+            return
+                $titles
+        }
+        
         return
         map {
             'ids' : $model?doc//tei:biblStruct,
@@ -1003,9 +1020,11 @@ declare
             'biblioTypeLabel' : $biblioTypeLabel,
             'authors' : $print-authors($model?doc, false()),
             'annotations' : $annotations($model?doc),
-            'publication': $publication($model?doc),
-            'publisher': $publisher($model?doc, true()),
-            'pubPlace': $pubPlace($model?doc, true())
+            'publication' : $publication($model?doc),
+            'publisher' : $publisher($model?doc, true()),
+            'pubPlace' : $pubPlace($model?doc, true()),
+            'isPartOf' : $isPartOf($model?doc, true()),
+            'hasParts' : $hasParts($model?doc, true())
         }
 };
 

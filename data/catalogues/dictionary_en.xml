@@ -295,6 +295,8 @@
     <entry xml:id="eingabe">Eingabe</entry>
     <entry xml:id="vortrag">Talk</entry>
 	<entry xml:id="informationAboutTheBiblio">Information about the bibliographic item</entry>
+	<entry xml:id="isPartOf">Is part of</entry>
+	<entry xml:id="hasPart">Has parts</entry>
     <!--  Development  -->
     <entry xml:id="common">Common</entry>
     <!-- HTML Meta Daten -->
