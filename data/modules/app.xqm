@@ -1318,6 +1318,22 @@ declare
 };
 
 declare 
+    %templates:default("lang", "en")
+    %templates:default("popover", "false")
+    function app:preview-editors-name($node as node(), $model as map(*), $lang as xs:string, $popover as xs:string) as element() {
+        let $key := $model('editors')
+        let $myPopover := wega-util-shared:semantic-boolean($popover)
+        let $doc2keyAvailable := crud:docAvailable($key)
+        return
+            if($key and $myPopover and $doc2keyAvailable)
+            then app:createDocLink(crud:doc($key), crud:doc($key)//(tei:persName|tei:orgName)[@type='reg'] ! string-join(str:txtFromTEI(., $lang), ''), $lang, (), true())
+            else element xhtml:span {
+                if($key and $doc2keyAvailable) then wdt:lookup(config:get-doctype-by-id($key), data($key))?title('txt')
+                else str:normalize-space($model('editors'))
+            }
+};
+
+declare 
     %templates:wrap
     %templates:default("lang", "en")
     function app:corresp-basic-data($node as node(), $model as map(*), $lang as xs:string) as map(*) {
@@ -1330,11 +1346,16 @@ declare
                                     order by crud:doc($value)//(tei:persName|tei:orgName)[@type='reg'] ! string-join(str:txtFromTEI(., $lang), '')
                                     return
                                         $value
+        let $editors := for $value in distinct-values($search-results//tei:fileDesc//tei:editor/@key)
+                                    order by crud:doc($value)//(tei:persName|tei:orgName)[@type='reg'] ! string-join(str:txtFromTEI(., $lang), '')
+                                    return
+                                        $value
         return
 	        map{
 	            'letterEarliest' : $letterEarliest,
 	            'letterLatest' : $letterLatest,
 	            'correspPartners' : $correspPartners,
+	            'editors' : $editors,
 	            'annotation' : $model('doc')//tei:notesStmt/tei:note[@type = 'annotation']/string()
 	        }
 };
