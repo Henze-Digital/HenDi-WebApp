@@ -293,7 +293,9 @@
 					</xsl:when>
 				</xsl:choose>
 			</xsl:attribute>
-			<xsl:apply-templates/>
+			<xsl:element name="span">
+				<xsl:apply-templates/>
+			</xsl:element>
 			<xsl:if test="self::tei:addrLine">
                 <xsl:element name="br"/>
             </xsl:if>
