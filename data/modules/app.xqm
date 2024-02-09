@@ -2157,7 +2157,7 @@ declare
     %templates:wrap
     %templates:default("lang", "en")
     function app:preview($node as node(), $model as map(*), $lang as xs:string) as map(*) {
-        let $workType := ($model('result-page-entry')//(mei:term|mei:work[not(parent::mei:componentList)]|tei:biblStruct)[1]/data(@class))[1]
+        let $workType := ($model('result-page-entry')//((mei:term|mei:work[not(parent::mei:componentList)]|tei:biblStruct)[1]/(@class|@type))[1]
         let $biblioType := $model('result-page-entry')/tei:biblStruct/data(@type)
         let $biblioTypeLabel := if($biblioType) then(lang:get-language-string($biblioType, config:guess-language(()))) else()
         let $relators := query:relators($model('result-page-entry'))[self::mei:*/@role[. = ('cmp', 'lbt', 'lyr', 'arr')] or self::tei:*/@role[. = ('arr', 'trl')] or self::tei:author or (self::mei:persName|self::mei:corpName)[@role = 'mus'][parent::mei:contributor]]
