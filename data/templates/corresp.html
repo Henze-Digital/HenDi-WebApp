@@ -89,22 +89,25 @@
 						</span> <span class="media-body" data-template="app:preview-correspPartner-name" data-template-popover="true">Henze, Hans Werner</span>
 					</li>
 					<li>
-						<strong><span data-template="lang:translate">editors</span>:</strong>
+						<strong>
+							<span data-template="lang:translate">editors</span>:</strong>
 					</li>
 					<li class="media editors" data-template="app-shared:each" data-template-from="editors" data-template-to="editor">
 						<span class="pull-left">
 							<i class="fa fa-user"/>
 						</span> <span class="media-body" data-template="app:preview-editors-name" data-template-popover="true">Nachname, Vorname</span>
 					</li>
-					<li>
-						<strong>
-							<span data-template="lang:translate">annotation</span>:</strong>
-					</li>
-					<li class="media annotation">
-						<span class="pull-left">
-							<i class="fa-solid fa-thumbtack"/>
-						</span> <span data-template="app-shared:print" data-template-key="annotation">Eine Anmerkung</span>
-					</li>
+					<div data-template="app-shared:if-exists" data-template-key="annotation" data-template-wrap="no">
+						<li>
+							<strong>
+								<span data-template="lang:translate">annotation</span>:</strong>
+						</li>
+						<li class="media annotation">
+							<span class="pull-left">
+								<i class="fa-solid fa-thumbtack"/>
+							</span> <span data-template="app-shared:print" data-template-key="annotation">Eine Anmerkung</span>
+						</li>
+					</div>
 				</ol>
 			</div>
 		</div>
