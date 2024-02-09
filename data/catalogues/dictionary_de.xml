@@ -369,7 +369,7 @@
     <entry xml:id="reset">Zurücksetzen</entry>
     <entry xml:id="confirm">Abschicken</entry>
     <!--  Biblio Typen  -->
-    <entry xml:id="article">Zeitschriftenaufsatz</entry>
+    <entry xml:id="article">Aufsatz</entry>
     <entry xml:id="book">Monographie</entry>
     <entry xml:id="inbook">Buchkapitel</entry>
     <entry xml:id="incollection">Sammelbandbeitrag</entry>
@@ -377,7 +377,7 @@
 	<entry xml:id="journal">Zeitung/Zeitschrift</entry>
     <entry xml:id="thesis">Abschlussarbeit</entry>
     <entry xml:id="misc">Varia</entry>
-    <entry xml:id="online">Online-Veröffentlichung</entry>
+    <entry xml:id="online">Online</entry>
 	<entry xml:id="painting">Gemälde</entry>
 	<entry xml:id="poem">Gerdicht</entry>
 	<entry xml:id="libretto">Libretto</entry>
