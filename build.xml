@@ -289,7 +289,10 @@
 				<exclude name="resources/css/styles.css.map"/>
 			</fileset>
 		</zip>
-<!--		<antcall target="wega:clean"/>-->
+		<echo>Cleaning submodule WeGA-WebApp</echo>
+		<exec executable="bash" logError="true" failonerror="true">
+			<arg value="${HenDi-WebApp.basedir}/clean.sh" />
+		</exec>
 	</target>
 	
 	<target name="update-hendi-docker" depends="xar">
