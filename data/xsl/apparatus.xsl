@@ -1,7 +1,7 @@
 <xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:functx="http://www.functx.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" xmlns:hendi="http://henze-digital.zenmem.de/ns/1.0" exclude-result-prefixes="xs" version="3.1">
 
    <xsl:variable name="doc" select="wega:doc($docID)"/>
-	<xsl:variable name="textConstitutionNodes" as="node()*" select=".//tei:subst | .//tei:add[not(parent::tei:subst)] | .//tei:gap[not(@reason='outOfScope' or parent::tei:del)] | .//tei:sic[not(parent::tei:choice)] | .//tei:del[not(parent::tei:subst)] | .//tei:unclear[not(parent::tei:choice)] | .//tei:note[@type='textConst'] | .//tei:handShift | .//tei:supplied[parent::tei:damage] | .//tei:damage[not(node())]"/>
+	<xsl:variable name="textConstitutionNodes" as="node()*" select=".//tei:subst | .//tei:add[not(parent::tei:subst)] | .//tei:gap[not(@reason='outOfScope' or parent::tei:del)] | .//tei:sic[not(parent::tei:choice)] | .//tei:del[not(parent::tei:subst)] | .//tei:unclear[not(parent::tei:choice)] | .//tei:note[@type='textConst'] | .//tei:handShift | .//tei:supplied[parent::tei:damage] | .//tei:damage[not(node())] | .//tei:hi[@hand]"/>
 	<xsl:variable name="commentaryNodes" as="node()*" select=".//tei:note[@type=('commentary', 'definition')] | .//tei:choice | .//tei:figDesc | .//tei:foreign[@xml:id]"/>
 	<xsl:variable name="autoCommentaryNodes" as="node()*" select=".//tei:persName[not(@key)] | .//tei:orgName[not(@key)] | .//tei:placeName[not(@key)]"/>
 	<xsl:variable name="internalNodes" as="node()*" select=".//tei:note[@type='internal']"/>
@@ -1017,6 +1017,23 @@
          </xsl:with-param>
       </xsl:call-template>
     </xsl:template>
+   
+    <xsl:template match="tei:hi[@hand]" mode="lemma">
+		<xsl:apply-templates/>
+	</xsl:template>
+	
+	<xsl:template match="tei:hi[@hand]" mode="apparatus">
+		<xsl:call-template name="apparatusEntry">
+         <xsl:with-param name="title" select="wega:getLanguageString('popoverTitle.hi',$lang)"/>
+         <xsl:with-param name="lemma">
+            <xsl:apply-templates mode="lemma"/>
+         </xsl:with-param>
+         <xsl:with-param name="explanation">
+            <xsl:value-of select="wega:getLanguageString('hiUnderline', $lang)"/>
+            <xsl:sequence select="hendi:getHandFeatures(.)"/>
+         </xsl:with-param>
+      </xsl:call-template>
+	</xsl:template>
    
    <!-- template for creating an apparatus entry -->
    <xsl:template name="apparatusEntry">

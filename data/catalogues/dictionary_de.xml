@@ -148,6 +148,7 @@
     <entry xml:id="substMargin">Ersetzung am Rand</entry>
     <entry xml:id="substMixed">Ersetzung an mehreren Stellen</entry>-->
     <entry xml:id="popoverTitle.del">Löschung</entry>
+    <entry xml:id="popoverTitle.hi">Hervorhebung</entry>
     <entry xml:id="delGap">gelöschter Text nicht lesbar</entry>
     <entry xml:id="delStrikethrough">durchgestrichen</entry>
     <entry xml:id="delOverwritten">gelöscht durch Überschreibung</entry>
@@ -169,6 +170,8 @@
     <entry xml:id="unclearDefault">unsichere Lesung</entry>
     <entry xml:id="gapDefault">unleserliche Stelle</entry><!-- Übertragung nicht möglich -->
     <entry xml:id="outofScope">außerhalb des Editionsrahmens</entry>
+    <entry xml:id="hiUnderline">Unterstreichung</entry>
+    
     <entry xml:id="handshiftManuscript">handschriftlich</entry>
     <entry xml:id="handshiftTypescript">Typoskript</entry>
     <entry xml:id="handNoteHeadManuscript">Manuskript</entry>

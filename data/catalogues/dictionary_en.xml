@@ -147,7 +147,8 @@
     <entry xml:id="substBelow">Substitution below the line</entry>
     <entry xml:id="substMargin">Substitution in the margin</entry>
     <entry xml:id="substMixed">Substitution in several places</entry>-->
-    <entry xml:id="popoverTitle.del">deleted text</entry>
+    <entry xml:id="popoverTitle.del">Deleted text</entry>
+    <entry xml:id="popoverTitle.hi">Emphasis</entry>
     <entry xml:id="delGap">deleted text illegible</entry>
     <entry xml:id="delStrikethrough">crossed out</entry>
 	<entry xml:id="delOverwritten">deleted by overwriting</entry>
@@ -169,6 +170,7 @@
     <entry xml:id="unclearDefault">uncertain transcription</entry>
     <entry xml:id="gapDefault">illegible text</entry>
     <entry xml:id="outofScope">beyond edition scope</entry>
+    <entry xml:id="hiUnderline">Underlining</entry>
 	<entry xml:id="paperloss">Paperloss</entry>
 	<entry xml:id="smoke">Damage due to smoke</entry>
 	<entry xml:id="seal">Damage due to seal</entry>
