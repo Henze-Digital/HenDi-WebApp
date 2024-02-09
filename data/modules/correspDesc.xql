@@ -35,12 +35,12 @@ declare function ct:create-header() as element(tei:teiHeader) {
     <teiHeader xmlns="http://www.tei-c.org/ns/1.0">
         <fileDesc>
             <titleStmt>
-                <title>Korrespondenzbeschreibungen aus der Carl-Maria-von-Weber-Gesamtausgabe</title>
-                <editor>Peter Stadler (<email>stadler@weber-gesamtausgabe.de</email>)</editor>
+                <title>Korrespondenzbeschreibungen aus Henze-Digital</title>
+                <editor>Dennis Ried (<email>dennis.ried@uni-paderborn.de</email>)</editor>
             </titleStmt>
             <publicationStmt>
                 <publisher>
-                    <ref target="{config:get-option('permaLinkPrefix')}">Carl-Maria-von-Weber-Gesamtausgabe</ref>
+                    <ref target="{config:get-option('permaLinkPrefix')}">Henze-Digital</ref>
                 </publisher>
                 <idno type="url">{config:get-option('permaLinkPrefix')}/correspDesc.xml</idno>
                 <date when="{$ct:last-modified}"/>
@@ -51,7 +51,7 @@ declare function ct:create-header() as element(tei:teiHeader) {
             </publicationStmt>
             <sourceDesc>
                 <bibl type="online" xml:id="{$ct:source-uuid}">
-                    Carl-Maria-von-Weber-Gesamtausgabe. Digitale Edition, <ref target="{config:get-option('permaLinkPrefix')}">{config:get-option('permaLinkPrefix')}</ref> (Version {config:expath-descriptor()/data(@version)} vom {date:format-date(xs:date(config:get-option('versionDate')), $config:default-date-picture-string('de'), 'de')})
+                    Henze-Digital, <ref target="{config:get-option('permaLinkPrefix')}">{config:get-option('permaLinkPrefix')}</ref> (Version {config:expath-descriptor()/data(@version)} vom {date:format-date(xs:date(config:get-option('versionDate')), $config:default-date-picture-string('de'), 'de')})
                 </bibl>
             </sourceDesc>
         </fileDesc>
