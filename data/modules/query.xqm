@@ -358,7 +358,7 @@ declare function query:get-facets($collection as node()*, $facet as xs:string) a
     case 'authors' return $collection//tei:author/@key
     case 'authorsText' return ($collection//tei:author[ancestor::tei:biblStruct]/@key | $collection//mei:persName[@role=('lyr','lbt')]/@codedval)
     case 'editors' return $collection//tei:editor/@key
-    case 'biblioType' return $collection/tei:biblStruct/@type
+    case 'biblioType' return $collection//tei:biblStruct/@type
     case 'workType' return $collection//mei:work/@class
     case 'docTypeSubClass' return $collection//tei:text/@type
     case 'sex' return $collection//tei:sex

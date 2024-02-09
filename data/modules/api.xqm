@@ -696,7 +696,17 @@ declare function api:validate-placeOfAddressee($model as map(*)) as map(*)? {
 ~:)
 declare function api:validate-biblioType($model as map(*)) as map(*)? {
     if(every $i in $model?biblioType ! tokenize(., ',') satisfies config:is-biblioType($i)) then map { 'biblioType': $model?biblioType ! tokenize(., ',') }
-    else error($api:INVALID_PARAMETER, 'Unsupported value for parameter "biblioType". It must be a valid WeGA biblioType, e.g. "book" or "artivle".' )
+    else error($api:INVALID_PARAMETER, 'Unsupported value for parameter "biblioType". It must be a valid WeGA biblioType, e.g. "book" or "article".' )
+}; 
+
+(:~
+ : Check parameter workType
+ : multiple values allowed as input, either by providing multiple URL parameters
+ : or by sending a comma separated list as the value of one URL parameter
+~:)
+declare function api:validate-workType($model as map(*)) as map(*)? {
+    if(every $i in $model?workType ! tokenize(., ',') satisfies config:is-workType($i)) then map { 'workType': $model?workType ! tokenize(., ',') }
+    else error($api:INVALID_PARAMETER, 'Unsupported value for parameter "workType". It must be a valid HenDi workType, e.g. "tape" or "film".' )
 }; 
 
 (:~
