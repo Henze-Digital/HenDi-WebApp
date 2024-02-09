@@ -2802,3 +2802,11 @@ declare function app:download-modal($node as node(), $model as map(*))  {
 		then templates:include($node, $model, 'templates/includes/download-modal-restricted.html')
 		else templates:include($node, $model, 'templates/includes/download-modal-tei.html')
 };
+
+declare function app:zenodoDOIs($node as node(), $model as map(*)) {
+<li>
+	Zenodo: <a target="_blank" href="https://doi.org/{config:get-option('zenodoDoiData')}">Data</a> | 
+	<a target="_blank" href="https://doi.org/{config:get-option('zenodoDoiOdd')}">TEI-ODD</a> | 
+	<a target="_blank" href="https://doi.org/{config:get-option('zenodoDoiWebApp')}">WebApp</a>
+</li>
+};
