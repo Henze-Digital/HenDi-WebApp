@@ -31,6 +31,24 @@
 		
 	</target>
 	
+	<target name="clean-submodule">
+		<echo>Cleaning submodule WeGA-WebApp</echo>
+		<exec executable="bash" logError="true" failonerror="true">
+			<arg value="${HenDi-WebApp.basedir}/clean.sh" />
+		</exec>
+		<delete failonerror="true">
+			<fileset dir="${WeGA-WebApp.basedir}/${wega.build.dir}">
+				<include name="**"/>
+			</fileset>
+			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}">
+				<include name="**"/>
+			</fileset>
+			<dirset dir="${WeGA-WebApp.basedir}">
+				<include name="${wega.build.dir}/**"/>
+				<include name="${wega.dist.dir}/**"/>
+			</dirset>
+		</delete>
+	</target>
 	
 	<target name="hendi:init">
 		<antcall target="wega:clean"/>
@@ -289,10 +307,7 @@
 				<exclude name="resources/css/styles.css.map"/>
 			</fileset>
 		</zip>
-		<echo>Cleaning submodule WeGA-WebApp</echo>
-		<exec executable="bash" logError="true" failonerror="true">
-			<arg value="${HenDi-WebApp.basedir}/clean.sh" />
-		</exec>
+		<antcall target="clean-submodule"/>
 	</target>
 	
 	<target name="update-hendi-docker" depends="xar">

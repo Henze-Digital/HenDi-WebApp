@@ -1,9 +1,7 @@
 #!/bin/bash
 
-# This script cleans the submodule after building the app
-
-# navigating to submodule
-cd submodules/WeGA-WebApp
+# Script for cleaning (changes and untracked files).
+# Used to clean the submodule after building the app.
 
 # discarding changes
 git restore .
