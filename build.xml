@@ -167,6 +167,8 @@
 				<include name="resources/**"/>
 				<include name="templates/**"/>
 				<include name="xsl/**"/>
+				<!-- The data of the api must be included here -->
+				<!-- because this will be part of the app      -->
 				<include name="api/**"/>
 				<exclude name="resources/sass"/>
 			</fileset>
@@ -178,12 +180,14 @@
 				<include name="**/*.svg"/>
 			</fileset>
 		</copy>
-		<!--<echo>Overwrite API</echo>
+		<echo>Overwrite API</echo>
+		<!-- The data of the api must also be included here because -->
+		<!-- this will be compiled by wega:swagger-cli target       -->
 		<copy todir="${WeGA-WebApp.basedir}" overwrite="yes">
 			<fileset dir="${HenDi-WebApp.basedir}/data">
 				<include name="api/**"/>
 			</fileset>
-		</copy>-->
+		</copy>
 	</target>
 	
 	<target name="webapp-dist-img-fonts">
