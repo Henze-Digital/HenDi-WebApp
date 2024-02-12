@@ -324,6 +324,10 @@
 					<xsl:value-of select="concat('textAlign-',@rend)"/>
 				</xsl:attribute>
 			</xsl:if>
+			<xsl:if test="@type='strip'">
+				<xsl:attribute name="style" select="'-webkit-box-shadow: 6px 4px 5px -2px rgba(0,0,0,0.56); 
+box-shadow: 6px 4px 5px -2px rgba(0,0,0,0.56); background: #fffff0;'"/>
+			</xsl:if>
 			<xsl:apply-templates/>
 		</xsl:element>
 	</xsl:template>
