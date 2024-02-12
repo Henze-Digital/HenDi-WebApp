@@ -286,7 +286,7 @@ declare %private function lod:DC.subject($model as map(*), $lang as xs:string) a
 declare %private function lod:DC.creator($model as map(*)) as xs:string? {
     if($model('docID') = ('indices', 'home', 'search')) then 'Henze-Digital'
     else if($model?specID or $model?chapID) then 'Henze-Digital'
-    else if(config:get-doctype-by-id($model('docID'))) then $model('doc')//(tei:fileDesc/tei:titleStmt/tei:editor | mei:respStmt[@n="HWH"]/mei:persName[@role="edt"])/text()
+    else if(config:get-doctype-by-id($model('docID'))) then string-join($model('doc')//(tei:fileDesc/tei:titleStmt/tei:editor | mei:respStmt[@n="HWH"]/mei:persName[@role="edt"])/text(), '/')
     else ()
 };
 
