@@ -730,6 +730,16 @@ declare function api:validate-authors($model as map(*)) as map(*)? {
 }; 
 
 (:~
+ : Check parameter authorsText
+ : multiple values allowed as input, either by providing multiple URL parameters
+ : or by sending a comma separated list as the value of one URL parameter
+~:)
+declare function api:validate-authorsText($model as map(*)) as map(*)? {
+    if(every $i in $model?authors ! tokenize(., ',') satisfies wdt:persons($i)('check')()) then map { 'authorsText': $model?authorsText ! tokenize(., ',') }
+    else error($api:INVALID_PARAMETER, 'Unsupported value for parameter "authorsText". It must be a WeGA person ID.' )
+}; 
+
+(:~
  : Check parameter works
  : multiple values allowed as input, either by providing multiple URL parameters
  : or by sending a comma separated list as the value of one URL parameter
