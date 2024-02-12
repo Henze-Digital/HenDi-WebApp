@@ -18,20 +18,19 @@
 								<a href="$link/index">Home</a>
 							</li>
 							<li>
-								<a data-template="app:breadcrumb-person">Carl Maria von Weber</a>
+								<a data-template="app:breadcrumb-person">Hans Werner Henze</a>
 							</li>
 							<li>
-								<a data-template="app:breadcrumb-docType">Werke</a>
+								<a data-template="app:breadcrumb-docType">Bibliographie</a>
 							</li>
 							<li>
-								<span data-template="app-shared:print" data-template-key="docID">A020040</span> <span data-template="app-shared:if-not-matches" data-template-key="docType" data-template-value="news" data-template-wrap="no">
-									<span data-template="app:status" class="docStatus">in Bearbeitung</span>
-								</span>
+								<span data-template="app-shared:print" data-template-key="docID">A1100475</span>
 							</li>
 						</ol>
 					</div>
 					<div class="col-sm-2 d-none d-lg-block backLinkInBreadcrumb" onclick="history.back();">
-						<i class="fa fa-arrow-left"/> <span data-template="lang:translate">back</span> 
+						<i class="fa fa-arrow-left"/>
+						<span data-template="lang:translate">back</span>
 					</div>
 				</div>
 			</div>
@@ -39,7 +38,8 @@
 				<div class="row breadcrumb" data-template="search:get-session-for-singleview">
 					<div class="col-md-4">
 						<a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-prev-item-url">
-							<i class="fa fa-arrow-left"/> <span data-template="lang:translate">prevMatch</span>
+							<i class="fa fa-arrow-left"/>
+							<span data-template="lang:translate">prevMatch</span>
 						</a>
 					</div>
 					<div class="col-md-4">
@@ -48,7 +48,8 @@
 					</div>
 					<div class="col-md-4">
 						<a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-next-item-url">
-							<span data-template="lang:translate">nextMatch</span> <i class="fa fa-arrow-right"/>
+							<span data-template="lang:translate">nextMatch</span>
+							<i class="fa fa-arrow-right"/>
 						</a>
 					</div>
 				</div>
@@ -59,7 +60,6 @@
 		<div data-template="templates:include" data-template-path="templates/includes/download-modal-tei.html"/>
 		<div class="row" id="meta" data-template="img:iconography">
 			<div class="col-md-3 col-sm-6">
-				<!--<img id="portrait-placeholder" class="img-fluid" src="$resources/img/icons/icon_person_unbekannt_gross.png" alt="Placeholder Image" width="260" height="340"/>-->
 				<div class="portrait large">
 					<div class="front">
 						<img class="img-fluid" src="$resources/img/icons/icon_biblio.svg" alt="Placeholder Image" data-template="img:portrait" data-template-size="large"/>
@@ -79,8 +79,7 @@
 				</ol>
 				<ol class="media" data-template="app-shared:each" data-template-from="relatorGrps" data-template-to="relatorGrp">
 					<li>
-						<strong data-template="app:preview-relator-role"/>: 
-						<span data-template="app:preview-relator-name" data-template-popover="true"/>
+						<strong data-template="app:preview-relator-role"/>: <span data-template="app:preview-relator-name" data-template-popover="true"/>
 					</li>
 				</ol>
 				<ol class="media" data-template="app-shared:each" data-template-from="publication" data-template-to="title">
@@ -105,12 +104,22 @@
 				</ol>
 				<ol class="media" data-template="app-shared:if-exists" data-template-key="isPartOf">
 					<li>
-						<strong data-template="lang:translate">isPartOf</strong>: <span data-template="app-shared:output" data-template-key="isPartOf">Titel der Selbstständigen Publikation</span>
+						<strong data-template="lang:translate">isPartOf</strong>:
+						<ol>
+							<li>
+								<span data-template="app-shared:output" data-template-key="isPartOf">Titel, Seitenzahl</span>
+							</li>
+						</ol>
 					</li>
 				</ol>
-				<ol class="media" data-template="app-shared:each" data-template-from="hasParts" data-template-to="hasPart">
+				<ol class="media" data-template="app-shared:if-exists" data-template-key="hasParts">
 					<li>
-						<strong data-template="lang:translate">hasPart</strong>: <span data-template="app-shared:output" data-template-key="hasPart">Eintrag</span>
+						<strong data-template="lang:translate">hasPart</strong>:
+						<ol data-template="app-shared:each" data-template-from="hasParts" data-template-to="hasPart">
+							<li>
+								<span data-template="app-shared:output" data-template-key="hasPart">Eintrag</span>
+							</li>
+						</ol>
 					</li>
 				</ol>
 			</div>
@@ -257,25 +266,21 @@
 			<div class="row permaLink">
 				<div class="col-md-9" data-template="app-shared:if-matches" data-template-key="lang" data-template-value="de">
 					<h4>Empfohlene Zitierweise</h4>
-					<p>Hans Werner Henzes künstlerisches Netzwerk. Digitale Briefedition, <span data-template="app-shared:print" data-template-key="permalink">http://www.henze-digital.zenmem.de/ID</span> (<span data-template="app-shared:output" data-template-key="versionNews">Version NUMBER vom DATE</span>)
-						<br/>
+					<p>Hans Werner Henzes künstlerisches Netzwerk. Digitale Briefedition, <span data-template="app-shared:print" data-template-key="permalink">http://www.henze-digital.zenmem.de/ID</span> (<span data-template="app-shared:output" data-template-key="versionNews">Version NUMBER vom DATE</span>) <br/>
 						<!--                        <span data-template="app-shared:print" data-template-key="latestChange">Letzte Änderung dieses Dokuments am 22. Mai 2014 durch Peter Stadler</span>-->
 					</p>
 				</div>
 				<div class="col-md-9" data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">
 					<h4>Proposed citation</h4>
-					<p>Hans Werner Henze's network of artists. Digital letter edition, <span data-template="app-shared:print" data-template-key="permalink">http://www.henze-digital.zenmem.de/ID</span> (<span data-template="app-shared:output" data-template-key="versionNews">Version NUMBER vom DATE</span>)
-						<br/>
+					<p>Hans Werner Henze's network of artists. Digital letter edition, <span data-template="app-shared:print" data-template-key="permalink">http://www.henze-digital.zenmem.de/ID</span> (<span data-template="app-shared:output" data-template-key="versionNews">Version NUMBER vom DATE</span>) <br/>
 						<!--                        <span data-template="app-shared:print" data-template-key="latestChange">Letzte Änderung dieses Dokuments am DATE durch EDITOR</span>-->
 					</p>
 				</div>
 			</div>
 			<div class="row bugreport">
 				<div class="col-md-9">
-					<p data-template="app-shared:if-matches" data-template-key="lang" data-template-value="de">Wenn Ihnen auf dieser Seite ein Fehler oder eine Ungenauigkeit aufgefallen ist, <br/>so bitten wir um eine kurze Nachricht an
-						<a href="#" class="obfuscate-email" data-template="app-shared:print" data-template-key="bugEmail">bugEmail</a>.</p>
-					<p data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">If you've spotted some error or inaccurateness please do not hesitate to inform us via 
-						<a href="#" class="obfuscate-email" data-template="app-shared:print" data-template-key="bugEmail">bugEmail</a>.</p>
+					<p data-template="app-shared:if-matches" data-template-key="lang" data-template-value="de">Wenn Ihnen auf dieser Seite ein Fehler oder eine Ungenauigkeit aufgefallen ist, <br/>so bitten wir um eine kurze Nachricht an <a href="#" class="obfuscate-email" data-template="app-shared:print" data-template-key="bugEmail">bugEmail</a>.</p>
+					<p data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">If you've spotted some error or inaccurateness please do not hesitate to inform us via <a href="#" class="obfuscate-email" data-template="app-shared:print" data-template-key="bugEmail">bugEmail</a>.</p>
 				</div>
 			</div>
 		</div>

@@ -187,7 +187,7 @@ declare function bibl:printJournalCitation($monogr as element(tei:monogr), $wrap
  : @param $lang the language switch (en, de)
  : @return xs:string*
  :)
-declare %private function bibl:biblScope($parent as element(), $lang as xs:string) as xs:string {
+declare function bibl:biblScope($parent as element(), $lang as xs:string) as xs:string {
     concat(
         if($parent/tei:biblScope/@unit = 'vol') then concat(', ', lang:get-language-string('vol', $lang), '&#160;', $parent/tei:biblScope[@unit = 'vol']) else (),
         if($parent/tei:biblScope/@unit = 'jg') then concat(', ', 'Jg.', '&#160;', $parent/tei:biblScope[@unit = 'jg']) else (),

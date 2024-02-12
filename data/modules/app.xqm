@@ -961,6 +961,7 @@ declare
 declare 
     %templates:wrap
     function app:biblio-basic-data($node as node(), $model as map(*)) as map(*) {
+        let $lang := config:guess-language(())
         let $print-authors := function($doc as document-node(), $alt as xs:boolean) {
             for $author in ($doc//tei:biblStruct/node()[1]/tei:author)
             return <span xmlns="http://www.w3.org/1999/xhtml">{
@@ -972,21 +973,26 @@ declare
             return <span xmlns="http://www.w3.org/1999/xhtml">{wega-util:transform($note, doc(concat($config:xsl-collection-path, '/works.xsl')), config:get-xsl-params(()))}</span>
         }
         let $publication := function($doc as document-node()) {
-            for $pubDate in ($doc//tei:biblStruct/tei:*/tei:imprint/tei:date)
-            return <span xmlns="http://www.w3.org/1999/xhtml">{$pubDate/@when/string()}</span>
+            let $dateFormat := function($lang as xs:string) { 
+                if ($lang = 'de') then '[D]. [MNn] [Y]'
+                else '[MNn] [D], [Y]'
+            }
+            return
+                for $pubDate in ($doc//tei:biblStruct/tei:*/tei:imprint/tei:date)
+                    return <span xmlns="http://www.w3.org/1999/xhtml">{date:printDate($pubDate, $lang, lang:get-language-string#3, $dateFormat)}</span>
         }
         let $pubPlace := function($doc as document-node(), $alt as xs:boolean) {
             for $pubPlace in ($doc//tei:biblStruct/tei:*/tei:imprint/tei:pubPlace)
             return <span xmlns="http://www.w3.org/1999/xhtml">{$pubPlace/text()}</span>
         }
         let $publisher := function($doc as document-node(), $alt as xs:boolean) {
-            for $segment in ($doc//tei:biblStruct/tei:*/tei:imprint/tei:publisher)
+            for $segment in ($doc//tei:biblStruct/tei:*/tei:imprint/tei:publisher[not(.='')])
             return <span xmlns="http://www.w3.org/1999/xhtml">{
                     wega-util:transform($segment, doc(concat($config:xsl-collection-path, '/works.xsl')), config:get-xsl-params(()))
             }</span>
         }
         let $biblioType := $model?doc/tei:biblStruct/@type/data()
-        let $biblioTypeLabel := if($biblioType) then(lang:get-language-string($biblioType, config:guess-language(()))) else()
+        let $biblioTypeLabel := if($biblioType) then(lang:get-language-string($biblioType, $lang)) else()
         let $relators := query:relators($model?doc)[self::tei:*/@role[not(. = ('edt'))] or self::tei:author]
         let $relatorsGrouped := for $each in functx:distinct-deep($relators)
                                     let $role := $each/@role/string()
@@ -999,7 +1005,7 @@ declare
             let $key := $model?doc/tei:biblStruct/tei:monogr/@sameAs
             let $title := if($key) then(crud:doc($key/string())//tei:title[1]/text()) else()
             return
-                <a href="/{$key}.html" xmlns="http://www.w3.org/1999/xhtml">{$title}</a>
+                <a href="/{$key}.html" xmlns="http://www.w3.org/1999/xhtml">{$title}{bibl:biblScope($model?doc/tei:biblStruct/tei:monogr, $lang)}</a>
         }
         let $hasParts := function($doc as document-node(), $linking as xs:boolean) {
             let $files := crud:data-collection('biblio')[.//tei:monogr[@sameAs = $doc/tei:biblStruct/@xml:id]]
