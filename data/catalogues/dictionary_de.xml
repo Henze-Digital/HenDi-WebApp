@@ -156,7 +156,7 @@
     <entry xml:id="substDel">ersetzt durch</entry>
     <entry xml:id="substDelOverwritten">überschrieben mit</entry>
     <entry xml:id="substDelStrikethrough">durchgestrichen und ersetzt mit</entry>
-    <entry xml:id="substDelOvertyped">maschinell überschrieben mit</entry>
+    <entry xml:id="substDelOvertyped">überschrieben mit</entry>
     <entry xml:id="delErased">gelöscht</entry>
     <entry xml:id="delOrthoRealised">Tilgung orthographisch realisiert</entry>
     <entry xml:id="choiceCorr">in der Vorlage</entry>
