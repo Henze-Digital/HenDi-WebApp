@@ -585,7 +585,7 @@
       </xsl:element>
    </xsl:template>
 
-   <xsl:template match="tei:unclear[not(parent::tei:choice) and not(parent::tei:choice)]" mode="apparatus">
+   <xsl:template match="tei:unclear[not(parent::tei:choice) and not(parent::tei:del)]" mode="apparatus">
       <xsl:variable name="unclearText">
          <xsl:apply-templates mode="lemma"/>
       </xsl:variable>
