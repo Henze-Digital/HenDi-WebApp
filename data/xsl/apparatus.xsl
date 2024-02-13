@@ -1,7 +1,7 @@
 <xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:functx="http://www.functx.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" xmlns:hendi="http://henze-digital.zenmem.de/ns/1.0" exclude-result-prefixes="xs" version="3.1">
 
    <xsl:variable name="doc" select="wega:doc($docID)"/>
-	<xsl:variable name="textConstitutionNodes" as="node()*" select=".//tei:subst | .//tei:add[not(parent::tei:subst)] | .//tei:gap[not(@reason='outOfScope' or parent::tei:del)] | .//tei:sic[not(parent::tei:choice)] | .//tei:del[not(parent::tei:subst)] | .//tei:unclear[not(parent::tei:choice)] | .//tei:note[@type='textConst'] | .//tei:handShift | .//tei:supplied[parent::tei:damage] | .//tei:damage[not(node())] | .//tei:hi[@hand]"/>
+	<xsl:variable name="textConstitutionNodes" as="node()*" select=".//tei:subst | .//tei:add[not(parent::tei:subst)] | .//tei:gap[not(@reason='outOfScope' or parent::tei:del)] | .//tei:sic[not(parent::tei:choice)] | .//tei:del[not(parent::tei:subst)] | .//tei:unclear[not(parent::tei:choice) and not(parent::tei:choice)] | .//tei:note[@type='textConst'] | .//tei:handShift | .//tei:supplied[parent::tei:damage] | .//tei:damage[not(node())] | .//tei:hi[@hand]"/>
 	<xsl:variable name="commentaryNodes" as="node()*" select=".//tei:note[@type=('commentary', 'definition')] | .//tei:choice | .//tei:figDesc | .//tei:foreign[@xml:id]"/>
 	<xsl:variable name="autoCommentaryNodes" as="node()*" select=".//tei:persName[not(@key)] | .//tei:orgName[not(@key)] | .//tei:placeName[not(@key)]"/>
 	<xsl:variable name="internalNodes" as="node()*" select=".//tei:note[@type='internal']"/>
@@ -347,7 +347,7 @@
                <xsl:when test="tei:del[@rend='strikethrough']">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
-               	<xsl:if test="./tei:unclear">
+               	<xsl:if test="./tei:del/tei:unclear">
                             <xsl:call-template name="unclearInDel"/>
                         </xsl:if>
                   <xsl:value-of select="wega:getLanguageString('substDelStrikethrough', $lang)"/>
@@ -357,7 +357,7 @@
                <xsl:when test="tei:del[@rend='overwritten']">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
-               	<xsl:if test="./tei:unclear">
+               	<xsl:if test="./tei:del/tei:unclear">
                             <xsl:call-template name="unclearInDel"/>
                         </xsl:if>
                   <xsl:value-of select="wega:getLanguageString('substDelOverwritten', $lang)"/>
@@ -367,7 +367,7 @@
                <xsl:when test="tei:del[@rend='overtyped']">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
-               	  <xsl:if test="./tei:unclear">
+               	  <xsl:if test="./tei:del/tei:unclear">
                             <xsl:call-template name="unclearInDel"/>
                         </xsl:if>
                   <xsl:value-of select="wega:getLanguageString('substDelOvertyped', $lang)"/>
@@ -377,7 +377,7 @@
                <xsl:when test="tei:del[@rend='erased']">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
-               	<xsl:if test="./tei:unclear">
+               	<xsl:if test="./tei:del/tei:unclear">
                             <xsl:call-template name="unclearInDel"/>
                         </xsl:if>
                   <xsl:value-of select="wega:getLanguageString('delErased', $lang)"/>
@@ -385,7 +385,7 @@
                <xsl:when test="tei:del">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
-               	  <xsl:if test="./tei:unclear">
+               	  <xsl:if test="./tei:del/tei:unclear">
                             <xsl:call-template name="unclearInDel"/>
                         </xsl:if>
                   <xsl:value-of select="wega:getLanguageString('substDel', $lang)"/>
@@ -568,7 +568,7 @@
       </xsl:call-template>
    </xsl:template>
 
-   <xsl:template match="tei:unclear[not(parent::tei:choice)]">
+   <xsl:template match="tei:unclear[not(parent::tei:choice) and not(parent::tei:del)]">
       <xsl:element name="span">
          <xsl:apply-templates select="@xml:id"/>
          <xsl:attribute name="class" select="concat('tei_', local-name())"/>
@@ -579,14 +579,13 @@
 	
    <xsl:template name="unclearInDel">
    	<xsl:element name="span">
-            <xsl:text>(</xsl:text>
+            <xsl:text> (</xsl:text>
             <xsl:value-of select="wega:getLanguageString('unclearDefault', $lang)"/>
             <xsl:text>) </xsl:text>
-         
       </xsl:element>
    </xsl:template>
 
-   <xsl:template match="tei:unclear[not(parent::tei:choice)]" mode="apparatus">
+   <xsl:template match="tei:unclear[not(parent::tei:choice) and not(parent::tei:choice)]" mode="apparatus">
       <xsl:variable name="unclearText">
          <xsl:apply-templates mode="lemma"/>
       </xsl:variable>
@@ -774,7 +773,7 @@
       <xsl:call-template name="popover"/>
    </xsl:template>
    
-   <xsl:template match="tei:del[not(parent::tei:subst)]">
+   <xsl:template match="tei:del">
       <xsl:element name="span">
          <xsl:apply-templates select="@xml:id"/>
          <xsl:choose>
@@ -896,6 +895,9 @@
                     <xsl:value-of select="wega:getLanguageString('delOrthoRealised', $lang)"/>
                 </xsl:otherwise>
             </xsl:choose>
+            <xsl:if test="./tei:unclear">
+                <xsl:call-template name="unclearInDel"/>
+            </xsl:if>
             <xsl:sequence select="hendi:getHandFeatures(.)"/>
          </xsl:with-param>
       </xsl:call-template>
@@ -1054,7 +1056,7 @@
                <xsl:number count="tei:handNote" level="any"/>
             </xsl:when>
             <xsl:otherwise>
-            	<xsl:number count="tei:subst | tei:add[not(parent::tei:subst)] | tei:gap[not(@reason='outOfScope' or parent::tei:del)] | tei:sic[not(parent::tei:choice)] | tei:del[not(parent::tei:subst)] | tei:unclear[not(parent::tei:choice)] | tei:note[@type='textConst']  | tei:supplied[parent::tei:damage] | tei:damage[not(node())] | tei:note[@type='internal'] | tei:handShift" level="any"/>
+            	<xsl:number count="tei:subst | tei:add[not(parent::tei:subst)] | tei:gap[not(@reason='outOfScope' or parent::tei:del)] | tei:sic[not(parent::tei:choice)] | tei:del[not(parent::tei:subst)] | tei:unclear[not(parent::tei:choice) and not(parent::tei:choice)] | tei:note[@type='textConst']  | tei:supplied[parent::tei:damage] | tei:damage[not(node())] | tei:note[@type='internal'] | tei:handShift" level="any"/>
             </xsl:otherwise>
          </xsl:choose>
       </xsl:variable>
