@@ -779,7 +779,7 @@
          <xsl:choose>
             <xsl:when test="@rend='overtyped'">
              <xsl:attribute name="class" select="'tei_del_overtyped'"/>
-             <xsl:variable name="delLength" as="xs:integer" select="string-length(text())"/>
+             <xsl:variable name="delLength" as="xs:integer" select="string-length(normalize-space(.//text()))"/>
              <xsl:element name="span">
                 <xsl:apply-templates mode="#current"/>
              </xsl:element>
