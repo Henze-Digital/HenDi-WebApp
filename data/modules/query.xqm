@@ -638,6 +638,7 @@ declare function query:relators($doc as document-node()?) as element()* {
     $doc//mei:fileDesc/mei:titleStmt/mei:respStmt/mei:persName[@role][not(@role='dte')] |
     $doc//mei:workList/mei:work[1]//(mei:persName|mei:corpName)[@role][not(@role='dte')] |
     $doc//tei:sourceDesc/tei:biblStruct//tei:persName[@role][not(@role='dte')] |
+    $doc//tei:biblStruct//(tei:persName|tei:author|tei:editor)[@role] |
     query:get-author-element($doc)
 };
 
