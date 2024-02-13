@@ -1155,6 +1155,7 @@
       <xsl:variable name="handNoteMedium" select="wega:getLanguageString(concat('medium.',$handNote/@medium), $lang)"/>
       <xsl:variable name="handNoteColor" select="wega:getLanguageString(concat('color.',$handNote/@hendi:color), $lang)"/>
       <xsl:variable name="handNoteScribe" select="$handNote/@scribe"/>
+      <xsl:variable name="handNoteCert" select="$handNote/@cert"/>
       
       <xsl:choose>
           <xsl:when test="$handNote">
@@ -1186,6 +1187,9 @@
              </xsl:if>
              <xsl:if test="$handNoteScribe">
               <xsl:text>, </xsl:text>
+              <xsl:if test="$handNoteCert">
+                  <xsl:value-of select="concat(wega:getLanguageString(concat('cert.',$handNoteCert), $lang), ' ', wega:getLanguageString('cert.by', $lang), ' ')"/>
+              </xsl:if>
               <xsl:element name="a">
                  <xsl:attribute name="class">
                     <xsl:value-of select="wega:preview-class($handNote)"/>

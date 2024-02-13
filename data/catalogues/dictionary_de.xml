@@ -878,4 +878,10 @@
 	<entry xml:id="orgType.shop">Geschäft</entry>
 	<entry xml:id="orgType.television">Fernsehen</entry>
 	<entry xml:id="orgType.theater">Theater</entry>
+    
+    <!-- certainty -->
+    <entry xml:id="cert.by">durch</entry>
+    <entry xml:id="cert.high">wahrscheinlich</entry>
+    <entry xml:id="cert.medium">vermutlich</entry>
+    <entry xml:id="cert.low">möglicherweise</entry>
 </dictionary>

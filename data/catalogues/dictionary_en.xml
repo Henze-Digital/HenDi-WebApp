@@ -869,4 +869,10 @@
 	<entry xml:id="orgType.shop">Shop</entry>
 	<entry xml:id="orgType.television">Television</entry>
 	<entry xml:id="orgType.theater">Theater</entry>
+    
+    <!-- certainty -->
+    <entry xml:id="cert.by">by</entry>
+    <entry xml:id="cert.high">probably</entry>
+    <entry xml:id="cert.medium">supposedly</entry>
+    <entry xml:id="cert.low">possibly</entry>
 </dictionary>
