@@ -26,7 +26,8 @@
          <xsl:if test="wega:isNews($docID)">
             <xsl:attribute name="style">display:none</xsl:attribute>
          </xsl:if>
-         <xsl:if test="$doc//tei:profileDesc//tei:handNotes">
+         <xsl:variable name="theHandNotes" select="$doc//tei:profileDesc//tei:handNote"/>
+         <xsl:if test="$theHandNotes">
             <xsl:element name="h3">
                <xsl:attribute name="class">media-heading</xsl:attribute>
                <xsl:value-of select="wega:getLanguageString('handNotes', $lang)"/>
@@ -34,13 +35,14 @@
          </xsl:if>
          <xsl:element name="ul">
             <xsl:attribute name="class">apparatus handNotes</xsl:attribute>
-            <xsl:for-each select="$doc//tei:profileDesc//tei:handNote">
+            <xsl:for-each select="$theHandNotes">
                <xsl:element name="li">
                   <xsl:element name="div">
                      <xsl:attribute name="class">row</xsl:attribute>
                      <xsl:element name="div">
                         <xsl:attribute name="class">col-1 text-nowrap</xsl:attribute>
-                        <xsl:text>–</xsl:text>
+                        <xsl:number count="$theHandNotes" level="any"/>
+                        <xsl:text>.</xsl:text>
                      </xsl:element>
                      <xsl:apply-templates select="." mode="apparatus"/>
                   </xsl:element>
