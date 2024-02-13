@@ -869,7 +869,17 @@
       <xsl:call-template name="apparatusEntry">
          <xsl:with-param name="title" select="wega:getLanguageString('popoverTitle.del',$lang)"/>
          <xsl:with-param name="lemma">
-            <xsl:apply-templates mode="lemma"/>
+            <xsl:variable name="textTokens" select="tokenize(normalize-space(string-join(.//text(), ' ')), '\s+')"/>
+             <xsl:choose>
+                 <xsl:when test="count($textTokens) gt 10">
+                    <!-- Begrenzung des Lemmas auf die ersten 4 und letzten 4 Wörter -->
+                    <xsl:sequence select="(subsequence($textTokens, 1, 4), ' […] ', subsequence($textTokens, count($textTokens) - 4))"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                      <xsl:apply-templates mode="lemma"/>
+                  </xsl:otherwise>
+             </xsl:choose>
+            
          </xsl:with-param>
          <xsl:with-param name="explanation">
             <xsl:choose>
