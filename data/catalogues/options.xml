@@ -28,9 +28,9 @@
 		<entry xml:id="ODDversion">2.0.0</entry>
 		<entry xml:id="versionNews">A05009FF</entry>
 		<entry xml:id="versionDate">2023-09-07</entry>
-		<entry xml:id="zenodoDoiData">10.5281/zenodo.8330292</entry>
-		<entry xml:id="zenodoDoiOdd">10.5281/zenodo.8330292</entry>
-		<entry xml:id="zenodoDoiWebApp">10.5281/zenodo.8330292</entry>
+		<entry xml:id="zenodoDoiData">10.5281/zenodo.10666370</entry>
+		<entry xml:id="zenodoDoiOdd">10.5281/zenodo.10666406</entry>
+		<entry xml:id="zenodoDoiWebApp">10.5281/zenodo.10666436</entry>
 	</div>
 	<div xml:id="externalPNDResources">
 		<entry xml:id="lease-duration">P7D</entry><!-- xs:dayTimeDuration -->
