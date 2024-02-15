@@ -100,7 +100,7 @@
     <entry xml:id="facsimile">Faksimile</entry>
     <entry xml:id="editorial">Apparat</entry>
     <entry xml:id="series">Reihe</entry>
-    <entry xml:id="transcription">Übertragung</entry>
+    <entry xml:id="transcription">Übertragen von</entry>
     <entry xml:id="textSource">Textzeuge</entry>
     <entry xml:id="textSources">Textzeugen</entry>
     <entry xml:id="correspondingSources">Dazugehörige Textwiedergaben</entry>
@@ -131,6 +131,10 @@
     <entry xml:id="generalRemark">Generalvermerk</entry>
     <!--  XSL-Ausgaben  -->
     <entry xml:id="addMargin">am Rand hinzugefügt</entry>
+	<entry xml:id="addMargin-right">am rechten Rand hinzugefügt</entry>
+	<entry xml:id="addMargin-left">am linken Rand hinzugefügt</entry>
+	<entry xml:id="addMargin-top">am oberen Rand hinzugefügt</entry>
+	<entry xml:id="addMargin-bottom">am unteren Rand hinzugefügt</entry>
     <entry xml:id="addInline">in der Zeile hinzugefügt</entry>
     <entry xml:id="addBelow">unter der Zeile hinzugefügt</entry>
     <entry xml:id="addAbove">über der Zeile hinzugefügt</entry>
@@ -144,14 +148,15 @@
     <entry xml:id="substMargin">Ersetzung am Rand</entry>
     <entry xml:id="substMixed">Ersetzung an mehreren Stellen</entry>-->
     <entry xml:id="popoverTitle.del">Löschung</entry>
+    <entry xml:id="popoverTitle.hi">Hervorhebung</entry>
     <entry xml:id="delGap">gelöschter Text nicht lesbar</entry>
     <entry xml:id="delStrikethrough">durchgestrichen</entry>
     <entry xml:id="delOverwritten">gelöscht durch Überschreibung</entry>
-    <entry xml:id="delOvertyped">gelöscht durch Überschriebung</entry>
+    <entry xml:id="delOvertyped">gelöscht durch Überschreibung</entry>
     <entry xml:id="substDel">ersetzt durch</entry>
     <entry xml:id="substDelOverwritten">überschrieben mit</entry>
     <entry xml:id="substDelStrikethrough">durchgestrichen und ersetzt mit</entry>
-    <entry xml:id="substDelOvertyped">maschinell überschrieben mit</entry>
+    <entry xml:id="substDelOvertyped">überschrieben mit</entry>
     <entry xml:id="delErased">gelöscht</entry>
     <entry xml:id="delOrthoRealised">Tilgung orthographisch realisiert</entry>
     <entry xml:id="choiceCorr">in der Vorlage</entry>
@@ -165,6 +170,8 @@
     <entry xml:id="unclearDefault">unsichere Lesung</entry>
     <entry xml:id="gapDefault">unleserliche Stelle</entry><!-- Übertragung nicht möglich -->
     <entry xml:id="outofScope">außerhalb des Editionsrahmens</entry>
+    <entry xml:id="hiUnderline">Unterstreichung</entry>
+    
     <entry xml:id="handshiftManuscript">handschriftlich</entry>
     <entry xml:id="handshiftTypescript">Typoskript</entry>
     <entry xml:id="handNoteHeadManuscript">Manuskript</entry>
@@ -280,7 +287,7 @@
     <entry xml:id="approved">bearbeitet</entry>
     <entry xml:id="biblioType">Literaturtyp</entry>
     <entry xml:id="albumblatt">Albumblatt</entry>
-    <entry xml:id="authors">Text</entry>
+    <entry xml:id="authors">Text von</entry>
     <entry xml:id="editors">Herausgegeben von</entry>
     <entry xml:id="publication">Veröffentlicht</entry>
     <entry xml:id="pubPlace">Verlagsort</entry>
@@ -290,6 +297,9 @@
     <entry xml:id="weisung">Weisung</entry>
     <entry xml:id="eingabe">Eingabe</entry>
     <entry xml:id="vortrag">Vortrag</entry>
+	<entry xml:id="informationAboutTheBiblio">Informationen zum Bibliographie-Eintrag</entry>
+	<entry xml:id="isPartOf">Enthalten in</entry>
+	<entry xml:id="hasPart">Enthält</entry>
     <!--  Development  -->
     <entry xml:id="common">Allgemeines</entry>
     <!-- HTML Meta Daten (description) -->
@@ -359,18 +369,20 @@
     <entry xml:id="reset">Zurücksetzen</entry>
     <entry xml:id="confirm">Abschicken</entry>
     <!--  Biblio Typen  -->
-    <entry xml:id="article">Zeitschriftenaufsatz</entry>
+    <entry xml:id="article">Aufsatz</entry>
+    <entry xml:id="book">Monographie</entry>
+    <entry xml:id="inbook">Buchkapitel</entry>
     <entry xml:id="incollection">Sammelbandbeitrag</entry>
     <entry xml:id="inproceedings">Aufsatz in Konferenzbericht</entry>
-    <entry xml:id="score">Notenband</entry>
+	<entry xml:id="journal">Zeitung/Zeitschrift</entry>
+    <entry xml:id="thesis">Abschlussarbeit</entry>
     <entry xml:id="misc">Varia</entry>
-    <entry xml:id="book">Monographie</entry>
-    <entry xml:id="review">Rezension</entry>
-    <entry xml:id="phdthesis">Dissertation</entry>
-    <entry xml:id="online">Online-Veröffentlichung</entry>
-    <entry xml:id="inbook">Buchkapitel</entry>
-    <entry xml:id="mastersthesis">Master-/Magisterarbeit</entry>
+    <entry xml:id="online">Online</entry>
 	<entry xml:id="painting">Gemälde</entry>
+	<entry xml:id="poem">Gerdicht</entry>
+	<entry xml:id="libretto">Libretto</entry>
+    <entry xml:id="review">Rezension</entry>
+    <entry xml:id="score">Notenband</entry>
     <!--  Various  -->
     <entry xml:id="correspondence">Briefe</entry>
     <entry xml:id="corresp">Briefwechsel</entry>
@@ -695,7 +707,7 @@
     <entry xml:id="color.blue.dark">dunkelblau</entry>
     <entry xml:id="color.dark">dunkel</entry>
     <entry xml:id="color.black">schwarz</entry>
-    <entry xml:id="color.pink">rosa (pink)</entry>
+    <entry xml:id="color.pink">pink</entry>
     <entry xml:id="color.red">rot</entry>
     <entry xml:id="color.red.light">hellrot</entry>
     <entry xml:id="color.red.dark">dunkerot</entry>
@@ -715,8 +727,7 @@
     <entry xml:id="medium.pencil.colored">Buntstift</entry>
     <entry xml:id="medium.pencil.ink">Tuschestift</entry>
     <entry xml:id="medium.pen">Füller</entry>
-    <entry xml:id="medium.pen.felt">Filzstift</entry>
-    <entry xml:id="medium.pen.fine">Fineliner</entry>
+    <entry xml:id="medium.pen.felt">Filzstift/Fineliner</entry>
     <entry xml:id="medium.pen.ball">Kugelschreiber</entry>
     <entry xml:id="medium.ribbon">Farbband (Schreibmaschine)</entry>
     
@@ -867,4 +878,10 @@
 	<entry xml:id="orgType.shop">Geschäft</entry>
 	<entry xml:id="orgType.television">Fernsehen</entry>
 	<entry xml:id="orgType.theater">Theater</entry>
+    
+    <!-- certainty -->
+    <entry xml:id="cert.by">durch</entry>
+    <entry xml:id="cert.high">wahrscheinlich</entry>
+    <entry xml:id="cert.medium">vermutlich</entry>
+    <entry xml:id="cert.low">möglicherweise</entry>
 </dictionary>

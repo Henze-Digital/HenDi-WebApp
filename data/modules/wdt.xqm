@@ -818,14 +818,15 @@ declare function wdt:biblio($item as item()*) as map(*) {
                 case xs:untypedAtomic return crud:doc($item)/tei:biblStruct
                 case document-node() return $item/tei:biblStruct
                 default return $item/root()/tei:biblStruct
-            let $html-title := bibl:printCitation($biblStruct, <xhtml:p/>, 'de')
+            let $html-title := wega-util:transform(($biblStruct//tei:title)[1], doc(concat($config:xsl-collection-path, '/common_main.xsl')), config:get-xsl-params(()))
+(:            let $html-title := <xhtml:p>{($biblStruct//tei:title)[1]//text()}</xhtml:p>:)
             return
                 switch($serialization)
                 case 'txt' return str:normalize-space($html-title)
                 case 'html' return $html-title 
                 default return wega-util:log-to-file('error', 'wdt:biblio()("title"): unsupported serialization "' || $serialization || '"')
         },
-        'memberOf' : ('indices', 'unary-docTypes'),
+        'memberOf' : ('indices', 'unary-docTypes','search'),
         'search' : function($query as element(query)) {
             $item[tei:biblStruct]//tei:biblStruct[ft:query(., $query)] | 
             $item[tei:biblStruct]//tei:title[ft:query(., $query)] | 
@@ -1010,7 +1011,7 @@ declare function wdt:documents($item as item()*) as map(*) {
         'filter-by-person' : function($personID as xs:string) as document-node()* {
             if(matches($personID, config:wrap-regex('correspIdPattern')))
             then(
-                 let $personIDs := crud:data-collection('letters')//tei:*[contains(@key, $personID)][ancestor::tei:listRelation]/root()//@key[matches(., config:wrap-regex('documentsIdPattern'))]/string()
+                 let $personIDs := (crud:data-collection('letters')//tei:*[contains(@key, $personID)][ancestor::tei:listRelation]/root()//@key[matches(., config:wrap-regex('documentsIdPattern'))]/string(), crud:data-collection('documents')//tei:*[contains(@key, $personID)][ancestor::tei:listRelation]/root()/tei:TEI/@xml:id/string())
                     => distinct-values()
                  return
                      $item/node()[functx:contains-any-of(@xml:id, $personIDs)]/root()

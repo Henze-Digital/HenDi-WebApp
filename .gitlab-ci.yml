@@ -109,6 +109,12 @@ develop:webapp:
     - ant xar -Dbuild.env.ci=true -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   rules:
     - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_WEBAPP == "true"
+      changes:
+        - data/**/*.*
+        - submodules/**/*.*
+        - package.json
+        - build.xml
+        - build.propoerties
       when: always
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
@@ -182,7 +188,7 @@ staging:image-deploy:
   rules:
     - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_STAGING == "true"
 
-preview:image-webapp:
+preview:image-deploy:
   stage: deploy
   image: curlimages/curl
   variables:

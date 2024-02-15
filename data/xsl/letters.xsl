@@ -49,7 +49,12 @@
 		<xsl:element name="div">
 			<xsl:attribute name="class" select="'row justify-content-center'"/>
 			<xsl:if test="ancestor::tei:text/@type = 'telegram'">
-				<xsl:attribute name="style" select="'border: solid;'"/>
+			<xsl:choose>
+			    <xsl:when test="@rend='nobox'"><xsl:attribute name="style" select="'border: none;'"/></xsl:when>
+			    <xsl:otherwise>
+			        <xsl:attribute name="style" select="'border: solid;'"/>
+			    </xsl:otherwise>
+			</xsl:choose>
 			</xsl:if>
 			<xsl:apply-templates select="./tei:div"/>
 		</xsl:element>
@@ -75,6 +80,16 @@
 	<xsl:template match="tei:div[not(@type='row') and not(parent::tei:div[@type='row'])]">
 		<xsl:element name="div">
 			<xsl:apply-templates select="@xml:id"/>
+			<xsl:if test="@rend">
+				<xsl:choose>
+					<xsl:when test="@rend='box'">
+						<xsl:attribute name="style" select="'border: 1px solid black;'"/>
+					</xsl:when>
+					<xsl:when test="@rend='nobox'">
+						<xsl:attribute name="style" select="'border: none;'"/>
+					</xsl:when>
+				</xsl:choose>
+			</xsl:if>
 			<xsl:choose>
 				<xsl:when test="@type='writingSession'">
 					<xsl:attribute name="class" select="'writingSession'"/>
@@ -293,7 +308,9 @@
 					</xsl:when>
 				</xsl:choose>
 			</xsl:attribute>
-			<xsl:apply-templates/>
+			<xsl:element name="span">
+				<xsl:apply-templates/>
+			</xsl:element>
 			<xsl:if test="self::tei:addrLine">
                 <xsl:element name="br"/>
             </xsl:if>
@@ -302,11 +319,14 @@
 	
 	<xsl:template match="tei:p">
 		<xsl:element name="p">
-			<xsl:if test="@rend">
-				<xsl:attribute name="class">
+			<xsl:attribute name="class">
+				<xsl:if test="@rend">
 					<xsl:value-of select="concat('textAlign-',@rend)"/>
-				</xsl:attribute>
-			</xsl:if>
+				</xsl:if>
+				<xsl:if test="@type='strip'">
+					<xsl:value-of select="' tei_p_strip'"/>
+				</xsl:if>
+			</xsl:attribute>
 			<xsl:apply-templates/>
 		</xsl:element>
 	</xsl:template>

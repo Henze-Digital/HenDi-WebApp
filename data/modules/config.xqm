@@ -406,11 +406,23 @@ declare function config:is-weberStudies($doc as document-node()?) as xs:boolean 
  : Checks whether a given string matches the defined types of bibliographic objects
  :
  : @author Peter Stadler
+ : @author Dennis Ried
  : @param $string the string to test
  : @return xs:boolean
 :)
 declare function config:is-biblioType($string as xs:string?) as xs:boolean {
-    $string = ('mastersthesis', 'inbook', 'online', 'review', 'book', 'misc', 'inproceedings', 'article', 'score', 'incollection', 'phdthesis')
+    $string = doc($config:app-root || '/guidelines/guidelines-de-hendiBiblio.compiled.xml')//tei:dataSpec[@ident="hendi.biblio.types"]//tei:valItem/@ident
+};
+
+(:~
+ : Checks whether a given string matches the defined types of work objects
+ :
+ : @author Dennis Ried
+ : @param $string the string to test
+ : @return xs:boolean
+:)
+declare function config:is-workType($string as xs:string?) as xs:boolean {
+    $string = doc($config:app-root || '/guidelines/guidelines-de-hendiWorksMEI.compiled.xml')//tei:elementSpec[@ident="work"]//tei:attDef[@ident="class"]//tei:valItem/@ident
 };
 
 (:~

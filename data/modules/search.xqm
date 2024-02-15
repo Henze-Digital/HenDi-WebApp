@@ -45,7 +45,9 @@ declare variable $search:valid-params := (
     'orderby',
     'orderdir',
     'orgs',
-    'corresp'
+    'corresp',
+    'workType',
+    'biblioType'
 );
 
 (:~

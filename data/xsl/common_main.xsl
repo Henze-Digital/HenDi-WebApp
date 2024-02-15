@@ -83,12 +83,12 @@
                         <xsl:when test="not($marker) and self::tei:app">
                             <xsl:text>Δ</xsl:text>
                         </xsl:when>
-                        <xsl:when test="not($marker) and self::tei:handShift[@script='manuscript']">
+                        <xsl:when test="not($marker) and (self::tei:handShift[@script='manuscript'] or self::tei:handShift[substring-after(@corresp,'#') = wega:doc($docID)//tei:handNote[@script='manuscript']/@xml:id])">
                             <xsl:element name="i">
                                 <xsl:attribute name="class">fa-solid fa-feather-pointed</xsl:attribute>
                             </xsl:element>                    
                         </xsl:when>
-                        <xsl:when test="not($marker) and self::tei:handShift[@script='typescript']">
+                        <xsl:when test="not($marker) and (self::tei:handShift[@script='typescript'] or self::tei:handShift[substring-after(@corresp,'#') = wega:doc($docID)//tei:handNote[@script='typescript']/@xml:id])">
                             <xsl:element name="i">
                                 <xsl:attribute name="class">fa-regular fa-keyboard</xsl:attribute>
                             </xsl:element>
@@ -533,6 +533,9 @@
             </xsl:attribute>
             <xsl:apply-templates mode="#current"/>
         </xsl:element>
+        <xsl:if test="@hand">
+            <xsl:call-template name="popover"/>
+        </xsl:if>
     </xsl:template>
 	
 	<xsl:template match="tei:hi[@rend='capital']" mode="#all">

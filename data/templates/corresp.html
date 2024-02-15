@@ -75,22 +75,39 @@
 							<span data-template="lang:translate">timePeriod</span>:</strong>
 					</li>
 					<li class="media date">
-						<span data-template="app-shared:print" data-template-key="letterEarliest">Datum des ersten Dokuments</span>–<span data-template="app-shared:print" data-template-key="letterLatest">Datum des letzten Dokuments</span>
+						<span class="pull-left">
+							<i class="fa-regular fa-calendar-check"/>
+						</span> <span data-template="app-shared:print" data-template-key="letterEarliest">Datum des ersten Dokuments</span>–<span data-template="app-shared:print" data-template-key="letterLatest">Datum des letzten Dokuments</span>
 					</li>
 					<li>
 						<strong>
 							<span data-template="lang:translate">correspPartners</span>:</strong>
 					</li>
 					<li class="media correspPartners" data-template="app-shared:each" data-template-from="correspPartners" data-template-to="correspPartner">
-						<span class="pull-left"><i class="fa fa-user"/></span>&#160;<span class="media-body" data-template="app:preview-correspPartner-name" data-template-popover="true">Henze, Hans Werner</span>
+						<span class="pull-left">
+							<i class="fa fa-user"/>
+						</span> <span class="media-body" data-template="app:preview-correspPartner-name" data-template-popover="true">Henze, Hans Werner</span>
 					</li>
 					<li>
 						<strong>
-							<span data-template="lang:translate">annotation</span>:</strong>
+							<span data-template="lang:translate">editors</span>:</strong>
 					</li>
-					<li class="media annotation">
-						<span data-template="app-shared:print" data-template-key="annotation">Eine Anmerkung</span>
+					<li class="media editors" data-template="app-shared:each" data-template-from="editors" data-template-to="editor">
+						<span class="pull-left">
+							<i class="fa fa-user"/>
+						</span> <span class="media-body" data-template="app:preview-editors-name" data-template-popover="true">Nachname, Vorname</span>
 					</li>
+					<div data-template="app-shared:if-exists" data-template-key="annotation" data-template-wrap="no">
+						<li>
+							<strong>
+								<span data-template="lang:translate">annotation</span>:</strong>
+						</li>
+						<li class="media annotation">
+							<span class="pull-left">
+								<i class="fa-solid fa-thumbtack"/>
+							</span> <span data-template="app-shared:print" data-template-key="annotation">Eine Anmerkung</span>
+						</li>
+					</div>
 				</ol>
 			</div>
 		</div>

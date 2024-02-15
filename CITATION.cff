@@ -3,9 +3,7 @@
 
 cff-version: 1.2.0
 title: HenDi-WebApp
-message: >-
-  If you use this dataset, please cite it using the
-  metadata from this file.
+message: "Please cite this software using the metadata from 'preferred-citation'."
 type: software
 authors:
   - given-names: Dennis
@@ -14,6 +12,13 @@ authors:
     affiliation: Paderborn University
     orcid: 'https://orcid.org/0000-0001-5545-2088'
 url: 'https://henze-digital.zenmem.de'
+preferred-citation:
+  authors:
+    - family-names: Ried
+      given-names: Dennis
+  title: "HenDi-WebApp v3.0.0"
+  type: software
+  year: 2024
 abstract: >-
   This is the source code of the adaption of the WeGA-WebApp by the project Henze-Digital.
 keywords:
@@ -21,10 +26,9 @@ keywords:
   - musicology
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.8304638
+    value: 10.5281/zenodo.10666436
 repository-code: 'https://github.com/Henze-Digital/HenDi-WebApp'
 repository: 'https://git.uni-paderborn.de/vife/henze-digital/hwh-webapp'
 license: CC-BY-4.0
-commit: 6896274df1f542527b9d9ec25ddc09ffc660f94e
-version: 2.0.0
-date-released: '2023-12-15'
+version: 3.0.0
+date-released: '2024-02-16'

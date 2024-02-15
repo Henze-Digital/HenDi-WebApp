@@ -73,7 +73,7 @@ declare function query:get-authorName($doc as document-node()?) as xs:string {
 
 declare function query:get-author-element($doc as document-node()?) as element()* {
     if(config:is-diary($doc/tei:ab/@xml:id)) then <tei:author key="A002068">Weber, Carl Maria von</tei:author> (: Sonderbehandlung fürs Tagebuch :)
-    else if(config:is-work($doc/node()/@xml:id))
+    else if(config:is-work($doc/node()/@xml:id) or config:is-biblio($doc/node()/@xml:id))
     then(($doc//mei:workList/mei:work[1]//(mei:persName|mei:corpName)[@role = ('cmp', 'aut', 'lbt', 'arr')] |
         $doc//tei:biblStruct[1]//tei:author)[1])
     else ( 
@@ -86,7 +86,8 @@ declare function query:get-author-element($doc as document-node()?) as element()
 declare function query:get-editor-element($doc as document-node()?) as element()* {
     ( 
         $doc//mei:fileDesc/mei:titleStmt/mei:respStmt/mei:persName[@role = ('cmp', 'aut', 'lbt', 'arr')] |
-        $doc//tei:fileDesc/tei:titleStmt/tei:editor
+        $doc//tei:fileDesc/tei:titleStmt/tei:editor |
+        $doc/tei:biblStruct//tei:editor
     )
 };
 
@@ -357,11 +358,12 @@ declare function query:get-facets($collection as node()*, $facet as xs:string) a
     case 'authors' return $collection//tei:author/@key
     case 'authorsText' return ($collection//tei:author[ancestor::tei:biblStruct]/@key | $collection//mei:persName[@role=('lyr','lbt')]/@codedval)
     case 'editors' return $collection//tei:editor/@key
-    case 'biblioType' return $collection/tei:biblStruct/@type
+    case 'biblioType' return $collection//tei:biblStruct/@type
+    case 'workType' return $collection//mei:work[parent::mei:workList]/@class
     case 'docTypeSubClass' return $collection//tei:text/@type
     case 'sex' return $collection//tei:sex
     case 'forenames' return $collection//tei:forename[not(@full)]
-    case 'surnames' return $collection//tei:surname | $collection//tei:orgName[@type]
+    case 'surnames' return ($collection//tei:surname | $collection//tei:orgName[@type])
     case 'orgType' return $collection//tei:term[ancestor::tei:state[@type='orgType']]
     case 'vorlageform' return $collection//mei:term[@label='vorlageform']
     case 'asksam-cat' return $collection//mei:term[@label='asksam-cat']
@@ -436,48 +438,48 @@ declare function query:contributors($doc as document-node()?) as xs:string* {
 ~:)
 declare function query:correspContext($doc as document-node(), $senderID as xs:string?) as map(*)? {
     let $docID := $doc/tei:TEI/data(@xml:id)
-    let $authorID := 
+    let $authorIDs := 
         if($doc//tei:correspAction[@type='sent']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name][@key=$senderID])
         then $senderID
-        else ($doc//tei:correspAction[@type='sent']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name])[1]/@key
-    let $addresseeID := ($doc//tei:correspAction[@type='received']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name])[1]/@key
-    let $authorColl := 
-        if($authorID) then core:getOrCreateColl('letters', $authorID, true())
-        else ()
+        else ($doc//tei:correspAction[@type='sent']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name]/@key)
+    let $addresseeIDs := ($doc//tei:correspAction[@type='received']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name]/@key)
+    let $authorColls := 
+        for $authorID in $authorIDs
+            return core:getOrCreateColl('letters', $authorID, true())
     let $indexOfCurrentLetter := sort:index('letters', $doc)
     
     (: Vorausgehender Brief in der Liste des Autors (= vorheriger von-Brief) :)
     (: Need to create the collection outside of the call to wdt:letters() because of performance issues :)
-    let $prevLetterFromSenderColl := $authorColl[sort:index('letters', .) lt $indexOfCurrentLetter]//tei:correspAction[@type='sent']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name][@key=$authorID]
+    let $prevLetterFromSenderColl := $authorColls[sort:index('letters', .) lt $indexOfCurrentLetter]//tei:correspAction[@type='sent']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name][functx:contains-any-of(@key, $authorIDs)]
     let $prevLetterFromSender := wdt:letters($prevLetterFromSenderColl)('sort')(())[last()]/root()
     (: Vorausgehender Brief in der Liste an den Autors (= vorheriger an-Brief) :)
-    let $prevLetterToSenderColl := $authorColl[sort:index('letters', .) lt $indexOfCurrentLetter]//tei:correspAction[@type='received']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name][@key=$authorID]
+    let $prevLetterToSenderColl := $authorColls[sort:index('letters', .) lt $indexOfCurrentLetter]//tei:correspAction[@type='received']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name][functx:contains-any-of(@key, $authorIDs)]
     let $prevLetterToSender := wdt:letters($prevLetterToSenderColl)('sort')(())[last()]/root()
     (: Nächster Brief in der Liste des Autors (= nächster von-Brief) :)
-    let $nextLetterFromSenderColl := $authorColl[sort:index('letters', .) gt $indexOfCurrentLetter]//tei:correspAction[@type='sent']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name][@key=$authorID]
+    let $nextLetterFromSenderColl := $authorColls[sort:index('letters', .) gt $indexOfCurrentLetter]//tei:correspAction[@type='sent']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name][functx:contains-any-of(@key, $authorIDs)]
     let $nextLetterFromSender := wdt:letters($nextLetterFromSenderColl)('sort')(())[1]/root()
     (: Nächster Brief in der Liste an den Autor (= nächster an-Brief) :)
-    let $nextLetterToSenderColl := $authorColl[sort:index('letters', .) gt $indexOfCurrentLetter]//tei:correspAction[@type='received']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name][@key=$authorID]
+    let $nextLetterToSenderColl := $authorColls[sort:index('letters', .) gt $indexOfCurrentLetter]//tei:correspAction[@type='received']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name][functx:contains-any-of(@key, $authorIDs)]
     let $nextLetterToSender := wdt:letters($nextLetterToSenderColl)('sort')(())[1]/root()
     (: Direkter vorausgehender Brief des Korrespondenzpartners (worauf dieser eine Antwort ist) :)
     let $prevLetterFromAddressee :=
         if($doc//tei:correspContext) then crud:doc($doc//tei:correspContext/tei:ref[@type='previousLetterFromAddressee']/string(@target))
         else (
-            let $prevLetterFromAddresseeColl := $authorColl[sort:index('letters', .) lt $indexOfCurrentLetter]//tei:correspAction[@type='sent']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name][@key=$addresseeID]
+            let $prevLetterFromAddresseeColl := $authorColls[sort:index('letters', .) lt $indexOfCurrentLetter]//tei:correspAction[@type='sent']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name][functx:contains-any-of(@key, $addresseeIDs)]
             return wdt:letters($prevLetterFromAddresseeColl)('sort')(())[last()]/root()
         )
     (: Direkter vorausgehender Brief des Autors an den Korrespondenzpartner :)
-    let $prevLetterFromAuthorToAddresseeColl := $authorColl[sort:index('letters', .) lt $indexOfCurrentLetter]//tei:correspAction[@type='received']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name][@key=$addresseeID]
+    let $prevLetterFromAuthorToAddresseeColl := $authorColls[sort:index('letters', .) lt $indexOfCurrentLetter]//tei:correspAction[@type='received']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name][functx:contains-any-of(@key, $addresseeIDs)]
     let $prevLetterFromAuthorToAddressee := wdt:letters($prevLetterFromAuthorToAddresseeColl)('sort')(())[last()]/root()
     (: Direkter Antwortbrief des Adressaten:)
     let $replyLetterFromAddressee := 
         if($doc//tei:correspContext) then crud:doc($doc//tei:correspContext/tei:ref[@type='nextLetterFromAddressee']/string(@target))
         else (
-            let $replyLetterFromAddresseeColl := $authorColl[sort:index('letters', .) gt $indexOfCurrentLetter]//tei:correspAction[@type='sent']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name][@key=$addresseeID]
+            let $replyLetterFromAddresseeColl := $authorColls[sort:index('letters', .) gt $indexOfCurrentLetter]//tei:correspAction[@type='sent']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name][functx:contains-any-of(@key, $addresseeIDs)]
             return wdt:letters($replyLetterFromAddresseeColl)('sort')(())[1]/root()
         )
     (: Antwort des Autors auf die Antwort des Adressaten :)
-    let $replyLetterFromSenderColl := $authorColl[sort:index('letters', .) gt $indexOfCurrentLetter]//tei:correspAction[@type='received']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name][@key=$addresseeID]
+    let $replyLetterFromSenderColl := $authorColls[sort:index('letters', .) gt $indexOfCurrentLetter]//tei:correspAction[@type='received']/tei:*[self::tei:persName or self::tei:orgName or self::tei:name][functx:contains-any-of(@key, $addresseeIDs)]
     let $replyLetterFromSender := wdt:letters($replyLetterFromSenderColl)('sort')(())[1]/root()
     
     let $create-map := function($letter as document-node()?, $fromTo as xs:string) as map(*)? {
@@ -636,6 +638,7 @@ declare function query:relators($doc as document-node()?) as element()* {
     $doc//mei:fileDesc/mei:titleStmt/mei:respStmt/mei:persName[@role][not(@role='dte')] |
     $doc//mei:workList/mei:work[1]//(mei:persName|mei:corpName)[@role][not(@role='dte')] |
     $doc//tei:sourceDesc/tei:biblStruct//tei:persName[@role][not(@role='dte')] |
+    $doc//tei:biblStruct//(tei:persName|tei:author|tei:editor)[@role] |
     query:get-author-element($doc)
 };
 
