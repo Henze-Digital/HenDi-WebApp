@@ -1011,7 +1011,7 @@ declare function wdt:documents($item as item()*) as map(*) {
         'filter-by-person' : function($personID as xs:string) as document-node()* {
             if(matches($personID, config:wrap-regex('correspIdPattern')))
             then(
-                 let $personIDs := crud:data-collection('letters')//tei:*[contains(@key, $personID)][ancestor::tei:listRelation]/root()//@key[matches(., config:wrap-regex('documentsIdPattern'))]/string()
+                 let $personIDs := (crud:data-collection('letters')//tei:*[contains(@key, $personID)][ancestor::tei:listRelation]/root()//@key[matches(., config:wrap-regex('documentsIdPattern'))]/string(), crud:data-collection('documents')//tei:*[contains(@key, $personID)][ancestor::tei:listRelation]/root()/tei:TEI/@xml:id/string())
                     => distinct-values()
                  return
                      $item/node()[functx:contains-any-of(@xml:id, $personIDs)]/root()
