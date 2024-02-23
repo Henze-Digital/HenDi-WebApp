@@ -25,9 +25,9 @@
 		<entry xml:id="entriesPerPage">10</entry>
 		<entry xml:id="resourceImgPath">/resources/img/</entry>
 		<entry xml:id="logoFileName">logo_hendi.png</entry>
-		<entry xml:id="ODDversion">2.0.0</entry>
-		<entry xml:id="versionNews">A05009FF</entry>
-		<entry xml:id="versionDate">2023-09-07</entry>
+		<entry xml:id="ODDversion">3.0.0</entry>
+		<entry xml:id="versionNews">A0500972</entry>
+		<entry xml:id="versionDate">2024-02-16</entry>
 		<entry xml:id="zenodoDoiData">10.5281/zenodo.10666370</entry>
 		<entry xml:id="zenodoDoiOdd">10.5281/zenodo.10666406</entry>
 		<entry xml:id="zenodoDoiWebApp">10.5281/zenodo.10666436</entry>
