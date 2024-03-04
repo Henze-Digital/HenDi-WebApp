@@ -67,7 +67,7 @@ build:merge_request:
       when: always
     - when: never
   after_script:
-    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ./hendi-pkg-webapp/HenDi-WebApp-*.xar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hendi-webapp/merge_request/HenDi-WebApp-${$CI_COMMIT_BRANCH}-latest.xar"'
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ./hendi-pkg-webapp/HenDi-WebApp-*.xar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hendi-webapp/${CI_COMMIT_BRANCH}/HenDi-WebApp-latest.xar"'
 
 build:stable:
   stage: build
