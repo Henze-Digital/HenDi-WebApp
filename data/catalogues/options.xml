@@ -8,7 +8,7 @@
 	<div xml:id="dbPaths">
 		<!-- where to store the temporary files -->
 		<entry xml:id="tmpDir" type="xs:string">/db/apps/HenDi-WebApp/tmp/</entry>
-		<entry xml:id="dataCollectionPath" type="xs:string">/db/apps/hendi-data</entry>
+		<entry xml:id="dataCollectionPath" type="xs:string">/db/apps/HenDi-Data</entry>
 	</div>
 	<div xml:id="various">
 		<entry xml:id="anonymusID">A001058B</entry>
