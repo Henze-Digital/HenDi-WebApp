@@ -1,18 +1,16 @@
-# GitLab CI configuration for the "HenDi-WebApp"
+# GitLab CI configuration for building the "HenDi-WebApp"
 variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
     IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
     HENDI_CI_IMAGE: registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image:v1-1-0
-    GIT_SUBMODULE_STRATEGY: recursive
-    URL_CI_REGISTRY: "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp"
+    GIT_SUBMODULE_STRATEGY: recursive # is also defined in the jobs. Why?
     GIT_DEPTH: 5
+    #URL_CI_REGISTRY: "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp"
 
 stages:
   - update
   - build
-  - docker
-  - deploy
 
 # jobs for updating
 update:submodules:
@@ -41,66 +39,8 @@ update:submodules:
     variables:
       - $TRIGGER_UPDATE_SUBMODULE == "true"
 
-# hidden jobs for reusable rules
-.rules-default:
-  rules:
-    - if: $CI_COMMIT_BRANCH == "develop" && ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true"  || $BUILD_PORTAL_PREVIEW == "true")
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-
-.rules-stable:
-  rules:
-    - if: $CI_COMMIT_BRANCH == "stable" && $BUILD_PORTAL_STABLE == "true"
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: never
-
-.rules-staging:
-  rules:
-    - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_STAGING == "true"
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: never
-
-.rules-preview:
-  rules:
-    - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_PREVIEW == "true"
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: never
-
-# hidden jobs for docker build actions
-.docker-build-action:
-  image: docker:20.10
-  services:
-    - docker:20.10-dind
-  script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker run --privileged --rm tonistiigi/binfmt --install all
-    - docker buildx create --name hendiBuilder-${HENDI_ENV_NAME} --use
-    - docker buildx build --provenance false --no-cache --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN}  --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG} -f Dockerfile.${HENDI_ENV_NAME} .
-    - docker buildx prune --builder hendiBuilder-${HENDI_ENV_NAME} -fa
-
-.docker-build-action-suffixed:
-  image: docker:20.10
-  services:
-    - docker:20.10-dind
-  script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker run --privileged --rm tonistiigi/binfmt --install all
-    - docker buildx create --name hendiBuilder-${HENDI_ENV_NAME} --use
-    - docker buildx build --provenance false --no-cache --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN}  --platform linux/arm64,linux/amd64 --push -t ${IMAGE_TAG}-${HENDI_ENV_NAME} -f Dockerfile.${HENDI_ENV_NAME} .
-    - docker buildx prune --builder hendiBuilder-${HENDI_ENV_NAME} -fa
-
-# hidden jobs for triggering deploy (keel)
-.keel-deploy:
-  script:
-    - >
-      curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "'${CI_REGISTRY_IMAGE}'", "tag": "'${CI_COMMIT_REF_SLUG}'"}'
-
-.keel-deploy-suffixed:
-  script:
-    - >
-      curl -X POST https://keel3.edirom.de/v1/webhooks/native -H 'Content-Type: application/json' -d '{"name": "'${CI_REGISTRY_IMAGE}'", "tag": "'${CI_COMMIT_REF_SLUG}-${HENDI_ENV_NAME}'"}'
-      
 # jobs for building the webapp
-develop:webapp:
+build:develop:
   stage: build
   image: $HENDI_CI_IMAGE
   variables:
@@ -108,20 +48,28 @@ develop:webapp:
   script:
     - ant xar -Dbuild.env.ci=true -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
   rules:
-    - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_WEBAPP == "true"
-      changes:
-        - data/**/*.*
-        - submodules/**/*.*
-        - package.json
-        - build.xml
-        - build.propoerties
+    - if: $CI_COMMIT_BRANCH == "develop"
       when: always
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
   after_script:
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ./hendi-pkg-webapp/HenDi-WebApp-*.xar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hendi-webapp/latest/HenDi-WebApp-latest.xar"'
 
-stable:webapp:
+build:merge_request:
+  stage: build
+  image: $HENDI_CI_IMAGE
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+  script:
+    - ant xar -Dbuild.env.ci=true -DCI_JOB_TOKEN=${CI_JOB_TOKEN}
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+    - when: never
+  after_script:
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ./hendi-pkg-webapp/HenDi-WebApp-*.xar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hendi-webapp/merge_request/HenDi-WebApp-${$CI_COMMIT_BRANCH}-latest.xar"'
+
+build:stable:
   stage: build
   image: $HENDI_CI_IMAGE
   variables:
@@ -135,79 +83,4 @@ stable:webapp:
       when: always
     - when: never
   after_script:
-    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ./hendi-pkg-webapp/HenDi-WebApp-*.xar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hendi-webapp/latest/HenDi-WebApp-stable-latest.xar"'
-
-# jobs for building the docker image
-develop:image-build:
-  stage: docker
-  variables:
-    HENDI_ENV_NAME: develop
-  extends: .docker-build-action
-  rules:
-    - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_INTERN == "true"
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-
-staging:image-build:
-  stage: docker
-  variables:
-    HENDI_ENV_NAME: staging
-  extends: .docker-build-action-suffixed
-  rules: !reference [.rules-staging, rules]
-
-preview:image-build:
-  stage: docker
-  variables:
-    HENDI_ENV_NAME: preview
-  extends: .docker-build-action-suffixed
-  rules: !reference [.rules-preview, rules]
-
-stable:image-build:
-  stage: docker
-  variables:
-    HENDI_ENV_NAME: stable
-  extends: .docker-build-action
-  rules:
-    - if: $CI_COMMIT_BRANCH == "stable" && $BUILD_PORTAL_STABLE == "true"
-
-# jobs for deploying the docker image
-develop:image-deploy:
-  stage: deploy
-  image: curlimages/curl
-  variables:
-    HENDI_ENV_NAME: develop
-  script: !reference [.keel-deploy, script]
-  rules:
-    - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_INTERN == "true"
-
-staging:image-deploy:
-  stage: deploy
-  image: curlimages/curl
-  variables:
-    HENDI_ENV_NAME: staging
-  script: !reference [.keel-deploy-suffixed, script]
-  rules:
-    - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_STAGING == "true"
-
-preview:image-deploy:
-  stage: deploy
-  image: curlimages/curl
-  variables:
-    HENDI_ENV_NAME: preview
-  script: !reference [.keel-deploy-suffixed, script]
-  rules:
-    - if: $CI_COMMIT_BRANCH == "develop" && $BUILD_PORTAL_PREVIEW == "true"
-
-stable:image-deploy:
-  stage: deploy
-  image: curlimages/curl
-  variables:
-    HENDI_ENV_NAME: stable
-  script: !reference [.keel-deploy, script]
-  only:
-    refs:
-      - stable
-    variables:
-      - ($BUILD_PORTAL_STABLE == "true" || $DEPLOY_PORTAL_STABLE == "true")
-  except:
-    variables:
-      - ($BUILD_PORTAL_INTERN == "true" || $BUILD_PORTAL_STAGING == "true")
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ./hendi-pkg-webapp/HenDi-WebApp-*.xar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hendi-webapp/stable/HenDi-WebApp-latest.xar"'
