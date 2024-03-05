@@ -446,6 +446,7 @@
     <entry xml:id="apply">Apply</entry>
     <entry xml:id="checkAll">(un)check all</entry>
     <entry xml:id="indices">Indices</entry>
+	<entry xml:id="catalogData">Catalogue Data</entry>
     <entry xml:id="showPersonSingleView">Show further information for %1</entry>
     <entry xml:id="showLetterSingleView">Display single letter</entry>
     <entry xml:id="showDiaryDay">Show diary entry from %1 for %2</entry>
