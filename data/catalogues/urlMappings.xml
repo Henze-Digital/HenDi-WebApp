@@ -11,13 +11,15 @@
     <mapping from="/en/Editorial_Guidelines.html" to="/de/Projekt/Editionsrichtlinien/Index.html"/>
     <mapping from="/en/Project/Editorial_Guidelines.html" to="/de/Projekt/Editionsrichtlinien/Index.html"/>
     <!--	<mapping from="/en/Project/Editorial_Guidelines.html" to="/en/Project/Editorial_Guidelines/Index.html"/>-->
-    <mapping from="/de/Bibliographie" to="/de/Projekt/Bibliographie"/>
-    <mapping from="/en/Bibliography" to="/en/Project/Bibliography"/>
+    <mapping from="/de/Bibliographie" to="/de/Register/Bibliographie"/>
+	<mapping from="/en/Bibliography" to="/en/Indices/Bibliography"/>
+	<mapping from="Bibliographie" to="/de/Register/Bibliographie"/>
+	<mapping from="/en/Project/Bibliography" to="/en/Indices/Bibliography"/>
+	<mapping from="/bibliographie.html" to="/de/Register/Bibliographie"/>
     
     <mapping from="/de/Hilfe" to="/de/Hilfe/FAQ.html"/>
     <mapping from="/en/Help" to="/en/Help/FAQ.html"/>
     
-    <mapping from="/bibliographie.html" to="/de/Projekt/Bibliographie"/>
     <mapping from="/aktuelles.html" to="/de/Projekt/Aktuelles"/>
     <mapping from="/de/Register/Aktuelles" to="/de/Projekt/Aktuelles"/>
 <!--    <mapping from="/tagebücher" to="/de/A001000A/Tagebücher"/>-->

@@ -455,8 +455,8 @@ declare function controller:path-to-resource($doc as document-node()?, $lang as 
  : Indices can be under "Register (Indices)" or "Projekt (Project)" 
 ~:)
 declare function controller:path-to-register($docType as xs:string, $lang as xs:string) as xs:string? {
-    if($docType = ('letters', 'corresp', 'orgs', 'diaries', 'persons', 'writings', 'works', 'thematicCommentaries', 'documents', 'places')) then str:join-path-elements(('/', $lang, lang:get-language-string('indices', $lang), lang:get-language-string($docType, $lang)))
-    else if($docType = ('biblio', 'news')) then str:join-path-elements(('/', $lang, lang:get-language-string('project', $lang), lang:get-language-string($docType, $lang)))
+    if($docType = ('letters', 'corresp', 'orgs', 'diaries', 'persons', 'writings', 'works', 'thematicCommentaries', 'documents', 'places', 'biblio')) then str:join-path-elements(('/', $lang, lang:get-language-string('indices', $lang), lang:get-language-string($docType, $lang)))
+    else if($docType = 'news') then str:join-path-elements(('/', $lang, lang:get-language-string('project', $lang), lang:get-language-string($docType, $lang)))
     else if($docType = 'indices') then str:join-path-elements(('/', $lang, lang:get-language-string('indices', $lang)))
     else if($docType = 'project') then str:join-path-elements(('/', $lang, lang:get-language-string('project', $lang)))
     else wega-util:log-to-file('error', 'controller:path-to-register(): could not create path for ' || $docType)
