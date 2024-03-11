@@ -220,6 +220,9 @@ declare function controller:dispatch-register($exist-vars as map(*)) as element(
     let $docType := 
         if($exist-vars('exist:resource')) then lang:reverse-language-string-lookup(controller:url-decode($exist-vars('exist:resource')), $exist-vars('lang'))[. = ($indexDocTypes, 'indices')]
         else 'indices'
+    let $docType := switch ($docType)
+    				case 'bibliography' return 'biblio'
+    				default return $docType
     let $path := 
         if($docType) then controller:encode-path-segments-for-uri(controller:path-to-register($docType, $exist-vars('lang')))
         else ()
