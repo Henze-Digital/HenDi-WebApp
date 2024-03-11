@@ -65,10 +65,8 @@
                     }
                 &:after { border:none; }
             }
-            a.dropdown-secondlevel-nav:after {
-				border:none;
-                content: '\F138';
-    			display:inline;            
+            a.dropdown-secondlevel-menu {
+				&:after {content: '\F138'; display:inline;}            
             }
 	    	ul.submenu {
 				position: absolute;
