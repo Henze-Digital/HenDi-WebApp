@@ -77,6 +77,16 @@
 		</copy>
 		<echo>Update package.json in submodule WeGA-WebApp</echo>
 		<copy file="${HenDi-WebApp.basedir}/package.json" tofile="${HenDi-WebApp.basedir}/submodules/WeGA-WebApp/package.json" overwrite="true"/>
+		<echo>Creating CITATION.cff</echo>
+		<copy file="${HenDi-WebApp.basedir}/CITATION.cff.tmpl" tofile="${HenDi-WebApp.basedir}/CITATION.cff" filtering="true" overwrite="true">
+			<filterset>
+				<filter token="project.app" value="${hendi.project.app}"/>
+				<filter token="project.version" value="${hendi.project.version}"/>
+				<filter token="release.doi.webapp" value="${hendi.release.doi.webapp}"/>
+				<filter token="release.date" value="${hendi.release.date}"/>
+				<filter token="release.year" value="${hendi.release.year}"/>
+			</filterset>
+		</copy>
 	</target>
 	
 	<target name="webapp-dist-libs" depends="wega:yarn">
