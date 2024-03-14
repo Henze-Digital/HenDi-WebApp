@@ -29,7 +29,11 @@
 	</target>
 	
 	<target name="-get-current-hash-of-HEAD">
-		
+		<description>Get the hash of the current git HEAD</description>
+		<exec executable="bash" logError="true" failonerror="true" outputproperty="local.revision">
+			<arg value="${HenDi-WebApp.basedir}/getGitHash.sh" />
+		</exec>
+		<echo>Current has of HEAD: ${local.revision}</echo>
 	</target>
 	
 	<target name="clean-submodule">
@@ -321,13 +325,6 @@
 	</target>
 	
 	<target name="xar" depends="minify">
-		<description>Get the hash of the current git HEAD</description>
-		<exec executable="git" outputproperty="local.revision">
-			<arg value="rev-parse"/>
-			<arg value="--short"/>
-			<arg value="HEAD"/>
-		</exec>
-		<echo>Current has of HEAD: ${local.revision}</echo>
 		<echo>Creating the xar Package (zipping).</echo>
 		<zip destfile="${HenDi-WebApp.basedir}/${hendi.build.dir}/${hendi.project.app}-${hendi.project.version}-${local.revision}.xar">
 			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}">
