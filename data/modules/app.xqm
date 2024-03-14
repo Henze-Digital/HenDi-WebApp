@@ -2048,7 +2048,7 @@ declare
             attribute data-selection-when {"before-after"},
             attribute data-selection-span {"median-before-after"},
             attribute data-result-max {"4"},
-            attribute data-exclude-edition {"#WEGA"}            
+            attribute data-exclude-edition {"#HENDI"}            
 }
 };
 
