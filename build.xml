@@ -168,10 +168,25 @@
 		</copy>
 		
 		<echo>Overwrite data</echo>
+		<echo>Creating options.xml</echo>
+		<copy file="${HenDi-WebApp.basedir}/data/catalogues/options.xml.tmpl" tofile="${HenDi-WebApp.basedir}/data/catalogues/options.xml" filtering="true" overwrite="true">
+			<filterset>
+				<filter token="project.app" value="${hendi.project.app}"/>
+				<filter token="project.version" value="${hendi.project.version}"/>
+				<filter token="project.version.odd" value="${hendi.project.version.odd}"/>
+				<filter token="release.doi.webapp" value="${hendi.release.doi.webapp}"/>
+				<filter token="release.doi.data" value="${hendi.release.doi.data}"/>
+				<filter token="release.doi.odd" value="${hendi.release.doi.odd}"/>
+				<filter token="version.date" value="${hendi.version.date}"/>
+				<filter token="version.news" value="${hendi.version.news}"/>
+			</filterset>
+		</copy>
+		
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}" overwrite="yes">
 			<fileset dir="${HenDi-WebApp.basedir}/data">
 				<include name="*.*"/>
 				<include name="catalogues/**"/>
+				<exclude name="catalogues/options.xml.tmpl"/>
 				<include name="modules/**"/>
 				<include name="resources/**"/>
 				<include name="templates/**"/>
