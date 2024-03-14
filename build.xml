@@ -7,6 +7,7 @@
 	<!-- import default properties from file -->
 	<property file="${HenDi-WebApp.basedir}/local.build.properties" prefix="hendi"/>
 	<property file="${HenDi-WebApp.basedir}/build.properties" prefix="hendi"/>
+	<property file="${HenDi-WebApp.basedir}/submodules/HenDi-ODD/build.properties" prefix="hendi-odd"/>
 	
 	<import file="submodules/WeGA-WebApp/build.xml" as="wega" prefixseparator=":"/>
 	<property file="${WeGA-WebApp.basedir}/build.properties" prefix="wega"/>
@@ -173,7 +174,7 @@
 			<filterset>
 				<filter token="project.app" value="${hendi.project.app}"/>
 				<filter token="project.version" value="${hendi.project.version}"/>
-				<filter token="project.version.odd" value="${hendi.project.version.odd}"/>
+				<filter token="project.version.odd" value="${hendi-odd.project.version}"/>
 				<filter token="release.doi.webapp" value="${hendi.release.doi.webapp}"/>
 				<filter token="release.doi.data" value="${hendi.release.doi.data}"/>
 				<filter token="release.doi.odd" value="${hendi.release.doi.odd}"/>
