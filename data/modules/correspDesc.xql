@@ -25,7 +25,7 @@ declare variable $ct:source-uuid := config:get-option('cmifID');
 declare variable $ct:last-modified as xs:dateTime? := 
     if($config:svn-change-history-file/dictionary/@dateTime castable as xs:dateTime) 
     then $config:svn-change-history-file/dictionary/xs:dateTime(@dateTime)
-    else ();
+    else (config:get-option('versionDate'));
 declare variable $ct:etag as xs:string? := 
     if(exists($ct:last-modified))
     then util:hash($ct:last-modified, 'md5')
