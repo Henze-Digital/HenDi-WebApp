@@ -55,12 +55,9 @@
 		</delete>
 	</target>
 	
-	<target name="hendi:init">
+	<target name="hendi:init" depends="-get-hendi-secrets-for-ci, -update-hendi-secrets-local">
 		<antcall target="wega:clean"/>
 		<antcall target="wega:init"/>
-		<antcall target="-get-hendi-secrets-for-ci"/>
-		<antcall target="-update-hendi-secrets-local"/>
-		<antcall target="-get-current-hash-of-HEAD"/>
 	</target>
 	
 	<target name="hendi-package-files">
@@ -324,7 +321,7 @@
 		</apply>
 	</target>
 	
-	<target name="xar" depends="minify">
+	<target name="xar" depends="minify, -get-current-hash-of-HEAD">
 		<echo>Creating the xar Package (zipping).</echo>
 		<zip destfile="${HenDi-WebApp.basedir}/${hendi.build.dir}/${hendi.project.app}-${hendi.project.version}-${local.revision}.xar">
 			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}">
