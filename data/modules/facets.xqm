@@ -67,6 +67,7 @@ declare function facets:facets($nodes as node()*, $facet as xs:string, $max as x
     case 'textType' return facets:from-docType($nodes, $facet, $lang)
     case 'facsimile' return facets:facsimile($nodes, $facet, $lang)
     case 'corresp' return facets:corresp($nodes, $facet, $lang)
+    case 'workType' return facets:workType($nodes, $facet, $lang)
     default return facets:createFacets($nodes, $facet, $max, $lang)
 };
 
@@ -129,6 +130,21 @@ declare %private function facets:corresp($collection as node()*, $facet as xs:st
                         'value' : $correspID,
                         'label' : wdt:corresp($correspID)('label-facets')(),
                         'frequency' : count($collection[.//tei:relation[@name='correspondence'][@key=$correspID]])
+                    }
+        }
+};
+
+declare %private function facets:workType($collection as node()*, $facet as xs:string, $lang as xs:string) as array(*) {
+    
+    let $workTypes := $collection//mei:work[parent::mei:workList]/@class | $collection//tei:textClass//tei:item => functx:distinct-deep()
+    return
+        array {
+            for $workType in $workTypes
+                return 
+                    map {
+                        'value' : $workType,
+                        'label' : lang:get-language-string($workType, $lang),
+                        'frequency' : count($collection//mei:work[parent::mei:workList]/@class[.=$workType] | $collection//tei:textClass//tei:item[.=$workType])
                     }
         }
 };
