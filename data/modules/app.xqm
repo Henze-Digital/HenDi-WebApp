@@ -2793,8 +2793,65 @@ declare function app:envelope($node as node(), $model as map(*))  {
 
 declare function app:credits($node as node(), $model as map(*)) as map(*) {
 	map {
-	'credits' : <p>{$model('doc')//tei:licence[@n='credits']/text()}</p>
+		'credits' : <p>{$model('doc')//tei:licence[@n='credits']/text()}</p>
 	}
+};
+
+declare 
+    %templates:default("lang", "en")
+    %templates:default("popover", "false") function app:creditsEdition($node as node(), $model as map(*), $lang as xs:string, $popover as xs:string) as element()* {
+	let $collections := (crud:data-collection('letters') | crud:data-collection('documents'))
+	let $persons := $collections//tei:respStmt/tei:name[normalize-space(.) != '']
+	let $orgs := $collections//tei:repository/tei:orgName
+		
+	let $personsOutput :=
+		for $person in $persons
+	        let $key := $person/@key
+	        let $myPopover := wega-util-shared:semantic-boolean($popover)
+	        let $doc2keyAvailable := crud:docAvailable($key)
+	        let $resps := for $each in distinct-values($persons[. = $person]/parent::tei:respStmt/tei:resp)
+	                        order by $each
+	                        return $each
+	        order by $person
+	        return
+	            <li>
+	                <span>{
+    	            	if($key and $myPopover and $doc2keyAvailable)
+    		            then (app:createDocLink(crud:doc($key), query:title($key), $lang, (), true()))
+    		            else element xhtml:span {
+    		                if($key and $doc2keyAvailable)
+    		                then wdt:lookup(config:get-doctype-by-id($key), data($key))?title('txt')
+    		                else (str:normalize-space($person))
+    		            }
+    		        }</span>
+    		        <span>&#160;</span>
+    		        <span>({string-join($resps, ', ')})</span>
+		        </li>
+    let $orgsOutput :=
+		for $org in $orgs
+	        let $key := $org/@key
+	        let $myPopover := wega-util-shared:semantic-boolean($popover)
+	        let $doc2keyAvailable := crud:docAvailable($key)
+	        order by $org/text()
+	        return
+	            <li>
+	                {
+    	            	if($key and $myPopover and $doc2keyAvailable)
+    		            then (app:createDocLink(crud:doc($key), query:title($key), $lang, (), true()))
+    		            else element xhtml:span {
+    		                if($key and $doc2keyAvailable)
+    		                then wdt:lookup(config:get-doctype-by-id($key), data($key))?title('txt')
+    		                else (str:normalize-space($org))
+    		            }
+    		        }
+		        </li>
+    return
+        (<div>
+            <strong>{lang:get-language-string('persons', $lang)}</strong>
+            <ul class="tei_simpleList">{functx:distinct-deep($personsOutput)}</ul>
+            <strong>{lang:get-language-string('orgs', $lang)}</strong>
+            <ul class="tei_simpleList">{functx:distinct-deep($orgsOutput)}</ul>
+        </div>)
 };
 
 declare function app:legalNotice($node as node(), $model as map(*)) as map(*) {
