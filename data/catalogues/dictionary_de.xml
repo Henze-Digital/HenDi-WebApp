@@ -545,6 +545,7 @@
     <entry xml:id="pleaseEnterSearchTerms">Bitte Suchbegriffe eintragen</entry>
     <entry xml:id="searchTerm">Suchbegriff</entry>
     <entry xml:id="credits">Dank</entry>
+	<entry xml:id="legalSuccession">Rechtsnachfolge</entry>
     <entry xml:id="calendar">Kalender</entry>
 	<entry xml:id="thematicCommentaries">Erläuterungen</entry>
 	<entry xml:id="thematicCom">Erläuterung</entry>

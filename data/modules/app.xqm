@@ -2802,7 +2802,8 @@ declare
     %templates:default("popover", "false") function app:creditsEdition($node as node(), $model as map(*), $lang as xs:string, $popover as xs:string) as element()* {
 	let $collections := (crud:data-collection('letters') | crud:data-collection('documents'))
 	let $persons := $collections//tei:respStmt/tei:name[normalize-space(.) != '']
-	let $orgs := $collections//tei:repository/tei:orgName
+	let $orgs := $collections//tei:repository/tei:orgName/normalize-space() => distinct-values()
+	let $successionItems := $collections//tei:licence[@n="credits"]/normalize-space() => distinct-values()
 		
 	let $personsOutput :=
 		for $person in $persons
@@ -2829,28 +2830,32 @@ declare
 		        </li>
     let $orgsOutput :=
 		for $org in $orgs
-	        let $key := $org/@key
-	        let $myPopover := wega-util-shared:semantic-boolean($popover)
-	        let $doc2keyAvailable := crud:docAvailable($key)
-	        order by $org/text()
+	        order by $org
 	        return
-	            <li>
-	                {
-    	            	if($key and $myPopover and $doc2keyAvailable)
-    		            then (app:createDocLink(crud:doc($key), query:title($key), $lang, (), true()))
-    		            else element xhtml:span {
-    		                if($key and $doc2keyAvailable)
-    		                then wdt:lookup(config:get-doctype-by-id($key), data($key))?title('txt')
-    		                else (str:normalize-space($org))
-    		            }
-    		        }
-		        </li>
+	            <li>{$org}</li>
+	let $successionOutput :=
+		for $successionItem in $successionItems
+		    let $successionItemSwitched := switch($successionItem)
+		                                    case 'By courtesy of the Estate of W. H. Auden.' return 'Courtesy of the Estate of W. H. Auden'
+		                                    case 'By courtesy of the Estate of Chester Kallman.' return 'Courtesy of the Estate of Chester Kallman'
+		                                    case 'By courtesy of the Estate of W. H. Auden and Chester Kallman.' return 'Courtesy of the Estate of W. H. Auden and Chester Kallman'
+		                                    case 'Mit freundlicher Genehmigung der Rechtsnachfolge Friedrich Hitzer.' return 'Rechtsnachfolge Friedrich Hitzer'
+		                                    case 'Mit freundlicher Genehmigung der Hans Werner Henze-Stiftung (Dr. Michael Kerstan).' return 'Hans Werner Henze-Stiftung (Dr. Michael Kerstan)'
+		                                    case 'Mit freundlicher Genehmigung der Erbengemeinschaft Hans Magnus Enzensberger.' return 'Erbengemeinschaft Hans Magnus Enzensberger'
+		                                    case 'Mit freundlicher Genehmigung der Paul Sacher Stiftung.' return 'Paul Sacher Stiftung'
+		                                    case 'Mit freundlicher Genehmigung der Rechtsnachfolge.' return ''
+		                                    default return $successionItem
+	        order by $successionItemSwitched
+	        return
+	            <li>{$successionItemSwitched}</li>
     return
         (<div>
             <strong>{lang:get-language-string('persons', $lang)}</strong>
             <ul class="tei_simpleList">{functx:distinct-deep($personsOutput)}</ul>
             <strong>{lang:get-language-string('orgs', $lang)}</strong>
-            <ul class="tei_simpleList">{functx:distinct-deep($orgsOutput)}</ul>
+            <ul class="tei_simpleList">{$orgsOutput}</ul>
+            <strong>{lang:get-language-string('legalSuccession', $lang)}</strong>
+            <ul class="tei_simpleList">{$successionOutput}</ul>
         </div>)
 };
 
