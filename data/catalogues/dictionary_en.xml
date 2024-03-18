@@ -877,4 +877,5 @@
     <entry xml:id="cert.high">probably</entry>
     <entry xml:id="cert.medium">supposedly</entry>
     <entry xml:id="cert.low">possibly</entry>
+	<entry xml:id="text">Literature</entry>
 </dictionary>

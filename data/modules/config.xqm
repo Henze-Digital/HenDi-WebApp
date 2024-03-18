@@ -425,7 +425,7 @@ declare function config:is-workType($string as xs:string?) as xs:boolean {
     ($string = doc($config:app-root || '/guidelines/guidelines-de-hendiWorksMEI.compiled.xml')//tei:elementSpec[@ident="work"]//tei:attDef[@ident="class"]//tei:valItem/@ident)
     or
     (: ($string = doc($config:app-root || '/guidelines/guidelines-de-hendiWorksTEI.compiled.xml')//tei:dataSpec[@ident="hendi.biblio.types"]//tei:valItem/@ident) :)
-    'Text'
+    ($string = 'text')
 };
 
 (:~
