@@ -136,7 +136,7 @@ declare %private function facets:corresp($collection as node()*, $facet as xs:st
 
 declare %private function facets:workType($collection as node()*, $facet as xs:string, $lang as xs:string) as array(*) {
     
-    let $workTypes := $collection//mei:work[parent::mei:workList]/@class | $collection//tei:textClass//tei:item => functx:distinct-deep()
+    let $workTypes := ($collection//mei:work[parent::mei:workList]/@class, $collection//tei:textClass//tei:item) => distinct-values()
     return
         array {
             for $workType in $workTypes
