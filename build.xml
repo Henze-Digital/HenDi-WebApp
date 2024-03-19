@@ -80,7 +80,7 @@
 		<echo>Update package.json in submodule WeGA-WebApp</echo>
 		<copy file="${HenDi-WebApp.basedir}/package.json" tofile="${HenDi-WebApp.basedir}/submodules/WeGA-WebApp/package.json" overwrite="true"/>
 		<echo>Creating CITATION.cff</echo>
-		<copy file="${HenDi-WebApp.basedir}/CITATION.cff.tmpl" tofile="${HenDi-WebApp.basedir}/CITATION.cff" filtering="true" overwrite="true">
+		<copy file="${HenDi-WebApp.basedir}/CITATION.cff.tmpl" tofile="${WeGA-WebApp.basedir}/${wega.dist.dir}/CITATION.cff" filtering="true" overwrite="true">
 			<filterset>
 				<filter token="project.app" value="${hendi.project.app}"/>
 				<filter token="project.version" value="${hendi.project.version}"/>
@@ -326,6 +326,7 @@
 		<zip destfile="${HenDi-WebApp.basedir}/${hendi.build.dir}/${hendi.project.app}-${hendi.project.version}-${local.revision}.xar">
 			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}">
 				<exclude name="*.tmpl"/>
+				<exclude name="*.dockerignore"/>
 				<exclude name="resources/sass/**"/>
 				<exclude name="resources/css/styles.css.map"/>
 			</fileset>
