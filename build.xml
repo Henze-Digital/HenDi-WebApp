@@ -89,6 +89,7 @@
 				<filter token="release.year" value="${hendi.release.year}"/>
 			</filterset>
 		</copy>
+		<copy file="${WeGA-WebApp.basedir}/${wega.dist.dir}/CITATION.cff" tofile="${HenDi-WebApp.basedir}/CITATION.cff"/>
 	</target>
 	
 	<target name="webapp-dist-libs" depends="wega:yarn">
