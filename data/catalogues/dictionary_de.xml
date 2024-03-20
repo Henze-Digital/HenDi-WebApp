@@ -457,6 +457,7 @@
     <entry xml:id="apply">Anwenden</entry>
     <entry xml:id="checkAll">Alles an/abwählen</entry>
     <entry xml:id="indices">Register</entry>
+    <entry xml:id="catalogData">Katalogdaten</entry>
     <entry xml:id="showPersonSingleView">Zeige Personeneintrag zu %1</entry>
     <entry xml:id="showLetterSingleView">Zeige Einzelbriefansicht</entry>
     <entry xml:id="showDiaryDay">Zeige Tagebucheintrag von %1 für den %2</entry>
@@ -543,7 +544,8 @@
     <entry xml:id="faq">FAQ</entry>
     <entry xml:id="pleaseEnterSearchTerms">Bitte Suchbegriffe eintragen</entry>
     <entry xml:id="searchTerm">Suchbegriff</entry>
-    <entry xml:id="credits">Danksagungen</entry>
+    <entry xml:id="credits">Dank</entry>
+	<entry xml:id="legalSuccession">Rechtsnachfolge</entry>
     <entry xml:id="calendar">Kalender</entry>
 	<entry xml:id="thematicCommentaries">Erläuterungen</entry>
 	<entry xml:id="thematicCom">Erläuterung</entry>
@@ -884,4 +886,5 @@
     <entry xml:id="cert.high">wahrscheinlich</entry>
     <entry xml:id="cert.medium">vermutlich</entry>
     <entry xml:id="cert.low">möglicherweise</entry>
+	<entry xml:id="text">Literatur</entry>
 </dictionary>

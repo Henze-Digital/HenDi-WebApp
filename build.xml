@@ -7,6 +7,7 @@
 	<!-- import default properties from file -->
 	<property file="${HenDi-WebApp.basedir}/local.build.properties" prefix="hendi"/>
 	<property file="${HenDi-WebApp.basedir}/build.properties" prefix="hendi"/>
+	<property file="${HenDi-WebApp.basedir}/submodules/HenDi-ODD/build.properties" prefix="hendi-odd"/>
 	
 	<import file="submodules/WeGA-WebApp/build.xml" as="wega" prefixseparator=":"/>
 	<property file="${WeGA-WebApp.basedir}/build.properties" prefix="wega"/>
@@ -28,7 +29,11 @@
 	</target>
 	
 	<target name="-get-current-hash-of-HEAD">
-		
+		<description>Get the hash of the current git HEAD</description>
+		<exec executable="bash" logError="true" failonerror="true" outputproperty="local.revision">
+			<arg value="${HenDi-WebApp.basedir}/getGitHash.sh" />
+		</exec>
+		<echo>Current has of HEAD: ${local.revision}</echo>
 	</target>
 	
 	<target name="clean-submodule">
@@ -50,12 +55,9 @@
 		</delete>
 	</target>
 	
-	<target name="hendi:init">
+	<target name="hendi:init" depends="-get-hendi-secrets-for-ci, -update-hendi-secrets-local">
 		<antcall target="wega:clean"/>
 		<antcall target="wega:init"/>
-		<antcall target="-get-hendi-secrets-for-ci"/>
-		<antcall target="-update-hendi-secrets-local"/>
-		<antcall target="-get-current-hash-of-HEAD"/>
 	</target>
 	
 	<target name="hendi-package-files">
@@ -77,6 +79,16 @@
 		</copy>
 		<echo>Update package.json in submodule WeGA-WebApp</echo>
 		<copy file="${HenDi-WebApp.basedir}/package.json" tofile="${HenDi-WebApp.basedir}/submodules/WeGA-WebApp/package.json" overwrite="true"/>
+		<echo>Creating CITATION.cff</echo>
+		<copy file="${HenDi-WebApp.basedir}/CITATION.cff.tmpl" tofile="${WeGA-WebApp.basedir}/${wega.dist.dir}/CITATION.cff" filtering="true" overwrite="true">
+			<filterset>
+				<filter token="project.app" value="${hendi.project.app}"/>
+				<filter token="project.version" value="${hendi.project.version}"/>
+				<filter token="release.doi.webapp" value="${hendi.release.doi.webapp}"/>
+				<filter token="release.date" value="${hendi.release.date}"/>
+				<filter token="release.year" value="${hendi.release.year}"/>
+			</filterset>
+		</copy>
 	</target>
 	
 	<target name="webapp-dist-libs" depends="wega:yarn">
@@ -158,10 +170,25 @@
 		</copy>
 		
 		<echo>Overwrite data</echo>
+		<echo>Creating options.xml</echo>
+		<copy file="${HenDi-WebApp.basedir}/data/catalogues/options.xml.tmpl" tofile="${HenDi-WebApp.basedir}/data/catalogues/options.xml" filtering="true" overwrite="true">
+			<filterset>
+				<filter token="project.app" value="${hendi.project.app}"/>
+				<filter token="project.version" value="${hendi.project.version}"/>
+				<filter token="project.version.odd" value="${hendi-odd.project.version}"/>
+				<filter token="release.doi.webapp" value="${hendi.release.doi.webapp}"/>
+				<filter token="release.doi.data" value="${hendi.release.doi.data}"/>
+				<filter token="release.doi.odd" value="${hendi.release.doi.odd}"/>
+				<filter token="version.date" value="${hendi.version.date}"/>
+				<filter token="version.news" value="${hendi.version.news}"/>
+			</filterset>
+		</copy>
+		
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}" overwrite="yes">
 			<fileset dir="${HenDi-WebApp.basedir}/data">
 				<include name="*.*"/>
 				<include name="catalogues/**"/>
+				<exclude name="catalogues/options.xml.tmpl"/>
 				<include name="modules/**"/>
 				<include name="resources/**"/>
 				<include name="templates/**"/>
@@ -294,18 +321,12 @@
 		</apply>
 	</target>
 	
-	<target name="xar" depends="minify">
-		<description>Get the hash of the current git HEAD</description>
-		<exec executable="git" outputproperty="local.revision">
-			<arg value="rev-parse"/>
-			<arg value="--short"/>
-			<arg value="HEAD"/>
-		</exec>
-		<echo>Current has of HEAD: ${local.revision}</echo>
+	<target name="xar" depends="minify, -get-current-hash-of-HEAD">
 		<echo>Creating the xar Package (zipping).</echo>
 		<zip destfile="${HenDi-WebApp.basedir}/${hendi.build.dir}/${hendi.project.app}-${hendi.project.version}-${local.revision}.xar">
 			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}">
 				<exclude name="*.tmpl"/>
+				<exclude name="*.dockerignore"/>
 				<exclude name="resources/sass/**"/>
 				<exclude name="resources/css/styles.css.map"/>
 			</fileset>

@@ -351,7 +351,7 @@ declare
 declare
     %templates:default("lang", "en")
     function app:translation-tab($node as node(), $model as map(*), $lang as xs:string) as element() {
-        let $trlDoc := collection('/db/apps/hendi-data')//tei:relation[@name='isTranslationOf'][@key=$model?docID]/root()
+        let $trlDoc := collection(config:get-option('dataCollectionPath'))//tei:relation[@name='isTranslationOf'][@key=$model?docID]/root()
         let $trlDocLang := $trlDoc//tei:profileDesc/tei:langUsage/tei:language/@ident => string()
         let $trlDocLang := switch ($trlDocLang)
                             case 'en' return 'gb'
@@ -376,7 +376,7 @@ declare
 declare
     %templates:default("lang", "en")
     function app:enclosure-tab($node as node(), $model as map(*), $lang as xs:string) as element()* {
-        let $enclosures := collection('/db/apps/hendi-data')//tei:relation[@name='isEnclosureOf'][@key=$model?docID]/root()
+        let $enclosures := collection(config:get-option('dataCollectionPath'))//tei:relation[@name='isEnclosureOf'][@key=$model?docID]/root()
 	    for $enclosure at $z in $enclosures
 		    return
 		        element {node-name($node)} {
@@ -395,7 +395,7 @@ declare
 declare
     %templates:default("lang", "en")
     function app:envelope-tab($node as node(), $model as map(*), $lang as xs:string) as element()? {
-        let $envelopes := collection('/db/apps/hendi-data')//tei:relation[@name='isEnvelopeOf'][@key=$model?docID]/root()
+        let $envelopes := collection(config:get-option('dataCollectionPath'))//tei:relation[@name='isEnvelopeOf'][@key=$model?docID]/root()
 	    for $envelope at $z in $envelopes
 		    return
 		        element {node-name($node)} {
@@ -1158,7 +1158,7 @@ declare
     %templates:default("lang", "en")
     function app:print-corresp-intro($node as node(), $model as map(*), $lang as xs:string) as element(xhtml:div)* {
         let $themComm:= app:inject-query($model?doc/*)
-        let $intro := collection('/db/apps/hendi-data/thematicCommentaries')/node()[@xml:id=$themComm//tei:relation[@name='introduction']/@key]
+        let $intro := collection(config:get-option('dataCollectionPath') || '/thematicCommentaries')/node()[@xml:id=$themComm//tei:relation[@name='introduction']/@key]
         let $text-transformed := wega-util:transform($intro//tei:text//tei:div[@xml:lang=$lang][position() = 1 or position() = 2 or position() = 3], doc(concat($config:xsl-collection-path, '/var.xsl')), config:get-xsl-params(()))
         return
             $text-transformed
@@ -1689,7 +1689,7 @@ declare
                                     attribute class {'alert alert-primary text-center'},
                              	        lang:get-language-string('isEnclosureOf',$lang) || ' ',
                              	        element xhtml:b {
-                             	            app:createDocLink(collection('/db/apps/hendi-data')//tei:TEI[@xml:id=$doc//tei:relation[@name='isEnclosureOf']/@key]/root(),$doc//tei:relation[@name='isEnclosureOf']/@key/string(),$lang,())
+                             	            app:createDocLink(collection(config:get-option('dataCollectionPath'))//tei:TEI[@xml:id=$doc//tei:relation[@name='isEnclosureOf']/@key]/root(),$doc//tei:relation[@name='isEnclosureOf']/@key/string(),$lang,())
                              	        }
                                  	 })
                              	 else()
@@ -1737,7 +1737,7 @@ declare
             					<dt xmlns="http://www.w3.org/1999/xhtml">{str:normalize-space($respStmt/tei:resp)}</dt>,
 					            <dd xmlns="http://www.w3.org/1999/xhtml">{str:normalize-space(string-join($respStmt/tei:name, '; '))}</dd>
         							)
-        let $translation := collection('/db/apps/hendi-data')//tei:relation[@name='isTranslationOf'][@key=$model?docID]
+        let $translation := collection(config:get-option('dataCollectionPath'))//tei:relation[@name='isTranslationOf'][@key=$model?docID]
         let $translationRespStmt := $translation/root()//tei:respStmt[tei:resp[.='Übersetzung']]
         let $respStmtsRelated := if(exists($translation))
             then(
@@ -2048,7 +2048,7 @@ declare
             attribute data-selection-when {"before-after"},
             attribute data-selection-span {"median-before-after"},
             attribute data-result-max {"4"},
-            attribute data-exclude-edition {"#WEGA"}            
+            attribute data-exclude-edition {"#HENDI"}            
 }
 };
 
@@ -2420,15 +2420,15 @@ declare function app:init-custom-switch($node as node(), $model as map(*)) as el
 
 declare function app:enrichtment-datasets($node as node(), $model as map(*))  {
 
-let $collPersons := collection('/db/apps/hendi-data/persons')/tei:person
-let $collOrgs := collection('/db/apps/hendi-data/orgs')/tei:org
-let $collPlaces := collection('/db/apps/hendi-data/places')/tei:place
-let $collWorks := collection('/db/apps/hendi-data/works')/mei:mei
+let $collPersons := collection(config:get-option('dataCollectionPath') || '/persons')/tei:person
+let $collOrgs := collection(config:get-option('dataCollectionPath') || '/orgs')/tei:org
+let $collPlaces := collection(config:get-option('dataCollectionPath') || '/places')/tei:place
+let $collWorks := collection(config:get-option('dataCollectionPath') || '/works')/mei:mei
 
 (: Zusammenfassen der drei collections :)
 let $collRef := $collPersons | $collOrgs | $collPlaces | $collWorks
 
-let $collPostals := collection('/db/apps/hendi-data/letters')/tei:TEI[.//tei:text//tei:p]
+let $collPostals := collection(config:get-option('dataCollectionPath') || '/letters')/tei:TEI[.//tei:text//tei:p]
 
                     
 let $references := 
@@ -2697,7 +2697,7 @@ declare function app:translation($node as node(), $model as map(*))  {
             'createSecNos' : if($docID = ('A070010', 'A070001F')) then 'true' else ()
             } )
     let $xslt1 := doc(concat($config:xsl-collection-path, '/letters.xsl'))
-    let $textRoot := collection('/db/apps/hendi-data')//tei:relation[@name='isTranslationOf'][@key=$model?docID]/root()//tei:text
+    let $textRoot := collection(config:get-option('dataCollectionPath'))//tei:relation[@name='isTranslationOf'][@key=$model?docID]/root()//tei:text
     let $body := 
          if(functx:all-whitespace(<root>{$textRoot}</root>))
          then 
@@ -2732,7 +2732,7 @@ declare function app:enclosure($node as node(), $model as map(*))  {
             'createSecNos' : ()
             } )
     let $xslt1 := doc(concat($config:xsl-collection-path, '/letters.xsl'))
-    let $enclosures := collection('/db/apps/hendi-data')//tei:relation[@name='isEnclosureOf'][@key=$model?docID]/root()
+    let $enclosures := collection(config:get-option('dataCollectionPath'))//tei:relation[@name='isEnclosureOf'][@key=$model?docID]/root()
     for $enclosure at $z in $enclosures
     	let $textRoot := $enclosure//tei:text
     	let $xslParams := config:get-xsl-params( map {
@@ -2775,7 +2775,7 @@ declare function app:envelope($node as node(), $model as map(*))  {
             'createSecNos' : ()
             } )
     let $xslt1 := doc(concat($config:xsl-collection-path, '/letters.xsl'))
-    let $envelopes := collection('/db/apps/hendi-data')//tei:relation[@name='isEnvelopeOf'][@key=$model?docID]/root()
+    let $envelopes := collection(config:get-option('dataCollectionPath'))//tei:relation[@name='isEnvelopeOf'][@key=$model?docID]/root()
     for $envelope at $z in $envelopes
     	let $textRoot := $envelope//tei:text
     	let $body := 
@@ -2793,8 +2793,70 @@ declare function app:envelope($node as node(), $model as map(*))  {
 
 declare function app:credits($node as node(), $model as map(*)) as map(*) {
 	map {
-	'credits' : <p>{$model('doc')//tei:licence[@n='credits']/text()}</p>
+		'credits' : <p>{$model('doc')//tei:licence[@n='credits']/text()}</p>
 	}
+};
+
+declare 
+    %templates:default("lang", "en")
+    %templates:default("popover", "false") function app:creditsEdition($node as node(), $model as map(*), $lang as xs:string, $popover as xs:string) as element()* {
+	let $collections := (crud:data-collection('letters') | crud:data-collection('documents'))
+	let $persons := $collections//tei:respStmt/tei:name[normalize-space(.) != '']
+	let $orgs := $collections//tei:repository/tei:orgName/normalize-space() => distinct-values()
+	let $successionItems := $collections//tei:licence[@n="credits"]/normalize-space() => distinct-values()
+		
+	let $personsOutput :=
+		for $person in $persons
+	        let $key := $person/@key
+	        let $myPopover := wega-util-shared:semantic-boolean($popover)
+	        let $doc2keyAvailable := crud:docAvailable($key)
+	        let $resps := for $each in distinct-values($persons[. = $person]/parent::tei:respStmt/tei:resp)
+	                        order by $each
+	                        return $each
+	        order by $person
+	        return
+	            <li>
+	                <span>{
+    	            	if($key and $myPopover and $doc2keyAvailable)
+    		            then (app:createDocLink(crud:doc($key), query:title($key), $lang, (), true()))
+    		            else element xhtml:span {
+    		                if($key and $doc2keyAvailable)
+    		                then wdt:lookup(config:get-doctype-by-id($key), data($key))?title('txt')
+    		                else (str:normalize-space($person))
+    		            }
+    		        }</span>
+    		        <span>&#160;</span>
+    		        <span>({string-join($resps, ', ')})</span>
+		        </li>
+    let $orgsOutput :=
+		for $org in $orgs
+	        order by $org
+	        return
+	            <li>{$org}</li>
+	let $successionOutput :=
+		for $successionItem in $successionItems
+		    let $successionItemSwitched := switch($successionItem)
+		                                    case 'By courtesy of the Estate of W. H. Auden.' return 'Courtesy of the Estate of W. H. Auden'
+		                                    case 'By courtesy of the Estate of Chester Kallman.' return 'Courtesy of the Estate of Chester Kallman'
+		                                    case 'By courtesy of the Estate of W. H. Auden and Chester Kallman.' return 'Courtesy of the Estate of W. H. Auden and Chester Kallman'
+		                                    case 'Mit freundlicher Genehmigung der Rechtsnachfolge Friedrich Hitzer.' return 'Rechtsnachfolge Friedrich Hitzer'
+		                                    case 'Mit freundlicher Genehmigung der Hans Werner Henze-Stiftung (Dr. Michael Kerstan).' return 'Hans Werner Henze-Stiftung (Dr. Michael Kerstan)'
+		                                    case 'Mit freundlicher Genehmigung der Erbengemeinschaft Hans Magnus Enzensberger.' return 'Erbengemeinschaft Hans Magnus Enzensberger'
+		                                    case 'Mit freundlicher Genehmigung der Paul Sacher Stiftung.' return 'Paul Sacher Stiftung'
+		                                    case 'Mit freundlicher Genehmigung der Rechtsnachfolge.' return ''
+		                                    default return $successionItem
+	        order by $successionItemSwitched
+	        return
+	            <li>{$successionItemSwitched}</li>
+    return
+        (<div>
+            <strong>{lang:get-language-string('persons', $lang)}</strong>
+            <ul class="tei_simpleList">{functx:distinct-deep($personsOutput)}</ul>
+            <strong>{lang:get-language-string('orgs', $lang)}</strong>
+            <ul class="tei_simpleList">{$orgsOutput}</ul>
+            <strong>{lang:get-language-string('legalSuccession', $lang)}</strong>
+            <ul class="tei_simpleList">{$successionOutput}</ul>
+        </div>)
 };
 
 declare function app:legalNotice($node as node(), $model as map(*)) as map(*) {
