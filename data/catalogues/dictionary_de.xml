@@ -441,6 +441,7 @@
     <entry xml:id="latest">Spätestens</entry>
     <entry xml:id="showUndatedDocuments">zeige undatierte Dokumente</entry>
     <entry xml:id="showUnpublishedDocuments">zeige unpublizierte Dokumente</entry>
+	<entry xml:id="showEnvelopes">Umschläge einblenden</entry>
     <entry xml:id="periodOfTime">Zeitspanne</entry>
     <entry xml:id="show">einblenden</entry>
     <entry xml:id="hide">ausblenden</entry>

@@ -84,6 +84,16 @@ declare function core:undated($docType as xs:string) as document-node()* {
     default return ()
 };
 
+(:~
+ : Return the envelopes of letters
+ :
+ : @author Dennis Ried 
+ : @return document-node()*
+ :)
+declare function core:envelope() as document-node()* {
+    crud:data-collection('letters')/tei:TEI[descendant::tei:relation[@name='isEnvelopeOf']]/root()
+};
+
 declare function core:index-keys-for-field($coll as document-node()*, $field as xs:string) as xs:string* {
     distinct-values(
         for $i in $coll/tei:TEI[ft:query(., (), map { "fields": $field })] | $coll/tei:ab[ft:query(., (), map { "fields": $field })] | $coll/tei:biblStruct[ft:query(., (), map { "fields": $field })]

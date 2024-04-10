@@ -928,7 +928,16 @@ declare function api:validate-placeOfSender($model as map(*)) as map(*)? {
 declare function api:validate-undated($model as map(*)) as map(*)? {
     if($model?undated castable as xs:string) then map { 'undated': wega-util-shared:semantic-boolean($model?undated) }
     else error($api:INVALID_PARAMETER, 'Unsupported value for parameter "undated".' )
-}; 
+};
+
+(:~
+ : Check parameter envelope (true|false)
+ : only one value allowed
+~:)
+declare function api:validate-envelope($model as map(*)) as map(*)? {
+    if($model?envelope castable as xs:string) then map { 'undated': wega-util-shared:semantic-boolean($model?envelope) }
+    else error($api:INVALID_PARAMETER, 'Unsupported value for parameter "envelope".' )
+};
 
 (:~
  : Check parameter hideRevealed (true|false)

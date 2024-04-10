@@ -47,7 +47,8 @@ declare variable $search:valid-params := (
     'orgs',
     'corresp',
     'workType',
-    'biblioType'
+    'biblioType',
+    'envelope'
 );
 
 (:~
@@ -327,6 +328,7 @@ declare %private function search:filter-result($collection as document-node()*, 
             if($filter = ('undated')) then ($collection intersect core:undated($docType))/root()
             else if($filter = 'searchDate') then search:searchDate-filter($collection, $filters($filter)[1])
             else if($filter = ('fromDate', 'toDate')) then wdt:lookup($docType, $collection)?filter-by-date(try {$filters?fromDate cast as xs:date} catch * {()}, try {$filters?toDate cast as xs:date} catch * {()} )
+            else if($filter = ('envelope')) then ($collection intersect core:envelope())/root()
             else if($filter = 'textType') then search:textType-filter($collection, $filters($filter)[1])
             else if($filter = 'hideRevealed') then search:revealed-filter($collection)
             else if($filter = 'facsimile') then search:facsimile-filter($collection, $filters($filter)[1])
