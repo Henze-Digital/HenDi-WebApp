@@ -50,7 +50,9 @@
 			<xsl:attribute name="class" select="'row justify-content-center'"/>
 			<xsl:if test="ancestor::tei:text/@type = 'telegram'">
 			<xsl:choose>
-			    <xsl:when test="@rend='nobox'"><xsl:attribute name="style" select="'border: none;'"/></xsl:when>
+			    <xsl:when test="@rend='nobox'">
+                    <xsl:attribute name="style" select="'border: none;'"/>
+                </xsl:when>
 			    <xsl:otherwise>
 			        <xsl:attribute name="style" select="'border: solid;'"/>
 			    </xsl:otherwise>
@@ -318,14 +320,24 @@
 	</xsl:template>
 	
 	<xsl:template match="tei:p">
+		<xsl:variable name="p-rend">
+			<xsl:if test="@rend">
+				<xsl:value-of select="concat('textAlign-',@rend)"/>
+			</xsl:if>
+		</xsl:variable>
+		<xsl:variable name="p-type-strip">
+			<xsl:if test="@type='strip'">
+				<xsl:text>tei_p_strip</xsl:text>
+			</xsl:if>
+		</xsl:variable>
+		<xsl:variable name="inlineEnd">
+			<xsl:if test="exists(following-sibling::element()[1][self::tei:closer[@rend='inline']])">
+				<xsl:text>inlineEnd</xsl:text>
+			</xsl:if>
+		</xsl:variable>
 		<xsl:element name="p">
 			<xsl:attribute name="class">
-				<xsl:if test="@rend">
-					<xsl:value-of select="concat('textAlign-',@rend)"/>
-				</xsl:if>
-				<xsl:if test="@type='strip'">
-					<xsl:value-of select="' tei_p_strip'"/>
-				</xsl:if>
+				<xsl:value-of select="string-join(($p-rend, $p-type-strip, $inlineEnd),' ')"/>
 			</xsl:attribute>
 			<xsl:apply-templates/>
 		</xsl:element>
