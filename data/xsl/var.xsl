@@ -3,6 +3,7 @@
     <xsl:param name="createSecNos" select="false()"/>
     <xsl:param name="secNoOffset" select="0"/>
     <xsl:param name="uri"/>
+    <xsl:param name="main-source-file" select="'/db/apps/HenDi-WebApp/guidelines/guidelines-de-hendiAll.compiled.xml'"/>
     <xsl:strip-space elements="*"/>
     <xsl:preserve-space elements="tei:q tei:quote tei:cell tei:p tei:hi tei:persName tei:rs tei:workName tei:characterName tei:placeName tei:code tei:eg tei:item tei:head tei:date tei:orgName tei:note tei:lem tei:rdg tei:add tei:bibl"/>
     <xsl:include href="common_link.xsl"/>
@@ -226,7 +227,9 @@
     
     <xsl:template match="tei:gi">
         <xsl:element name="a">
-            <xsl:attribute name="href"><xsl:value-of select="concat('Elemente/ref-', ., '.html')"/></xsl:attribute>
+            <xsl:attribute name="href">
+                <xsl:value-of select="concat('Elemente/ref-', ., '.html')"/>
+            </xsl:attribute>
             <xsl:text>&lt;</xsl:text>
             <xsl:value-of select="."/>
             <xsl:text>&gt;</xsl:text>
@@ -241,13 +244,35 @@
     </xsl:template>
     
     <xsl:template match="tei:val">
-        <xsl:element name="code"><xsl:text>"</xsl:text><xsl:value-of select="."/><xsl:text>"</xsl:text></xsl:element>
+        <xsl:element name="code">
+            <xsl:text>"</xsl:text>
+            <xsl:value-of select="."/>
+            <xsl:text>"</xsl:text>
+        </xsl:element>
     </xsl:template>
     
     <xsl:template match="tei:tag">
             <xsl:text>&lt;</xsl:text>
             <xsl:value-of select="."/>
             <xsl:text>&gt;</xsl:text>
+    </xsl:template>
+    
+    <!-- this is a fix, very hendi specific ! -->
+	<!-- needs a parameter that provides the current URL -->
+	<!-- (for navigating to other gl-chapters) -->
+	<xsl:template match="tei:ptr[starts-with(@target,'#')]">
+        <xsl:variable name="ptrTargetID" select="./@target/substring-after(., '#')"/>
+        <xsl:variable name="gl-chapter-url-substring">
+            <xsl:choose>
+                <xsl:when test="starts-with(./@target,'#DT')">docTypes</xsl:when>
+                <xsl:when test="starts-with(./@target,'#eG')">encoding</xsl:when>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="gl-chapter-url" select="concat('/Projekt/Editionsrichtlinien/sec-', $gl-chapter-url-substring, '.html')"/>
+        <xsl:element name="a">
+            <xsl:attribute name="href" select="concat($gl-chapter-url, '#', $ptrTargetID)"/>
+            <xsl:value-of select="wega:doc($main-source-file)//tei:div[@xml:id = $ptrTargetID]/tei:head[1]/text()"/>
+        </xsl:element>
     </xsl:template>
     
     <!-- Create section numbers for headings   -->
