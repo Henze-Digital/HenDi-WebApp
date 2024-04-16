@@ -274,6 +274,20 @@
             <xsl:value-of select="wega:doc($main-source-file)//tei:div[@xml:id = $ptrTargetID]/tei:head[1]/text()"/>
         </xsl:element>
     </xsl:template>
+	
+	<!-- rendering of specLists -->
+	<xsl:template match="tei:specList">
+		<ul style="padding: 0.5em;">
+			<xsl:for-each select="tei:specDesc">
+				<li style="padding: 7px;"><a href="{concat('/Projekt/Editionsrichtlinien/Elemente/ref-', @key, '.html')}">
+					<div class="row">
+						<div class="col-1"><span style="border: solid 2pt #181c62;padding: 0.5em;"><i class="fa-solid fa-code"></i></span></div>
+						<div class="col-11"><span style="margin-left: 0.5em;"><xsl:text>&lt;</xsl:text><xsl:value-of select="@key"/><xsl:text>&gt;</xsl:text></span></div>
+					</div>
+				</a></li>
+			</xsl:for-each>
+		</ul>
+	</xsl:template>
     
     <!-- Create section numbers for headings   -->
     <xsl:template name="createSecNo">
