@@ -781,6 +781,7 @@
 	
 	<entry xml:id="previewDocument">This is a reduced preview. For further information switch to</entry>
 	<entry xml:id="switchDocumentView">the edition of the Dokument</entry>
+	<entry xml:id="switchEnvelopeView">the edition of the Envelope</entry>
     
     <entry xml:id="workTypeMedium">Medium</entry>
     <entry xml:id="music">Musical work</entry>
