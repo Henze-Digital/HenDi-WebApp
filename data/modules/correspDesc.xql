@@ -63,7 +63,7 @@ declare function ct:create-header() as element(tei:teiHeader) {
             </sourceDesc>
         </fileDesc>
         <profileDesc>
-            {crud:data-collection('letters')//tei:correspDesc ! ct:identity-transform-with-switches(.)}
+            {crud:data-collection('letters')[.//text[not(@type='envelope')]]//tei:correspDesc ! ct:identity-transform-with-switches(.)}
         </profileDesc>
     </teiHeader>
 };
@@ -100,7 +100,7 @@ declare function ct:identity-transform-with-switches($nodes as node()*) as item(
 
 declare function ct:correspDesc($input as element(tei:correspDesc)) as element(tei:correspDesc) {
     element {node-name($input)} {
-        $input/@* except ($input/@source | $input/@ref),
+        $input/@* except ($input/@source | $input/@ref | $input/tei:correspAction[not(@type='sent') and not(@type='received')]),
         attribute ref {config:get-option('permaLinkPrefix') || '/' || $input/ancestor::tei:TEI/@xml:id},
         attribute source {concat('#', $ct:source-uuid)},
         ct:identity-transform-with-switches($input/node()),
