@@ -2759,7 +2759,7 @@ declare function app:enclosure($node as node(), $model as map(*))  {
 	               wega-util:transform($textRoot, $xslt1, $xslParams))
 	    return
 	        <div class="tab-pane fade" id="enclosure-{$z}">
-	          {wega-util:remove-elements-by-class($body, 'apparatus')}
+	          {wega-util:remove-elements-by-class(wega-util:remove-elements-by-class($body, 'apparatus'), 'noteMarker')}
 	        </div>
 };
 
@@ -2787,7 +2787,7 @@ declare function app:envelope($node as node(), $model as map(*))  {
 	         else (wega-util:transform($textRoot, $xslt1, $xslParams))
 	    return
 	        <div class="tab-pane fade" id="envelope-{$z}">
-	          {wega-util:remove-elements-by-class($body, 'apparatus')}
+	          {wega-util:remove-elements-by-class(wega-util:remove-elements-by-class($body, 'apparatus'), 'noteMarker')}
 	        </div>
 };
 
