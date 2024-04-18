@@ -21,8 +21,8 @@
         <xsl:choose>
             <xsl:when test="wega:isWork($docID) and exists($doc)">
                 <xsl:choose>
-                    <xsl:when test="$doc//mei:titleStmt/mei:respStmt/mei:persName[@role = 'cmp'][1]/@codedval">
-                        <xsl:value-of select="$doc//mei:titleStmt/mei:respStmt/mei:persName[@role = 'cmp'][1]/string(@codedval)"/>
+                    <xsl:when test="$doc//mei:work//mei:persName[@role = 'cmp'][1]/@codedval">
+                        <xsl:value-of select="$doc//mei:work//mei:persName[@role = 'cmp'][1]/string(@codedval)"/>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:value-of select="wega:getOption('anonymusID')"/>
@@ -36,8 +36,8 @@
                 <xsl:choose>
                     <xsl:when test="exists($doc)">
                         <xsl:choose>
-                            <xsl:when test="$doc//tei:fileDesc//tei:titleStmt//tei:author[1]/@key">
-                                <xsl:value-of select="$doc//tei:fileDesc//tei:titleStmt//tei:author[1]/string(@key)"/>
+                            <xsl:when test="$doc//tei:biblStruct//tei:author[1]/@key">
+                            	<xsl:value-of select="$doc//tei:biblStruct//tei:author[1]/string(@key)"/>
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:value-of select="wega:getOption('anonymusID')"/>
