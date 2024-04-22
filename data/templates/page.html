@@ -3,7 +3,8 @@
         <meta charset="UTF-8"/>
         <!--<meta http-equiv="CONTENT-LANGUAGE" content="de"/>-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title dzenata-template="app-shared:print" data-template-key="meta-page-title">Hans Werner Henzes künstlerisches Netzwerk</title>
+        <meta name="referrer" content="no-referrer, same-origin"/>
+        <title data-template="app-shared:print" data-template-key="meta-page-title">Hans Werner Henzes künstlerisches Netzwerk</title>
         
         <meta property="dc:title" data-template="app-shared:set-attr" data-template-attr="content" data-template-key="meta-page-title"/>
         <meta property="dc:publisher" content="Henze-Digital"/>
@@ -135,8 +136,8 @@
                                     <a class="dropdown-item" href="$link/project/projectDescription.html" data-template="lang:translate">projectDescription</a>
                                 </li>
                                 <li>
-                            <a class="dropdown-item"  href="$link/project/credits.html" data-template="lang:translate">credits</a>
-                        </li>
+                                    <a class="dropdown-item"  href="$link/project/credits.html" data-template="lang:translate">credits</a>
+                                </li>
                                 <li>
                                     <a class="dropdown-item" href="$link/project/team.html" data-template="lang:translate">team</a>
                                 </li>
@@ -270,7 +271,7 @@
         <script type="text/javascript" src="$resources/lib/moment/min/moment-with-locales.min.js"/>
         <script type="text/javascript" src="$resources/lib/ion-rangeslider/js/ion.rangeSlider.min.js"/>
         <script type="text/javascript" src="$resources/lib/flip/dist/jquery.flip.min.js"/>
-        <script type="text/javascript" src="$resources/lib/openseadragon/openseadragon/openseadragon.min.js"/>
+        <script type="text/javascript" src="$resources/lib/wega-mirador/dist/mirador.45ddb72e.js"/>
         <script type="text/javascript" src="$resources/js/greedynav.js" data-template="app-shared:if-matches" data-template-key="environment" data-template-value="development"/>
         <script type="text/javascript" src="$resources/js/greedynav-min.js" data-template="app-shared:if-not-matches" data-template-key="environment" data-template-value="development"/>
         <script type="text/javascript" src="$resources/lib/jszip/dist/jszip.min.js" data-template="app-shared:if-matches" data-template-key="environment" data-template-value="development"/>
@@ -282,16 +283,6 @@
         <script type="text/javascript" src="$resources/js/init-min.js" data-template="app-shared:if-not-matches" data-template-key="environment" data-template-value="development"/>
         
        	 
-        <div data-template="app-shared:if-matches" data-template-key="environment" data-template-value="production" data-template-wrap="false">
-        	<script type="text/javascript">
-			    window.onload = function () {
-			        OpenBootstrapPopup();
-			    };
-			    function OpenBootstrapPopup() {
-			        $("#introductionModal").modal('show');
-			    }
-			</script>
-        </div>
         <div data-template="app-shared:if-matches" data-template-key="environment" data-template-value="production" data-template-wrap="false">
             <!-- Matomo -->
             <script type="text/javascript">

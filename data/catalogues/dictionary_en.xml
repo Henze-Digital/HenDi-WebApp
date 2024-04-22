@@ -169,7 +169,8 @@
     <entry xml:id="noRdg">No text present</entry>
     <entry xml:id="unclearDefault">uncertain transcription</entry>
     <entry xml:id="gapDefault">illegible text</entry>
-    <entry xml:id="outofScope">beyond edition scope</entry>
+    <entry xml:id="outofScope">beyond edition scope</entry> 
+    <entry xml:id="paperloss">Paperloss</entry>
     <entry xml:id="hiUnderline">Underlining</entry>
 	<entry xml:id="paperloss">Paperloss</entry>
 	<entry xml:id="smoke">Damage due to smoke</entry>
@@ -205,7 +206,7 @@
     <entry xml:id="versionInformation">Version %1 of %2</entry>
     <!--  Search  -->
     <entry xml:id="advancedSearch">Advanced Search</entry>
-    <entry xml:id="WeGA-Search">Henze-Digital-Search</entry>
+    <entry xml:id="WeGA-Search">HenDi-Search</entry>
     <entry xml:id="perPage">per page</entry>
     <entry xml:id="additionalSearchRow">Add further input field</entry>
     <entry xml:id="no_prefix">Full-Text</entry>
@@ -266,6 +267,41 @@
     <entry xml:id="noBioFoundReason3">It is a well known person where enough information is available online elsewhere, see e.g Wikipedia</entry>
     <entry xml:id="noDataFound">no data found</entry>
     <entry xml:id="dateUnknown">date unknown</entry>
+    <!--  Schlüsselwörter aus MARC Code List for Relators, siehe http://www.loc.gov/marc/relators/relaterm.html  -->
+    <entry xml:id="act">Actor</entry>
+    <entry xml:id="ard">Artistic director</entry>
+    <entry xml:id="art">Artist</entry>
+    <entry xml:id="arr">Arranger</entry>
+    <entry xml:id="aus">Screenwriter</entry>
+    <entry xml:id="aut">Author</entry>
+    <entry xml:id="cnd">Conductor</entry>
+    <entry xml:id="cmp">Composer</entry>
+    <entry xml:id="chr">Choreographer</entry>
+    <entry xml:id="cst">Costume designer</entry>
+    <entry xml:id="drt">Director</entry>
+    <entry xml:id="dte">Dedicatee</entry>
+    <entry xml:id="edt">Editor</entry>
+    <entry xml:id="editorial_assistant">Editorial Assistant</entry>
+    <entry xml:id="flm">Film editor</entry>
+    <entry xml:id="fmd">Film director</entry>
+    <entry xml:id="fmp">Film producer</entry>
+    <entry xml:id="itr">Instrumentalist</entry>
+    <entry xml:id="lbt">Librettist</entry>
+    <entry xml:id="lyr">Lyricist</entry>
+    <entry xml:id="mcp">Music copyist</entry>
+    <entry xml:id="msd">Musical director</entry>
+    <entry xml:id="mus">Performer</entry>
+    <entry xml:id="pdr">Project director</entry>
+    <entry xml:id="pmn">Production manager</entry>
+    <entry xml:id="prn">Production company</entry>
+    <entry xml:id="pro">Producer</entry>
+    <entry xml:id="rce">Recording engineer</entry>
+    <entry xml:id="scr">Scribe</entry>
+    <entry xml:id="sng">Singer</entry>
+    <entry xml:id="std">Set designer</entry>
+    <entry xml:id="trc">Transcriber</entry>
+    <entry xml:id="trl">Translator</entry>
+    <entry xml:id="vdg">Videographer</entry>
     
     <!--  Facets  -->
     <entry xml:id="filter">Filter</entry>
@@ -665,32 +701,31 @@
     <entry xml:id="da">Danish</entry>
     <entry xml:id="it">Italian</entry>
     <entry xml:id="fr">French</entry>
-    
-	<entry xml:id="persons_mentioned">Mentioned Persons</entry>
-	<entry xml:id="works_mentioned">Mentioned Works</entry>
-	<entry xml:id="places_mentioned">Mentioned Places</entry>
-	<entry xml:id="siglum">Siglum</entry>
-	<entry xml:id="team">Team</entry>
-	<entry xml:id="settings">Settings</entry>
-    <entry xml:id="emphases">Emphases</entry>
-	<entry xml:id="supplied-marker">Editor's supplement</entry>
-	<entry xml:id="show_markers_paragraph">Show markers in text</entry>
-	<entry xml:id="chars">characters</entry>
-	<entry xml:id="words">words</entry>
-	<entry xml:id="lines">lines</entry>
-	<entry xml:id="charsSg">character</entry>
-	<entry xml:id="wordsSg">word</entry>
-	<entry xml:id="linesSg">line</entry>
-	<entry xml:id="approx">approx.</entry>
-	<entry xml:id="supplied">supplied by the editors</entry>
-	<entry xml:id="geonamesFeatureClass">Type of Place</entry>
-	<entry xml:id="geonamesFeatureClass_P">City, Village, …</entry>
-	<entry xml:id="geonamesFeatureClass_A">Country, State, Region, …</entry>
-	<entry xml:id="geonamesFeatureClass_H">Stream, Lake, …</entry>
-	<entry xml:id="geonamesFeatureClass_L">Parks, Area, …</entry>
-	<entry xml:id="geonamesFeatureClass_S">Spot, Building, Farm</entry>
-	<entry xml:id="geonamesFeatureClass_T">Mountain, Hill, Rock, …</entry>
-	<entry xml:id="geonamesFeatureClass_V">Forest, Heath, …</entry>
+    <entry xml:id="persons_mentioned">Mentioned Persons</entry>
+    <entry xml:id="works_mentioned">Mentioned Works</entry>
+    <entry xml:id="places_mentioned">Mentioned Places</entry>
+    <entry xml:id="siglum">Siglum</entry>
+    <entry xml:id="team">Team</entry>
+    <entry xml:id="settings">Settings</entry>
+    <entry xml:id="supplied-marker">Editor's supplement</entry>
+    <entry xml:id="show_markers_paragraph">Show markers in text</entry>
+    <entry xml:id="chars">characters</entry>
+    <entry xml:id="words">words</entry>
+    <entry xml:id="lines">lines</entry>
+    <entry xml:id="charsSg">character</entry>
+    <entry xml:id="wordsSg">word</entry>
+    <entry xml:id="linesSg">line</entry>
+    <entry xml:id="approx">approx.</entry>
+    <entry xml:id="supplied">supplied by the editors</entry>
+    <entry xml:id="geonamesFeatureClass">Type of Place</entry>
+    <entry xml:id="geonamesFeatureClass_P">City, Village</entry>
+    <entry xml:id="geonamesFeatureClass_A">Country, State, Region</entry>
+    <entry xml:id="geonamesFeatureClass_H">Stream, Lake</entry>
+    <entry xml:id="geonamesFeatureClass_L">Park, Area</entry>
+    <entry xml:id="geonamesFeatureClass_R">Road, Street</entry>
+    <entry xml:id="geonamesFeatureClass_S">Spot, Building</entry>
+    <entry xml:id="geonamesFeatureClass_T">Mountain, Hill, Rock</entry>
+    <entry xml:id="geonamesFeatureClass_V">Forest, Heath</entry>
     
     <entry xml:id="further">Following</entry>
     
@@ -798,43 +833,7 @@
     <entry xml:id="us">World's premiere broadcast</entry>
     <entry xml:id="ea">First performance</entry>
     <entry xml:id="pa">Private performance</entry>
-    
-    <!-- other marc relators -->
-    <entry xml:id="act">Actor</entry>
-    <entry xml:id="ard">Artistic director</entry>
-    <entry xml:id="art">Artist</entry>
-    <entry xml:id="arr">Arranger</entry>
-    <entry xml:id="aus">Screenwriter</entry>
-    <entry xml:id="aut">Author</entry>
-    <entry xml:id="cnd">Conductor</entry>
-    <entry xml:id="cmp">Composer</entry>
-    <entry xml:id="chr">Choreographer</entry>
-    <entry xml:id="cst">Costume designer</entry>
-    <entry xml:id="drt">Director</entry>
-    <entry xml:id="dte">Dedicatee</entry>
-    <entry xml:id="edt">Editor</entry>
-    <entry xml:id="editorial_assistant">Editorial Assistant</entry>
-    <entry xml:id="flm">Film editor</entry>
-    <entry xml:id="fmd">Film director</entry>
-    <entry xml:id="fmp">Film producer</entry>
-    <entry xml:id="itr">Instrumentalist</entry>
-    <entry xml:id="lbt">Librettist</entry>
-    <entry xml:id="lyr">Lyricist</entry>
-    <entry xml:id="mcp">Music copyist</entry>
-    <entry xml:id="msd">Musical director</entry>
-    <entry xml:id="mus">Performer</entry>
-    <entry xml:id="pdr">Project director</entry>
-    <entry xml:id="pmn">Production manager</entry>
-    <entry xml:id="prn">Production company</entry>
-    <entry xml:id="pro">Producer</entry>
-    <entry xml:id="rce">Recording engineer</entry>
-    <entry xml:id="scr">Scribe</entry>
-    <entry xml:id="sng">Singer</entry>
-    <entry xml:id="std">Set designer</entry>
-    <entry xml:id="trc">Transcriber</entry>
-    <entry xml:id="trl">Translator</entry>
-    <entry xml:id="vdg">Videographer</entry>
-    
+        
     <entry xml:id="events">Events</entry>
     <entry xml:id="event">Event</entry>
     <entry xml:id="textualSource">Textual source</entry>

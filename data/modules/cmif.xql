@@ -37,8 +37,7 @@ declare variable $ct:etag as xs:string? :=
     if(exists($ct:last-modified))
     then util:hash($ct:last-modified, 'md5')
     else ();
-
-declare function ct:create-header() as element(tei:teiHeader) {
+ declare function ct:create-header() as element(tei:teiHeader) {
     <teiHeader xmlns="http://www.tei-c.org/ns/1.0">
         <fileDesc>
             <titleStmt>
@@ -111,7 +110,7 @@ declare function ct:correspDesc($input as element(tei:correspDesc)) as element(t
         if(not($input/tei:correspAction[@type='received']))
         then ct:identity-transform-with-switches(<correspAction xmlns="http://www.tei-c.org/ns/1.0" type="received"><persName>Unbekannt</persName></correspAction>)
         else ()
-    }
+        }
 };
 
 declare function ct:correspAction($input as element()) as element(tei:correspAction) {

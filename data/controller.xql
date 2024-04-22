@@ -200,14 +200,23 @@ else if (matches($exist:path, '^/works_beacon.txt$')) then
     	</forward>
     </dispatch>
     
-(: correspDesc Beacon :)
-else if (matches($exist:path, '^/correspDesc.xml$')) then
+(: correspDesc Beacon (aka CMIF) v1 :)
+else if (matches($exist:path, '^/(correspDesc|cmif_v1).xml$')) then
     <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
-    	<forward url="{concat($exist:controller, '/modules/correspDesc.xql')}">
+    	<forward url="{concat($exist:controller, '/modules/cmif.xql')}">
     	   <cache-control cache="yes"/>
     	</forward>
     </dispatch>
-    
+
+(: correspDesc Beacon (aka CMIF) v2 :)
+else    if (matches($exist:path, '^/cmif_v2.xml$')) then
+    <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+    	<forward url="{concat($exist:controller, '/modules/cmif.xql')}">
+    	   <add-parameter name="v" value="2"/>
+    	   <cache-control cache="yes"/>
+    	</forward>
+    </dispatch>
+
 (: Sitemap :)
 else if (matches($exist:path, '^/sitemap(/?|/index.xml)?$') or matches($exist:path, '^/sitemap/sitemap_(en|de).xml.(gz|zip)$')) then
     <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
@@ -268,6 +277,11 @@ else if($config:isDevelopment and starts-with($exist:path, '/logs/')) then
 
 (: typo3ContentMappings :)
 else if($exist:resource = 'index.php') then controller:lookup-typo3-mappings($exist-vars)
+
+else if(matches($exist:path, '^/api/?$')) then 
+    <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+        <redirect url="{config:api-base(())}"/>
+    </dispatch>
 
 else controller:lookup-url-mappings($exist-vars)
 

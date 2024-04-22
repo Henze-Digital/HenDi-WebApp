@@ -51,7 +51,4 @@ local:set-options(),
 (: store the collection configuration :)
 local:mkcol("/db/system/config", $target), 
 xdb:store-files-from-pattern(concat("/system/config", $target), concat($dir, '/indices'), "**/*.xconf", (), true()),
-xdb:reindex($target),
-
-(: set WebApp environment equal to EXIST_ENV :)
-update value doc('/db/apps/HenDi-WebApp/catalogues/options.xml')//entry[@xml:id="environment"] with environment-variable("EXIST_ENV")
+xdb:reindex($target)

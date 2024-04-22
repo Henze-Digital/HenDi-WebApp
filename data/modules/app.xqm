@@ -186,7 +186,7 @@ declare
 declare
     %templates:default("lang", "en")
     function app:breadcrumb-docType($node as node(), $model as map(*), $lang as xs:string) as element(xhtml:a) {
-        let $href := config:link-to-current-app(functx:substring-before-last($model('$exist:path'), '/'))
+        let $href := config:link-to-current-app(functx:substring-before-last($model('exist:path'), '/'))
         let $display-name := replace(xmldb:decode(functx:substring-after-last($href, '/')), '_', ' ')
         let $elem := 
             if($href and not(contains($href, config:get-option('anonymusID')))) then QName('http://www.w3.org/1999/xhtml', 'a')
@@ -242,7 +242,7 @@ declare
 declare 
     %templates:default("lang", "en")
     function app:breadcrumb-var($node as node(), $model as map(*), $lang as xs:string) as element() {
-        let $pathTokens := tokenize($model?('$exist:path'), '/')
+        let $pathTokens := tokenize($model?('exist:path'), '/')
         return 
             element {node-name($node)} {
                 $node/@*,
@@ -337,7 +337,7 @@ declare
 declare
     %templates:default("lang", "en")
     function app:facsimile-tab($node as node(), $model as map(*), $lang as xs:string) as element() {
-        if(count($model?localFacsimiles | $model?externalIIIFManifestFacsimiles) gt 0) then 
+        if(count($model?IIIFImagesMap) gt 0) then 
             element {node-name($node)} {
                 $node/@*,
                 lang:get-language-string(normalize-space($node), $lang)
@@ -1131,11 +1131,10 @@ declare
             else map {}
         return
             map { 'beaconLinks': 
-                    for $i in map:keys($beaconMap)
-                    order by $beaconMap($i)[2]
-                    return 
-                        (: replacement in @href for invalid links from www.sbn.it :)
-                        <a xmlns="http://www.w3.org/1999/xhtml" title="{$i}" href="{replace($beaconMap($i)[1], '\\', '%5C')}">{$beaconMap($i)[2]}</a>
+                    for $i in $beaconMap?*
+                    order by $i?text                    => lower-case() collation "?lang=de;strength=primary"
+ return 
+                        <a xmlns="http://www.w3.org/1999/xhtml" title="{map:keys($i)}" href="{$i?link}">{$i?text}</a>
             }
 };
 
@@ -1485,8 +1484,12 @@ declare
     function app:dnb($node as node(), $model as map(*), $lang as xs:string) as map(*) {
         let $gnd := query:get-gnd($model('doc'))
         let $dnbContent := er:grabExternalResource('dnb', $gnd, ())
-        let $dnbOccupations := ($dnbContent//rdf:RDF/rdf:Description/gndo:professionOrOccupation ! er:resolve-rdf-resource(.))//gndo:preferredNameForTheSubjectHeading/str:normalize-space(.)
-        let $subjectHeadings := (($dnbContent//rdf:RDF/rdf:Description/gndo:broaderTermInstantial | $dnbContent//rdf:RDF/rdf:Description/gndo:formOfWorkAndExpression) ! er:resolve-rdf-resource(.))//gndo:preferredNameForTheSubjectHeading/str:normalize-space(.)
+        let $dnbOccupations := 
+            try { ($dnbContent//rdf:RDF/rdf:Description/gndo:professionOrOccupation//rdf:*[starts-with(@rdf:resource, 'https://d-nb.info')] ! er:resolve-rdf-resource(.))//gndo:preferredNameForTheSubjectHeading/str:normalize-space(.) }
+        catch * { wega-util:log-to-file('warn', string-join(($err:code, $err:description), ' ;; ')) }
+        let $subjectHeadings := 
+            try { (($dnbContent//rdf:RDF/rdf:Description/gndo:broaderTermInstantial | $dnbContent//rdf:RDF/rdf:Description/gndo:formOfWorkAndExpression) ! er:resolve-rdf-resource(.))//gndo:preferredNameForTheSubjectHeading/str:normalize-space(.) }
+        catch * { wega-util:log-to-file('warn', string-join(($err:code, $err:description), ' ;; ')) }
         return
             map {
                 'docType' : config:get-doctype-by-id($model?docID),
@@ -1610,11 +1613,15 @@ declare
     %templates:wrap
     function app:doc-details($node as node(), $model as map(*)) as map(*) {
         let $facs := query:facsimile($model?doc)
-        return
+        let            $localFacsimiles :=                $facs[tei:graphic][not(@sameAs)] except $facs[tei:graphic[starts-with(@url, 'http')]]
+                let $externalIIIFManifestFacsimiles := $facs[@sameAs]
+        let $IIIFImagesMap := ($localFacsimiles | $externalIIIFManifestFacsimiles) ! app:create-IIIFImagesMap(., $model)
+                return
             map {
                 'facsimile' : $facs,
-                'localFacsimiles' : $facs[tei:graphic][not(@sameAs)] except $facs[tei:graphic[starts-with(@url, 'http')]],
-                'externalIIIFManifestFacsimiles' : $facs[@sameAs],
+                'localFacsimiles' : $localFacsimiles,
+                'externalIIIFManifestFacsimiles' : $externalIIIFManifestFacsimiles,
+                'IIIFImagesMap': $IIIFImagesMap,
                 'hasCreation' : exists($model?doc//tei:creation),
                 'xml-download-url' : replace(controller:create-url-for-doc($model('doc'), $model('lang')), '\.html', '.xml'),
                 'thematicCommentaries' : distinct-values($model('doc')//tei:note[@type='thematicCom']/@target/tokenize(., '\s+')),
@@ -1622,9 +1629,32 @@ declare
             }
 };
 
+(:~
+ : Helper function for app:doc-details#2
+ : This function creates a map object from a tei:facsimile element and provides the keys "url" and "canvasStartIndex"
+ : iff the tei:facsimile element points to an IIIF manifest  
+ :)
+declare    %private    function app:create-IIIFImagesMap($facsimile as element(tei:facsimile), $model as map(*)) as map(*) {
+        let $url :=
+ if($facsimile/@sameAs) then $facsimile/@sameAs => normalize-space()
+        else controller:iiif-manifest-id($facsimile)
+    let $canvasStartIndex :=
+        if($model?doc/tei:ab/@facs)
+        (: special case for diaries; need to subtract -1 since Javascript starts counting with 0 and the tei:surfaces are starting at @n=1 :)
+        then crud:data-collection('diaries')/id($model?doc/tei:ab/@facs => substring(2))/parent::tei:surface/@n => number() - 1
+        else if($facsimile/tei:surface/@n)
+        then $facsimile/tei:surface/@n
+        else 0
+    return
+        map {
+            "url": $url,
+ "canvasStartIndex": $canvasStartIndex
+ }
+};
+
 declare
-    %templates:wrap
-    function app:document-title($node as node(), $model as map(*)) as item()* {
+ %templates:wrap
+ function app:document-title($node as node(), $model as map(*)) as item()* {
         let $docID := $model('doc')/*/data(@xml:id) (: need to check because of index.html :)
         let $title := wdt:lookup(config:get-doctype-by-id($docID), $model('doc'))?title('html') 
         return
@@ -1829,6 +1859,8 @@ declare
 
 (:~
  : Fetch all (external) facsimiles for a text source
+ : that are not provided via IIIF, thus will be output 
+ : as links in the editorial section 
  :)
 declare 
     %templates:wrap
@@ -1947,13 +1979,16 @@ declare
             'incipit' : query:incipit($model('doc')),
             'summary' : query:summary($model('doc'), $lang),
             'generalRemark' : query:generalRemark($model('doc')),
-            
             'authors' : if (count(query:get-author-element($model('doc'))) > 1 ) then
                 for $author in query:get-author-element($model('doc')) return app:printCorrespondentName($author,$lang,'fs') else (),
             'editors' : if (count(query:get-editor-element($model('doc'))) > 0 ) then
                 for $editor in query:get-editor-element($model('doc')) return app:printCorrespondentName($editor,$lang,'fs') else (),
-            'respStmts' : switch($model('docType'))
-                case 'diaries' return <tei:respStmt><tei:resp>Übertragung</tei:resp><tei:name>Dagmar Beck</tei:name></tei:respStmt>
+            'respStmts': 
+                switch($model('docType'))
+                case 'diaries' return (
+                    <tei:respStmt><tei:resp>Übertragung</tei:resp><tei:name>Dagmar Beck</tei:name></tei:respStmt>,
+                    <tei:respStmt><tei:resp>Kommentar</tei:resp><tei:name>Dagmar Beck</tei:name><tei:name>Frank Ziegler</tei:name></tei:respStmt>
+                    )
                 default return $model('doc')//tei:respStmt[parent::tei:titleStmt]
         }
 };
@@ -2056,7 +2091,8 @@ declare
             attribute data-selection-when {"before-after"},
             attribute data-selection-span {"median-before-after"},
             attribute data-result-max {"4"},
-            attribute data-exclude-edition {"#HENDI"}            
+            attribute data-exclude-edition {"#" || config:get-option('cmifID')},
+            attribute data-language {$lang}            
 }
 };
 
@@ -2100,12 +2136,14 @@ declare %private function app:get-news-foot($doc as document-node(), $lang as xs
 declare function app:init-facsimile($node as node(), $model as map(*)) as element(xhtml:div) {
     element {node-name($node)} {
         $node/@*[not(name()=('data-originalMaxSize', 'data-url'))],
-        if(count($model?localFacsimiles | $model?externalIIIFManifestFacsimiles) gt 0) then (
+        if(count($model?IIIFImagesMap) gt 0) 
+ then (
             attribute {'data-url'} { normalize-space(
-                string-join($model?externalIIIFManifestFacsimiles/@sameAs, ' ') ||
-                ' ' ||
-                string-join(($model?localFacsimiles except $model?externalIIIFManifestFacsimiles) ! controller:iiif-manifest-id(.), ' ') 
-            )}
+                string-join($model?IIIFImagesMap?url, ' ') 
+                )},
+ attribute {'data-canvasindex'} {normalize-space(
+                string-join($model?IIIFImagesMap?canvasStartIndex, ' ') 
+            )} 
         )
         else ()
     }
@@ -2307,6 +2345,7 @@ declare
                 }
             else ()
 };
+
 
 declare 
     %templates:wrap
