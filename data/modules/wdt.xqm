@@ -131,10 +131,10 @@ declare function wdt:persons($item as item()*) as map(*) {
         },
         'label-facets' : function() as xs:string? {
             typeswitch($item)
-                case xs:string return crud:doc($item)//tei:persName[@type = 'reg']/str:normalize-space(.)
-                case xs:untypedAtomic return crud:doc($item)//tei:persName[@type = 'reg']/str:normalize-space(.)
-                case document-node() return str:normalize-space(($item//tei:persName[@type = 'reg']))
-                case element() return str:normalize-space(($item/root()//tei:persName[@type = 'reg']))
+                case xs:string return crud:doc($item)//tei:persName[@type = 'reg'] => str:normalize-space()
+                case xs:untypedAtomic return crud:doc($item)//tei:persName[@type = 'reg'] => str:normalize-space()
+                case document-node() return $item//tei:persName[@type = 'reg'] => str:normalize-space()
+                case element() return $item/root()//tei:persName[@type = 'reg'] => str:normalize-space()
                 default return wega-util:log-to-file('error', 'wdt:persons()("label-facests"): failed to get string')
         },
         'memberOf' : ('search','indices', 'sitemap', 'unary-docTypes'),
@@ -548,10 +548,10 @@ declare function wdt:works($item as item()*) as map(*) {
         },
         'label-facets' : function() as xs:string? {
             typeswitch($item)
-            case xs:string return str:normalize-space((crud:doc($item)//mei:work[1]/mei:title/mei:titlePart[@type='main']|(crud:doc($item)//tei:biblStruct)[1]//tei:title)[1])
-            case xs:untypedAtomic return str:normalize-space((crud:doc($item)//mei:work[1]/mei:title/mei:titlePart[@type='main']|(crud:doc($item)//tei:biblStruct)[1]//tei:title)[1])
-            case document-node() return str:normalize-space(($item//mei:work[1]/mei:title/mei:titlePart[@type='main']|($item//tei:biblStruct)[1]//tei:title)[1])
-            case element() return str:normalize-space(($item//mei:work[1]/mei:title/mei:titlePart[@type='main']|($item//tei:biblStruct)[1]//tei:title)[1])
+            case xs:string return (crud:doc($item)//mei:work[1]/mei:title/mei:titlePart[@type='main']|(crud:doc($item)//tei:biblStruct)[1]//tei:title)[1] => str:normalize-space()
+            case xs:untypedAtomic return (crud:doc($item)//mei:work[1]/mei:title/mei:titlePart[@type='main']|(crud:doc($item)//tei:biblStruct)[1]//tei:title)[1] => str:normalize-space()
+            case document-node() return ($item//mei:work[1]/mei:title/mei:titlePart[@type='main']|($item//tei:biblStruct)[1]//tei:title)[1] => str:normalize-space()
+            case element() return ($item//mei:work[1]/mei:title/mei:titlePart[@type='main']|($item//tei:biblStruct)[1]//tei:title)[1] => str:normalize-space()
             default return wega-util:log-to-file('error', 'wdt:works()("label-facests"): failed to get string')
         },
         'memberOf' : ('search', 'indices', 'unary-docTypes', 'sitemap'),
@@ -560,7 +560,7 @@ declare function wdt:works($item as item()*) as map(*) {
             $item[tei:TEI]/tei:TEI[ft:query(., $query)] | 
             $item[mei:mei]//mei:title[ft:query(., $query)] |
             $item[tei:TEI]//tei:title[ft:query(., $query)]
-        }
+       }
     }
 };
 
@@ -695,10 +695,14 @@ declare function wdt:iconography($item as item()*) as map(*) {
             else false()
         },
         'filter' : function() as document-node()* {
-            $item/root()[descendant::tei:person/@corresp]
+            $item/root()/descendant::tei:person[@corresp]/root() | 
+            $item/root()/descendant::tei:place[@corresp]/root() |
+            $item/root()/descendant::tei:org[@corresp]/root()
         },
         'filter-by-person' : function($personID as xs:string) as document-node()* {
-            $item/root()/descendant::tei:person[@corresp = $personID]/root()
+            $item/root()/descendant::tei:person[@corresp = $personID]/root() |
+            $item/root()/descendant::tei:place[@corresp = $personID]/root() |
+            $item/root()/descendant::tei:org[@corresp = $personID]/root()
         },
         'filter-by-date' : function($dateFrom as xs:date?, $dateTo as xs:date?) as document-node()* {
             ()
@@ -709,12 +713,12 @@ declare function wdt:iconography($item as item()*) as map(*) {
             for $i in wdt:iconography($item)('filter')() order by sort:index('iconography', $i) descending return $i
         },
         'init-collection' : function() as document-node()* {
-            crud:data-collection('iconography')[descendant::tei:person/@corresp]
+            crud:data-collection('iconography')//(tei:place|tei:person|tei:org)[@corresp]/root()
         },
         'init-sortIndex' : function() as item()* {
-            sort:create-index-callback('iconography', wdt:iconography(())('init-collection')(), function($node) { $node//tei:person/data(@corresp) }, ())
+            sort:create-index-callback('iconography', wdt:iconography(())('init-collection')(), function($node) { $node//data(@corresp) }, ())
         },
-        'memberOf' : (),
+        'memberOf' : ('unary-docTypes'),
         'search' : ()
     }
 };
@@ -826,7 +830,7 @@ declare function wdt:biblio($item as item()*) as map(*) {
                 case 'html' return $html-title 
                 default return wega-util:log-to-file('error', 'wdt:biblio()("title"): unsupported serialization "' || $serialization || '"')
         },
-        'memberOf' : ('indices', 'unary-docTypes','search'),
+        'memberOf' : ('search', 'indices', 'unary-docTypes'),
         'search' : function($query as element(query)) {
             $item[tei:biblStruct]//tei:biblStruct[ft:query(., $query)] | 
             $item[tei:biblStruct]//tei:title[ft:query(., $query)] | 
