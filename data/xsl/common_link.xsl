@@ -125,7 +125,6 @@
     <xsl:template name="createLink">
         <xsl:choose>
             <xsl:when test="exists((@key, @codedval, @target)) and not(descendant::*[local-name(.) = $linkableElements])">
-            	<xsl:text> </xsl:text>
                 <xsl:element name="a">
                     <xsl:attribute name="class">
                         <xsl:value-of select="wega:preview-class(.)"/>
