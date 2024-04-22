@@ -157,8 +157,24 @@ declare function img:iconographyImage($node as node(), $model as map(*)) as elem
 
 (:~
  : Helper function for img:iconography()
+ : Creates the iconography for corresp
+ :
+ : @author Dennis Ried
+~:)
+declare %private function img:iconography4corresp($node as node(), $model as map(*), $lang as xs:string) as map(*) {
+    let $wikidata-images := img:wikidata-images($model, $lang)
+    return 
+    map { 
+        'iconographyImages' : $wikidata-images,
+        'portrait' : ($wikidata-images, img:get-generic-portrait($model, $lang) )[1]
+    }
+};
+
+(:~
+ : Helper function for img:iconography()
  : Creates the iconography for biblio
  :
+ : @author Dennis Ried
 ~:)
 declare %private function img:iconography4biblio($node as node(), $model as map(*), $lang as xs:string) as map(*) {
     let $wikidata-images := img:wikidata-images($model, $lang)
