@@ -1684,7 +1684,7 @@ declare
          let $foot := 
             if(config:is-news($docID)) then app:get-news-foot($doc, $lang)
             else ()
-         let $isEnclosureAlert := if($doc//tei:relation[@name='isEnclosureOf']/@key)
+         let $isRelatedAlert := if($doc//tei:relation[@name='isEnclosureOf']/@key)
                                   then(element xhtml:div {
                                     attribute class {'alert alert-primary text-center'},
                              	        lang:get-language-string('isEnclosureOf',$lang) || ' ',
@@ -1692,10 +1692,18 @@ declare
                              	            app:createDocLink(collection(config:get-option('dataCollectionPath'))//tei:TEI[@xml:id=$doc//tei:relation[@name='isEnclosureOf']/@key]/root(),$doc//tei:relation[@name='isEnclosureOf']/@key/string(),$lang,())
                              	        }
                                  	 })
-                             	 else()
+                             	 else if ($doc//tei:relation[@name='isEnvelopeOf']/@key)
+                                  then(element xhtml:div {
+                                    attribute class {'alert alert-primary text-center'},
+                             	        lang:get-language-string('isEnvelopeOf',$lang) || ' ',
+                             	        element xhtml:b {
+                             	            app:createDocLink(collection(config:get-option('dataCollectionPath'))//tei:TEI[@xml:id=$doc//tei:relation[@name='isEnvelopeOf']/@key]/root(),$doc//tei:relation[@name='isEnvelopeOf']/@key/string(),$lang,())
+                             	        }
+                                 	 })
+                             	 else ()
          return 
             map {
-                'isEnclosureAlert' : $isEnclosureAlert,
+                'isRelatedAlert' : $isRelatedAlert,
                 'transcription' : (wega-util:remove-elements-by-class($body, 'apparatus'),$foot), 
                 'apparatus' : $body/descendant-or-self::*[@class='apparatus']
             }
@@ -2715,7 +2723,7 @@ declare function app:translation($node as node(), $model as map(*))  {
                     }
     return
         <div class="tab-pane fade" id="translation">
-          {(wega-util:remove-elements-by-class($body, 'apparatus'),$foot)}
+          {(wega-util:remove-elements-by-class(wega-util:remove-elements-by-class($body, 'apparatus'), 'noteMarker'),$foot)}
         </div>
     
 };
@@ -2759,7 +2767,7 @@ declare function app:enclosure($node as node(), $model as map(*))  {
 	               wega-util:transform($textRoot, $xslt1, $xslParams))
 	    return
 	        <div class="tab-pane fade" id="enclosure-{$z}">
-	          {wega-util:remove-elements-by-class($body, 'apparatus')}
+	          {wega-util:remove-elements-by-class(wega-util:remove-elements-by-class($body, 'apparatus'), 'noteMarker')}
 	        </div>
 };
 
@@ -2784,10 +2792,18 @@ declare function app:envelope($node as node(), $model as map(*))  {
 	            element xhtml:p {
 	                    attribute class {'notAvailable'}
 	            }
-	         else (wega-util:transform($textRoot, $xslt1, $xslParams))
+	         else (
+	         	element xhtml:div {
+	                attribute class {'alert alert-primary text-center'},
+	         	        lang:get-language-string('previewDocument',$lang) || ' ',
+	         	        element xhtml:b {
+	         	            app:createDocLink($envelope,lang:get-language-string('switchEnvelopeView',$lang),$lang,())
+	         	        }
+    	         	 },
+             	 wega-util:transform($textRoot, $xslt1, $xslParams))
 	    return
 	        <div class="tab-pane fade" id="envelope-{$z}">
-	          {wega-util:remove-elements-by-class($body, 'apparatus')}
+	          {wega-util:remove-elements-by-class(wega-util:remove-elements-by-class($body, 'apparatus'), 'noteMarker')}
 	        </div>
 };
 

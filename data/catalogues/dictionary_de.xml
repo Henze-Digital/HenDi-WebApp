@@ -784,12 +784,13 @@
 	<entry xml:id="isEnclosureOf">Ist Beilage zu</entry>
 	<entry xml:id="hasEnclosure">Mit Beilage</entry>
 	<entry xml:id="enclosure">Beilage</entry>
-    <entry xml:id="isEnvelopeOf">Ist Briefumschlag von</entry>
+    <entry xml:id="isEnvelopeOf">Ist Briefumschlag zu</entry>
     <entry xml:id="hasEnvelope">Mit Briefumschlag</entry>
     <entry xml:id="envelope">Briefumschlag</entry>
 	
 	<entry xml:id="previewDocument">Dies ist eine reduzierte Voransicht. Wechseln Sie für weitere Informationen zur</entry>
 	<entry xml:id="switchDocumentView">Edition des Dokuments</entry>
+	<entry xml:id="switchEnvelopeView">Edition des Umschlags</entry>
     
     <entry xml:id="workTypeMedium">Medium</entry>
     <entry xml:id="music">Musikalisches Werk</entry>

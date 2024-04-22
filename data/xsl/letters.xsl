@@ -13,6 +13,9 @@
 	<xsl:template match="tei:body">
 		<xsl:element name="div">
 			<xsl:attribute name="class" select="'teiLetter_body'"/>
+			<xsl:if test="ancestor::tei:text/@type='letter'">
+				<xsl:attribute name="style" select="'display: inline-grid; min-width: 80%;'"/>
+			</xsl:if>
 			<xsl:choose>
 				<xsl:when test="parent::tei:text/@type='envelope'">
 					<xsl:element name="h4">
