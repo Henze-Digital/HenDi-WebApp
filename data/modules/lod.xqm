@@ -87,7 +87,7 @@ declare function lod:jsonld($model as map(*), $lang as xs:string) as map(*) {
     }
     let $publisher := map {
         'name':'Henze-Digital',
-        'url':'https://henze-digital.zenmem.de',
+        'url': config:get-option('permaLinkPrefix'),
         '@type':'Organization'
     }
     let $funder := map {
@@ -302,7 +302,7 @@ declare %private function lod:DC.date($model as map(*)) as xs:string? {
 ~:)
 declare %private function lod:DC.identifier($model as map(*)) as xs:string? {
     if($model('docID') = ('indices', 'search')) then request:get-url()
-    else if($model('docID') = 'home') then 'https://henze-digital.zenmem.de/de/Index'
+    else if($model('docID') = 'home') then 'https://henze-digital.zenmem.de'
     else if($model?specID or $model?chapID) then request:get-url()
     else if(config:get-doctype-by-id($model('docID'))) then config:permalink($model('docID'))
     else ()
