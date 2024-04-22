@@ -233,7 +233,7 @@
 		<xsl:variable name="fw-classes-bold" select="'tei_fw tei_fw_smaller tei_hi_bold'"/>
 		<xsl:variable name="fw-classes-boxed" select="'tei_fw border-top border-bottom'"/>
 		<xsl:choose>
-			<xsl:when test="ancestor::tei:div[@type='row'] or @type='pageNum'">
+			<xsl:when test="ancestor::tei:div[@type='row'] or @type='pageNum' or ancestor::tei:text[@type='envelope']">
 				<xsl:element name="p">
 					<xsl:attribute name="class">
 						<xsl:choose>
