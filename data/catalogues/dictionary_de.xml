@@ -206,7 +206,7 @@
     <entry xml:id="versionInformation">Version %1 vom %2</entry>
     <!--  Search  -->
     <entry xml:id="advancedSearch">Erweiterte Suche</entry>
-    <entry xml:id="WeGA-Search">Henze-Digital-Suche</entry>
+    <entry xml:id="WeGA-Search">HenDi-Suche</entry>
     <entry xml:id="perPage">pro Seite</entry>
     <entry xml:id="additionalSearchRow">Weiteres Suchfeld hinzufügen</entry>
     <entry xml:id="no_prefix">Volltext</entry>
@@ -267,6 +267,41 @@
     <entry xml:id="noBioFoundReason3">Es handelt sich um eine allgemein bekannte Person, die bereits ausreichend an anderer Stelle erschlossen ist, vgl. etwa den Wikipedia-Link</entry>
     <entry xml:id="noDataFound">Keine Angaben gefunden</entry>
     <entry xml:id="dateUnknown">Datum unbekannt</entry>
+    <!--  Schlüsselwörter aus MARC Code List for Relators, siehe http://www.loc.gov/marc/relators/relaterm.html  -->
+    <entry xml:id="act">Schauspiel</entry>
+    <entry xml:id="ard">Inszenierung</entry>
+    <entry xml:id="art">Künstler*in</entry>
+    <entry xml:id="arr">Bearbeitung</entry>
+    <entry xml:id="aus">Drehbuch</entry>
+    <entry xml:id="aut">Verfasst von</entry>
+    <entry xml:id="chr">Choreographie</entry>
+    <entry xml:id="cmp">Komposition</entry>
+    <entry xml:id="cnd">Dirigat</entry>
+    <entry xml:id="cst">Kostüme</entry>
+    <entry xml:id="dte">Widmung an</entry>
+    <entry xml:id="drt">Direktion</entry>
+    <entry xml:id="edt">Herausgabe</entry>
+    <entry xml:id="editorial_assistant">Redaktionsassistenz</entry>
+    <entry xml:id="flm">Filmedition</entry>
+    <entry xml:id="fmd">Filmdirektion</entry>
+    <entry xml:id="fmp">Filmproduktion</entry>
+    <entry xml:id="itr">Instrumente</entry>
+    <entry xml:id="mcp">Musikkopist</entry>
+    <entry xml:id="msd">Musikalische Direktion</entry>
+    <entry xml:id="mus">Ausführung</entry>
+    <entry xml:id="lbt">Libretto</entry>
+    <entry xml:id="lyr">Textdichtung</entry>
+    <entry xml:id="pdr">Projekt Direktion</entry>
+    <entry xml:id="pmn">Produktionsmanagement</entry>
+    <entry xml:id="prn">Produktionsfirma</entry>
+    <entry xml:id="pro">Produktion</entry>
+    <entry xml:id="rce">Aufnahmeleitung (Ton)</entry>
+    <entry xml:id="scr">Schreiber</entry>
+    <entry xml:id="sng">Gesang</entry>
+    <entry xml:id="std">Bühnenbild</entry>
+    <entry xml:id="trc">Einrichtung</entry>
+    <entry xml:id="trl">Übersetzung</entry>
+    <entry xml:id="vdg">Film (Video)</entry>
     <!--  Facets  -->
     <entry xml:id="filter">Filter</entry>
     <entry xml:id="dedicatees">Widmung an</entry>
@@ -675,32 +710,33 @@
     <entry xml:id="da">Dänisch</entry>
     <entry xml:id="it">Italienisch</entry>
     <entry xml:id="fr">Französisch</entry>
-	<entry xml:id="persons_mentioned">Erwähnte Personen</entry>
-	<entry xml:id="works_mentioned">Erwähnte Werke</entry>
-	<entry xml:id="places_mentioned">Erwähnte Orte</entry>
-	<entry xml:id="siglum">Sigle</entry>
-	<entry xml:id="team">Team</entry>
-	<entry xml:id="settings">Einstellungen</entry>
+    <entry xml:id="persons_mentioned">Erwähnte Personen</entry>
+    <entry xml:id="works_mentioned">Erwähnte Werke</entry>
+    <entry xml:id="places_mentioned">Erwähnte Orte</entry>
+    <entry xml:id="siglum">Sigle</entry>
+    <entry xml:id="team">Team</entry>
+    <entry xml:id="settings">Einstellungen</entry>
     <entry xml:id="emphases">Hervorhebungen</entry>
 	<entry xml:id="supplied-marker">Herausgeberergänzungen</entry>
-	<entry xml:id="show_markers_paragraph">Zeige Markierungen im Text</entry>
-	<entry xml:id="chars">Zeichen</entry>
-	<entry xml:id="words">Wörter</entry>
-	<entry xml:id="lines">Zeilen</entry>
-	<entry xml:id="charsSg">Zeichen</entry>
-	<entry xml:id="wordsSg">Wort</entry>
-	<entry xml:id="linesSg">Zeile</entry>
-	<entry xml:id="approx">ca.</entry>
-	<entry xml:id="supplied">ergänzt von den Hg.</entry>
-	<entry xml:id="geonamesFeatureClass">Ortstyp</entry>
-	<entry xml:id="geonamesFeatureClass_P">Stadt, Ort, …</entry>
-	<entry xml:id="geonamesFeatureClass_A">Land, Staat, Region, …</entry>
-	<entry xml:id="geonamesFeatureClass_H">Fluss, See, …</entry>
-	<entry xml:id="geonamesFeatureClass_L">Park, Anlage, …</entry>
-	<entry xml:id="geonamesFeatureClass_S">Gebäude, Farm, …</entry>
-	<entry xml:id="geonamesFeatureClass_T">Berg, Hügel, …</entry>
-	<entry xml:id="geonamesFeatureClass_V">Wald, Heide, …</entry>
-	
+    <entry xml:id="show_markers_paragraph">Zeige Markierungen im Text</entry>
+    <entry xml:id="chars">Zeichen</entry>
+    <entry xml:id="words">Wörter</entry>
+    <entry xml:id="lines">Zeilen</entry>
+    <entry xml:id="charsSg">Zeichen</entry>
+    <entry xml:id="wordsSg">Wort</entry>
+    <entry xml:id="linesSg">Zeile</entry>
+    <entry xml:id="approx">ca.</entry>
+    <entry xml:id="supplied">ergänzt von den Hg.</entry>
+    <entry xml:id="geonamesFeatureClass">Ortstyp</entry>
+    <entry xml:id="geonamesFeatureClass_P">Stadt, Ort</entry>
+    <entry xml:id="geonamesFeatureClass_A">Land, Staat, Region</entry>
+    <entry xml:id="geonamesFeatureClass_H">Fluss, See</entry>
+    <entry xml:id="geonamesFeatureClass_L">Park, Anlage</entry>
+    <entry xml:id="geonamesFeatureClass_R">Strasse</entry>
+    <entry xml:id="geonamesFeatureClass_S">Gebäude</entry>
+    <entry xml:id="geonamesFeatureClass_T">Berg, Hügel</entry>
+    <entry xml:id="geonamesFeatureClass_V">Wald, Heide</entry>
+    
     <entry xml:id="further">Folgend</entry>
     
     <!-- colors -->
@@ -809,40 +845,7 @@
     <entry xml:id="pa">Privataufführung</entry>
     
     <!-- marc relators -->
-    <entry xml:id="act">Schauspiel</entry>
-    <entry xml:id="ard">Inszenierung</entry>
-    <entry xml:id="art">Künstler*in</entry>
-    <entry xml:id="arr">Bearbeitung</entry>
-    <entry xml:id="aus">Drehbuch</entry>
-    <entry xml:id="aut">Verfasst von</entry>
-    <entry xml:id="chr">Choreographie</entry>
-    <entry xml:id="cmp">Komposition</entry>
-    <entry xml:id="cnd">Dirigat</entry>
-    <entry xml:id="cst">Kostüme</entry>
-    <entry xml:id="dte">Widmung an</entry>
-    <entry xml:id="drt">Direktion</entry>
-    <entry xml:id="edt">Herausgabe</entry>
-    <entry xml:id="editorial_assistant">Redaktionsassistenz</entry>
-    <entry xml:id="flm">Filmedition</entry>
-    <entry xml:id="fmd">Filmdirektion</entry>
-    <entry xml:id="fmp">Filmproduktion</entry>
-    <entry xml:id="itr">Instrumente</entry>
-    <entry xml:id="mcp">Musikkopist</entry>
-    <entry xml:id="msd">Musikalische Direktion</entry>
-    <entry xml:id="mus">Ausführung</entry>
-    <entry xml:id="lbt">Libretto</entry>
-    <entry xml:id="lyr">Textdichtung</entry>
-    <entry xml:id="pdr">Projekt Direktion</entry>
-    <entry xml:id="pmn">Produktionsmanagement</entry>
-    <entry xml:id="prn">Produktionsfirma</entry>
-    <entry xml:id="pro">Produktion</entry>
-    <entry xml:id="rce">Aufnahmeleitung (Ton)</entry>
-    <entry xml:id="scr">Schreiber</entry>
-    <entry xml:id="sng">Gesang</entry>
-    <entry xml:id="std">Bühnenbild</entry>
-    <entry xml:id="trc">Einrichtung</entry>
-    <entry xml:id="trl">Übersetzung</entry>
-    <entry xml:id="vdg">Film (Video)</entry>
+    
     
     <entry xml:id="events">Ereignisse</entry>
     <entry xml:id="event">Ereignis</entry>
