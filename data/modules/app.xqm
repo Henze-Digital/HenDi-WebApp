@@ -2723,7 +2723,7 @@ declare function app:translation($node as node(), $model as map(*))  {
                     }
     return
         <div class="tab-pane fade" id="translation">
-          {(wega-util:remove-elements-by-class($body, 'apparatus'),$foot)}
+          {(wega-util:remove-elements-by-class(wega-util:remove-elements-by-class($body, 'apparatus'), 'noteMarker'),$foot)}
         </div>
     
 };
