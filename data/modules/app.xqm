@@ -158,28 +158,38 @@ declare function app:set-line-wrap($node as node(), $model as map(*)) as element
  : Breadcrumbs 
  : ****************************
 :)
-declare 
+declare 										(: ACHTUNG: FUNKTIONIERT NUR FÜR TEI !!! :)
     %templates:default("lang", "en")
-    function app:breadcrumb-person($node as node(), $model as map(*), $lang as xs:string) as element(xhtml:a) {
-        let $authorID := tokenize($model?('exist:path'), '/')[3]
-        let $anonymusID := config:get-option('anonymusID')
-        let $authorElem :=
-            (: NB: there might be multiple anonymous authors :)
-            if ($authorID = $anonymusID) then (query:get-author-element($model?doc)[(count(@key | @codedval) = 0) or ((@key, @codedval) = $anonymusID)])[1]
-            (: NB: there might be multiple occurences of the same person as e.g. composer and lyricist :)
-            else (query:get-author-element($model?doc)[(@key, @codedval) = $authorID])[1]
-        let $href :=
-            if ($authorID = $anonymusID) then ()
-            else controller:create-url-for-doc(crud:doc($authorID), $lang)
-        let $elem := 
-            if($href) then QName('http://www.w3.org/1999/xhtml', 'a')
-            else QName('http://www.w3.org/1999/xhtml', 'span')
-        let $name := wega-util:print-forename-surname-from-nameLike-element($authorElem)
-        return 
-            element {$elem} {
-                $node/@*[not(local-name(.) eq 'href')],
-                if($href) then attribute href {$href} else (),
-                $name
+    function app:breadcrumb-person($node as node(), $model as map(*), $lang as xs:string) as element(xhtml:span) {
+        let $file := crud:doc(substring-before($model?('exist:resource'),'.html'))
+        let $fileAuthors := ($file//tei:fileDesc/tei:titleStmt/tei:author[@key], $file//mei:work[1]//mei:persName[@role='cmp'][@codedval])
+        let $authorElems := for $author in $fileAuthors 
+						        let $authorID := $author/(@key|@codedval)
+						        let $anonymusID := config:get-option('anonymusID')
+						        let $authorElem :=
+						            (: NB: there might be multiple anonymous authors :)
+						            if ($authorID = $anonymusID) then (query:get-author-element($model?doc)[(count(@key | @codedval) = 0) or ((@key, @codedval) = $anonymusID)])[1]
+						            (: NB: there might be multiple occurences of the same person as e.g. composer and lyricist :)
+						            else (query:get-author-element($model?doc)[(@key, @codedval) = $authorID])[1]
+						        let $href :=
+						            if ($authorID = $anonymusID) then ()
+						            else controller:create-url-for-doc(crud:doc($authorID), $lang)
+						        let $elem := 
+						            if($href) then QName('http://www.w3.org/1999/xhtml', 'a')
+						            else QName('http://www.w3.org/1999/xhtml', 'span')
+						        let $name := wega-util:print-forename-surname-from-nameLike-element($author)
+						        return 
+						            element {$elem} {
+						                $node/@*[not(local-name(.) eq 'href')],
+						                if($href) then attribute href {$href} else (),
+						                $name
+						            }
+        
+        return
+        	element {'span'} {
+        		for $each at $n in $authorElems
+        			return
+        				($each , if($n = count($authorElems)) then() else(' / '))
             }
 };
 
