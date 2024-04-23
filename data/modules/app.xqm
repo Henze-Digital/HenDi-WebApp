@@ -1326,7 +1326,7 @@ declare
     %templates:default("lang", "en")
     %templates:default("popover", "false")
     function app:preview-editors-name($node as node(), $model as map(*), $lang as xs:string, $popover as xs:string) as element() {
-        let $key := $model('editors')
+        let $key := $model('editors')[1] (: Quick fix, because multiple editor names are not allowed in $doc2keyAvailable :)
         let $myPopover := wega-util-shared:semantic-boolean($popover)
         let $doc2keyAvailable := crud:docAvailable($key)
         return
