@@ -387,35 +387,62 @@ li.listSubTitle {
 }
 
 .tei_stamp {
+	display: inline-block;
 	transform: rotate(-2deg);
 	color: #555;
-/*	font-size: 3rem;*/
+	font-size: 80%;
+	width: 30%;
 	font-weight: 700;
-	border: 0.25rem solid #555;
-	display: inline-block;
-	padding: 0.25rem 1rem;
-	border-radius: 1rem;
 	font-family: 'Courier';
+}
+
+.stamp_type_oneline {
+	border-radius: 1rem;
+	border: 0.25rem solid #555;
+	padding: 0.25rem 1rem;
 	-webkit-mask-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/8399/grunge.png');
 	-webkit-mask-size: 944px 604px;
 	mix-blend-mode: multiply;
 }
 
-.stamp_type_oneline {
-	/* same as .tei_stamp (no modifications) */
-}
-
 .stamp_type_round {
 	/* To be done! */
+	border: 2px dashed #000;
+	border-radius: 50%;
+	padding: 20px;
+	width: 50%;
+	height: 50%;
+	text-align: center;
+	background-color: #EAEAEA;
 }
 
 .stamp_type_square {
 	border-radius: 0;
 	-webkit-mask-position: 13rem 6rem;
+	border: 0.25rem solid #555;
+	padding: 0.25rem 1rem;
+	-webkit-mask-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/8399/grunge.png');
+	-webkit-mask-size: 944px 604px;
+	mix-blend-mode: multiply;
 }
 
 .stamp_type_rollerDate {
   	border-radius: 0;
 	-webkit-mask-position: 2rem 3rem;
-	
+	border: 0.25rem solid #555;
+	padding: 0.25rem 1rem;
+	-webkit-mask-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/8399/grunge.png');
+	-webkit-mask-size: 944px 604px;
+	mix-blend-mode: multiply;
+}
+
+.stamp_type_stamp {
+  	--r: 9px; /* control the radius of the circles */
+	padding: calc(2*var(--r));
+	filter: grayscale(.4) drop-shadow(0 0 1px #0005) drop-shadow(0 0 1px #0005);
+	background: 
+    	radial-gradient(var(--r),#0000 98%,#fff) round
+      	calc(-1.5*var(--r)) calc(-1.5*var(--r)) /calc(3*var(--r)) calc(3*var(--r)),
+    	linear-gradient(#fff 0 0)  no-repeat
+      	50%/calc(100% - 3*var(--r)) calc(100% - 3*var(--r));
 }
