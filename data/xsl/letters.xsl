@@ -354,4 +354,27 @@
 		</xsl:element>
 	</xsl:template>
 	
+	<xsl:template match="tei:stamp">
+		<xsl:element name="div">
+			<xsl:variable name="position">
+				<xsl:choose>
+					<xsl:when test="@rend='right'">end</xsl:when>
+					<xsl:when test="@rend='center'">center</xsl:when>
+					<xsl:otherwise>start</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<xsl:variable name="stamp-type">
+				<xsl:choose>
+					<xsl:when test="@type"><xsl:value-of select="@type"/></xsl:when>
+					<xsl:otherwise>oneline</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<xsl:attribute name="class" select="concat('row justify-content-', $position)"/>
+			<xsl:element name="span">
+				<xsl:attribute name="class" select="concat('tei_stamp stamp_type_', $stamp-type)"/>
+				<xsl:apply-templates/>
+			</xsl:element>
+		</xsl:element>
+	</xsl:template>
+	
 </xsl:stylesheet>
