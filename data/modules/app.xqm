@@ -36,6 +36,7 @@ import module namespace str="http://xquery.weber-gesamtausgabe.de/modules/str" a
 import module namespace app-shared="http://xquery.weber-gesamtausgabe.de/modules/app-shared" at "xmldb:exist:///db/apps/WeGA-WebApp-lib/xquery/app-shared.xqm";
 import module namespace date="http://xquery.weber-gesamtausgabe.de/modules/date" at "xmldb:exist:///db/apps/WeGA-WebApp-lib/xquery/date.xqm";
 import module namespace wega-util-shared="http://xquery.weber-gesamtausgabe.de/modules/wega-util-shared" at "xmldb:exist:///db/apps/WeGA-WebApp-lib/xquery/wega-util-shared.xqm";
+import module namespace hwh-util="http://henze-digital.zenmem.de/modules/hwh-util" at "hwh-util.xqm";
 
 (:
  : ****************************
@@ -900,7 +901,7 @@ declare
         return
         map {
             'ids' : $model?doc//mei:altId[not(@type=('gnd', 'wikidata', 'dracor.einakter'))],
-            'relatorGrps' : $relatorsGrouped,
+            'relatorGrps' : hwh-util:ordering-relators($relatorsGrouped),
             'workType' : $workType,
             'workTypeLabel' : if($workType) then(lang:get-language-string($workType, config:guess-language(()))) else(),
             'titles' : $print-titles($model?doc, false()),
@@ -1031,7 +1032,7 @@ declare
         return
         map {
             'ids' : $model?doc//tei:biblStruct,
-            'relatorGrps' : $relatorsGrouped,
+            'relatorGrps' : hwh-util:ordering-relators($relatorsGrouped),
             'biblioType' : $biblioType,
             'biblioTypeLabel' : $biblioTypeLabel,
             'authors' : $print-authors($model?doc, false()),
@@ -2238,7 +2239,7 @@ declare
                 if(config:is-person($model?parent-docID)) then controller:create-url-for-doc-in-context($model?result-page-entry, $lang, $model?parent-docID)
                 else controller:create-url-for-doc($model('result-page-entry'), $lang),
             'docType' : config:get-doctype-by-id($model('result-page-entry')/root()/*/data(@xml:id)),
-            'relatorGrps' : $relatorsGrouped,
+            'relatorGrps' : hwh-util:ordering-relators($relatorsGrouped),
             'biblioType' : $biblioType,
             'biblioTypeLabel' : $biblioTypeLabel,
             'workType' : $workType,
