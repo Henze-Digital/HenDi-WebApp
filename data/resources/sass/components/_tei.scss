@@ -385,3 +385,37 @@ li.listSubTitle {
     box-shadow: 6px 4px 5px -2px rgba(0,0,0,0.56);
     background: #fffff0;
 }
+
+.tei_stamp {
+	transform: rotate(-2deg);
+	color: #555;
+/*	font-size: 3rem;*/
+	font-weight: 700;
+	border: 0.25rem solid #555;
+	display: inline-block;
+	padding: 0.25rem 1rem;
+	border-radius: 1rem;
+	font-family: 'Courier';
+	-webkit-mask-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/8399/grunge.png');
+	-webkit-mask-size: 944px 604px;
+	mix-blend-mode: multiply;
+}
+
+.stamp_type_oneline {
+	/* same as .tei_stamp (no modifications) */
+}
+
+.stamp_type_round {
+	/* To be done! */
+}
+
+.stamp_type_square {
+	border-radius: 0;
+	-webkit-mask-position: 13rem 6rem;
+}
+
+.stamp_type_rollerDate {
+  	border-radius: 0;
+	-webkit-mask-position: 2rem 3rem;
+	
+}
