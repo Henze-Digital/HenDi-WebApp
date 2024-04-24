@@ -2684,19 +2684,17 @@ let $entries := for $letter at $n in $collPostals
 			        let $needsHeight := $letter//tei:objectDesc//tei:dimensions/tei:height/@quantity/number() = 0
 			        let $needsWidth := $letter//tei:objectDesc//tei:dimensions/tei:width/@quantity/number() = 0
 			        let $needsDimensions := $needsHeight = true() or $needsWidth = true()
-			        let $message := if($hasComments and not($needsDimensions))
-			        				then(<i><span style="color: green;">Enthält Kommentare</span></i>)
-			        				else if (not($hasComments) and $needsDimensions)
-			        				then (<i><span style="color: red;">Abmessungen fehlen</span></i>)
-			        				else (<i><span style="color: green;">Enthält Kommentare</span>, <span style="color: red;">Abmessungen fehlen</span></i>)
-			        				
+			        let $messageComments := <i><span style="color: green;">Enthält Kommentare</span></i>
+			        let $messageDimensions := <i><span style="color: red;">Abmessungen fehlen</span></i>
+			        let $message := (if($hasComments) then($messageComments) else(),if($needsDimensions) then ($messageDimensions) else())
+			        where exists($message)
 			        return
 			            <tr id="{$letterID}" date="{$letterSentDate}" sender="{$letterSentPers}" xmlns="http://www.w3.org/1999/xhtml" style="vertical-align: top; border-bottom: dashed 1px;">
 			                  <td><a href="/{$letterID}">{$letterID}</a></td>
 			                  <td>{$letterSentDate}</td>
 			                  <td>{$letterSentPers}</td>
 			                  <td>{if($hasComments)
-			                       then($message, <ul>{for $comment in $hasComments return <li>{string($comment)}</li>}</ul>)
+			                       then($message, <ul style="list-style-type: square;">{for $comment in $hasComments return <li>{string($comment)}</li>}</ul>)
 			                       else($message)
 			                  }</td>
 			            </tr>
