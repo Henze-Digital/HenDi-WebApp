@@ -188,9 +188,15 @@ declare 										(: ACHTUNG: FUNKTIONIERT NUR FÜR TEI !!! :)
         
         return
         	element {'span'} {
-        		for $each at $n in $authorElems
-        			return
-        				($each , if($n = count($authorElems)) then() else(' / '))
+        		let $names2Show := 3
+        		let $authorElemsN := count($authorElems)
+        		let $names: = for $each at $n in $authorElems
+                        		  where $n lt ($names2Show + 1)
+                        		  return
+                        		      ($each , if($n = $names2Show or $n = $authorElemsN) then() else(' / '))
+        		let $etAl := if($authorElemsN gt $names2Show) then(' / et al.') else()
+        		return
+        		($names, $etAl)
             }
 };
 
