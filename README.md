@@ -11,18 +11,22 @@ This repo contains WeGA-WebApp specifics for the Henze Digital Project. The buil
 
 ## How to do a release
 
+1. Do the release actions for HenDi-ODD
+1. Continue here.
+
 ### release workflow on gitlab
 - check issues and milestone
 - close milestone
 - update submodules
 - create a release branch
-- update CITATION.cff
+- update file build.properties
 - check out and build the app
 - test the app
 - set tag `v\d\.\d\.\d` (if everything is as expected)
 - merge into main
 - merge main into develop
 - create release based on the tag
+- bump version number
 
 ### release workflow on github
 - go to the mirrored repo on github.com
