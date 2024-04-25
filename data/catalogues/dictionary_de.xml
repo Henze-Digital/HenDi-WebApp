@@ -325,6 +325,7 @@
     <entry xml:id="authors">Text von</entry>
     <entry xml:id="editors">Herausgegeben von</entry>
     <entry xml:id="publication">Veröffentlicht</entry>
+    <entry xml:id="publishingPeriod">Erschienen</entry>
     <entry xml:id="pubPlace">Verlagsort</entry>
     <entry xml:id="publisher">Verlag</entry>
     <entry xml:id="guestbookEntry">Gästebucheintrag</entry>
