@@ -336,7 +336,7 @@
 	
 	<target name="zippingForPublishing" depends="hendi-package-files" if="${publishing}">
 		<echo>Creating the xar Package (zipping) for publishing.</echo>
-		<zip destfile="${HenDi-WebApp.basedir}/${hendi.build.dir}/${hendi.project.app}-${hendi.project.version}.xar">
+		<zip destfile="${HenDi-WebApp.basedir}/${hendi.build.dir}/${hendi.project.app}-${hendi.project.version}.zip">
 			<fileset dir="${HenDi-WebApp.basedir}">
 				<include name="**/*.*"/>
 				<include name="data/LICENSE"/>
