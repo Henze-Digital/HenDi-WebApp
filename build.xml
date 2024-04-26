@@ -347,8 +347,7 @@
 				<exclude name=".git*"/>
 				<exclude name="*.dockerignore"/>
 				<exclude name="*.sh"/>
-				<exclude name="resources/sass/**"/>
-				<exclude name="resources/css/styles.css.map"/>
+				<exclude name="*.xpr"/>
 			</fileset>
 		</zip>
 	</target>
