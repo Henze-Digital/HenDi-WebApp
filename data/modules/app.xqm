@@ -159,11 +159,11 @@ declare function app:set-line-wrap($node as node(), $model as map(*)) as element
  : Breadcrumbs 
  : ****************************
 :)
-declare 										(: ACHTUNG: FUNKTIONIERT NUR FÜR TEI !!! :)
+declare
     %templates:default("lang", "en")
-    function app:breadcrumb-person($node as node(), $model as map(*), $lang as xs:string) as element(xhtml:span) {
+    function app:breadcrumb-person($node as node(), $model as map(*), $lang as xs:string) as map(*)? {
         let $file := crud:doc(substring-before($model?('exist:resource'),'.html'))
-        let $fileAuthors := ($file//tei:fileDesc/tei:titleStmt/tei:author[@key], $file//mei:work[1]//mei:persName[@role='cmp'][@codedval])
+        let $fileAuthors := (if($file/tei:biblStruct//tei:author[@key])then($file/tei:biblStruct//tei:author[@key])else($file/tei:biblStruct//tei:editor[@key]), $file//tei:fileDesc/tei:titleStmt/tei:author[@key], $file//mei:work[1]//mei:persName[@role='cmp' or ancestor::mei:composer][@codedval])
         let $authorElems := for $author in $fileAuthors 
 						        let $authorID := $author/(@key|@codedval)
 						        let $anonymusID := config:get-option('anonymusID')
@@ -185,19 +185,23 @@ declare 										(: ACHTUNG: FUNKTIONIERT NUR FÜR TEI !!! :)
 						                if($href) then attribute href {$href} else (),
 						                $name
 						            }
+        where exists($authorElems)
+        let $breadcrumb := element {'span'} {
+                                    		let $names2Show := 3
+                                    		let $authorElemsN := count($authorElems)
+                                    		let $names: = for $each at $n in $authorElems
+                                                    		  where $n lt ($names2Show + 1)
+                                                    		  return
+                                                    		      ($each , if($n = $names2Show or $n = $authorElemsN) then() else(' / '))
+                                    		let $etAl := if($authorElemsN gt $names2Show) then(' / et al.') else()
+                                    		return
+                                    		($names, $etAl)
+                                        }
         
         return
-        	element {'span'} {
-        		let $names2Show := 3
-        		let $authorElemsN := count($authorElems)
-        		let $names: = for $each at $n in $authorElems
-                        		  where $n lt ($names2Show + 1)
-                        		  return
-                        		      ($each , if($n = $names2Show or $n = $authorElemsN) then() else(' / '))
-        		let $etAl := if($authorElemsN gt $names2Show) then(' / et al.') else()
-        		return
-        		($names, $etAl)
-            }
+            map {
+                'breadcrumb-person' : $breadcrumb
+                }
 };
 
 declare

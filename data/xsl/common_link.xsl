@@ -32,7 +32,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="tei:rs" mode="#all">
+    <xsl:template match="tei:rs | tei:name[@type='works']" mode="#all">
         <!--
             Need to distinguish between docTypes with support for single views and those with tooltips only 
         -->
