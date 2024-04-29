@@ -17,9 +17,11 @@
 							<li>
 								<a href="$link/index">Home</a>
 							</li>
-							<li>
-								<a data-template="app:breadcrumb-person">Hans Werner Henze</a>
-							</li>
+							<div data-template="app:breadcrumb-person" data-template-key="breadcrumb-person">
+								<li>
+									<span data-template="app-shared:output" data-template-key="breadcrumb-person">Hans Werner Henze</span>
+								</li>
+							</div>
 							<li>
 								<a data-template="app:breadcrumb-docType">Bibliographie</a>
 							</li>
