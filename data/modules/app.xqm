@@ -163,7 +163,7 @@ declare
     %templates:default("lang", "en")
     function app:breadcrumb-person($node as node(), $model as map(*), $lang as xs:string) as map(*)? {
         let $file := crud:doc(substring-before($model?('exist:resource'),'.html'))
-        let $fileAuthors := (if($file/tei:biblStruct//tei:author[@key])then($file/tei:biblStruct//tei:author[@key])else($file/tei:biblStruct//tei:editor[@key]), $file//tei:fileDesc/tei:titleStmt/tei:author[@key], $file//mei:work[1]//mei:persName[@role='cmp'][@codedval])
+        let $fileAuthors := (if($file/tei:biblStruct//tei:author[@key])then($file/tei:biblStruct//tei:author[@key])else($file/tei:biblStruct//tei:editor[@key]), $file//tei:fileDesc/tei:titleStmt/tei:author[@key], $file//mei:work[1]//mei:persName[@role='cmp' or ancestor::mei:composer][@codedval])
         let $authorElems := for $author in $fileAuthors 
 						        let $authorID := $author/(@key|@codedval)
 						        let $anonymusID := config:get-option('anonymusID')
