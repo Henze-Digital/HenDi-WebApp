@@ -1,6 +1,6 @@
 [submodule "submodules/WeGA-WebApp"]
 	path = submodules/WeGA-WebApp
-	url = https://github.com/Henze-Digital/WeGA-WebApp.git
+	url = https://github.com/Edirom/WeGA-WebApp.git
 	shallow = true
 [submodule "submodules/HenDi-ODD"]
 	path = submodules/HenDi-ODD

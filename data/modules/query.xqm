@@ -294,6 +294,10 @@ declare function query:text-sources($doc as document-node()) as element()* {
                   <tei:repository n="D-B">Staatsbibliothek zu Berlin – Preußischer Kulturbesitz</tei:repository>
                   <tei:idno>Mus. ms. autogr. theor. C. M. v. Weber WFN 1</tei:idno>
                </tei:msIdentifier>
+            <tei:history>
+                  <tei:provenance>bis 1986 in Familienbesitz (seit 1956 bereits als Dauerleihgabe in der Berliner Staatsbibliothek)</tei:provenance>
+                  <tei:acquisition>Umwandlung der Dauerleihgabe in eine Schenkung durch <tei:persName key="A008831">Hans-Jürgen Freiherr von Weber</tei:persName> am 15. November 1986</tei:acquisition>
+               </tei:history>
             </tei:msDesc>
         case 'works' case 'sources' return () (:$model('doc')//mei:sourceDesc:)
         case 'biblio' return $doc/tei:biblStruct

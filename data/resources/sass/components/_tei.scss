@@ -120,7 +120,7 @@ hr.tei_pb-text {
 }
 
 hr.tei_pb-text:before {
-    content: attr(data-content);
+    content: '↓ ' attr(data-content) ' ↓';
     display: inline-block;
     background: #fff;
     font-weight: bold;

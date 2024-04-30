@@ -36,6 +36,7 @@ import module namespace str="http://xquery.weber-gesamtausgabe.de/modules/str" a
 import module namespace app-shared="http://xquery.weber-gesamtausgabe.de/modules/app-shared" at "xmldb:exist:///db/apps/WeGA-WebApp-lib/xquery/app-shared.xqm";
 import module namespace date="http://xquery.weber-gesamtausgabe.de/modules/date" at "xmldb:exist:///db/apps/WeGA-WebApp-lib/xquery/date.xqm";
 import module namespace wega-util-shared="http://xquery.weber-gesamtausgabe.de/modules/wega-util-shared" at "xmldb:exist:///db/apps/WeGA-WebApp-lib/xquery/wega-util-shared.xqm";
+import module namespace hwh-util="http://henze-digital.zenmem.de/modules/hwh-util" at "hwh-util.xqm";
 
 (:
  : ****************************
@@ -158,35 +159,55 @@ declare function app:set-line-wrap($node as node(), $model as map(*)) as element
  : Breadcrumbs 
  : ****************************
 :)
-declare 
+declare
     %templates:default("lang", "en")
-    function app:breadcrumb-person($node as node(), $model as map(*), $lang as xs:string) as element(xhtml:a) {
-        let $authorID := tokenize($model?('exist:path'), '/')[3]
-        let $anonymusID := config:get-option('anonymusID')
-        let $authorElem :=
-            (: NB: there might be multiple anonymous authors :)
-            if ($authorID = $anonymusID) then (query:get-author-element($model?doc)[(count(@key | @codedval) = 0) or ((@key, @codedval) = $anonymusID)])[1]
-            (: NB: there might be multiple occurences of the same person as e.g. composer and lyricist :)
-            else (query:get-author-element($model?doc)[(@key, @codedval) = $authorID])[1]
-        let $href :=
-            if ($authorID = $anonymusID) then ()
-            else controller:create-url-for-doc(crud:doc($authorID), $lang)
-        let $elem := 
-            if($href) then QName('http://www.w3.org/1999/xhtml', 'a')
-            else QName('http://www.w3.org/1999/xhtml', 'span')
-        let $name := wega-util:print-forename-surname-from-nameLike-element($authorElem)
-        return 
-            element {$elem} {
-                $node/@*[not(local-name(.) eq 'href')],
-                if($href) then attribute href {$href} else (),
-                $name
-            }
+    function app:breadcrumb-person($node as node(), $model as map(*), $lang as xs:string) as map(*)? {
+        let $file := crud:doc(substring-before($model?('exist:resource'),'.html'))
+        let $fileAuthors := (if($file/tei:biblStruct//tei:author[@key])then($file/tei:biblStruct//tei:author[@key])else($file/tei:biblStruct//tei:editor[@key]), $file//tei:fileDesc/tei:titleStmt/tei:author[@key], $file//mei:work[1]//mei:persName[@role='cmp' or ancestor::mei:composer][@codedval])
+        let $authorElems := for $author in $fileAuthors 
+						        let $authorID := $author/(@key|@codedval)
+						        let $anonymusID := config:get-option('anonymusID')
+						        let $authorElem :=
+						            (: NB: there might be multiple anonymous authors :)
+						            if ($authorID = $anonymusID) then (query:get-author-element($model?doc)[(count(@key | @codedval) = 0) or ((@key, @codedval) = $anonymusID)])[1]
+						            (: NB: there might be multiple occurences of the same person as e.g. composer and lyricist :)
+						            else (query:get-author-element($model?doc)[(@key, @codedval) = $authorID])[1]
+						        let $href :=
+						            if ($authorID = $anonymusID) then ()
+						            else controller:create-url-for-doc(crud:doc($authorID), $lang)
+						        let $elem := 
+						            if($href) then QName('http://www.w3.org/1999/xhtml', 'a')
+						            else QName('http://www.w3.org/1999/xhtml', 'span')
+						        let $name := wega-util:print-forename-surname-from-nameLike-element($author)
+						        return 
+						            element {$elem} {
+						                $node/@*[not(local-name(.) eq 'href')],
+						                if($href) then attribute href {$href} else (),
+						                $name
+						            }
+        where exists($authorElems)
+        let $breadcrumb := element {'span'} {
+                                    		let $names2Show := 3
+                                    		let $authorElemsN := count($authorElems)
+                                    		let $names: = for $each at $n in $authorElems
+                                                    		  where $n lt ($names2Show + 1)
+                                                    		  return
+                                                    		      ($each , if($n = $names2Show or $n = $authorElemsN) then() else(' / '))
+                                    		let $etAl := if($authorElemsN gt $names2Show) then(' / et al.') else()
+                                    		return
+                                    		($names, $etAl)
+                                        }
+        
+        return
+            map {
+                'breadcrumb-person' : $breadcrumb
+                }
 };
 
 declare
     %templates:default("lang", "en")
     function app:breadcrumb-docType($node as node(), $model as map(*), $lang as xs:string) as element(xhtml:a) {
-        let $href := config:link-to-current-app(functx:substring-before-last($model('$exist:path'), '/'))
+        let $href := config:link-to-current-app(functx:substring-before-last($model('exist:path'), '/'))
         let $display-name := replace(xmldb:decode(functx:substring-after-last($href, '/')), '_', ' ')
         let $elem := 
             if($href and not(contains($href, config:get-option('anonymusID')))) then QName('http://www.w3.org/1999/xhtml', 'a')
@@ -242,7 +263,7 @@ declare
 declare 
     %templates:default("lang", "en")
     function app:breadcrumb-var($node as node(), $model as map(*), $lang as xs:string) as element() {
-        let $pathTokens := tokenize($model?('$exist:path'), '/')
+        let $pathTokens := tokenize($model?('exist:path'), '/')
         return 
             element {node-name($node)} {
                 $node/@*,
@@ -337,7 +358,7 @@ declare
 declare
     %templates:default("lang", "en")
     function app:facsimile-tab($node as node(), $model as map(*), $lang as xs:string) as element() {
-        if(count($model?localFacsimiles | $model?externalIIIFManifestFacsimiles) gt 0) then 
+        if(count($model?IIIFImagesMap) gt 0) then 
             element {node-name($node)} {
                 $node/@*,
                 lang:get-language-string(normalize-space($node), $lang)
@@ -890,7 +911,7 @@ declare
         return
         map {
             'ids' : $model?doc//mei:altId[not(@type=('gnd', 'wikidata', 'dracor.einakter'))],
-            'relatorGrps' : $relatorsGrouped,
+            'relatorGrps' : hwh-util:ordering-relators($relatorsGrouped),
             'workType' : $workType,
             'workTypeLabel' : if($workType) then(lang:get-language-string($workType, config:guess-language(()))) else(),
             'titles' : $print-titles($model?doc, false()),
@@ -962,6 +983,8 @@ declare
     %templates:wrap
     function app:biblio-basic-data($node as node(), $model as map(*)) as map(*) {
         let $lang := config:guess-language(())
+        let $biblioType := $model?doc/tei:biblStruct/@type/data()
+        let $biblioTypeLabel := if($biblioType) then(lang:get-language-string($biblioType, $lang)) else()
         let $print-authors := function($doc as document-node(), $alt as xs:boolean) {
             for $author in ($doc//tei:biblStruct/node()[1]/tei:author)
             return <span xmlns="http://www.w3.org/1999/xhtml">{
@@ -974,12 +997,14 @@ declare
         }
         let $publication := function($doc as document-node()) {
             let $dateFormat := function($lang as xs:string) { 
-                if ($lang = 'de') then '[D]. [MNn] [Y]'
-                else '[MNn] [D], [Y]'
+                if($biblioType = 'journal')
+                then('[Y]')
+                else(if ($lang = 'de') then '[D]. [MNn] [Y]'
+                else '[MNn] [D], [Y]')
             }
             return
                 for $pubDate in ($doc//tei:biblStruct/tei:*/tei:imprint/tei:date)
-                    return <span xmlns="http://www.w3.org/1999/xhtml">{date:printDate($pubDate, $lang, lang:get-language-string#3, $dateFormat)}</span>
+                    return <span xmlns="http://www.w3.org/1999/xhtml">{date:printDate($pubDate, $lang, lang:get-language-string#3, $dateFormat) => replace('vom ','') => replace('from ','')}</span>
         }
         let $pubPlace := function($doc as document-node(), $alt as xs:boolean) {
             for $pubPlace in ($doc//tei:biblStruct/tei:*/tei:imprint/tei:pubPlace)
@@ -991,8 +1016,6 @@ declare
                     wega-util:transform($segment, doc(concat($config:xsl-collection-path, '/works.xsl')), config:get-xsl-params(()))
             }</span>
         }
-        let $biblioType := $model?doc/tei:biblStruct/@type/data()
-        let $biblioTypeLabel := if($biblioType) then(lang:get-language-string($biblioType, $lang)) else()
         let $relators := query:relators($model?doc)[self::tei:*/@role[not(. = ('edt'))] or self::tei:author]
         let $relatorsGrouped := for $each in functx:distinct-deep($relators)
                                     let $role := $each/@role/string()
@@ -1021,7 +1044,7 @@ declare
         return
         map {
             'ids' : $model?doc//tei:biblStruct,
-            'relatorGrps' : $relatorsGrouped,
+            'relatorGrps' : hwh-util:ordering-relators($relatorsGrouped),
             'biblioType' : $biblioType,
             'biblioTypeLabel' : $biblioTypeLabel,
             'authors' : $print-authors($model?doc, false()),
@@ -1131,11 +1154,10 @@ declare
             else map {}
         return
             map { 'beaconLinks': 
-                    for $i in map:keys($beaconMap)
-                    order by $beaconMap($i)[2]
-                    return 
-                        (: replacement in @href for invalid links from www.sbn.it :)
-                        <a xmlns="http://www.w3.org/1999/xhtml" title="{$i}" href="{replace($beaconMap($i)[1], '\\', '%5C')}">{$beaconMap($i)[2]}</a>
+                    for $i in $beaconMap?*
+                    order by $i?text                    => lower-case() collation "?lang=de;strength=primary"
+ return 
+                        <a xmlns="http://www.w3.org/1999/xhtml" title="{map:keys($i)}" href="{$i?link}">{$i?text}</a>
             }
 };
 
@@ -1327,7 +1349,7 @@ declare
     %templates:default("lang", "en")
     %templates:default("popover", "false")
     function app:preview-editors-name($node as node(), $model as map(*), $lang as xs:string, $popover as xs:string) as element() {
-        let $key := $model('editors')
+        let $key := $model('editors')[1] (: Quick fix, because multiple editor names are not allowed in $doc2keyAvailable :)
         let $myPopover := wega-util-shared:semantic-boolean($popover)
         let $doc2keyAvailable := crud:docAvailable($key)
         return
@@ -1485,8 +1507,12 @@ declare
     function app:dnb($node as node(), $model as map(*), $lang as xs:string) as map(*) {
         let $gnd := query:get-gnd($model('doc'))
         let $dnbContent := er:grabExternalResource('dnb', $gnd, ())
-        let $dnbOccupations := ($dnbContent//rdf:RDF/rdf:Description/gndo:professionOrOccupation ! er:resolve-rdf-resource(.))//gndo:preferredNameForTheSubjectHeading/str:normalize-space(.)
-        let $subjectHeadings := (($dnbContent//rdf:RDF/rdf:Description/gndo:broaderTermInstantial | $dnbContent//rdf:RDF/rdf:Description/gndo:formOfWorkAndExpression) ! er:resolve-rdf-resource(.))//gndo:preferredNameForTheSubjectHeading/str:normalize-space(.)
+        let $dnbOccupations := 
+            try { ($dnbContent//rdf:RDF/rdf:Description/gndo:professionOrOccupation//rdf:*[starts-with(@rdf:resource, 'https://d-nb.info')] ! er:resolve-rdf-resource(.))//gndo:preferredNameForTheSubjectHeading/str:normalize-space(.) }
+        catch * { wega-util:log-to-file('warn', string-join(($err:code, $err:description), ' ;; ')) }
+        let $subjectHeadings := 
+            try { (($dnbContent//rdf:RDF/rdf:Description/gndo:broaderTermInstantial | $dnbContent//rdf:RDF/rdf:Description/gndo:formOfWorkAndExpression) ! er:resolve-rdf-resource(.))//gndo:preferredNameForTheSubjectHeading/str:normalize-space(.) }
+        catch * { wega-util:log-to-file('warn', string-join(($err:code, $err:description), ' ;; ')) }
         return
             map {
                 'docType' : config:get-doctype-by-id($model?docID),
@@ -1610,11 +1636,15 @@ declare
     %templates:wrap
     function app:doc-details($node as node(), $model as map(*)) as map(*) {
         let $facs := query:facsimile($model?doc)
-        return
+        let            $localFacsimiles :=                $facs[tei:graphic][not(@sameAs)] except $facs[tei:graphic[starts-with(@url, 'http')]]
+                let $externalIIIFManifestFacsimiles := $facs[@sameAs]
+        let $IIIFImagesMap := ($localFacsimiles | $externalIIIFManifestFacsimiles) ! app:create-IIIFImagesMap(., $model)
+                return
             map {
                 'facsimile' : $facs,
-                'localFacsimiles' : $facs[tei:graphic][not(@sameAs)] except $facs[tei:graphic[starts-with(@url, 'http')]],
-                'externalIIIFManifestFacsimiles' : $facs[@sameAs],
+                'localFacsimiles' : $localFacsimiles,
+                'externalIIIFManifestFacsimiles' : $externalIIIFManifestFacsimiles,
+                'IIIFImagesMap': $IIIFImagesMap,
                 'hasCreation' : exists($model?doc//tei:creation),
                 'xml-download-url' : replace(controller:create-url-for-doc($model('doc'), $model('lang')), '\.html', '.xml'),
                 'thematicCommentaries' : distinct-values($model('doc')//tei:note[@type='thematicCom']/@target/tokenize(., '\s+')),
@@ -1622,9 +1652,32 @@ declare
             }
 };
 
+(:~
+ : Helper function for app:doc-details#2
+ : This function creates a map object from a tei:facsimile element and provides the keys "url" and "canvasStartIndex"
+ : iff the tei:facsimile element points to an IIIF manifest  
+ :)
+declare    %private    function app:create-IIIFImagesMap($facsimile as element(tei:facsimile), $model as map(*)) as map(*) {
+        let $url :=
+ if($facsimile/@sameAs) then $facsimile/@sameAs => normalize-space()
+        else controller:iiif-manifest-id($facsimile)
+    let $canvasStartIndex :=
+        if($model?doc/tei:ab/@facs)
+        (: special case for diaries; need to subtract -1 since Javascript starts counting with 0 and the tei:surfaces are starting at @n=1 :)
+        then crud:data-collection('diaries')/id($model?doc/tei:ab/@facs => substring(2))/parent::tei:surface/@n => number() - 1
+        else if($facsimile/tei:surface/@n)
+        then $facsimile/tei:surface/@n
+        else 0
+    return
+        map {
+            "url": $url,
+ "canvasStartIndex": $canvasStartIndex
+ }
+};
+
 declare
-    %templates:wrap
-    function app:document-title($node as node(), $model as map(*)) as item()* {
+ %templates:wrap
+ function app:document-title($node as node(), $model as map(*)) as item()* {
         let $docID := $model('doc')/*/data(@xml:id) (: need to check because of index.html :)
         let $title := wdt:lookup(config:get-doctype-by-id($docID), $model('doc'))?title('html') 
         return
@@ -1684,7 +1737,7 @@ declare
          let $foot := 
             if(config:is-news($docID)) then app:get-news-foot($doc, $lang)
             else ()
-         let $isEnclosureAlert := if($doc//tei:relation[@name='isEnclosureOf']/@key)
+         let $isRelatedAlert := if($doc//tei:relation[@name='isEnclosureOf']/@key)
                                   then(element xhtml:div {
                                     attribute class {'alert alert-primary text-center'},
                              	        lang:get-language-string('isEnclosureOf',$lang) || ' ',
@@ -1692,10 +1745,18 @@ declare
                              	            app:createDocLink(collection(config:get-option('dataCollectionPath'))//tei:TEI[@xml:id=$doc//tei:relation[@name='isEnclosureOf']/@key]/root(),$doc//tei:relation[@name='isEnclosureOf']/@key/string(),$lang,())
                              	        }
                                  	 })
-                             	 else()
+                             	 else if ($doc//tei:relation[@name='isEnvelopeOf']/@key)
+                                  then(element xhtml:div {
+                                    attribute class {'alert alert-primary text-center'},
+                             	        lang:get-language-string('isEnvelopeOf',$lang) || ' ',
+                             	        element xhtml:b {
+                             	            app:createDocLink(collection(config:get-option('dataCollectionPath'))//tei:TEI[@xml:id=$doc//tei:relation[@name='isEnvelopeOf']/@key]/root(),$doc//tei:relation[@name='isEnvelopeOf']/@key/string(),$lang,())
+                             	        }
+                                 	 })
+                             	 else ()
          return 
             map {
-                'isEnclosureAlert' : $isEnclosureAlert,
+                'isRelatedAlert' : $isRelatedAlert,
                 'transcription' : (wega-util:remove-elements-by-class($body, 'apparatus'),$foot), 
                 'apparatus' : $body/descendant-or-self::*[@class='apparatus']
             }
@@ -1821,6 +1882,8 @@ declare
 
 (:~
  : Fetch all (external) facsimiles for a text source
+ : that are not provided via IIIF, thus will be output 
+ : as links in the editorial section 
  :)
 declare 
     %templates:wrap
@@ -1939,13 +2002,16 @@ declare
             'incipit' : query:incipit($model('doc')),
             'summary' : query:summary($model('doc'), $lang),
             'generalRemark' : query:generalRemark($model('doc')),
-            
             'authors' : if (count(query:get-author-element($model('doc'))) > 1 ) then
                 for $author in query:get-author-element($model('doc')) return app:printCorrespondentName($author,$lang,'fs') else (),
             'editors' : if (count(query:get-editor-element($model('doc'))) > 0 ) then
                 for $editor in query:get-editor-element($model('doc')) return app:printCorrespondentName($editor,$lang,'fs') else (),
-            'respStmts' : switch($model('docType'))
-                case 'diaries' return <tei:respStmt><tei:resp>Übertragung</tei:resp><tei:name>Dagmar Beck</tei:name></tei:respStmt>
+            'respStmts': 
+                switch($model('docType'))
+                case 'diaries' return (
+                    <tei:respStmt><tei:resp>Übertragung</tei:resp><tei:name>Dagmar Beck</tei:name></tei:respStmt>,
+                    <tei:respStmt><tei:resp>Kommentar</tei:resp><tei:name>Dagmar Beck</tei:name><tei:name>Frank Ziegler</tei:name></tei:respStmt>
+                    )
                 default return $model('doc')//tei:respStmt[parent::tei:titleStmt]
         }
 };
@@ -2048,7 +2114,8 @@ declare
             attribute data-selection-when {"before-after"},
             attribute data-selection-span {"median-before-after"},
             attribute data-result-max {"4"},
-            attribute data-exclude-edition {"#HENDI"}            
+            attribute data-exclude-edition {"#" || config:get-option('cmifID')},
+            attribute data-language {$lang}            
 }
 };
 
@@ -2092,12 +2159,14 @@ declare %private function app:get-news-foot($doc as document-node(), $lang as xs
 declare function app:init-facsimile($node as node(), $model as map(*)) as element(xhtml:div) {
     element {node-name($node)} {
         $node/@*[not(name()=('data-originalMaxSize', 'data-url'))],
-        if(count($model?localFacsimiles | $model?externalIIIFManifestFacsimiles) gt 0) then (
+        if(count($model?IIIFImagesMap) gt 0) 
+ then (
             attribute {'data-url'} { normalize-space(
-                string-join($model?externalIIIFManifestFacsimiles/@sameAs, ' ') ||
-                ' ' ||
-                string-join(($model?localFacsimiles except $model?externalIIIFManifestFacsimiles) ! controller:iiif-manifest-id(.), ' ') 
-            )}
+                string-join($model?IIIFImagesMap?url, ' ') 
+                )},
+ attribute {'data-canvasindex'} {normalize-space(
+                string-join($model?IIIFImagesMap?canvasStartIndex, ' ') 
+            )} 
         )
         else ()
     }
@@ -2182,7 +2251,7 @@ declare
                 if(config:is-person($model?parent-docID)) then controller:create-url-for-doc-in-context($model?result-page-entry, $lang, $model?parent-docID)
                 else controller:create-url-for-doc($model('result-page-entry'), $lang),
             'docType' : config:get-doctype-by-id($model('result-page-entry')/root()/*/data(@xml:id)),
-            'relatorGrps' : $relatorsGrouped,
+            'relatorGrps' : hwh-util:ordering-relators($relatorsGrouped),
             'biblioType' : $biblioType,
             'biblioTypeLabel' : $biblioTypeLabel,
             'workType' : $workType,
@@ -2299,6 +2368,7 @@ declare
                 }
             else ()
 };
+
 
 declare 
     %templates:wrap
@@ -2627,19 +2697,17 @@ let $entries := for $letter at $n in $collPostals
 			        let $needsHeight := $letter//tei:objectDesc//tei:dimensions/tei:height/@quantity/number() = 0
 			        let $needsWidth := $letter//tei:objectDesc//tei:dimensions/tei:width/@quantity/number() = 0
 			        let $needsDimensions := $needsHeight = true() or $needsWidth = true()
-			        let $message := if($hasComments and not($needsDimensions))
-			        				then(<i><span style="color: green;">Enthält Kommentare</span></i>)
-			        				else if (not($hasComments) and $needsDimensions)
-			        				then (<i><span style="color: red;">Abmessungen fehlen</span></i>)
-			        				else (<i><span style="color: green;">Enthält Kommentare</span>, <span style="color: red;">Abmessungen fehlen</span></i>)
-			        				
+			        let $messageComments := <i><span style="color: green;">Enthält Kommentare</span></i>
+			        let $messageDimensions := <i><span style="color: red;">Abmessungen fehlen</span></i>
+			        let $message := (if($hasComments) then($messageComments) else(),if($needsDimensions) then ($messageDimensions) else())
+			        where exists($message)
 			        return
 			            <tr id="{$letterID}" date="{$letterSentDate}" sender="{$letterSentPers}" xmlns="http://www.w3.org/1999/xhtml" style="vertical-align: top; border-bottom: dashed 1px;">
 			                  <td><a href="/{$letterID}">{$letterID}</a></td>
 			                  <td>{$letterSentDate}</td>
 			                  <td>{$letterSentPers}</td>
 			                  <td>{if($hasComments)
-			                       then($message, <ul>{for $comment in $hasComments return <li>{string($comment)}</li>}</ul>)
+			                       then($message, <ul style="list-style-type: square;">{for $comment in $hasComments return <li>{string($comment)}</li>}</ul>)
 			                       else($message)
 			                  }</td>
 			            </tr>
@@ -2715,7 +2783,7 @@ declare function app:translation($node as node(), $model as map(*))  {
                     }
     return
         <div class="tab-pane fade" id="translation">
-          {(wega-util:remove-elements-by-class($body, 'apparatus'),$foot)}
+          {(wega-util:remove-elements-by-class(wega-util:remove-elements-by-class($body, 'apparatus'), 'noteMarker'),$foot)}
         </div>
     
 };
@@ -2759,7 +2827,7 @@ declare function app:enclosure($node as node(), $model as map(*))  {
 	               wega-util:transform($textRoot, $xslt1, $xslParams))
 	    return
 	        <div class="tab-pane fade" id="enclosure-{$z}">
-	          {wega-util:remove-elements-by-class($body, 'apparatus')}
+	          {wega-util:remove-elements-by-class(wega-util:remove-elements-by-class($body, 'apparatus'), 'noteMarker')}
 	        </div>
 };
 
@@ -2784,10 +2852,18 @@ declare function app:envelope($node as node(), $model as map(*))  {
 	            element xhtml:p {
 	                    attribute class {'notAvailable'}
 	            }
-	         else (wega-util:transform($textRoot, $xslt1, $xslParams))
+	         else (
+	         	element xhtml:div {
+	                attribute class {'alert alert-primary text-center'},
+	         	        lang:get-language-string('previewDocument',$lang) || ' ',
+	         	        element xhtml:b {
+	         	            app:createDocLink($envelope,lang:get-language-string('switchEnvelopeView',$lang),$lang,())
+	         	        }
+    	         	 },
+             	 wega-util:transform($textRoot, $xslt1, $xslParams))
 	    return
 	        <div class="tab-pane fade" id="envelope-{$z}">
-	          {wega-util:remove-elements-by-class($body, 'apparatus')}
+	          {wega-util:remove-elements-by-class(wega-util:remove-elements-by-class($body, 'apparatus'), 'noteMarker')}
 	        </div>
 };
 

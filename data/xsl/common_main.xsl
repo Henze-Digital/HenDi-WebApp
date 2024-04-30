@@ -549,6 +549,9 @@
     <xsl:template match="tei:pb" priority="0.5">
         <xsl:variable name="pbTitleText">
             <xsl:choose>
+                <xsl:when test="matches(@n, '\d(r|v)')">
+                    <xsl:value-of select="replace(replace(@n,'r',' recto'),'v',' verso')"/>
+                </xsl:when>
                 <xsl:when test="@n">
                     <xsl:value-of select="concat(wega:getLanguageString('pageBreak', $lang), ' (', wega:getLanguageString('pp', $lang), ' ', @n, ')')"/>
                 </xsl:when>
@@ -1127,7 +1130,9 @@
             </xsl:choose>
         </xsl:variable>
         <xsl:element name="i">
-            <xsl:attribute name="class"><xsl:value-of select="concat('fa-', $fontweight,' fa-',.)"/></xsl:attribute>
+            <xsl:attribute name="class">
+                <xsl:value-of select="concat('fa-', $fontweight,' fa-',.)"/>
+            </xsl:attribute>
         </xsl:element>
     </xsl:template>
     

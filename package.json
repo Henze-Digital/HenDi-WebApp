@@ -1,6 +1,6 @@
 {
   "name": "HenDi-WebApp",
-  "version": "2.0.0",
+  "version": "3.1.0",
   "description": "Web application for the digital edition of the correspondance of Hans Werner Henze",
   "main": "controller.xql",
   "repository": "https://git.uni-paderborn.de/vife/henze-digital/hwh-webapp.git",
@@ -16,7 +16,7 @@
     "bootstrap-hover-dropdown": "^2.2.1",
     "bootstrap-remote-data": "peterstadler/bootstrap-remote-data#master",
     "bravura": "https://github.com/steinbergmedia/bravura",
-    "csLink": "correspSearch/csLink",
+    "csLink": "correspSearch/csLink#v2.0.0",
     "datatables.net": "^1.11.3",
     "datatables.net-bs4": "^1.11.3",
     "datatables.net-buttons": "^2.1.1",
@@ -36,6 +36,7 @@
     "swagger-ui-dist": "^4.1.3"
   },
   "devDependencies": {
+    "@redocly/cli": "^1.2.0",
     "frontend-dependencies": "^0.2.1",
     "minify": "^6.0.1",
     "prettydiff": "^99.0.1",
@@ -55,6 +56,7 @@
       "bootstrap/{build,dist,js,scss}",
       "bravura",
       "csLink/dist",
+      "csLink/static",
       "datatables.net",
       "datatables.net-bs4",
       "datatables.net-buttons",

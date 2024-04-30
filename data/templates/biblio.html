@@ -17,9 +17,11 @@
 							<li>
 								<a href="$link/index">Home</a>
 							</li>
-							<li>
-								<a data-template="app:breadcrumb-person">Hans Werner Henze</a>
-							</li>
+							<div data-template="app:breadcrumb-person" data-template-key="breadcrumb-person">
+								<li>
+									<span data-template="app-shared:output" data-template-key="breadcrumb-person">Hans Werner Henze</span>
+								</li>
+							</div>
 							<li>
 								<a data-template="app:breadcrumb-docType">Bibliographie</a>
 							</li>
@@ -84,7 +86,9 @@
 				</ol>
 				<ol class="media" data-template="app-shared:each" data-template-from="publication" data-template-to="title">
 					<li>
-						<strong data-template="lang:translate">publication</strong>: <span data-template="app-shared:output" data-template-key="title">Jahr</span>
+						<span data-template="app-shared:if-matches" data-template-key="biblioType" data-template-value="journal"><strong data-template="lang:translate">publishingPeriod</strong>: </span>
+						<span data-template="app-shared:if-not-matches" data-template-key="biblioType" data-template-value="journal"><strong data-template="lang:translate">publication</strong>: </span>
+						<span data-template="app-shared:output" data-template-key="title">Jahr</span>
 					</li>
 				</ol>
 				<ol class="media" data-template="app-shared:each" data-template-from="pubPlace" data-template-to="title">

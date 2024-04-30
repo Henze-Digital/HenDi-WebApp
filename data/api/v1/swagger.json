@@ -139,7 +139,7 @@
                         "in": "query",
                         "description": "The min date to search for",
                         "type": "string",
-                        "default": "1943-06-27",
+                        "default": "1948-04-09",
                         "format": "date",
                         "required": true
                     },

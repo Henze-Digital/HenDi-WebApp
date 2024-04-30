@@ -1,7 +1,7 @@
 <xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:functx="http://www.functx.com" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" version="2.0">
 	<xsl:output encoding="UTF-8" method="html" omit-xml-declaration="yes" indent="no"/>
 	<xsl:strip-space elements="*"/>
-	<xsl:preserve-space elements="tei:q tei:quote tei:item tei:cell tei:p tei:dateline tei:closer tei:opener tei:hi tei:addrLine tei:settlement tei:persName tei:rs tei:name tei:placeName tei:country tei:district tei:bloc tei:seg tei:l tei:head tei:salute tei:date tei:subst tei:add tei:orgName tei:lem tei:rdg tei:provenance tei:acquisition tei:damage tei:bibl"/>
+	<xsl:preserve-space elements="tei:q tei:quote tei:item tei:cell tei:p tei:head tei:dateline tei:closer tei:opener tei:hi tei:addrLine tei:settlement tei:persName tei:rs tei:name tei:placeName tei:country tei:district tei:bloc tei:seg tei:l tei:head tei:salute tei:date tei:subst tei:add tei:orgName tei:lem tei:rdg tei:provenance tei:acquisition tei:damage tei:bibl"/>
 	<xsl:include href="common_link.xsl"/>
 	<xsl:include href="common_main.xsl"/>
 	<xsl:include href="apparatus.xsl"/>
@@ -13,6 +13,9 @@
 	<xsl:template match="tei:body">
 		<xsl:element name="div">
 			<xsl:attribute name="class" select="'teiLetter_body'"/>
+			<xsl:if test="ancestor::tei:text/@type='letter'">
+				<xsl:attribute name="style" select="'display: inline-grid; min-width: 80%;'"/>
+			</xsl:if>
 			<xsl:choose>
 				<xsl:when test="parent::tei:text/@type='envelope'">
 					<xsl:element name="h4">
@@ -50,7 +53,9 @@
 			<xsl:attribute name="class" select="'row justify-content-center'"/>
 			<xsl:if test="ancestor::tei:text/@type = 'telegram'">
 			<xsl:choose>
-			    <xsl:when test="@rend='nobox'"><xsl:attribute name="style" select="'border: none;'"/></xsl:when>
+			    <xsl:when test="@rend='nobox'">
+                    <xsl:attribute name="style" select="'border: none;'"/>
+                </xsl:when>
 			    <xsl:otherwise>
 			        <xsl:attribute name="style" select="'border: solid;'"/>
 			    </xsl:otherwise>
@@ -228,7 +233,7 @@
 		<xsl:variable name="fw-classes-bold" select="'tei_fw tei_fw_smaller tei_hi_bold'"/>
 		<xsl:variable name="fw-classes-boxed" select="'tei_fw border-top border-bottom'"/>
 		<xsl:choose>
-			<xsl:when test="ancestor::tei:div[@type='row'] or @type='pageNum'">
+			<xsl:when test="ancestor::tei:div[@type='row'] or @type='pageNum' or ancestor::tei:text[@type='envelope']">
 				<xsl:element name="p">
 					<xsl:attribute name="class">
 						<xsl:choose>
@@ -318,14 +323,24 @@
 	</xsl:template>
 	
 	<xsl:template match="tei:p">
+		<xsl:variable name="p-rend">
+			<xsl:if test="@rend">
+				<xsl:value-of select="concat('textAlign-',@rend)"/>
+			</xsl:if>
+		</xsl:variable>
+		<xsl:variable name="p-type-strip">
+			<xsl:if test="@type='strip'">
+				<xsl:text>tei_p_strip</xsl:text>
+			</xsl:if>
+		</xsl:variable>
+		<xsl:variable name="inlineEnd">
+			<xsl:if test="exists(following-sibling::element()[1][self::tei:closer[@rend='inline']])">
+				<xsl:text>inlineEnd</xsl:text>
+			</xsl:if>
+		</xsl:variable>
 		<xsl:element name="p">
 			<xsl:attribute name="class">
-				<xsl:if test="@rend">
-					<xsl:value-of select="concat('textAlign-',@rend)"/>
-				</xsl:if>
-				<xsl:if test="@type='strip'">
-					<xsl:value-of select="' tei_p_strip'"/>
-				</xsl:if>
+				<xsl:value-of select="string-join(($p-rend, $p-type-strip, $inlineEnd),' ')"/>
 			</xsl:attribute>
 			<xsl:apply-templates/>
 		</xsl:element>
@@ -336,6 +351,37 @@
 			<xsl:for-each select="1 to @quantity">
 				<span class="tei_indent-space"/>
 			</xsl:for-each>
+		</xsl:element>
+	</xsl:template>
+	
+	<xsl:template match="tei:head[not(@type='sub')][parent::tei:div]">
+		<xsl:element name="{concat('h', count(ancestor::tei:div) +1)}">
+			<xsl:attribute name="id">
+				<xsl:choose>
+					<xsl:when test="@xml:id">
+						<xsl:value-of select="@xml:id"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="generate-id()"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
+			<xsl:apply-templates/>
+		</xsl:element>
+	</xsl:template>
+	
+	<xsl:template match="tei:head[@type='sub']">
+		<xsl:element name="h3">
+			<xsl:apply-templates select="@xml:id"/>
+			<xsl:apply-templates/>
+		</xsl:element>
+	</xsl:template>
+	
+	<xsl:template match="tei:head[@type='quote']">
+		<xsl:element name="h4">
+			<xsl:apply-templates select="@xml:id"/>
+			<xsl:attribute name="class">quote</xsl:attribute>
+			<xsl:apply-templates/>
 		</xsl:element>
 	</xsl:template>
 	

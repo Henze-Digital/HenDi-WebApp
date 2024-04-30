@@ -766,7 +766,7 @@ declare function api:validate-persons($model as map(*)) as map(*)? {
 ~:)
 declare function api:validate-orgs($model as map(*)) as map(*)? {
     if(every $i in $model?orgs ! tokenize(., ',') satisfies wdt:orgs($i)('check')()) then map { 'orgs': $model?orgs ! tokenize(., ',') }
-    else error($api:INVALID_PARAMETER, 'Unsupported value for parameter "orgs". It must be a org ID.' )
+    else error($api:INVALID_PARAMETER, 'Unsupported value for parameter "orgs". It must be an org ID.' )
 }; 
 
 (:~
