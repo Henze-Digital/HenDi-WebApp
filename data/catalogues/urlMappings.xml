@@ -10,7 +10,7 @@
     <mapping from="/de/Projekt/Editionsrichtlinien.html" to="/de/Projekt/Editionsrichtlinien/Index.html"/>
     <mapping from="/en/Editorial_Guidelines.html" to="/de/Projekt/Editionsrichtlinien/Index.html"/>
     <mapping from="/en/Project/Editorial_Guidelines.html" to="/de/Projekt/Editionsrichtlinien/Index.html"/>
-    <!--	<mapping from="/en/Project/Editorial_Guidelines.html" to="/en/Project/Editorial_Guidelines/Index.html"/>-->
+    <mapping from="/en/Project/EditionsGuidelines/Index.html" to="/de/Projekt/Editionsrichtlinien/Index.html"/>
     <mapping from="/de/Bibliographie" to="/de/Register/Bibliographie"/>
 	<mapping from="/en/Bibliography" to="/en/Indices/Bibliography"/>
 	<mapping from="Bibliographie" to="/de/Register/Bibliographie"/>
