@@ -2756,11 +2756,15 @@ let $entries := for $letter at $n in $collPostals
 declare function app:translation($node as node(), $model as map(*))  {
     let $doc := $model('doc')
     let $docID := $model('docID')
-    let $lang := $model('lang')
     let $docType := $model('docType')
+    let $lang := $model('lang')
+    let $trlDoc := collection(config:get-option('dataCollectionPath'))//tei:relation[@name='isTranslationOf'][@key=$model?docID]/root()
+    let $trlLang := $trlDoc//tei:profileDesc/tei:langUsage/tei:language/@ident => string()
+    let $textRoot := $trlDoc//tei:text
     let $xslParams := config:get-xsl-params( map {
             'dbPath' : document-uri($doc),
             'docID' : $docID,
+            'lang' : $trlLang,
             'transcript' : 'true',
             'createSecNos' : if($docID = ('A070010', 'A070001F')) then 'true' else ()
             } )

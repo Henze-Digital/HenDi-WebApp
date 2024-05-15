@@ -1032,7 +1032,12 @@
                     <xsl:with-param name="double" select="$doubleQuotes"/>
                     <xsl:with-param name="typescript" select="$isTypescript"/>
                     <xsl:with-param name="lang">
-                        <xsl:variable name="docLang" select="wega:get-doc-languages($docID)[1]"/>
+                        <xsl:variable name="docLang">
+                            <xsl:choose>
+                            <xsl:when test="$lang"><xsl:value-of select="$lang"/></xsl:when>
+                                <xsl:otherwise><xsl:value-of select="wega:get-doc-languages($docID)[1]"/></xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:variable>
                         <xsl:choose>
                             <xsl:when test="ancestor::tei:body and @xml:lang">
                                 <xsl:value-of select="@xml:lang"/>
