@@ -2769,7 +2769,15 @@ declare function app:translation($node as node(), $model as map(*))  {
             'createSecNos' : if($docID = ('A070010', 'A070001F')) then 'true' else ()
             } )
     let $xslt1 := doc(concat($config:xsl-collection-path, '/letters.xsl'))
-    let $textRoot := collection(config:get-option('dataCollectionPath'))//tei:relation[@name='isTranslationOf'][@key=$model?docID]/root()//tei:text
+    let $head := if($config:isDevelopment)
+                 then(
+                     element xhtml:p {
+                        attribute class {'float-right font-italic'},
+            			'ID: ' || $trlDoc/tei:TEI/@xml:id/string()
+                        }
+                 )
+                 else()
+
     let $body := 
          if(functx:all-whitespace(<root>{$textRoot}</root>))
          then 
@@ -2787,7 +2795,7 @@ declare function app:translation($node as node(), $model as map(*))  {
                     }
     return
         <div class="tab-pane fade" id="translation">
-          {(wega-util:remove-elements-by-class(wega-util:remove-elements-by-class($body, 'apparatus'), 'noteMarker'),$foot)}
+          {$head,(wega-util:remove-elements-by-class(wega-util:remove-elements-by-class($body, 'apparatus'), 'noteMarker'),$foot)}
         </div>
     
 };
