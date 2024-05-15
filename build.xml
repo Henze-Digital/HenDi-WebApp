@@ -357,7 +357,7 @@
 		<antcall target="zippingForPublishing"/>
 	</target>
 	
-	<target name="update-hendi-docker" depends="xar">
+	<target name="update-hendi-docker" depends="xar, -get-current-hash-of-HEAD">
 		<echo>Delete old packages</echo>
 		<delete>
 			<fileset dir="${HenDi-WebApp.basedir}/../hendi-docker/autodeploy">
