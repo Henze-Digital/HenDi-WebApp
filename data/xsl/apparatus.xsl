@@ -1009,6 +1009,12 @@
 		</xsl:element>
 	</xsl:template>
 	
+	<xsl:template match="tei:foreign[@source='original']">
+		<xsl:element name="i">
+			<xsl:apply-templates mode="#current"/>
+		</xsl:element>
+	</xsl:template>
+	
 	<xsl:template match="tei:foreign[@xml:id]" mode="apparatus">
 		<xsl:call-template name="apparatusEntry">
 			<xsl:with-param name="counter-param">
