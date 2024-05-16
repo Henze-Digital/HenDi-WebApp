@@ -2766,17 +2766,30 @@ declare function app:translation($node as node(), $model as map(*))  {
             'docID' : $docID,
             'lang' : $trlLang,
             'transcript' : 'true',
-            'createSecNos' : if($docID = ('A070010', 'A070001F')) then 'true' else ()
+            'createSecNos' : ()
             } )
     let $xslt1 := doc(concat($config:xsl-collection-path, '/letters.xsl'))
-    let $head := if($config:isDevelopment)
-                 then(
-                     element xhtml:p {
-                        attribute class {'float-right font-italic'},
-            			'ID: ' || $trlDoc/tei:TEI/@xml:id/string()
-                        }
+    let $head := (
+                     if($config:isDevelopment)
+                     then(
+                         element xhtml:p {
+                            attribute class {'float-right font-italic'},
+                			'ID: ' || $trlDoc/tei:TEI/@xml:id/string()
+                            }
+                     )
+                     else (),
+                     if($trlDoc//tei:notesStmt/tei:note[@type="editorial"][1])
+                     then(
+                            element xhtml:div {
+        	                attribute class {'alert alert-primary text-center'},
+        	         	        lang:get-language-string('generalRemark',$lang) || ': ',
+        	         	        element xhtml:span {
+        	         	            wega-util:transform($trlDoc//tei:notesStmt/tei:note[@type="editorial"][1], $xslt1, $xslParams)
+        	         	        }
+            	         	 }
+                         )
+                     else()
                  )
-                 else()
 
     let $body := 
          if(functx:all-whitespace(<root>{$textRoot}</root>))
