@@ -372,26 +372,21 @@ declare
 declare
     %templates:default("lang", "en")
     function app:translation-tab($node as node(), $model as map(*), $lang as xs:string) as element() {
-        let $trlDoc := collection(config:get-option('dataCollectionPath'))//tei:relation[@name='isTranslationOf'][@key=$model?docID]/root()
-        let $trlDocLang := $trlDoc//tei:profileDesc/tei:langUsage/tei:language/@ident => string()
-        let $trlDocLang := switch ($trlDocLang)
-                            case 'en' return 'gb'
-                            default return $trlDocLang
-        return
-        
-        if(doc-available(document-uri($trlDoc))) then 
-            element {node-name($node)} {
-                $node/@*,
-                lang:get-language-string(normalize-space($node), $lang),
-                '&#160;',
-                element span {
-                    attribute class {'fi fi-' || $trlDocLang}
+        let $trlDocs := collection(config:get-option('dataCollectionPath'))//tei:relation[@name='isTranslationOf'][@key=$model?docID]/root()
+        for $trlDoc in $trlDocs
+            let $trlDocLang := $trlDoc//tei:profileDesc/tei:langUsage/tei:language/@ident => string()
+            let $trlDocLang := switch ($trlDocLang)
+                                case 'en' return 'gb'
+                                default return $trlDocLang
+            return
+                element {node-name($node)} {
+                    $node/@*,
+                    lang:get-language-string(normalize-space($node), $lang),
+                    '&#160;',
+                    element span {
+                        attribute class {'fi fi-' || $trlDocLang}
+                    }
                 }
-            }
-        else
-            element {node-name($node)} {
-                attribute class {'deactivated'}
-            }
 };
 
 declare
