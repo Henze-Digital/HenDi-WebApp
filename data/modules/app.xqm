@@ -189,7 +189,7 @@ declare
         let $breadcrumb := element {'span'} {
                                     		let $names2Show := 3
                                     		let $authorElemsN := count($authorElems)
-                                    		let $names: = for $each at $n in $authorElems
+                                    		let $names := for $each at $n in $authorElems
                                                     		  where $n lt ($names2Show + 1)
                                                     		  return
                                                     		      ($each , if($n = $names2Show or $n = $authorElemsN) then() else(' / '))
@@ -1155,8 +1155,8 @@ declare
         return
             map { 'beaconLinks': 
                     for $i in $beaconMap?*
-                    order by $i?text                    => lower-case() collation "?lang=de;strength=primary"
- return 
+                    order by $i?text => lower-case() collation "?lang=de;strength=primary"
+                    return 
                         <a xmlns="http://www.w3.org/1999/xhtml" title="{map:keys($i)}" href="{$i?link}">{$i?text}</a>
             }
 };
