@@ -139,6 +139,12 @@
     <entry xml:id="addBelow">unter der Zeile hinzugefügt</entry>
     <entry xml:id="addAbove">über der Zeile hinzugefügt</entry>
     <entry xml:id="addDefault">hinzugefügt</entry>
+    <entry xml:id="pMargin">Text am Rand stehend</entry>
+	<entry xml:id="pMargin-right">Text am rechten Rand stehend</entry>
+	<entry xml:id="pMargin-left">Text am linken Rand stehend</entry>
+	<entry xml:id="pMargin-top">Text am oberen Rand stehend</entry>
+	<entry xml:id="pMargin-bottom">Text am unteren Rand stehend</entry>
+	<entry xml:id="pDefault">Textblock</entry>
     <entry xml:id="popoverTitle.add">Hinzufügung</entry>
     <entry xml:id="popoverTitle.subst">Ersetzung</entry>
     <entry xml:id="popoverTitle.handshift">Schriftwechsel</entry>
@@ -854,6 +860,7 @@
     <entry xml:id="furtherDetails">Weitere Angaben</entry>
 	
 	<entry xml:id="textRotation">Text im Uhrzeigersinn gedreht</entry>
+	<entry xml:id="rotation">Rotation</entry>
     <entry xml:id="annotation">Anmerkung</entry>
 	<entry xml:id="introduction">Einführung</entry>
 	<entry xml:id="general">Allgemein</entry>

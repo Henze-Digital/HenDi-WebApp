@@ -2,7 +2,7 @@
 
    <xsl:variable name="doc" select="wega:doc($docID)"/>
 	<xsl:variable name="textConstitutionNodes" as="node()*" select=".//tei:subst | .//tei:add[not(parent::tei:subst)] | .//tei:gap[not(@reason='outOfScope' or parent::tei:del)] | .//tei:sic[not(parent::tei:choice)] | .//tei:del[not(parent::tei:subst)] | .//tei:unclear[not(parent::tei:choice) and not(parent::tei:choice)] | .//tei:note[@type='textConst'] | .//tei:handShift | .//tei:supplied[parent::tei:damage] | .//tei:damage[not(node())] | .//tei:hi[@hand]"/>
-	<xsl:variable name="commentaryNodes" as="node()*" select=".//tei:note[@type=('commentary', 'definition')] | .//tei:choice | .//tei:figDesc | .//tei:foreign[@xml:id]"/>
+	<xsl:variable name="commentaryNodes" as="node()*" select=".//tei:note[@type=('commentary', 'definition')] | .//tei:choice | .//tei:figDesc | .//tei:foreign[@xml:id] | .//tei:p[@hendi:rotation]"/>
 	<xsl:variable name="autoCommentaryNodes" as="node()*" select=".//tei:persName[not(@key)] | .//tei:orgName[not(@key)] | .//tei:placeName[not(@key)]"/>
 	<xsl:variable name="internalNodes" as="node()*" select=".//tei:note[@type='internal']"/>
    <xsl:variable name="rdgNodes" as="node()*" select=".//tei:app"/>
@@ -248,6 +248,46 @@
          </xsl:with-param>
          <xsl:with-param name="explanation">
             <xsl:apply-templates/>
+         </xsl:with-param>
+      </xsl:call-template>
+   </xsl:template>
+	
+	<xsl:template match="tei:p[@hendi:rotation]">
+      <xsl:call-template name="popover"/>
+      <xsl:element name="span">
+          <xsl:attribute name="class">tei_hi_backgroundGray</xsl:attribute>
+        <xsl:apply-templates/>
+      </xsl:element>
+   </xsl:template>
+   
+   <xsl:template match="tei:p[@hendi:rotation]" mode="apparatus">
+      <xsl:variable name="id" select="wega:createID(.)"/>
+      <xsl:call-template name="apparatusEntry">
+         <xsl:with-param name="title" select="wega:getLanguageString('note_commentary', $lang)"/>
+         <xsl:with-param name="counter-param">
+            <xsl:value-of select="'note'"/>
+         </xsl:with-param>
+         <xsl:with-param name="lemmaAlt">
+            <xsl:text>[</xsl:text>
+            <xsl:value-of select="wega:getLanguageString('rotation', $lang)"/>
+            <xsl:text>]</xsl:text>
+         </xsl:with-param>
+         <xsl:with-param name="explanation">
+            <xsl:choose>
+               <xsl:when test="@place=('margin', 'margin.left', 'margin.right', 'margin.top', 'margin.bottom')">
+                  <xsl:value-of select="wega:getLanguageString(concat('p', functx:capitalize-first(translate(@place,'.','-'))), $lang)"/>
+               </xsl:when>
+               <xsl:otherwise>
+                  <xsl:value-of select="wega:getLanguageString('pDefault', $lang)"/>
+               </xsl:otherwise>
+            </xsl:choose>
+            <xsl:if test="@hendi:rotation">
+                <xsl:text>, </xsl:text>
+            	<xsl:value-of select="wega:getLanguageString('textRotation', $lang)"/>
+            	<xsl:text> (</xsl:text>
+                <xsl:value-of select="@hendi:rotation"/>
+                <xsl:text>°)</xsl:text>
+            </xsl:if>
          </xsl:with-param>
       </xsl:call-template>
    </xsl:template>
@@ -936,6 +976,7 @@
     
    <xsl:template match="tei:note" mode="lemma"/>
    <xsl:template match="tei:figDesc" mode="lemma"/>
+   <xsl:template match="tei:p[@hendi:rotation]" mode="lemma"/>
 	<xsl:template match="tei:foreign" mode="lemma">
 		<xsl:apply-templates/>
 	</xsl:template>
@@ -1055,6 +1096,8 @@
       </xsl:call-template>
 	</xsl:template>
    
+   
+   
    <!-- template for creating an apparatus entry -->
    <xsl:template name="apparatusEntry">
       <xsl:param name="title" as="xs:string"/>
@@ -1068,7 +1111,7 @@
       <xsl:variable name="counter">
          <xsl:choose>
             <xsl:when test="$counter-param='note'">
-               <xsl:number count="tei:note[@type=('commentary', 'definition')] | tei:choice | tei:figDesc | tei:foreign[@xml:id]" level="any"/>
+               <xsl:number count="tei:note[@type=('commentary', 'definition')] | tei:choice | tei:figDesc | tei:p[@hendi:rotation] | tei:foreign[@xml:id]" level="any"/>
             </xsl:when>
             <xsl:when test="$counter-param='handNote'">
                <xsl:number count="tei:handNote" level="any"/>
