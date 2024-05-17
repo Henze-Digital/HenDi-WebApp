@@ -72,6 +72,11 @@ text-decoration-line: underline;
 	background-color: #E0E0E0;
 }
 
+.tei_hi_borderBloc {
+    border: 2px dotted gray;
+    width: fit-content;
+}
+
 /* Used in wikipedia transformations */
 .tei_hi_typewriter {
     font-family: monospace;

@@ -253,9 +253,9 @@
    </xsl:template>
 	
 	<xsl:template match="tei:p[@hendi:rotation]">
-      <xsl:call-template name="popover"/>
-      <xsl:element name="span">
-          <xsl:attribute name="class">tei_hi_backgroundGray</xsl:attribute>
+      <xsl:element name="p">
+        <xsl:attribute name="class">tei_hi_borderBloc</xsl:attribute>
+        <xsl:call-template name="popover"/>
         <xsl:apply-templates/>
       </xsl:element>
    </xsl:template>
