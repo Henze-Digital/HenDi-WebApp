@@ -3,7 +3,7 @@ variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
     IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-    HENDI_CI_IMAGE: registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image:v1-1-0
+    HENDI_CI_IMAGE: registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image:v1-2-0
     GIT_SUBMODULE_STRATEGY: recursive # is also defined in the jobs. Why?
     GIT_DEPTH: 5
     #URL_CI_REGISTRY: "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp"
