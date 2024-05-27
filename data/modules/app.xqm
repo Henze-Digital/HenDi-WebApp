@@ -814,7 +814,7 @@ declare
         map {
             'geonames-id' : str:normalize-space(($model?doc//tei:idno[@type='geonames'])[1]),
             'coordinates' : str:normalize-space($model?doc//tei:geo),
-        'residences': $model('doc')//tei:label[.='Ort'][parent::tei:state]/following-sibling::tei:desc/tei:* ! str:normalize-space(.),
+            'residences': $model('doc')//tei:label[.='Ort'][parent::tei:state]/following-sibling::tei:desc/tei:* ! str:normalize-space(.),
             'geonamesFeatureCode': $model('doc')//tei:label[.='Kategorie'][parent::tei:state]/following-sibling::tei:desc ! str:normalize-space(.)
         }
 };
@@ -892,7 +892,11 @@ declare
         }
         let $pubPlace := function($doc as document-node(), $alt as xs:boolean) {
             for $pubPlace in ($doc//tei:sourceDesc/tei:biblStruct//tei:pubPlace)
-            return <span xmlns="http://www.w3.org/1999/xhtml">{$pubPlace}</span>
+            return <span xmlns="http://www.w3.org/1999/xhtml">
+                    {if($pubPlace/@key)
+                     then(<a href="/{$pubPlace/@key}.html" xmlns="http://www.w3.org/1999/xhtml">{$pubPlace/text()}</a>)
+                     else($pubPlace/text())}
+                </span>
         }
         let $publisher := function($doc as document-node(), $alt as xs:boolean) {
             for $segment in ($doc//tei:sourceDesc/tei:biblStruct//tei:publisher)
@@ -1009,7 +1013,12 @@ declare
         }
         let $pubPlace := function($doc as document-node(), $alt as xs:boolean) {
             for $pubPlace in ($doc//tei:biblStruct/tei:*/tei:imprint/tei:pubPlace)
-            return <span xmlns="http://www.w3.org/1999/xhtml">{$pubPlace/text()}</span>
+            return
+                <span xmlns="http://www.w3.org/1999/xhtml">
+                    {if($pubPlace/@key)
+                     then(<a href="/{$pubPlace/@key}.html" xmlns="http://www.w3.org/1999/xhtml">{$pubPlace/text()}</a>)
+                     else($pubPlace/text())}
+                </span>
         }
         let $publisher := function($doc as document-node(), $alt as xs:boolean) {
             for $segment in ($doc//tei:biblStruct/tei:*/tei:imprint/tei:publisher[not(.='')])
@@ -1092,7 +1101,12 @@ declare
     function app:person-basic-data($node as node(), $model as map(*), $lang as xs:string) as map(*) {
         let $wegaSpecs := $model('doc')//tei:residence | $model('doc')//tei:label[.='Ort']/following-sibling::tei:desc/tei:*
         let $hendiSpecs := $model('doc')//tei:org//tei:settlement | $model('doc')//tei:org//tei:country
-        let $residences := $wegaSpecs | $hendiSpecs
+        let $residences := for $each at $i in ($wegaSpecs | $hendiSpecs)
+                            let $return := if($each/@key)
+                                            then(<a href="/{$each/@key}.html">{str:normalize-space($each)}</a>)
+                                            else(<span>{$each}</span>)
+                            return
+                                ($return, if($i lt count(($wegaSpecs, $hendiSpecs))) then(',&#160;') else())
         return
 	        map{
 	            'fullnames' : $model('doc')//tei:persName[@type = 'full'] ! string-join(str:txtFromTEI(., $lang), ''),
@@ -1200,7 +1214,7 @@ declare
 
 declare 
     %templates:wrap
-    function app:printPlaceOfBirthOrDeath($node as node(), $model as map(*), $key as xs:string) as xs:string* {
+    function app:printPlaceOfBirthOrDeath($node as node(), $model as map(*), $key as xs:string) as item()* {
     let $placeNames :=
         switch($key)
         case 'birth' return query:placeName-elements($model('doc')//tei:birth)
@@ -1208,14 +1222,18 @@ declare
         default return ()
     return
         for $placeName at $count in wega-util-shared:order-by-cert($placeNames)
-        let $preposition :=
-            if(matches(normalize-space($placeName), '^(auf|bei|im)')) then ' ' (: Präposition 'in' weglassen wenn schon eine andere vorhanden :)
-            else concat(' ', lower-case(lang:get-language-string('in', $model('lang'))), ' ')
-        return (
-            $preposition || str:normalize-space($placeName),
-            if($count eq count($placeNames)) then ()
-            else concat(' ',lang:get-language-string('or', $model('lang')),' ')
-        )
+            let $preposition :=
+                if(matches(normalize-space($placeName), '^(auf|bei|im)')) then ' ' (: Präposition 'in' weglassen wenn schon eine andere vorhanden :)
+                else concat(' ', lower-case(lang:get-language-string('in', $model('lang'))), ' ')
+            let $key := $placeName/@key
+            return (
+                <span xmlns="http://www.w3.org/1999/xhtml">{$preposition}
+                    {if($key) then(<a href="/{$key}.html">{str:normalize-space($placeName)}</a>)
+                     else(str:normalize-space($placeName))}
+                    {if($count eq count($placeNames)) then ()
+                     else concat(' ',lang:get-language-string('or', $model('lang')),' ')}
+                </span>
+            )
 };
 
 declare 

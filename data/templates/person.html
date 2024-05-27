@@ -14,8 +14,12 @@
                 <div class="row">
                     <div class="col-sm-10">
                         <ol class="breadcrumb">
-                            <li><a href="$link/index">Home</a></li>
-                            <li><span data-template="app:person-forename-surname">Carl Maria von Weber</span></li>
+                            <li>
+                                <a href="$link/index">Home</a>
+                            </li>
+                            <li>
+                                <span data-template="app:person-forename-surname">Carl Maria von Weber</span>
+                            </li>
     <!--                        <li data-template="lang:translate">bio</li>-->
                         </ol>
                     </div>
@@ -27,13 +31,18 @@
             <div data-template="templates:if-parameter-set" data-template-param="q">
                 <div class="row breadcrumb" data-template="search:get-session-for-singleview">
                     <div class="col-md-4">
-                        <a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-prev-item-url"><i class="fa fa-arrow-left"/> <span data-template="lang:translate">prevMatch</span></a>
+                        <a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-prev-item-url">
+                            <i class="fa fa-arrow-left"/> <span data-template="lang:translate">prevMatch</span>
+                        </a>
                     </div>
                     <div class="col-md-4">
-                        <span data-template="app-shared:print" data-template-key="index-of-current-doc">15</span> / <a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-backlink"><span data-template="search:results-count">124 Suchergebnisse</span> (»<span data-template="app-shared:print" data-template-key="query-string-org">Carl Weber</span>«)</a>
+                        <span data-template="app-shared:print" data-template-key="index-of-current-doc">15</span> / <a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-backlink">
+                            <span data-template="search:results-count">124 Suchergebnisse</span> (»<span data-template="app-shared:print" data-template-key="query-string-org">Carl Weber</span>«)</a>
                     </div>
                     <div class="col-md-4">
-                        <a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-next-item-url"><span data-template="lang:translate">nextMatch</span> <i class="fa fa-arrow-right"/></a>
+                        <a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-next-item-url">
+                            <span data-template="lang:translate">nextMatch</span> <i class="fa fa-arrow-right"/>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -67,31 +76,36 @@
                         <div class="pull-left">
                             <i class="fa fa-user"/>
                         </div>
-                       <div class="media-body"> <span data-template="app-shared:print" data-template-key="realname">Weber, Carl Maria Friedrich Ernst von</span> <span class="nameDesc" data-template="lang:translate">realName</span></div>
+                       <div class="media-body"> <span data-template="app-shared:print" data-template-key="realname">Weber, Carl Maria Friedrich Ernst von</span> <span class="nameDesc" data-template="lang:translate">realName</span>
+                        </div>
                     </li>
                    <li class="media birthnames" data-template="app-shared:each" data-template-from="birthnames" data-template-to="birthname">
                         <div class="pull-left">
                             <i class="fa fa-user"/>
                         </div>
-                       <div class="media-body"> <span data-template="app-shared:print" data-template-key="birthname">Weber, Carl Maria Friedrich Ernst von</span> <span class="nameDesc" data-template="lang:translate">birthName</span></div>
+                       <div class="media-body"> <span data-template="app-shared:print" data-template-key="birthname">Weber, Carl Maria Friedrich Ernst von</span> <span class="nameDesc" data-template="lang:translate">birthName</span>
+                        </div>
                     </li>
                    <li class="media marriednames" data-template="app-shared:each" data-template-from="marriednames" data-template-to="marriedname">
                         <div class="pull-left">
                             <i class="fa fa-user"/>
                         </div>
-                       <div class="media-body"> <span data-template="app-shared:print" data-template-key="marriedname">Weber, Carl Maria Friedrich Ernst von</span> <span class="nameDesc" data-template="lang:translate">marriedName</span></div>
+                       <div class="media-body"> <span data-template="app-shared:print" data-template-key="marriedname">Weber, Carl Maria Friedrich Ernst von</span> <span class="nameDesc" data-template="lang:translate">marriedName</span>
+                        </div>
                     </li>
                    <li class="media pseudonyme" data-template="app-shared:if-exists" data-template-key="pseudonyme">
                         <div class="pull-left">
                             <i class="fa fa-user"/>
                         </div>
-                       <div class="media-body"> <span data-template="app-shared:join" data-template-key="pseudonyme" data-template-separator="; ">Weber, Carl Maria Friedrich Ernst von</span> <span class="nameDesc" data-template="lang:translate">pseudonym</span></div>
+                       <div class="media-body"> <span data-template="app-shared:join" data-template-key="pseudonyme" data-template-separator="; ">Weber, Carl Maria Friedrich Ernst von</span> <span class="nameDesc" data-template="lang:translate">pseudonym</span>
+                        </div>
                     </li>
                     <li class="media altnames" data-template="app-shared:if-exists" data-template-key="altnames">
                         <div class="pull-left">
                             <i class="fa fa-user"/>
                         </div>
-                        <div class="media-body"> <span data-template="app-shared:join" data-template-key="altnames" data-template-separator="; ">Weber, Carl Maria Friedrich Ernst von</span> <span class="nameDesc" data-template="lang:translate">altNames</span></div>
+                        <div class="media-body"> <span data-template="app-shared:join" data-template-key="altnames" data-template-separator="; ">Weber, Carl Maria Friedrich Ernst von</span> <span class="nameDesc" data-template="lang:translate">altNames</span>
+                        </div>
                     </li>
                     <li class="media" data-template="app-shared:if-exists" data-template-key="birth">
                         <div class="pull-left">
@@ -142,8 +156,8 @@
                       <div class="pull-left">                  
                          <i class="fa fa-map-marker"/>
                       </div>
-                      <div class="media-body" data-template="app-shared:join" data-template-key="residences">
-                         Köln, Gotha
+                      <div class="media-body" data-template="app-shared:each" data-template-from="residences" data-template-to="residence">
+                         <span data-template="app-shared:output" data-template-key="residence">Köln, Gotha</span>
                       </div>
                    </li>
                     <li class="media states" data-template="app-shared:if-exists" data-template-key="states">
@@ -158,7 +172,8 @@
                         <div class="pull-left">
                             <i class="fa fa-book"/>
                         </div>
-                        <div class="media-body"> <span data-template="app-shared:print" data-template-key="bibl">https://henze-digital.zenmem.de</span></div>
+                        <div class="media-body"> <span data-template="app-shared:print" data-template-key="bibl">https://henze-digital.zenmem.de</span>
+                        </div>
                     </li>
                 </ol>
             </div>
@@ -166,7 +181,9 @@
             <div class="col-md-4 col-sm-12 address" data-template="app-shared:if-exists" data-template-key="addrLines">
                 <h2 data-template="lang:translate">address</h2>
                 <ul>
-                    <li data-template="app-shared:each" data-template-from="addrLines" data-template-to="addrLine"><span data-template="app:person-addrLine">Adresszeile</span></li>
+                    <li data-template="app-shared:each" data-template-from="addrLines" data-template-to="addrLine">
+                        <span data-template="app:person-addrLine">Adresszeile</span>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -178,18 +195,42 @@
                 <div class="col-md-10 col-12">
                     <nav class="greedy">
                         <ul class="resp-tabs-list links easyResponsiveTabs">
-                            <li data-template="app-shared:if-matches" data-template-key="docType" data-template-value="persons"><a data-template="app:person-main-tab" href="#biographies">biographies</a></li>
-                            <li data-template="app-shared:if-matches" data-template-key="docType" data-template-value="orgs"><a data-template="app:person-main-tab" href="#biographies">history</a></li>
-                            <li><a data-template="app:person-main-tab" href="#correspondence" data-target="$docID/correspondence.html">correspondence</a></li>
-                            <li><a data-template="app:person-main-tab" href="#writings" data-target="$docID/writings.html">writings</a></li>
-                            <li><a data-template="app:person-main-tab" href="#diaries" data-target="$docID/diaries.html">diaries</a></li>
-                            <li><a data-template="app:person-main-tab" href="#works" data-target="$docID/works.html">works</a></li>
-                            <li><a data-template="app:person-main-tab" href="#biblio" data-target="$docID/biblio.html">biblio</a></li>
-                            <li><a data-template="app:person-main-tab" href="#thematicCommentaries" data-target="$docID/thematicCommentaries.html">thematicCommentaries</a></li>
-                            <li><a data-template="app:person-main-tab" href="#documents" data-target="$docID/documents.html">documents</a></li>
-                            <li><a data-template="app:person-main-tab" href="#news" data-target="$docID/news.html">news</a></li>
-                            <li><a data-template="app:person-main-tab" href="#contacts" data-target="$docID/contacts.html">contacts</a></li>
-                            <li><a data-template="app:person-main-tab" href="#backlinks" data-target="$docID/backlinks.html">backlinks</a></li>
+                            <li data-template="app-shared:if-matches" data-template-key="docType" data-template-value="persons">
+                                <a data-template="app:person-main-tab" href="#biographies">biographies</a>
+                            </li>
+                            <li data-template="app-shared:if-matches" data-template-key="docType" data-template-value="orgs">
+                                <a data-template="app:person-main-tab" href="#biographies">history</a>
+                            </li>
+                            <li>
+                                <a data-template="app:person-main-tab" href="#correspondence" data-target="$docID/correspondence.html">correspondence</a>
+                            </li>
+                            <li>
+                                <a data-template="app:person-main-tab" href="#writings" data-target="$docID/writings.html">writings</a>
+                            </li>
+                            <li>
+                                <a data-template="app:person-main-tab" href="#diaries" data-target="$docID/diaries.html">diaries</a>
+                            </li>
+                            <li>
+                                <a data-template="app:person-main-tab" href="#works" data-target="$docID/works.html">works</a>
+                            </li>
+                            <li>
+                                <a data-template="app:person-main-tab" href="#biblio" data-target="$docID/biblio.html">biblio</a>
+                            </li>
+                            <li>
+                                <a data-template="app:person-main-tab" href="#thematicCommentaries" data-target="$docID/thematicCommentaries.html">thematicCommentaries</a>
+                            </li>
+                            <li>
+                                <a data-template="app:person-main-tab" href="#documents" data-target="$docID/documents.html">documents</a>
+                            </li>
+                            <li>
+                                <a data-template="app:person-main-tab" href="#news" data-target="$docID/news.html">news</a>
+                            </li>
+                            <li>
+                                <a data-template="app:person-main-tab" href="#contacts" data-target="$docID/contacts.html">contacts</a>
+                            </li>
+                            <li>
+                                <a data-template="app:person-main-tab" href="#backlinks" data-target="$docID/backlinks.html">backlinks</a>
+                            </li>
                         </ul>
                         <button data-template="lang:translate">more</button>
                         <ul class="hidden-links hidden"/>
@@ -241,14 +282,21 @@
                                         <!-- Tab panes -->
                                         <div class="tab-content">
                                         	<div class="tab-pane active fade in" id="hendiInfo">
-                                                <span data-template="app-shared:if-matches" data-template-key="docType" data-template-value="persons" data-template-wrap="no"><h2 data-template="lang:translate">tabTitle_bio</h2></span>
-                                                <span data-template="app-shared:if-matches" data-template-key="docType" data-template-value="orgs" data-template-wrap="no"><h2 data-template="lang:translate">tabTitle_bioOrgs</h2></span>
+                                                <span data-template="app-shared:if-matches" data-template-key="docType" data-template-value="persons" data-template-wrap="no">
+                                                    <h2 data-template="lang:translate">tabTitle_bio</h2>
+                                                </span>
+                                                <span data-template="app-shared:if-matches" data-template-key="docType" data-template-value="orgs" data-template-wrap="no">
+                                                    <h2 data-template="lang:translate">tabTitle_bioOrgs</h2>
+                                                </span>
                                                 <div data-template="app:print-wega-bio">
                                                     <!-- Wenn in der Personendatei keine bioSummary gefunden wird, dann wird der folgende Standardtext gewählt-->
-                                                    <p><i data-template="lang:translate">noBioFound</i></p>
+                                                    <p>
+                                                        <i data-template="lang:translate">noBioFound</i>
+                                                    </p>
                                                 </div>
                                                 <div data-template="app-shared:if-matches" data-template-key="docID" data-template-value="A002068">
-                                                    <p data-template="app-shared:if-matches" data-template-key="lang" data-template-value="de">Einen ausführlichen Lebenslauf finden Sie in der <a href="$link/A002068/bio.html">erweiterten Biographie</a></p>
+                                                    <p data-template="app-shared:if-matches" data-template-key="lang" data-template-value="de">Einen ausführlichen Lebenslauf finden Sie in der <a href="$link/A002068/bio.html">erweiterten Biographie</a>
+                                                    </p>
                                                     <p data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">More detailed information can be found in the <a href="$link/A002068/bio.html">extended biography</a> (German)</p>
                                                 </div>
                                             </div>
