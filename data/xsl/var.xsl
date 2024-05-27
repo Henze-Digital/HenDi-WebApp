@@ -53,18 +53,12 @@
             </xsl:choose>
         </xsl:variable>
         <xsl:element name="div">
-            <xsl:if test="matches(@xml:id, '^para\d+$')">
-                <xsl:call-template name="create-para-label">
-                    <xsl:with-param name="no" select="substring-after(@xml:id, 'para')"/>
-                </xsl:call-template>
-            </xsl:if>
-            
             <xsl:choose>
                 <xsl:when test="not(parent::tei:div)">
                     <xsl:element name="div">
-                        <xsl:attribute name="class">card <xsl:if test="@type"><xsl:value-of select="@type"/></xsl:if></xsl:attribute>
+                        <xsl:attribute name="class"><!--card--> <xsl:if test="@type"><xsl:value-of select="@type"/></xsl:if></xsl:attribute>
                         <xsl:element name="div">
-                            <xsl:attribute name="class">card-header</xsl:attribute>
+<!--                            <xsl:attribute name="class">card-header</xsl:attribute>-->
                             <xsl:attribute name="id"><xsl:value-of select="concat('heading-',$uniqueID)"/></xsl:attribute>
                             <xsl:element name="div">
                                 <xsl:element name="button">
@@ -106,34 +100,6 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:element>
-            
-        
-        <!--
-            <xsl:element name="div">
-            <xsl:element name="div">
-                <xsl:attribute name="data-toggle">collapse</xsl:attribute>
-                <xsl:attribute name="data-target">#<xsl:value-of select="$uniqueID"/></xsl:attribute>
-                <xsl:attribute name="aria-expanded">false</xsl:attribute>
-                <xsl:attribute name="aria-controls"><xsl:value-of select="$uniqueID"/></xsl:attribute>
-                <xsl:if test="@type">
-                    <xsl:attribute name="class" select="@type"/>
-                </xsl:if>
-                <xsl:if test="matches(@xml:id, '^para\d+$')">
-                    <xsl:call-template name="create-para-label">
-                        <xsl:with-param name="no" select="substring-after(@xml:id, 'para')"/>
-                    </xsl:call-template>
-                </xsl:if>
-                <xsl:apply-templates select="tei:head"/>
-            </xsl:element>
-            <xsl:element name="div">
-                <xsl:attribute name="class" select="collapse"/>
-                <xsl:attribute name="id" select="$uniqueID"/>
-                <xsl:element name="div">
-                    <xsl:apply-templates select="node()[not(self::tei:head)]"/>
-                </xsl:element>
-            </xsl:element>
-        </xsl:element>
-        -->
     </xsl:template>
 
     <xsl:template match="tei:head[not(@type='sub')][parent::tei:div]">
