@@ -176,13 +176,15 @@
 										<!-- Tab panes -->
 										<div class="tab-content">
 											<div class="tab-pane active fade in" id="hendiInfo">
-												<div data-template="app:print-corresp-intro">
-													<!-- Wenn kein Text gefunden wird, dann wird der folgende Standardtext gewählt-->
-													<p>
-														<i data-template="lang:translate">noTextFound</i>
-													</p>
+												<div class="accordion" id="transcription">
+													<div data-template="app:print-corresp-intro">
+														<!-- Wenn kein Text gefunden wird, dann wird der folgende Standardtext gewählt-->
+														<p>
+															<i data-template="lang:translate">noTextFound</i>
+														</p>
+													</div>
+													<div data-template="app:print-corresp-intro-readmore">read more</div>
 												</div>
-												<div data-template="app:print-corresp-intro-readmore">read more</div>
 											</div>
 											<div class="tab-pane fade" id="XMLPreview">
 												<h2>XML</h2>
