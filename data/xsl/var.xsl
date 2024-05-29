@@ -56,18 +56,27 @@
             <xsl:choose>
                 <xsl:when test="not(parent::tei:div)">
                     <xsl:element name="div">
-                        <xsl:attribute name="class"><!--card--> <xsl:if test="@type"><xsl:value-of select="@type"/></xsl:if></xsl:attribute>
+                        <xsl:attribute name="class"><xsl:if test="@type">
+                                <xsl:value-of select="@type"/>
+                            </xsl:if>
+                        </xsl:attribute>
                         <xsl:element name="div">
 <!--                            <xsl:attribute name="class">card-header</xsl:attribute>-->
-                            <xsl:attribute name="id"><xsl:value-of select="concat('heading-',$uniqueID)"/></xsl:attribute>
+                            <xsl:attribute name="id">
+                                <xsl:value-of select="concat('heading-',$uniqueID)"/>
+                            </xsl:attribute>
                             <xsl:element name="div">
                                 <xsl:element name="button">
                                     <xsl:attribute name="class">btn btn-link btn-block text-left accordionItem</xsl:attribute>
                                     <xsl:attribute name="type">button</xsl:attribute>
                                     <xsl:attribute name="data-toggle">collapse</xsl:attribute>
-                                    <xsl:attribute name="data-target"><xsl:value-of select="concat('#collapse-',$uniqueID)"/></xsl:attribute>
-                                    <xsl:attribute name="aria-expanded">true</xsl:attribute>
-                                    <xsl:attribute name="aria-controls"><xsl:value-of select="concat('collapse-',$uniqueID)"/></xsl:attribute>
+                                    <xsl:attribute name="data-target">
+                                        <xsl:value-of select="concat('#collapse-',$uniqueID)"/>
+                                    </xsl:attribute>
+                                    <xsl:attribute name="aria-expanded">false</xsl:attribute>
+                                    <xsl:attribute name="aria-controls">
+                                        <xsl:value-of select="concat('collapse-',$uniqueID)"/>
+                                    </xsl:attribute>
                                     <xsl:apply-templates select="tei:head"/>
                                 </xsl:element>
                             </xsl:element>
@@ -75,8 +84,12 @@
                     </xsl:element>
                     <xsl:element name="div">
                         <xsl:attribute name="class">collapse</xsl:attribute>
-                        <xsl:attribute name="id"><xsl:value-of select="concat('collapse-',$uniqueID)"/></xsl:attribute>
-                        <xsl:attribute name="aria-labelledby"><xsl:value-of select="concat('heading-',$uniqueID)"/></xsl:attribute>
+                        <xsl:attribute name="id">
+                            <xsl:value-of select="concat('collapse-',$uniqueID)"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="aria-labelledby">
+                            <xsl:value-of select="concat('heading-',$uniqueID)"/>
+                        </xsl:attribute>
                         <xsl:attribute name="data-parent">#transcription</xsl:attribute>
                         <xsl:element name="div">
                             <xsl:attribute name="class">card-body</xsl:attribute>
