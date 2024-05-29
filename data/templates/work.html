@@ -105,6 +105,26 @@
 						<strong data-template="lang:translate">annotation</strong>: <span data-template="app-shared:output" data-template-key="annotation">Anmerkungstext</span>
 					</li>
 				</ol>
+				<ol class="media" data-template="app-shared:if-exists" data-template-key="isPartOf">
+					<li>
+						<strong data-template="lang:translate">isPartOf</strong>:
+						<ol>
+							<li>
+								<span data-template="app-shared:output" data-template-key="isPartOf">Titel</span>
+							</li>
+						</ol>
+					</li>
+				</ol>
+				<ol class="media" data-template="app-shared:if-exists" data-template-key="hasParts">
+					<li>
+						<strong data-template="lang:translate">hasPart</strong>:
+						<ol data-template="app-shared:each" data-template-from="hasParts" data-template-to="hasPart">
+							<li>
+								<span data-template="app-shared:output" data-template-key="hasPart">Eintrag</span>
+							</li>
+						</ol>
+					</li>
+				</ol>
 			</div>
 		    <div data-template="templates:include" data-template-path="templates/includes/iconography.html"/>
 		</div>

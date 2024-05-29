@@ -913,6 +913,23 @@ declare
                                         <relators role="{$role}">
                                             {$each}
                                         </relators>
+        let $isPartOf := function($doc as document-node(), $linking as xs:boolean) {
+            let $key := $model?doc//mei:relation[@rel="isPartOf"]/@codedval
+            let $title := if($key) then(crud:doc($key/string())//mei:workList/mei:work[1]/mei:title/mei:titlePart[@type="main"]/text()) else()
+            return
+                <a href="/{$key}.html" xmlns="http://www.w3.org/1999/xhtml">{$title}</a>
+        }
+        let $hasParts := function($doc as document-node(), $linking as xs:boolean) {
+            let $files := crud:data-collection('works')[.//mei:relation[@rel="isPartOf"][@codedval = $doc/mei:mei/@xml:id]]
+            let $titles := for $file in $files/mei:mei
+                            let $id := $file/@xml:id
+                            let $title := $file//mei:workList/mei:work[1]/mei:title/mei:titlePart[@type="main"]/text()
+                            return
+                                <a href="/{$id}.html" xmlns="http://www.w3.org/1999/xhtml">{$title}</a>
+            return
+                $titles
+        }
+        
         return
         map {
             'ids' : $model?doc//mei:altId[not(@type=('gnd', 'wikidata', 'dracor.einakter'))],
@@ -926,7 +943,9 @@ declare
             'annotations' : $annotations($model?doc),
             'publication': $publication($model?doc, true()),
             'publisher': $publisher($model?doc, true()),
-            'pubPlace': $pubPlace($model?doc, true())
+            'pubPlace': $pubPlace($model?doc, true()),
+            'isPartOf' : $isPartOf($model?doc, true()),
+            'hasParts' : $hasParts($model?doc, true())
         }
 };
 
