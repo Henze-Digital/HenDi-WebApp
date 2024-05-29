@@ -62,7 +62,7 @@
                             <xsl:attribute name="id"><xsl:value-of select="concat('heading-',$uniqueID)"/></xsl:attribute>
                             <xsl:element name="div">
                                 <xsl:element name="button">
-                                    <xsl:attribute name="class">btn btn-link btn-block text-left</xsl:attribute>
+                                    <xsl:attribute name="class">btn btn-link btn-block text-left accordionItem</xsl:attribute>
                                     <xsl:attribute name="type">button</xsl:attribute>
                                     <xsl:attribute name="data-toggle">collapse</xsl:attribute>
                                     <xsl:attribute name="data-target"><xsl:value-of select="concat('#collapse-',$uniqueID)"/></xsl:attribute>
