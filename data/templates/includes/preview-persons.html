@@ -93,14 +93,14 @@
                     Schauspielerin, Sängerin
                 </div>
             </li>
-            <li class="media residences" data-template="app-shared:if-exists" data-template-key="residences">
-                <div class="pull-left">                  
-                    <i class="fa fa-map-marker"/>
-                </div>
-                <div class="media-body" data-template="app-shared:join" data-template-key="residences" data-template-max="3">
-                    Köln, Gotha
-                </div>
-            </li>
+        	<li class="media residences" data-template="app-shared:if-exists" data-template-key="residences">
+        		<div class="pull-left">                  
+        			<i class="fa fa-map-marker"/>
+        		</div>
+        		<div class="media-body" data-template="app-shared:each" data-template-from="residences" data-template-to="residence">
+        			<span data-template="app-shared:output" data-template-key="residence">Köln, Gotha</span>
+        		</div>
+        	</li>
             <li class="media states" data-template="app-shared:if-exists" data-template-key="states">
                 <div class="pull-left">                  
                     <i class="fa fa-university"/> <!-- fa-industry -->
