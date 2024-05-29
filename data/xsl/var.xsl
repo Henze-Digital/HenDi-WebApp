@@ -54,7 +54,7 @@
         </xsl:variable>
         <xsl:element name="div">
             <xsl:choose>
-                <xsl:when test="not(parent::tei:div)">
+                <xsl:when test="not(parent::tei:div) and (tei:p or tei:list)">
                     <xsl:element name="div">
                         <xsl:attribute name="class"><xsl:if test="@type">
                                 <xsl:value-of select="@type"/>
