@@ -125,6 +125,16 @@
 						</ol>
 					</li>
 				</ol>
+				<ol class="media" data-template="app-shared:if-exists" data-template-key="hasComponents">
+					<li>
+						<strong data-template="lang:translate">hasPart</strong>:
+						<ol>
+							<li data-template="app-shared:each" data-template-from="hasComponents" data-template-to="hasComponent">
+								<strong data-template="lang:translate">title</strong>: <span data-template="app-shared:output" data-template-key="hasComponent">Eintrag</span>
+							</li>
+						</ol>
+					</li>
+				</ol>
 			</div>
 		    <div data-template="templates:include" data-template-path="templates/includes/iconography.html"/>
 		</div>

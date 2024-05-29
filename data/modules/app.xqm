@@ -929,6 +929,12 @@ declare
             return
                 $titles
         }
+        let $hasComponents := function($doc as document-node(), $linking as xs:boolean) {
+            for $component in $model?doc//mei:work[@class=('lp','cd')]/mei:componentList/mei:work
+            let $title := $component/mei:title//text() => string-join(' ') => normalize-space()
+            return
+                $title
+        }
         
         return
         map {
@@ -945,7 +951,8 @@ declare
             'publisher': $publisher($model?doc, true()),
             'pubPlace': $pubPlace($model?doc, true()),
             'isPartOf' : $isPartOf($model?doc, true()),
-            'hasParts' : $hasParts($model?doc, true())
+            'hasParts' : $hasParts($model?doc, true()),
+            'hasComponents' : $hasComponents($model?doc, true())
         }
 };
 
