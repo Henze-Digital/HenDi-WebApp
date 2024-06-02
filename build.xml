@@ -130,6 +130,8 @@
 		
 		<replace file="${WeGA-WebApp.basedir}/${wega.dev_libs.dir}/flag-icons/css/flag-icons.css" token="url(../flags/" value="url(../img/flags/"/>
 		<replace file="${WeGA-WebApp.basedir}/${wega.dev_libs.dir}/flag-icons/css/flag-icons.min.css" token="url(../flags/" value="url(../img/flags/"/>
+		
+		<antcall target="wega:wega-mirador"/>
 	</target>
 	
 	<target name="webapp-dist-data-wega" unless="${publishing}">
