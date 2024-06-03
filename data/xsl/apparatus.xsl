@@ -686,9 +686,6 @@
          <xsl:choose>
             <xsl:when test="tei:sic">
                <xsl:apply-templates select="tei:sic" mode="#current"/>
-               <xsl:element name="span">
-               <xsl:text>[sic]</xsl:text>
-               </xsl:element>
             </xsl:when>
             <xsl:when test="tei:unclear">
                <xsl:variable name="opts" as="element()*">
@@ -800,9 +797,6 @@
    <!-- special template rule for <sic> within bibliographic contexts -->
    <xsl:template match="tei:sic[parent::tei:title or parent::tei:author]" priority="2">
       <xsl:apply-templates/>
-      <xsl:element name="span">
-         <xsl:text>[sic]</xsl:text>
-      </xsl:element>
    </xsl:template>
 
    <xsl:template match="tei:sic[not(parent::tei:choice)]">
@@ -810,7 +804,6 @@
          <xsl:apply-templates select="@xml:id"/>
       	<xsl:attribute name="class" select="concat('tei_', local-name())"/>
          <xsl:apply-templates mode="#current"/>
-         <xsl:text>[sic]</xsl:text>
       </xsl:element>
       <xsl:call-template name="popover"/>
    </xsl:template>
