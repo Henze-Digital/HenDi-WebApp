@@ -686,9 +686,6 @@
          <xsl:choose>
             <xsl:when test="tei:sic">
                <xsl:apply-templates select="tei:sic" mode="#current"/>
-               <xsl:element name="span">
-               <xsl:text>[sic]</xsl:text>
-               </xsl:element>
             </xsl:when>
             <xsl:when test="tei:unclear">
                <xsl:variable name="opts" as="element()*">
