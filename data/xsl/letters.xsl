@@ -344,9 +344,14 @@
 				<xsl:text>inlineEnd</xsl:text>
 			</xsl:if>
 		</xsl:variable>
+		<xsl:variable name="address">
+			<xsl:if test="exists(tei:address)">
+				<xsl:text>tei_address</xsl:text>
+			</xsl:if>
+		</xsl:variable>
 		<xsl:element name="p">
 			<xsl:attribute name="class">
-				<xsl:value-of select="string-join(($p-rend, $p-type-strip, $inlineEnd),' ')"/>
+				<xsl:value-of select="string-join(($p-rend, $p-type-strip, $inlineEnd, $address),' ')"/>
 			</xsl:attribute>
 			<xsl:apply-templates/>
 		</xsl:element>
