@@ -1035,7 +1035,7 @@ declare
             }
             return
                 for $pubDate in ($doc//tei:biblStruct/tei:*/tei:imprint/tei:date)
-                    return <span xmlns="http://www.w3.org/1999/xhtml">{date:printDate($pubDate, $lang, lang:get-language-string#3, $dateFormat) => replace('vom ','') => replace('from ','')}</span>
+                    return <span xmlns="http://www.w3.org/1999/xhtml">{date:printDate($pubDate, $lang, lang:get-language-string#3, $dateFormat) => replace('vom ','') => replace('from ','') => replace(' bis ','–') => replace(' to ','–') => replace('unbekannt','') => replace('unknown','')}</span>
         }
         let $pubPlace := function($doc as document-node(), $alt as xs:boolean) {
             for $pubPlace in ($doc//tei:biblStruct/tei:*/tei:imprint/tei:pubPlace)
