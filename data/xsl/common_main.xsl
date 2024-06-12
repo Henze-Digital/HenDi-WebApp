@@ -51,9 +51,9 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <xsl:choose>
-            <xsl:when test="$enclosure"/>
-            <xsl:otherwise>
+<!--        <xsl:choose>-->
+<!--            <xsl:when test="$enclosure"/>-->
+<!--            <xsl:otherwise>-->
                 <xsl:element name="a">
                     <xsl:attribute name="class" select="string-join(('noteMarker', $marker), ' ')"/>
                     <xsl:attribute name="id" select="concat('ref-', $id)"/>
@@ -108,13 +108,19 @@
                                 <xsl:attribute name="class">fa-solid fa-arrow-rotate-right</xsl:attribute>
                             </xsl:element>                    
                         </xsl:when>
+                        <xsl:when test="not($marker) and self::tei:stamp">
+                            <xsl:choose>
+                			    <xsl:when test="@type='stamp'"><i class="fa-solid fa-image"></i></xsl:when>
+                			    <xsl:otherwise><i class="fa-solid fa-stamp"></i></xsl:otherwise>
+                			</xsl:choose>
+                        </xsl:when>
                         <xsl:otherwise>
                             <xsl:text>‡</xsl:text> <!-- to be changed in apparatus.xsl too if necessary -->
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:element>
-            </xsl:otherwise>
-        </xsl:choose>
+<!--            </xsl:otherwise>-->
+<!--        </xsl:choose>-->
     </xsl:template>
 
     <xsl:template name="createEndnotes">

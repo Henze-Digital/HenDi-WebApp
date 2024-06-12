@@ -25,6 +25,10 @@
     padding-right:4px;
 }
 
+.apparatusEntry .moreInfoInApparatus {
+    display:none;
+}
+
 /* lemma styling */
 span.tei_lemma, span.tei_lemmaLang {
     font-style: italic;

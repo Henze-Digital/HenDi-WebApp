@@ -886,4 +886,14 @@
     <entry xml:id="cert.medium">supposedly</entry>
     <entry xml:id="cert.low">possibly</entry>
 	<entry xml:id="text">Literature</entry>
+	
+	<!-- stamps -->
+	<entry xml:id="stamp">Stamp</entry>
+	<entry xml:id="stampType-stamp">Postmark</entry>
+	<entry xml:id="stampType-oneline">Stamp (oneline)</entry>
+	<entry xml:id="stampType-round">Stamp (round)</entry>
+	<entry xml:id="stampType-square">Stamp (square)</entry>
+	<entry xml:id="stampType-rectangular">Stamp (rectangular)</entry>
+	<entry xml:id="notClassified">Not classified</entry>
+	<entry xml:id="moreInfoInApparatus">For more information see apparatus</entry>
 </dictionary>
