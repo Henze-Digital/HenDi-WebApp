@@ -252,6 +252,10 @@
       </xsl:call-template>
    </xsl:template>
    
+	<xsl:template match="tei:stamp">
+		<xsl:call-template name="popover"/>
+	</xsl:template>
+   
    <xsl:template match="tei:stamp" mode="apparatus">
       <xsl:variable name="id" select="wega:createID(.)"/>
       <xsl:call-template name="apparatusEntry">
