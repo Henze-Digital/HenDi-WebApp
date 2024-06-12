@@ -345,7 +345,7 @@
 			</xsl:if>
 		</xsl:variable>
 		<xsl:variable name="address">
-			<xsl:if test="exists(tei:address)">
+			<xsl:if test="exists(tei:address) and count(./node()) lt 4">
 				<xsl:text>tei_address</xsl:text>
 			</xsl:if>
 		</xsl:variable>
