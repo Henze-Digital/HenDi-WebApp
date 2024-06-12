@@ -258,8 +258,18 @@
    
    <xsl:template match="tei:stamp" mode="apparatus">
       <xsl:variable name="id" select="wega:createID(.)"/>
+      <xsl:variable name="title">
+        <xsl:choose>
+            <xsl:when test="@type='stamp'">
+                <xsl:value-of select="wega:getLanguageString('stampType-stamp', $lang)"/>
+            </xsl:when>
+			<xsl:otherwise>
+			    <xsl:value-of select="wega:getLanguageString('stamp', $lang)"/>
+			</xsl:otherwise>
+		</xsl:choose>
+      </xsl:variable>
       <xsl:call-template name="apparatusEntry">
-         <xsl:with-param name="title" select="'Stamp'"/>
+         <xsl:with-param name="title" select="$title"/>
          <xsl:with-param name="counter-param">
             <xsl:value-of select="'note'"/>
          </xsl:with-param>
@@ -270,9 +280,15 @@
                   <xsl:apply-templates select="preceding::tei:ptr[@target=concat('#', $id)]" mode="apparatus"/>
                </xsl:when>
                <xsl:otherwise>
-                  <xsl:text>[</xsl:text>
-                    <xsl:value-of select="@type"/>
-                  <xsl:text>]</xsl:text>
+                    <xsl:choose>
+            			<xsl:when test="not(@type='stamp')">
+                            <xsl:text>[</xsl:text><xsl:value-of select="wega:getLanguageString(concat('stampType-', @type), $lang)"/><xsl:text>]</xsl:text>
+                        </xsl:when>
+                        <xsl:when test="@type='stamp'"/>
+            			<xsl:otherwise>
+            			    <xsl:text>[</xsl:text><xsl:value-of select="wega:getLanguageString('notClassified', $lang)"/><xsl:text>]</xsl:text>
+            			</xsl:otherwise>
+            		</xsl:choose>
                </xsl:otherwise>
             </xsl:choose>
          </xsl:with-param>
