@@ -18,9 +18,11 @@
                             <li>
                                 <a href="$link/index">Home</a>
                             </li>
-                            <li>
-                                <a data-template="app:breadcrumb-person">Carl Maria von Weber</a>
-                            </li>
+                        	<div data-template="app:breadcrumb-person" data-template-key="breadcrumb-person">
+                        		<li>
+                        			<span data-template="app-shared:output" data-template-key="breadcrumb-person">Hans Werner Henze</span>
+                        		</li>
+                        	</div>
                             <li>
                                 <a data-template="app:breadcrumb-docType">Korrespondenz</a>
                             </li>
@@ -64,23 +66,21 @@
                     <div data-template="templates:include" data-template-path="templates/includes/settings.html"/>
                     <div data-template="app-shared:if-matches" data-template-key="docType" data-template-value="diaries">
                         <h2>
-                            <a href="#datePicker" data-template="lang:translate" class="collapseSingle collapsed" aria-expanded="false" data-toggle="collapse">calendar</a>
+                            <a href="#datePicker" data-template="lang:translate" class="collapseSingle" aria-expanded="true" data-toggle="collapse" role="button">calendar</a>
                         </h2>
-                        <div class="panel-collapse collapse" id="datePicker" data-template="app:inject-api-base"/>
+                        <div class="panel-collapse collapse show" id="datePicker" data-template="app:inject-api-base"/>
                     </div>
                     <div>
                         <h2>
-                            <a href="#dokument" data-template="lang:translate" class="collapseSingle collapsed" aria-expanded="false" data-toggle="collapse">document</a>
+                            <a href="#dokument" data-template="lang:translate" class="collapseSingle" aria-expanded="true" data-toggle="collapse" role="button">document</a>
                         </h2>
-                        <div id="dokument" class="panel-collapse collapse">
+                        <div id="dokument" class="panel-collapse collapse show">
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs">
                                 <li class="nav-item gradient-light">
                                     <a class="nav-link active" href="#transcription" data-toggle="tab">Text</a>
                                 </li>
-                                <li class="nav-item gradient-light">
-                                    <a class="nav-link" href="#translation" data-toggle="tab" data-template="app:translation-tab" id="translation-tab">translation</a>
-                                </li>
+                                <li data-template="app:translation-tab"/>
                                 <li data-template="app:envelope-tab"/>
                                 <li data-template="app:enclosure-tab"/>
                                 <div data-template="app-shared:if-not-matches" data-template-key="docType" data-template-value="news" data-template-wrap="no">
@@ -109,10 +109,10 @@
                             <a href="#kontext" data-template="lang:translate" class="collapseSingle collapsed" aria-expanded="false" data-toggle="collapse">context</a>
                         </h2>
                         <div id="kontext" class="panel-collapse collapse borderBox">
-                                <div data-template="app-shared:if-matches" data-template-key="docType" data-template-value="letters">            
+                                <!--<div data-template="app-shared:if-matches" data-template-key="docType" data-template-value="letters">            
                                     <div data-template="app:csLink"/>
-                                    <script type="text/javascript" src="$resources/lib/csLink/dist/static/js/cslink.js"/>                                
-                                </div>
+                                    <script type="text/javascript" src="$resources/lib/csLink/dist/csLink.js"/>                                
+                                </div>-->
                             <div id="relatedItems" data-template="app-shared:if-exists" data-template-key="context-relatedItems">
                                 <h3 data-template="lang:translate">relatedItems</h3>
                                 <ul>
@@ -185,7 +185,7 @@
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <div class="tab-pane active fade in" id="transcription">
-                        <div data-template="app-shared:output" data-template-key="isEnclosureAlert"/>
+                    	<div data-template="app-shared:output" data-template-key="isRelatedAlert"/>
                         <div data-template="app-shared:output" data-template-key="transcription"/>
                     </div>
                     <div data-template="app:translation"/>
@@ -231,7 +231,7 @@
                         </div>
                     	
                         
-                        <div>
+                        <div data-template="app-shared:if-exists" data-template-key="respStmts">
                             <h3 data-template="lang:translate" class="media-heading">responsibilities</h3>
                         	<dl data-template="app:editors"/>
                             <dl data-template="app:respStmts"/>
@@ -252,9 +252,9 @@
                                         </span>
                                         <span data-template="app-shared:output" data-template-key="sourceLink-content" class="collapse"/>
                                         <span data-template="app-shared:if-matches" data-template-key="collapse" data-template-value="true">
-                                            <a data-template="app-shared:set-attr" data-template-attr="href" data-template-key="sourceLink" data-toggle="collapse" aria-expanded="false" title="Details" class="collapseMarker collapse show"/>                                                                                                                                                                               
+                                            <a data-template="app-shared:set-attr" data-template-attr="href" data-template-key="sourceLink" data-toggle="collapse" aria-expanded="false" title="Details" class="collapseMarker collapsed" role="button"/>                                                                                                                                                                               
                                         </span>                                      
-                                        <div data-template="app-shared:set-attr" data-template-attr="id" data-template-key="sourceId" class="collapse show apparatus-details">
+                                        <div data-template="app-shared:set-attr" data-template-attr="id" data-template-key="sourceId" class="collapse apparatus-details">
                                             <div data-template="app-shared:output" data-template-key="sourceData-content"/>
                                             <!-- Processing tei:additional for every source -->
                                             <div data-template="app:additionalSources">
@@ -269,7 +269,7 @@
                                                             </span>
                                                             <span data-template="app-shared:output" data-template-key="sourceLink-content" class="collapse"/>
                                                             <span data-template="app-shared:if-matches" data-template-key="collapse" data-template-value="true">
-                                                                <a data-template="app-shared:set-attr" data-template-attr="href" data-template-key="sourceLink" data-toggle="collapse" aria-expanded="false" title="Details" class="collapseMarker collapsed apparatus-details"/>
+                                                                <a data-template="app-shared:set-attr" data-template-attr="href" data-template-key="sourceLink" data-toggle="collapse" aria-expanded="false" title="Details" class="collapseMarker collapsed apparatus-details" role="button"/>
                                                             </span>  
                                                             <div data-template="app-shared:set-attr" data-template-attr="id" data-template-key="sourceId" class="collapse">
                                                                 <div data-template="app-shared:output" data-template-key="sourceData-content"/>
@@ -329,27 +329,27 @@
             <div class="col-md-9" data-template="app-shared:if-matches" data-template-key="lang" data-template-value="de">
                 <h4>Empfohlene Zitierweise</h4>
             	<p>Hans Werner Henzes künstlerisches Netzwerk. Digitale Briefedition, <span data-template="app-shared:print" data-template-key="permalink">http://www.henze-digital.zenmem.de/ID</span> (<span data-template="app-shared:output" data-template-key="versionNews">Version NUMBER vom DATE</span>)
-<!--            		<br/>-->
-            		<!--                    <span data-template="app-shared:print" data-template-key="latestChange">Letzte Änderung dieses Dokuments am 22. Mai 2014 durch Peter Stadler</span>-->
+            		<br/>
+        		    <span data-template="app-shared:print" data-template-key="latestChange">Letzte Änderung dieses Dokuments am 12. Juni 2024 durch Dennis Ried</span>
             	</p>
             </div>
             <div class="col-md-9" data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">
                 <h4>Proposed citation</h4>
                 <p>Hans Werner Henze's network of artists. Digital letter edition, <span data-template="app-shared:print" data-template-key="permalink">https://henze-digital.zenmem.de/ID</span> (<span data-template="app-shared:output" data-template-key="versionNews">Version NUMBER vom DATE</span>)
-<!--                    <br/>-->
-<!--                    <span data-template="app-shared:print" data-template-key="latestChange">Letzte Änderung dieses Dokuments am DATE durch EDITOR</span>-->
+                	<br/>
+                	<span data-template="app-shared:print" data-template-key="latestChange">Letzte Last change of this document by Dennis Ried on June 12, 2024</span>
                 </p>
             </div>
         </div>
     	<div class="row permaLink" data-template="app:credits">
-            <div class="col-md-9" data-template="app-shared:if-exists" data-template-key="credits">
+            <div class="col-md-9" data-template="app-shared:if-exists" data-template-key="credits" data-template-wrap="no">
                 <h4 data-template="app-shared:if-matches" data-template-key="lang" data-template-value="de">Dank</h4>
                 <h4 data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">Credits</h4>
             	<p data-template="app-shared:print" data-template-key="credits">Mit freundlicher Genehmigung der Rechtsnachfolge des Urhebers.</p>
             </div>
         </div>
-        <div class="row permaLink"  data-template="app:legalNotice">
-            <div class="col-md-9" data-template="app-shared:if-exists" data-template-key="legalNotice">
+        <div class="row permaLink" data-template="app:legalNotice">
+            <div class="col-md-9" data-template="app-shared:if-exists" data-template-key="legalNotice" data-template-wrap="no">
                 <h4 data-template="app-shared:if-matches" data-template-key="lang" data-template-value="de">Rechtehinweis</h4>
                 <h4 data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">Legal notice</h4>
             	<p data-template="app-shared:print" data-template-key="legalNotice">Alle Rechte vorbehalten.</p>

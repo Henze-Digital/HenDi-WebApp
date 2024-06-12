@@ -1,8 +1,8 @@
 <xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:functx="http://www.functx.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" xmlns:hendi="http://henze-digital.zenmem.de/ns/1.0" exclude-result-prefixes="xs" version="3.1">
 
    <xsl:variable name="doc" select="wega:doc($docID)"/>
-	<xsl:variable name="textConstitutionNodes" as="node()*" select=".//tei:subst | .//tei:add[not(parent::tei:subst)] | .//tei:gap[not(@reason='outOfScope' or parent::tei:del)] | .//tei:sic[not(parent::tei:choice)] | .//tei:del[not(parent::tei:subst)] | .//tei:unclear[not(parent::tei:choice)] | .//tei:note[@type='textConst'] | .//tei:handShift | .//tei:supplied[parent::tei:damage] | .//tei:damage[not(node())]"/>
-	<xsl:variable name="commentaryNodes" as="node()*" select=".//tei:note[@type=('commentary', 'definition')] | .//tei:choice | .//tei:figDesc | .//tei:stamp | .//tei:foreign[@xml:id]"/>
+	<xsl:variable name="textConstitutionNodes" as="node()*" select=".//tei:subst | .//tei:add[not(parent::tei:subst)] | .//tei:gap[not(@reason='outOfScope' or parent::tei:del)] | .//tei:sic[not(parent::tei:choice)] | .//tei:del[not(parent::tei:subst)] | .//tei:unclear[not(parent::tei:choice) and not(parent::tei:choice)] | .//tei:note[@type='textConst'] | .//tei:handShift | .//tei:supplied[parent::tei:damage] | .//tei:damage[not(node())] | .//tei:hi[@hand]"/>
+	<xsl:variable name="commentaryNodes" as="node()*" select=".//tei:note[@type=('commentary', 'definition')] | .//tei:choice | .//tei:figDesc | .//tei:foreign[@xml:id] | .//tei:p[@hendi:rotation] | .//tei:fw[@hendi:rotation]"/>
 	<xsl:variable name="autoCommentaryNodes" as="node()*" select=".//tei:persName[not(@key)] | .//tei:orgName[not(@key)] | .//tei:placeName[not(@key)]"/>
 	<xsl:variable name="internalNodes" as="node()*" select=".//tei:note[@type='internal']"/>
    <xsl:variable name="rdgNodes" as="node()*" select=".//tei:app"/>
@@ -26,7 +26,8 @@
          <xsl:if test="wega:isNews($docID)">
             <xsl:attribute name="style">display:none</xsl:attribute>
          </xsl:if>
-         <xsl:if test="$doc//tei:profileDesc//tei:handNotes">
+         <xsl:variable name="theHandNotes" select="$doc//tei:profileDesc//tei:handNote"/>
+         <xsl:if test="$theHandNotes">
             <xsl:element name="h3">
                <xsl:attribute name="class">media-heading</xsl:attribute>
                <xsl:value-of select="wega:getLanguageString('handNotes', $lang)"/>
@@ -34,13 +35,14 @@
          </xsl:if>
          <xsl:element name="ul">
             <xsl:attribute name="class">apparatus handNotes</xsl:attribute>
-            <xsl:for-each select="$doc//tei:profileDesc//tei:handNote">
+            <xsl:for-each select="$theHandNotes">
                <xsl:element name="li">
                   <xsl:element name="div">
                      <xsl:attribute name="class">row</xsl:attribute>
                      <xsl:element name="div">
                         <xsl:attribute name="class">col-1 text-nowrap</xsl:attribute>
-                        <xsl:text>–</xsl:text>
+                        <xsl:number count="$theHandNotes" level="any"/>
+                        <xsl:text>.</xsl:text>
                      </xsl:element>
                      <xsl:apply-templates select="." mode="apparatus"/>
                   </xsl:element>
@@ -250,46 +252,46 @@
       </xsl:call-template>
    </xsl:template>
 	
-    <xsl:template match="tei:stamp">
-        <xsl:element name="span">
-			<xsl:attribute name="class">
-				<xsl:value-of select="concat('stamp-',@type)"/>
-			</xsl:attribute>
-			<xsl:attribute name="style">display: inline-block;
-  border-radius: 60px;
-  box-shadow: 0 0 2px #888;
-  padding: 0.5em 0.6em;</xsl:attribute>
-			<i class="fa-solid fa-stamp"></i>
-		</xsl:element>
+	<xsl:template match="tei:p[@hendi:rotation]">
+      <xsl:element name="p">
+        <xsl:attribute name="class">tei_hi_borderBloc</xsl:attribute>
         <xsl:call-template name="popover"/>
-	</xsl:template>
+        <xsl:apply-templates/>
+      </xsl:element>
+   </xsl:template>
    
-	<xsl:template match="tei:stamp" mode="apparatus">
-       <xsl:variable name="id" select="wega:createID(.)"/>
+   <xsl:template match="tei:p[@hendi:rotation]|tei:fw[@hendi:rotation]" mode="apparatus">
+      <xsl:variable name="id" select="wega:createID(.)"/>
       <xsl:call-template name="apparatusEntry">
          <xsl:with-param name="title" select="wega:getLanguageString('note_commentary', $lang)"/>
          <xsl:with-param name="counter-param">
             <xsl:value-of select="'note'"/>
          </xsl:with-param>
          <xsl:with-param name="lemmaAlt">
-            <xsl:choose>
-               <xsl:when test="preceding::tei:ptr[@target=concat('#', $id)]">
-                  <!-- When ein ptr existiert, dann wird dieser ausgewertet -->
-                  <xsl:apply-templates select="preceding::tei:ptr[@target=concat('#', $id)]" mode="apparatus"/>
-               </xsl:when>
-               <xsl:otherwise>
-                  <xsl:text>[</xsl:text>
-                  <xsl:value-of select="@type"/>
-                  <xsl:text>]</xsl:text>
-               </xsl:otherwise>
-            </xsl:choose>
+            <xsl:text>[</xsl:text>
+            <xsl:value-of select="wega:getLanguageString('rotation', $lang)"/>
+            <xsl:text>]</xsl:text>
          </xsl:with-param>
          <xsl:with-param name="explanation">
-            <xsl:apply-templates/>
+            <xsl:choose>
+               <xsl:when test="@place=('margin', 'margin.left', 'margin.right', 'margin.top', 'margin.bottom')">
+                  <xsl:value-of select="wega:getLanguageString(concat('p', functx:capitalize-first(translate(@place,'.','-'))), $lang)"/>
+               </xsl:when>
+               <xsl:otherwise>
+                  <xsl:value-of select="wega:getLanguageString('pDefault', $lang)"/>
+               </xsl:otherwise>
+            </xsl:choose>
+            <xsl:if test="@hendi:rotation">
+                <xsl:text>, </xsl:text>
+            	<xsl:value-of select="wega:getLanguageString('textRotation', $lang)"/>
+            	<xsl:text> (</xsl:text>
+                <xsl:value-of select="@hendi:rotation"/>
+                <xsl:text>°)</xsl:text>
+            </xsl:if>
          </xsl:with-param>
       </xsl:call-template>
    </xsl:template>
-   
+	
    <xsl:template match="tei:note[@type=('internal')]">
       <xsl:call-template name="popover">
       	<xsl:with-param name="marker" select="'bg-danger'"/>
@@ -387,7 +389,7 @@
                <xsl:when test="tei:del[@rend='strikethrough']">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
-               	<xsl:if test="./tei:unclear">
+               	<xsl:if test="./tei:del/tei:unclear">
                             <xsl:call-template name="unclearInDel"/>
                         </xsl:if>
                   <xsl:value-of select="wega:getLanguageString('substDelStrikethrough', $lang)"/>
@@ -397,7 +399,7 @@
                <xsl:when test="tei:del[@rend='overwritten']">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
-               	<xsl:if test="./tei:unclear">
+               	<xsl:if test="./tei:del/tei:unclear">
                             <xsl:call-template name="unclearInDel"/>
                         </xsl:if>
                   <xsl:value-of select="wega:getLanguageString('substDelOverwritten', $lang)"/>
@@ -407,7 +409,7 @@
                <xsl:when test="tei:del[@rend='overtyped']">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
-               	  <xsl:if test="./tei:unclear">
+               	  <xsl:if test="./tei:del/tei:unclear">
                             <xsl:call-template name="unclearInDel"/>
                         </xsl:if>
                   <xsl:value-of select="wega:getLanguageString('substDelOvertyped', $lang)"/>
@@ -417,7 +419,7 @@
                <xsl:when test="tei:del[@rend='erased']">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
-               	<xsl:if test="./tei:unclear">
+               	<xsl:if test="./tei:del/tei:unclear">
                             <xsl:call-template name="unclearInDel"/>
                         </xsl:if>
                   <xsl:value-of select="wega:getLanguageString('delErased', $lang)"/>
@@ -425,7 +427,7 @@
                <xsl:when test="tei:del">
                   <xsl:sequence select="wega:enquote($processedDel)"/>
                   <xsl:text> </xsl:text>
-               	  <xsl:if test="./tei:unclear">
+               	  <xsl:if test="./tei:del/tei:unclear">
                             <xsl:call-template name="unclearInDel"/>
                         </xsl:if>
                   <xsl:value-of select="wega:getLanguageString('substDel', $lang)"/>
@@ -558,12 +560,9 @@
                <xsl:when test="@place='below'">
                   <xsl:text> tei_hi_subscript</xsl:text>
                </xsl:when>
-               <!--<xsl:when test="./tei:add[@place='margin']">
-                        <xsl:text>Ersetzung am Rand. </xsl:text>
-                    </xsl:when>-->
-               <!--<xsl:when test="./tei:add[@place='mixed']">
-                        <xsl:text>Ersetzung an mehreren Stellen. </xsl:text>
-                        </xsl:when>-->
+               <xsl:when test="starts-with(@place,'margin')">
+                  <xsl:text> tei_hi_backgroundGray</xsl:text>
+               </xsl:when>
             </xsl:choose>
          </xsl:attribute>
          <xsl:apply-templates/>
@@ -592,7 +591,7 @@
          </xsl:with-param>
          <xsl:with-param name="explanation">
             <xsl:choose>
-               <xsl:when test="@place=('margin', 'inline', 'above', 'below', 'mixed')">
+               <xsl:when test="@place=('margin', 'inline', 'above', 'below', 'mixed', 'margin-left', 'margin-right', 'margin-top', 'margin-bottom')">
                   <xsl:value-of select="wega:getLanguageString(concat('add', functx:capitalize-first(@place)), $lang)"/>
                </xsl:when>
                <xsl:otherwise>
@@ -611,7 +610,7 @@
       </xsl:call-template>
    </xsl:template>
 
-   <xsl:template match="tei:unclear[not(parent::tei:choice)]">
+   <xsl:template match="tei:unclear[not(parent::tei:choice) and not(parent::tei:del)]">
       <xsl:element name="span">
          <xsl:apply-templates select="@xml:id"/>
          <xsl:attribute name="class" select="concat('tei_', local-name())"/>
@@ -622,14 +621,13 @@
 	
    <xsl:template name="unclearInDel">
    	<xsl:element name="span">
-            <xsl:text>(</xsl:text>
+            <xsl:text> (</xsl:text>
             <xsl:value-of select="wega:getLanguageString('unclearDefault', $lang)"/>
             <xsl:text>) </xsl:text>
-         
       </xsl:element>
    </xsl:template>
 
-   <xsl:template match="tei:unclear[not(parent::tei:choice)]" mode="apparatus">
+   <xsl:template match="tei:unclear[not(parent::tei:choice) and not(parent::tei:del)]" mode="apparatus">
       <xsl:variable name="unclearText">
          <xsl:apply-templates mode="lemma"/>
       </xsl:variable>
@@ -688,9 +686,6 @@
          <xsl:choose>
             <xsl:when test="tei:sic">
                <xsl:apply-templates select="tei:sic" mode="#current"/>
-               <xsl:element name="span">
-               <xsl:text>[sic]</xsl:text>
-               </xsl:element>
             </xsl:when>
             <xsl:when test="tei:unclear">
                <xsl:variable name="opts" as="element()*">
@@ -817,13 +812,13 @@
       <xsl:call-template name="popover"/>
    </xsl:template>
    
-   <xsl:template match="tei:del[not(parent::tei:subst)]">
+   <xsl:template match="tei:del">
       <xsl:element name="span">
          <xsl:apply-templates select="@xml:id"/>
          <xsl:choose>
             <xsl:when test="@rend='overtyped'">
              <xsl:attribute name="class" select="'tei_del_overtyped'"/>
-             <xsl:variable name="delLength" as="xs:integer" select="string-length(text())"/>
+             <xsl:variable name="delLength" as="xs:integer" select="string-length(normalize-space(string-join(.//text(),' ')))"/>
              <xsl:element name="span">
                 <xsl:apply-templates mode="#current"/>
              </xsl:element>
@@ -913,7 +908,17 @@
       <xsl:call-template name="apparatusEntry">
          <xsl:with-param name="title" select="wega:getLanguageString('popoverTitle.del',$lang)"/>
          <xsl:with-param name="lemma">
-            <xsl:apply-templates mode="lemma"/>
+            <xsl:variable name="textTokens" select="tokenize(normalize-space(string-join(.//text(), ' ')), '\s+')"/>
+             <xsl:choose>
+                 <xsl:when test="count($textTokens) gt 10">
+                    <!-- Begrenzung des Lemmas auf die ersten 4 und letzten 4 Wörter -->
+                    <xsl:sequence select="(subsequence($textTokens, 1, 4), ' […] ', subsequence($textTokens, count($textTokens) - 4))"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                      <xsl:apply-templates mode="lemma"/>
+                  </xsl:otherwise>
+             </xsl:choose>
+            
          </xsl:with-param>
          <xsl:with-param name="explanation">
             <xsl:choose>
@@ -939,6 +944,9 @@
                     <xsl:value-of select="wega:getLanguageString('delOrthoRealised', $lang)"/>
                 </xsl:otherwise>
             </xsl:choose>
+            <xsl:if test="./tei:unclear">
+                <xsl:call-template name="unclearInDel"/>
+            </xsl:if>
             <xsl:sequence select="hendi:getHandFeatures(.)"/>
          </xsl:with-param>
       </xsl:call-template>
@@ -965,8 +973,10 @@
     
    <xsl:template match="tei:note" mode="lemma"/>
    <xsl:template match="tei:figDesc" mode="lemma"/>
-   <xsl:template match="tei:stamp" mode="lemma"/>
-	<xsl:template match="tei:foreign" mode="lemma"/>
+   <xsl:template match="tei:p[@hendi:rotation]" mode="lemma"/>
+	<xsl:template match="tei:foreign" mode="lemma">
+		<xsl:apply-templates/>
+	</xsl:template>
 	<xsl:template match="tei:lb" mode="lemma">
       <xsl:text> </xsl:text>
    </xsl:template>
@@ -1037,6 +1047,12 @@
 		</xsl:element>
 	</xsl:template>
 	
+	<xsl:template match="tei:foreign[@source='original']">
+		<xsl:element name="i">
+			<xsl:apply-templates mode="#current"/>
+		</xsl:element>
+	</xsl:template>
+	
 	<xsl:template match="tei:foreign[@xml:id]" mode="apparatus">
 		<xsl:call-template name="apparatusEntry">
 			<xsl:with-param name="counter-param">
@@ -1060,6 +1076,25 @@
       </xsl:call-template>
     </xsl:template>
    
+    <xsl:template match="tei:hi[@hand]" mode="lemma">
+		<xsl:apply-templates/>
+	</xsl:template>
+	
+	<xsl:template match="tei:hi[@hand]" mode="apparatus">
+		<xsl:call-template name="apparatusEntry">
+         <xsl:with-param name="title" select="wega:getLanguageString('popoverTitle.hi',$lang)"/>
+         <xsl:with-param name="lemma">
+            <xsl:apply-templates mode="lemma"/>
+         </xsl:with-param>
+         <xsl:with-param name="explanation">
+            <xsl:value-of select="wega:getLanguageString('hiUnderline', $lang)"/>
+            <xsl:sequence select="hendi:getHandFeatures(.)"/>
+         </xsl:with-param>
+      </xsl:call-template>
+	</xsl:template>
+   
+   
+   
    <!-- template for creating an apparatus entry -->
    <xsl:template name="apparatusEntry">
       <xsl:param name="title" as="xs:string"/>
@@ -1073,13 +1108,13 @@
       <xsl:variable name="counter">
          <xsl:choose>
             <xsl:when test="$counter-param='note'">
-               <xsl:number count="tei:note[@type=('commentary', 'definition')] | tei:choice | tei:figDesc | tei:stamp | tei:foreign[@xml:id]" level="any"/>
+               <xsl:number count="tei:note[@type=('commentary', 'definition')] | tei:choice | tei:figDesc | tei:p[@hendi:rotation] | tei:foreign[@xml:id]" level="any"/>
             </xsl:when>
             <xsl:when test="$counter-param='handNote'">
                <xsl:number count="tei:handNote" level="any"/>
             </xsl:when>
             <xsl:otherwise>
-            	<xsl:number count="tei:subst | tei:add[not(parent::tei:subst)] | tei:gap[not(@reason='outOfScope' or parent::tei:del)] | tei:sic[not(parent::tei:choice)] | tei:del[not(parent::tei:subst)] | tei:unclear[not(parent::tei:choice)] | tei:note[@type='textConst']  | tei:supplied[parent::tei:damage] | tei:damage[not(node())] | tei:note[@type='internal'] | tei:handShift" level="any"/>
+            	<xsl:number count="tei:subst | tei:add[not(parent::tei:subst)] | tei:gap[not(@reason='outOfScope' or parent::tei:del)] | tei:sic[not(parent::tei:choice)] | tei:del[not(parent::tei:subst)] | tei:unclear[not(parent::tei:choice) and not(parent::tei:choice)] | tei:note[@type='textConst']  | tei:supplied[parent::tei:damage] | tei:damage[not(node())] | tei:note[@type='internal'] | tei:handShift" level="any"/>
             </xsl:otherwise>
          </xsl:choose>
       </xsl:variable>
@@ -1123,7 +1158,7 @@
       			   </xsl:choose>
       			</xsl:element>
       			<xsl:text> </xsl:text>
-      			<xsl:sequence select="$lemmaLang/parent::node()//text()"/>
+      			<xsl:sequence select="$lemmaLang/parent::node()//text()[not(parent::tei:del)]"/>
       		</xsl:element>
       	</xsl:if>
          <xsl:if test="$explanation">
@@ -1180,6 +1215,7 @@
       <xsl:variable name="handNoteMedium" select="wega:getLanguageString(concat('medium.',$handNote/@medium), $lang)"/>
       <xsl:variable name="handNoteColor" select="wega:getLanguageString(concat('color.',$handNote/@hendi:color), $lang)"/>
       <xsl:variable name="handNoteScribe" select="$handNote/@scribe"/>
+      <xsl:variable name="handNoteCert" select="$handNote/@cert"/>
       
       <xsl:choose>
           <xsl:when test="$handNote">
@@ -1211,6 +1247,9 @@
              </xsl:if>
              <xsl:if test="$handNoteScribe">
               <xsl:text>, </xsl:text>
+              <xsl:if test="$handNoteCert">
+                  <xsl:value-of select="concat(wega:getLanguageString(concat('cert.',$handNoteCert), $lang), ' ', wega:getLanguageString('cert.by', $lang), ' ')"/>
+              </xsl:if>
               <xsl:element name="a">
                  <xsl:attribute name="class">
                     <xsl:value-of select="wega:preview-class($handNote)"/>
@@ -1246,7 +1285,7 @@
             <xsl:value-of select="wega:preview-class($handNote)"/>
          </xsl:attribute>
          <xsl:attribute name="href" select="wega:createLinkToDoc($handNoteScribe, $lang)"/>
-         <xsl:value-of select="wega:doc($handNoteScribe)//tei:persName[@type='reg']"/>
+         <xsl:value-of select="wega:doc($handNoteScribe)//tei:persName[@type='reg']/normalize-space(.)"/>
       </xsl:element>
      </xsl:if>
      <xsl:if test="$handNoteMedium or $handNoteColor">   

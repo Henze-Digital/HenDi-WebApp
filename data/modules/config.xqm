@@ -84,6 +84,7 @@ declare variable $config:default-date-picture-string := function($lang as xs:str
  : @return xs:string the (newly) set language variable 
  :)
 declare function config:guess-language($lang as xs:string?) as xs:string {
+    (: need to employ $exist:path here because our own variable exist:path is only available as key from $model :)
     let $urlPathSegment := if(request:exists()) then tokenize(request:get-attribute('$exist:path'), '/')[2] else ()
     let $browserLanguage := function() as xs:string* {
         (config:get-ordered-browser-languages()[.=$config:valid-languages])[1]
@@ -406,11 +407,26 @@ declare function config:is-weberStudies($doc as document-node()?) as xs:boolean 
  : Checks whether a given string matches the defined types of bibliographic objects
  :
  : @author Peter Stadler
+ : @author Dennis Ried
  : @param $string the string to test
  : @return xs:boolean
 :)
 declare function config:is-biblioType($string as xs:string?) as xs:boolean {
-    $string = ('mastersthesis', 'inbook', 'online', 'review', 'book', 'misc', 'inproceedings', 'article', 'score', 'incollection', 'phdthesis')
+    $string = doc($config:app-root || '/guidelines/guidelines-de-hendiBiblio.compiled.xml')//tei:dataSpec[@ident="hendi.biblio.types"]//tei:valItem/@ident
+};
+
+(:~
+ : Checks whether a given string matches the defined types of work objects
+ :
+ : @author Dennis Ried
+ : @param $string the string to test
+ : @return xs:boolean
+:)
+declare function config:is-workType($string as xs:string?) as xs:boolean {
+    ($string = doc($config:app-root || '/guidelines/guidelines-de-hendiWorksMEI.compiled.xml')//tei:elementSpec[@ident="work"]//tei:attDef[@ident="class"]//tei:valItem/@ident)
+    or
+    (: ($string = doc($config:app-root || '/guidelines/guidelines-de-hendiWorksTEI.compiled.xml')//tei:dataSpec[@ident="hendi.biblio.types"]//tei:valItem/@ident) :)
+    ($string = 'text')
 };
 
 (:~
@@ -702,6 +718,7 @@ declare function config:link-to-current-app($relLink as xs:string?) as xs:string
         Thus, redirects would fail …
     :)
     if(request:exists()) 
+    (: need to employ $exist:prefix and $exist:controller here because our own variables are only available as keys from $model :)
     then str:join-path-elements(('/', request:get-context-path(), request:get-attribute("$exist:prefix"), request:get-attribute('$exist:controller'), $relLink))
     else config:log('warn', 'request object does not exist; failing to create a link')
 };

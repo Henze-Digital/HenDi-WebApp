@@ -7,6 +7,7 @@
 	<!-- import default properties from file -->
 	<property file="${HenDi-WebApp.basedir}/local.build.properties" prefix="hendi"/>
 	<property file="${HenDi-WebApp.basedir}/build.properties" prefix="hendi"/>
+	<property file="${HenDi-WebApp.basedir}/submodules/HenDi-ODD/build.properties" prefix="hendi-odd"/>
 	
 	<import file="submodules/WeGA-WebApp/build.xml" as="wega" prefixseparator=":"/>
 	<property file="${WeGA-WebApp.basedir}/build.properties" prefix="wega"/>
@@ -28,16 +29,35 @@
 	</target>
 	
 	<target name="-get-current-hash-of-HEAD">
-		
+		<description>Get the hash of the current git HEAD</description>
+		<exec executable="bash" logError="true" failonerror="true" outputproperty="local.revision">
+			<arg value="${HenDi-WebApp.basedir}/getGitHash.sh" />
+		</exec>
+		<echo>Current has of HEAD: ${local.revision}</echo>
 	</target>
 	
+	<target name="clean-submodule">
+		<echo>Cleaning submodule WeGA-WebApp</echo>
+		<exec executable="bash" logError="true" failonerror="true">
+			<arg value="${HenDi-WebApp.basedir}/clean.sh" />
+		</exec>
+		<delete failonerror="true">
+			<fileset dir="${WeGA-WebApp.basedir}/${wega.build.dir}">
+				<include name="**"/>
+			</fileset>
+			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}">
+				<include name="**"/>
+			</fileset>
+			<dirset dir="${WeGA-WebApp.basedir}">
+				<include name="${wega.build.dir}/**"/>
+				<include name="${wega.dist.dir}/**"/>
+			</dirset>
+		</delete>
+	</target>
 	
-	<target name="hendi:init">
+	<target name="hendi:init" depends="-get-hendi-secrets-for-ci, -update-hendi-secrets-local">
 		<antcall target="wega:clean"/>
 		<antcall target="wega:init"/>
-		<antcall target="-get-hendi-secrets-for-ci"/>
-		<antcall target="-update-hendi-secrets-local"/>
-		<antcall target="-get-current-hash-of-HEAD"/>
 	</target>
 	
 	<target name="hendi-package-files">
@@ -59,9 +79,20 @@
 		</copy>
 		<echo>Update package.json in submodule WeGA-WebApp</echo>
 		<copy file="${HenDi-WebApp.basedir}/package.json" tofile="${HenDi-WebApp.basedir}/submodules/WeGA-WebApp/package.json" overwrite="true"/>
+		<echo>Creating CITATION.cff</echo>
+		<copy file="${HenDi-WebApp.basedir}/CITATION.cff.tmpl" tofile="${WeGA-WebApp.basedir}/${wega.dist.dir}/CITATION.cff" filtering="true" overwrite="true">
+			<filterset>
+				<filter token="project.app" value="${hendi.project.app}"/>
+				<filter token="project.version" value="${hendi.project.version}"/>
+				<filter token="release.doi.webapp" value="${hendi.release.doi.webapp}"/>
+				<filter token="release.date" value="${hendi.release.date}"/>
+				<filter token="release.year" value="${hendi.release.year}"/>
+			</filterset>
+		</copy>
+		<copy file="${WeGA-WebApp.basedir}/${wega.dist.dir}/CITATION.cff" tofile="${HenDi-WebApp.basedir}/CITATION.cff"/>
 	</target>
 	
-	<target name="webapp-dist-libs" depends="wega:yarn">
+	<target name="webapp-dist-libs" depends="wega:yarn" unless="${publishing}">
 		<echo>Copy libs to ${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib</echo>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/lib">
 			<fileset dir="${wega.frontend_libs.dir}">
@@ -99,9 +130,11 @@
 		
 		<replace file="${WeGA-WebApp.basedir}/${wega.dev_libs.dir}/flag-icons/css/flag-icons.css" token="url(../flags/" value="url(../img/flags/"/>
 		<replace file="${WeGA-WebApp.basedir}/${wega.dev_libs.dir}/flag-icons/css/flag-icons.min.css" token="url(../flags/" value="url(../img/flags/"/>
+		
+		<antcall target="wega:wega-mirador"/>
 	</target>
 	
-	<target name="webapp-dist-data-wega">
+	<target name="webapp-dist-data-wega" unless="${publishing}">
 		<echo>Get data files from WeGA-WebApp dist task </echo>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}">
 			<fileset dir="${WeGA-WebApp.basedir}">
@@ -121,7 +154,6 @@
 				<exclude name="*.xpr"/>
 				<exclude name="package.json"/>
 				<exclude name="yarn.lock"/>
-				<exclude name=".dockerignore"/>
 				<exclude name=".travis.yml"/>
 				<exclude name="**/less/**"/>
 				<exclude name="**/sass/**"/>
@@ -129,7 +161,7 @@
 		</copy>
 	</target>
 	
-	<target name="webapp-dist-data-hendi">
+	<target name="webapp-dist-data-hendi" unless="${publishing}">
 		<echo>Overwrite SASS files</echo>
 		<copy todir="${WeGA-WebApp.basedir}/resources/sass" overwrite="yes">
 			<fileset dir="${HenDi-WebApp.basedir}/data/resources/sass" includes="**"/>
@@ -141,15 +173,32 @@
 		</copy>
 		
 		<echo>Overwrite data</echo>
+		<echo>Creating options.xml</echo>
+		<copy file="${HenDi-WebApp.basedir}/data/catalogues/options.xml.tmpl" tofile="${HenDi-WebApp.basedir}/data/catalogues/options.xml" filtering="true" overwrite="true">
+			<filterset>
+				<filter token="project.app" value="${hendi.project.app}"/>
+				<filter token="project.version" value="${hendi.project.version}"/>
+				<filter token="project.version.odd" value="${hendi-odd.project.version}"/>
+				<filter token="release.doi.webapp" value="${hendi.release.doi.webapp}"/>
+				<filter token="release.doi.data" value="${hendi.release.doi.data}"/>
+				<filter token="release.doi.odd" value="${hendi.release.doi.odd}"/>
+				<filter token="version.date" value="${hendi.version.date}"/>
+				<filter token="version.news" value="${hendi.version.news}"/>
+			</filterset>
+		</copy>
+		
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}" overwrite="yes">
 			<fileset dir="${HenDi-WebApp.basedir}/data">
 				<include name="*.*"/>
 				<include name="catalogues/**"/>
+				<exclude name="catalogues/options.xml.tmpl"/>
 				<include name="modules/**"/>
 				<include name="resources/**"/>
 				<include name="templates/**"/>
 				<include name="xsl/**"/>
-				<exclude name="api/**"/>
+				<!-- The data of the api must be included here -->
+				<!-- because this will be part of the app      -->
+				<include name="api/**"/>
 				<exclude name="resources/sass"/>
 			</fileset>
 		</copy>
@@ -161,6 +210,8 @@
 			</fileset>
 		</copy>
 		<echo>Overwrite API</echo>
+		<!-- The data of the api must also be included here because -->
+		<!-- this will be compiled by wega:swagger-cli target       -->
 		<copy todir="${WeGA-WebApp.basedir}" overwrite="yes">
 			<fileset dir="${HenDi-WebApp.basedir}/data">
 				<include name="api/**"/>
@@ -168,7 +219,7 @@
 		</copy>
 	</target>
 	
-	<target name="webapp-dist-img-fonts">
+	<target name="webapp-dist-img-fonts" unless="${publishing}">
 		<echo>Add icon.png</echo>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}" overwrite="yes" failonerror="no">
 			<file file="${HenDi-WebApp.basedir}/hendi-secrets/wega-app/img/icon.png"/>
@@ -216,7 +267,7 @@
 		</copy>
 	</target>
 
-	<target name="webapp-dist-odd-hendi">
+	<target name="webapp-dist-odd-hendi" unless="${publishing}">
 		<echo>Overwrite WeGA-ODD with the HenDi-ODD data</echo>
 		<mkdir dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/guidelines"/>
 		<copy todir="${WeGA-WebApp.basedir}/${wega.dist.dir}/guidelines" overwrite="yes">
@@ -229,7 +280,7 @@
 		</copy>
 	</target>
 
-	<target name="webapp-prepare">
+	<target name="webapp-prepare" unless="${publishing}">
 		<antcall target="hendi-package-files"/>
 		<antcall target="webapp-dist-libs"/>
 		<antcall target="webapp-dist-data-wega"/>
@@ -238,7 +289,7 @@
 		<antcall target="webapp-dist-odd-hendi"/>
 	</target>
 	
-	<target name="build-webapp" depends="hendi:init">
+	<target name="build-webapp" depends="hendi:init" unless="${publishing}">
 		<!-- HenDi-WebApp build preparation -->
 		<antcall target="webapp-prepare"/>
 		<!-- run sass -->
@@ -248,7 +299,7 @@
 		<antcall target="wega:swagger-cli"/>
 	</target>
 	
-	<target name="minify" depends="build-webapp">
+	<target name="minify" depends="build-webapp" unless="${publishing}">
 		<echo>Run minify on CSS files</echo>
 		<apply executable="${WeGA-WebApp.basedir}/${dev_libs.dir}/minify/bin/minify.js" parallel="false">
 			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}/resources/css" includes="*.css" excludes="*min.css"/>
@@ -273,33 +324,49 @@
 		</apply>
 	</target>
 	
-	<target name="xar" depends="minify">
-		<description>Get the hash of the current git HEAD</description>
-		<exec executable="git" outputproperty="local.revision">
-			<arg value="rev-parse"/>
-			<arg value="--short"/>
-			<arg value="HEAD"/>
-		</exec>
-		<echo>Current has of HEAD: ${local.revision}</echo>
+	<target name="zipping" depends="minify, -get-current-hash-of-HEAD" unless="${publishing}">
 		<echo>Creating the xar Package (zipping).</echo>
 		<zip destfile="${HenDi-WebApp.basedir}/${hendi.build.dir}/${hendi.project.app}-${hendi.project.version}-${local.revision}.xar">
 			<fileset dir="${WeGA-WebApp.basedir}/${wega.dist.dir}">
 				<exclude name="*.tmpl"/>
+				<exclude name="*.dockerignore"/>
 				<exclude name="resources/sass/**"/>
 				<exclude name="resources/css/styles.css.map"/>
 			</fileset>
 		</zip>
-<!--		<antcall target="wega:clean"/>-->
 	</target>
 	
-	<target name="update-hendi-docker" depends="xar">
+	<target name="zippingForPublishing" depends="hendi-package-files" if="${publishing}">
+		<echo>Creating the xar Package (zipping) for publishing.</echo>
+		<zip destfile="${HenDi-WebApp.basedir}/${hendi.build.dir}/${hendi.project.app}-${hendi.project.version}.zip">
+			<fileset dir="${HenDi-WebApp.basedir}">
+				<include name="**/*.*"/>
+				<include name="data/LICENSE"/>
+				<exclude name=".git/"/>
+				<exclude name="hendi-pkg-webapp/"/>
+				<exclude name="hendi-secrets/"/>
+				<exclude name="submodules/"/>
+				<exclude name=".git*"/>
+				<exclude name="*.dockerignore"/>
+				<exclude name="*.sh"/>
+				<exclude name="*.xpr"/>
+			</fileset>
+		</zip>
+	</target>
+	
+	<target name="xar">
+		<antcall target="zipping"/>
+		<antcall target="zippingForPublishing"/>
+	</target>
+	
+	<target name="update-hendi-docker" depends="xar, -get-current-hash-of-HEAD">
 		<echo>Delete old packages</echo>
 		<delete>
 			<fileset dir="${HenDi-WebApp.basedir}/../hendi-docker/autodeploy">
 				<include name="${hendi.project.app}-${hendi.project.version}*.xar"/>
 			</fileset>
 		</delete>
-		<echo>Delete new package</echo>
+		<echo>Add new package</echo>
 		<copy file="${HenDi-WebApp.basedir}/hendi-pkg-webapp/${hendi.project.app}-${hendi.project.version}-${local.revision}.xar" todir="${HenDi-WebApp.basedir}/../hendi-docker/autodeploy" overwrite="yes"/>
 	</target>
 	

@@ -3,6 +3,7 @@
     <xsl:param name="createSecNos" select="false()"/>
     <xsl:param name="secNoOffset" select="0"/>
     <xsl:param name="uri"/>
+    <xsl:param name="main-source-file" select="'/db/apps/HenDi-WebApp/guidelines/guidelines-de-hendiAll.compiled.xml'"/>
     <xsl:strip-space elements="*"/>
     <xsl:preserve-space elements="tei:q tei:quote tei:cell tei:p tei:hi tei:persName tei:rs tei:workName tei:characterName tei:placeName tei:code tei:eg tei:item tei:head tei:date tei:orgName tei:note tei:lem tei:rdg tei:add tei:bibl"/>
     <xsl:include href="common_link.xsl"/>
@@ -39,7 +40,7 @@
     <xsl:template match="tei:divGen[@type='endNotes']">
         <xsl:call-template name="createEndnotesFromNotes"/>
     </xsl:template>
-
+    
     <xsl:template match="tei:div">
         <xsl:variable name="uniqueID">
             <xsl:choose>
@@ -52,16 +53,65 @@
             </xsl:choose>
         </xsl:variable>
         <xsl:element name="div">
-            <xsl:attribute name="id" select="$uniqueID"/>
-            <xsl:if test="@type">
-                <xsl:attribute name="class" select="@type"/>
-            </xsl:if>
-            <xsl:if test="matches(@xml:id, '^para\d+$')">
-                <xsl:call-template name="create-para-label">
-                    <xsl:with-param name="no" select="substring-after(@xml:id, 'para')"/>
-                </xsl:call-template>
-            </xsl:if>
-            <xsl:apply-templates/>
+            <xsl:choose>
+                <xsl:when test="not(parent::tei:div) and (tei:p or tei:list)">
+                    <xsl:element name="div">
+                        <xsl:attribute name="class"><xsl:if test="@type">
+                                <xsl:value-of select="@type"/>
+                            </xsl:if>
+                        </xsl:attribute>
+                        <xsl:element name="div">
+<!--                            <xsl:attribute name="class">card-header</xsl:attribute>-->
+                            <xsl:attribute name="id">
+                                <xsl:value-of select="concat('heading-',$uniqueID)"/>
+                            </xsl:attribute>
+                            <xsl:element name="div">
+                                <xsl:element name="button">
+                                    <xsl:attribute name="class">btn btn-link btn-block text-left accordionItem</xsl:attribute>
+                                    <xsl:attribute name="type">button</xsl:attribute>
+                                    <xsl:attribute name="data-toggle">collapse</xsl:attribute>
+                                    <xsl:attribute name="data-target">
+                                        <xsl:value-of select="concat('#collapse-',$uniqueID)"/>
+                                    </xsl:attribute>
+                                    <xsl:attribute name="aria-expanded">false</xsl:attribute>
+                                    <xsl:attribute name="aria-controls">
+                                        <xsl:value-of select="concat('collapse-',$uniqueID)"/>
+                                    </xsl:attribute>
+                                    <xsl:apply-templates select="tei:head"/>
+                                </xsl:element>
+                            </xsl:element>
+                        </xsl:element>
+                    </xsl:element>
+                    <xsl:element name="div">
+                        <xsl:attribute name="class">collapse</xsl:attribute>
+                        <xsl:attribute name="id">
+                            <xsl:value-of select="concat('collapse-',$uniqueID)"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="aria-labelledby">
+                            <xsl:value-of select="concat('heading-',$uniqueID)"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="data-parent">#transcription</xsl:attribute>
+                        <xsl:element name="div">
+                            <xsl:attribute name="class">card-body</xsl:attribute>
+                            <xsl:apply-templates select="node()[not(self::tei:head)]"/>
+                        </xsl:element>
+                    </xsl:element>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:element name="div">
+                        <xsl:attribute name="id" select="$uniqueID"/>
+                        <xsl:if test="@type">
+                            <xsl:attribute name="class" select="@type"/>
+                        </xsl:if>
+                        <xsl:if test="matches(@xml:id, '^para\d+$')">
+                            <xsl:call-template name="create-para-label">
+                                <xsl:with-param name="no" select="substring-after(@xml:id, 'para')"/>
+                            </xsl:call-template>
+                        </xsl:if>
+                        <xsl:apply-templates/>
+                    </xsl:element>
+                </xsl:otherwise>
+            </xsl:choose>
         </xsl:element>
     </xsl:template>
 
@@ -226,7 +276,9 @@
     
     <xsl:template match="tei:gi">
         <xsl:element name="a">
-            <xsl:attribute name="href"><xsl:value-of select="concat('Elemente/ref-', ., '.html')"/></xsl:attribute>
+            <xsl:attribute name="href">
+                <xsl:value-of select="concat('Elemente/ref-', ., '.html')"/>
+            </xsl:attribute>
             <xsl:text>&lt;</xsl:text>
             <xsl:value-of select="."/>
             <xsl:text>&gt;</xsl:text>
@@ -241,7 +293,11 @@
     </xsl:template>
     
     <xsl:template match="tei:val">
-        <xsl:element name="code"><xsl:text>"</xsl:text><xsl:value-of select="."/><xsl:text>"</xsl:text></xsl:element>
+        <xsl:element name="code">
+            <xsl:text>"</xsl:text>
+            <xsl:value-of select="."/>
+            <xsl:text>"</xsl:text>
+        </xsl:element>
     </xsl:template>
     
     <xsl:template match="tei:tag">
@@ -249,6 +305,50 @@
             <xsl:value-of select="."/>
             <xsl:text>&gt;</xsl:text>
     </xsl:template>
+    
+    <!-- this is a fix, very hendi specific ! -->
+	<!-- needs a parameter that provides the current URL -->
+	<!-- (for navigating to other gl-chapters) -->
+	<xsl:template match="tei:ptr[starts-with(@target,'#')]">
+        <xsl:variable name="ptrTargetID" select="./@target/substring-after(., '#')"/>
+        <xsl:variable name="gl-chapter-url-substring">
+            <xsl:choose>
+                <xsl:when test="starts-with(./@target,'#DT')">docTypes</xsl:when>
+                <xsl:when test="starts-with(./@target,'#eG')">encoding</xsl:when>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="gl-chapter-url" select="concat('/Projekt/Editionsrichtlinien/sec-', $gl-chapter-url-substring, '.html')"/>
+        <xsl:element name="a">
+            <xsl:attribute name="href" select="concat($gl-chapter-url, '#', $ptrTargetID)"/>
+            <xsl:value-of select="wega:doc($main-source-file)//tei:div[@xml:id = $ptrTargetID]/tei:head[1]/text()"/>
+        </xsl:element>
+    </xsl:template>
+	
+	<!-- rendering of specLists -->
+	<xsl:template match="tei:specList">
+		<ul style="padding: 0.5em;">
+			<xsl:for-each select="tei:specDesc">
+				<li style="padding: 7px;">
+                    <a href="{concat('/Projekt/Editionsrichtlinien/Elemente/ref-', @key, '.html')}">
+					<div class="row">
+						<div class="col-1">
+                                <span style="border: solid 2pt #181c62;padding: 0.5em;">
+                                    <i class="fa-solid fa-code"/>
+                                </span>
+                            </div>
+						<div class="col-11">
+                                <span style="margin-left: 0.5em;">
+                                    <xsl:text>&lt;</xsl:text>
+                                    <xsl:value-of select="@key"/>
+                                    <xsl:text>&gt;</xsl:text>
+                                </span>
+                            </div>
+					</div>
+				</a>
+                </li>
+			</xsl:for-each>
+		</ul>
+	</xsl:template>
     
     <!-- Create section numbers for headings   -->
     <xsl:template name="createSecNo">

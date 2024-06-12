@@ -75,22 +75,39 @@
 							<span data-template="lang:translate">timePeriod</span>:</strong>
 					</li>
 					<li class="media date">
-						<span data-template="app-shared:print" data-template-key="letterEarliest">Datum des ersten Dokuments</span>–<span data-template="app-shared:print" data-template-key="letterLatest">Datum des letzten Dokuments</span>
+						<span class="pull-left">
+							<i class="fa-regular fa-calendar-check"/>
+						</span> <span data-template="app-shared:print" data-template-key="letterEarliest">Datum des ersten Dokuments</span>–<span data-template="app-shared:print" data-template-key="letterLatest">Datum des letzten Dokuments</span>
 					</li>
 					<li>
 						<strong>
 							<span data-template="lang:translate">correspPartners</span>:</strong>
 					</li>
 					<li class="media correspPartners" data-template="app-shared:each" data-template-from="correspPartners" data-template-to="correspPartner">
-						<span class="pull-left"><i class="fa fa-user"/></span>&#160;<span class="media-body" data-template="app:preview-correspPartner-name" data-template-popover="true">Henze, Hans Werner</span>
+						<span class="pull-left">
+							<i class="fa fa-user"/>
+						</span> <span class="media-body" data-template="app:preview-correspPartner-name" data-template-popover="true">Henze, Hans Werner</span>
 					</li>
 					<li>
 						<strong>
-							<span data-template="lang:translate">annotation</span>:</strong>
+							<span data-template="lang:translate">editors</span>:</strong>
 					</li>
-					<li class="media annotation">
-						<span data-template="app-shared:print" data-template-key="annotation">Eine Anmerkung</span>
+					<li class="media editors" data-template="app-shared:each" data-template-from="editors" data-template-to="editor">
+						<span class="pull-left">
+							<i class="fa fa-user"/>
+						</span> <span class="media-body" data-template="app:preview-editors-name" data-template-popover="true">Nachname, Vorname</span>
 					</li>
+					<div data-template="app-shared:if-exists" data-template-key="annotation" data-template-wrap="no">
+						<li>
+							<strong>
+								<span data-template="lang:translate">annotation</span>:</strong>
+						</li>
+						<li class="media annotation">
+							<span class="pull-left">
+								<i class="fa-solid fa-thumbtack"/>
+							</span> <span data-template="app-shared:print" data-template-key="annotation">Eine Anmerkung</span>
+						</li>
+					</div>
 				</ol>
 			</div>
 		</div>
@@ -159,13 +176,15 @@
 										<!-- Tab panes -->
 										<div class="tab-content">
 											<div class="tab-pane active fade in" id="hendiInfo">
-												<div data-template="app:print-corresp-intro">
-													<!-- Wenn kein Text gefunden wird, dann wird der folgende Standardtext gewählt-->
-													<p>
-														<i data-template="lang:translate">noTextFound</i>
-													</p>
+												<div class="accordion" id="transcription">
+													<div data-template="app:print-corresp-intro">
+														<!-- Wenn kein Text gefunden wird, dann wird der folgende Standardtext gewählt-->
+														<p>
+															<i data-template="lang:translate">noTextFound</i>
+														</p>
+													</div>
+													<div data-template="app:print-corresp-intro-readmore">read more</div>
 												</div>
-												<div data-template="app:print-corresp-intro-readmore">read more</div>
 											</div>
 											<div class="tab-pane fade" id="XMLPreview">
 												<h2>XML</h2>
@@ -212,14 +231,14 @@
 					<h4>Empfohlene Zitierweise</h4>
 					<p>Hans Werner Henzes künstlerisches Netzwerk. Digitale Briefedition, <span data-template="app-shared:print" data-template-key="permalink">http://www.henze-digital.zenmem.de/ID</span> (<span data-template="app-shared:output" data-template-key="versionNews">Version NUMBER vom DATE</span>)
 						<br/>
-						<!--                        <span data-template="app-shared:print" data-template-key="latestChange">Letzte Änderung dieses Dokuments am 22. Mai 2014 durch Peter Stadler</span>-->
+						<span data-template="app-shared:print" data-template-key="latestChange">Letzte Änderung dieses Dokuments am 12. Juni 2024 durch Dennis Ried</span>
 					</p>
 				</div>
 				<div class="col-md-9" data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">
 					<h4>Proposed citation</h4>
 					<p>Hans Werner Henze's network of artists. Digital letter edition, <span data-template="app-shared:print" data-template-key="permalink">http://www.henze-digital.zenmem.de/ID</span> (<span data-template="app-shared:output" data-template-key="versionNews">Version NUMBER vom DATE</span>)
 						<br/>
-						<!--                        <span data-template="app-shared:print" data-template-key="latestChange">Letzte Änderung dieses Dokuments am DATE durch EDITOR</span>-->
+						<span data-template="app-shared:print" data-template-key="latestChange">Letzte Last change of this document by Dennis Ried on June 12, 2024</span>
 					</p>
 				</div>
 			</div>

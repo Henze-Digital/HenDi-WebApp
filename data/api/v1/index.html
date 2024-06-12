@@ -36,122 +36,117 @@
         <div class="container">
             <nav class="navbar navbar-light navbar-default navbar-expand-lg">
                 <!-- Brand and toggle get grouped for better mobile display -->
-                    <button type="button" data-target="#navbarCollapse" aria-expanded="false" data-toggle="collapse" class="navbar-toggler">
-                            <span class="navbar-toggler-icon"/>
-                        </button>
-                        <a href="$link/index" class="nav-link navbar-brand order-3"> <img src="$resources/img/logo_hendi.png" class="brand" alt="navbar-background-image"/>
-                        </a>
-                    <!-- Collection of nav links and other content for toggling -->
-                    <div id="navbarCollapse" class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav" data-template="app:active-nav">
-                            <li class="nav-item" data-template="app:set-active-nav">
-                                <a class="nav-link" href="$link/index">Home</a>
-                            </li>
-                            <li data-template="app:set-active-nav" class="dropdown nav-item">
-                                <a class="nav-link dropdown-secondlevel-nav dropdown-toggle" data-toggle="dropdown" href="#">Henze</a>
-                                <ul class="dropdown-menu" role="menu" data-template="app-shared:order-list-items">
-                                    <!--<li class="">
-                                        <a class="dropdown-item" href="$link/A001000A/bio.html" data-template="lang:translate">bio</a>
-                                    </li>-->
-                                    <li class="">
-                                        <a class="dropdown-item" href="$link/A001000A.html#correspondence" data-template="lang:translate">correspondence</a>
-                                    </li>
-                                    <li class="">
-                                        <a class="dropdown-item" href="$link/A001000A.html#documents" data-template="lang:translate">documents</a>
-                                    </li>
-                                    <li class="">
-                                        <a class="dropdown-item" href="$link/A001000A.html#works" data-template="lang:translate">works</a>
-                                    </li>
-<!--<li class="">
-                                        <a class="dropdown-item" href="$link/A001000A.html#writings" data-template="lang:translate">writings</a>
-                                    </li>-->
-                                        </ul>
-                            </li>
-                            <li data-template="app:set-active-nav" class="nav-item dropdown">
-                                <a class="nav-link dropdown-secondlevel-nav dropdown-toggle" data-toggle="dropdown" data-template="lang:translate" href="#">indices</a>
-                                <ul class="dropdown-menu" role="menu" data-template="app-shared:order-list-items">
-                                    <li>
-                                        <a class="dropdown-item" href="$link/indices/persons" data-template="lang:translate">persons</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="$link/indices/orgs" data-template="lang:translate">orgs</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="$link/indices/letters" data-template="lang:translate">letters</a>
-                                    </li>
-                                    <!--<li>
-                                        <a class="dropdown-item" href="$link/indices/writings" data-template="lang:translate">writings</a>
-                                    </li>-->
-                                    <li>
-                                        <a class="dropdown-item" href="$link/indices/works" data-template="lang:translate">works</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="$link/indices/thematicCommentaries" data-template="lang:translate">thematicCommentaries</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="$link/indices/documents" data-template="lang:translate">documents</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="$link/indices/places" data-template="lang:translate">places</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="nav-item" data-template="app:set-active-nav">
-                                <a class="nav-link" href="$link/search" data-template="lang:translate">search</a>
-                            </li>
-                            <li data-template="app:set-active-nav" id="project-nav" class="nav-item dropdown">
-                                <a class="nav-link dropdown-secondlevel-nav dropdown-toggle" data-toggle="dropdown" data-template="lang:translate" href="#">project</a>
-                                <ul class="dropdown-menu" role="menu" data-template="app-shared:order-list-items">
-                                    <li>
-                                        <a class="dropdown-item" href="$link/project/news" data-template="lang:translate">news</a>
-                                    </li>
-                                	<div data-template="app-shared:if-matches" data-template-key="environment" data-template-value="development" data-template-wrap="false">
-	                                    <li>
-	                                        <a class="dropdown-item" href="$link/project/bibliography" data-template="lang:translate">bibliography</a>
-	                                    </li>
-                                	</div>
-                                    <!--<li>
-                                        <a class="dropdown-item" href="$link/project/editorialGuidelines-music.html" data-template="lang:translate">editorialGuidelines-music</a>
-                                    </li>-->
-                                    <li>
-                                        <a class="dropdown-item" href="/de/Projekt/Editionsrichtlinien/Index.html" data-template="lang:translate">editorialGuidelines-text</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="$link/project/contact.html" data-template="lang:translate">contact</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="$link/project/projectDescription.html" data-template="lang:translate">projectDescription</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="$link/project/credits.html" data-template="lang:translate">credits</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item"  href="$link/project/team.html" data-template="lang:translate">team</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li data-template="app:set-active-nav" id="help-nav" class="nav-item dropdown">
-                                <a class="nav-link dropdown-secondlevel-nav dropdown-toggle" data-toggle="dropdown" data-template="lang:translate" href="#">help</a>
-                                <ul class="dropdown-menu" role="menu" data-template="app-shared:order-list-items">
-                                    <li>
-                                        <a class="dropdown-item" href="$link/help/faq.html" data-template="lang:translate">faq</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="$link/help/apiDocumentation.html" data-template="lang:translate">apiDocumentation</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="nav-item divider"/>
-                            <!--<li class="nav-item" data-template="app:set-active-nav">
-                                <a class="nav-link" href="$link/specialVolume.html" data-template="lang:translate">specialVolume</a>
-                            </li>
-                            <li class="nav-item divider"/>-->
-                            <li class="nav-item" data-template="app:set-active-lang">De</li>
-                            <li class="nav-item" data-template="app:set-active-lang">En</li>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
+                <button type="button" data-target="#navbarCollapse" aria-expanded="false" data-toggle="collapse" class="navbar-toggler">
+                    <span class="navbar-toggler-icon"/>
+                </button>
+                <a href="$link/index" class="nav-link navbar-brand order-3">
+                    <img src="$resources/img/logo_hendi.png" class="brand" alt="navbar-background-image"/>
+                </a>
+                <!-- Collection of nav links and other content for toggling -->
+                <div id="navbarCollapse" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav" data-template="app:active-nav">
+                        <li class="nav-item" data-template="app:set-active-nav">
+                            <a class="nav-link" href="$link/index">Home</a>
+                        </li>
+                        <li data-template="app:set-active-nav" class="dropdown nav-item">
+                            <a class="nav-link dropdown-secondlevel-nav dropdown-toggle" data-toggle="dropdown" href="#">Henze</a>
+                            <ul class="dropdown-menu" role="menu" data-template="app-shared:order-list-items">
+                                <li>
+                                    <a class="dropdown-item" href="$link/A001000A.html#correspondence" data-template="lang:translate">correspondence</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="$link/indices/corresp" data-template="lang:translate">corresp</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="$link/A001000A.html#documents" data-template="lang:translate">documents</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="$link/A001000A.html#works" data-template="lang:translate">works</a>
+                                </li>
+                            </ul>
+                        </li>
+                    	<li data-template="app:set-active-nav" class="nav-item dropdown">
+                    		<a class="nav-link dropdown-secondlevel-nav dropdown-toggle" data-toggle="dropdown" data-template="lang:translate" href="#">indices</a>
+                    		<ul class="dropdown-menu" role="menu" data-template="app-shared:order-list-items">
+                    			<li>
+                    				<a class="dropdown-item" href="$link/indices/corresp" data-template="lang:translate">corresp</a>
+                    			</li>
+                    			<li>
+                    				<a class="dropdown-item" href="$link/indices/letters" data-template="lang:translate">letters</a>
+                    			</li>
+                    			<li>
+                    				<a class="dropdown-item" href="$link/indices/thematicCommentaries" data-template="lang:translate">thematicCommentaries</a>
+                    			</li>
+                    			<li>
+                    				<a class="dropdown-item" href="$link/indices/documents" data-template="lang:translate">documents</a>
+                    			</li>
+                    			<li data-template="app:set-active-nav" class="nav-item dropdown">
+                    				<a class="nav-link dropdown-secondlevel-nav dropdown-toggle" data-toggle="dropdown" data-template="lang:translate" href="#">catalogData</a>
+                    				<ul class="dropdown-menu" role="menu" data-template="app-shared:order-list-items">
+                    					<li>
+                    						<a class="dropdown-item" href="$link/indices/persons" data-template="lang:translate">persons</a>
+                    					</li>
+                    					<li>
+                    						<a class="dropdown-item" href="$link/indices/orgs" data-template="lang:translate">orgs</a>
+                    					</li>
+                    					<li>
+                    						<a class="dropdown-item" href="$link/indices/works" data-template="lang:translate">works</a>
+                    					</li>
+                    					<li>
+                    						<a class="dropdown-item" href="$link/indices/places" data-template="lang:translate">places</a>
+                    					</li>
+                    				</ul>
+                    			</li>
+                    		</ul>
+                    	</li>
+                        <li class="nav-item" data-template="app:set-active-nav">
+                            <a class="nav-link" href="$link/search" data-template="lang:translate">search</a>
+                        </li>
+                        <li data-template="app:set-active-nav" id="project-nav" class="nav-item dropdown">
+                            <a class="nav-link dropdown-secondlevel-nav dropdown-toggle" data-toggle="dropdown" data-template="lang:translate" href="#">project</a>
+                            <ul class="dropdown-menu" role="menu" data-template="app-shared:order-list-items">
+                                <li>
+                                    <a class="dropdown-item" href="$link/project/news" data-template="lang:translate">news</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="$link/project/bibliography" data-template="lang:translate">bibliography</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/de/Projekt/Editionsrichtlinien/Index.html" data-template="lang:translate">editorialGuidelines-text</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="$link/project/contact.html" data-template="lang:translate">contact</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="$link/project/projectDescription.html" data-template="lang:translate">projectDescription</a>
+                                </li>
+                                <li>
+		                            <a class="dropdown-item"  href="$link/project/credits.html" data-template="lang:translate">credits</a>
+		                        </li>
+                                <li>
+                                    <a class="dropdown-item" href="$link/project/team.html" data-template="lang:translate">team</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li data-template="app:set-active-nav" id="help-nav" class="nav-item dropdown">
+                            <a class="nav-link dropdown-secondlevel-nav dropdown-toggle" data-toggle="dropdown" data-template="lang:translate" href="#">help</a>
+                            <ul class="dropdown-menu" role="menu" data-template="app-shared:order-list-items">
+                                <li>
+                                    <a class="dropdown-item" href="$link/help/faq.html" data-template="lang:translate">faq</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="$link/help/apiDocumentation.html" data-template="lang:translate">apiDocumentation</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item divider"/>
+                        <li class="nav-item" data-template="app:set-active-lang">De</li>
+                        <li class="nav-item" data-template="app:set-active-lang">En</li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        
         <div id="content">
             <div class="header">
                 <div class="container">
@@ -197,6 +192,7 @@
         		</div>
         	</div>
         </div>
+        
         <div class="borderBottom">
             <div class="container footer">
                 <div class="row">
@@ -248,17 +244,16 @@
                             <li>
                                 <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC-BY International 4.0</a>
                             </li>
+                            <li data-template="app:zenodoDOIs"/>
                             <li>
-                                <a target="_blank" href="https://github.com/Henze-Digital/WeGA-WebApp">Source Code on GitHub <i class="fa fa-github" aria-hidden="true"/></a>
-                            </li>
-                            <li>
-                                <!--<a target="_blank" href="https://doi.org/10.5281/zenodo.3520700">-->Data on Zenodo<!--</a>-->
+                                GitHub: <a target="_blank" href="https://github.com/Henze-Digital/HenDi-ODD">TEI-ODD</a> | <a target="_blank" href="https://github.com/Henze-Digital/HenDi-WebApp">WebApp</a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
+        
         <script type="text/javascript" src="$resources/lib/jquery/dist/jquery.min.js"/>
         <script type="text/javascript" src="$resources/lib/fittextjs/index.js"/>
         

@@ -45,7 +45,9 @@ declare variable $search:valid-params := (
     'orderby',
     'orderdir',
     'orgs',
-    'corresp'
+    'corresp',
+    'workType',
+    'biblioType'
 );
 
 (:~
@@ -61,7 +63,7 @@ declare
             switch($docType)
             (: search page :)
             case 'search' return search:search-session(map:merge(($model, $filters, map:entry('docID', 'indices'))), search:search#1)
-            (: Wefor GA: controller sends docType=persons which needs to be turned into "personsPlus" here :)
+            (: controller sends docType=persons which needs to be turned into "personsPlus" here :)
             case 'persons' return search:list(map:merge(($filters, map:put($model, 'docType', 'persons'))))
             (: various list views :)
             default return search:list(map:merge(($filters, map:put($model, 'docType', $docType))))
@@ -329,6 +331,7 @@ declare %private function search:filter-result($collection as document-node()*, 
             else if($filter = 'hideRevealed') then search:revealed-filter($collection)
             else if($filter = 'facsimile') then search:facsimile-filter($collection, $filters($filter)[1])
             else if($filter = 'corresp') then search:corresp-filter($collection, $filters($filter)[1])
+            else if($filter = 'workType') then search:workType-filter($collection, $filters($filter)[1])
             (: exact search for terms -> range:eq :)
             else if($filter = ('journals', 'forenames', 'surnames', 'sex', 'occupations')) then query:get-facets($collection, $filter)[range:eq(.,$filters($filter)[1])]/root()
             (: range:contains for tokens within key values  :)
@@ -400,6 +403,12 @@ declare %private function search:corresp-filter($collection as document-node()*,
     for $each in $corresp
     return
         $collection//tei:relation[@name='correspondence'][@key=$each]/root()
+};
+
+declare %private function search:workType-filter($collection as document-node()*, $workType as xs:string*) as document-node()* {
+    for $each in $workType
+    return
+        $collection//mei:work[@class=$workType]/root() | $collection//tei:textClass//tei:item[.=$workType]/root()
 };
 
 (:~

@@ -67,6 +67,7 @@ declare function facets:facets($nodes as node()*, $facet as xs:string, $max as x
     case 'textType' return facets:from-docType($nodes, $facet, $lang)
     case 'facsimile' return facets:facsimile($nodes, $facet, $lang)
     case 'corresp' return facets:corresp($nodes, $facet, $lang)
+    case 'workType' return facets:workType($nodes, $facet, $lang)
     default return facets:createFacets($nodes, $facet, $max, $lang)
 };
 
@@ -85,36 +86,12 @@ declare %private function facets:from-docType($collection as node()*, $facet as 
 };
 
 declare %private function facets:facsimile($collection as node()*, $facet as xs:string, $lang as xs:string) as array(*) {
-    let $facsimiles := $collection ! query:facsimile(.)
-    let $external := $facsimiles[@sameAs]/root()
-    let $internal := $facsimiles[not(@sameAs)][tei:graphic]/root()
-    let $internalCount := count($internal)
-    let $externalCount := count($external)
-    let $noFacsCount := count($collection) - count($external | $internal)
-    return
-        array {
-            if($internalCount > 0) then
-                map {
-                    'value' : 'internal',
-                    'label' : lang:get-language-string('internal', $lang),
-                    'frequency' : $internalCount
-                }
-            else (),
-            if($externalCount > 0) then
-                map {
-                    'value' : 'external',
-                    'label' : lang:get-language-string('external', $lang),
-                    'frequency' : $externalCount
-                }
-            else (),
-            if($noFacsCount > 0) then
-                map {
-                    'value' : 'without',
-                    'label' : lang:get-language-string('without', $lang),
-                    'frequency' : $noFacsCount
-                }
-            else ()
+    array:for-each(
+        query:group-collection-by-facsimiles($collection),
+        function($obj) as map(*) {
+            map:remove($obj, 'documents') => map:put('label', lang:get-language-string($obj?value, $lang))
         }
+    )
 };
 
 declare %private function facets:corresp($collection as node()*, $facet as xs:string, $lang as xs:string) as array(*) {
@@ -129,6 +106,21 @@ declare %private function facets:corresp($collection as node()*, $facet as xs:st
                         'value' : $correspID,
                         'label' : wdt:corresp($correspID)('label-facets')(),
                         'frequency' : count($collection[.//tei:relation[@name='correspondence'][@key=$correspID]])
+                    }
+        }
+};
+
+declare %private function facets:workType($collection as node()*, $facet as xs:string, $lang as xs:string) as array(*) {
+    
+    let $workTypes := ($collection//mei:work[parent::mei:workList]/@class, $collection//tei:textClass//tei:item) => distinct-values()
+    return
+        array {
+            for $workType in $workTypes
+                return 
+                    map {
+                        'value' : $workType,
+                        'label' : lang:get-language-string($workType, $lang),
+                        'frequency' : count($collection//mei:work[parent::mei:workList]/@class[.=$workType] | $collection//tei:textClass//tei:item[.=$workType])
                     }
         }
 };
@@ -159,9 +151,11 @@ declare %private function facets:display-term($facet as xs:string, $term as xs:s
     switch($facet)
     case 'persons' case 'personsPlus' case 'sender' case 'addressee' 
     case 'dedicatees' case 'lyricists' case 'librettists' 
-    case 'composers' case 'authors' case 'editors' case 'orgs' return
-        if(wdt:persons($term)('check')()) then wdt:persons($term)('label-facets')() (:$facets:persons-norm-file//norm:entry[range:eq(@docID,$term)]/normalize-space():)
-        else wdt:orgs($term)('label-facets')()
+    case 'composers' case 'authors' case 'authorsText' case 'editors' case 'orgs' return
+        if(wdt:persons($term)('check')()) then wdt:persons($term)('label-facets')()
+        else if(wdt:orgs($term)('check')())
+        then(wdt:orgs($term)('label-facets')())
+        else(str:normalize-space($term))
     case 'corresp' return wdt:corresp($term)('label-facets')()
     case 'works' return wdt:works($term)('label-facets')()
     case 'placeOfAddressee' case 'placeOfSender' case 'residences' case 'places' return wdt:places($term)('title')('txt')
@@ -174,6 +168,7 @@ declare %private function facets:display-term($facet as xs:string, $term as xs:s
     case 'repository' return facets:display-term-repository($term)
     case 'geonamesFeatureClass' return lang:get-language-string('geonamesFeatureClass_' || $term, $lang)
     case 'orgType' return lang:get-language-string('orgType.' || $term, $lang)
+    case 'workType' case 'biblioType' return lang:get-language-string($term, $lang)
     default return str:normalize-space($term)
 };
 

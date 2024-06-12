@@ -141,18 +141,42 @@ declare %private function img:iconography4works($node as node(), $model as map(*
 (:~
  : Function for outputting an image from the iconography
  :
- : @return an HTML element <a> with a nested <img>
+ : @return an HTML element <a> with a nested <img> or <i> element
 ~:)
 declare function img:iconographyImage($node as node(), $model as map(*)) as element(a) {
-    <xhtml:a href="{$model('iconographyImage')('linkTarget')}"><xhtml:img title="{$model('iconographyImage')('caption')}" alt="{$model('iconographyImage')('caption')}" src="{$model('iconographyImage')('url')('thumb')}"/></xhtml:a>
+    <xhtml:a href="{$model('iconographyImage')('linkTarget')}">{
+        if(exists($model('iconographyImage')('url')('thumb')))
+        then
+            <xhtml:img 
+                title="{$model('iconographyImage')('caption')}" 
+                alt="{$model('iconographyImage')('caption')}" 
+                src="{$model('iconographyImage')('url')('thumb')}"/>
+ else <xhtml:i class="fa-regular fa-image fa-2xl"/>
+    }</xhtml:a>
 };
 
 (:~
  : Helper function for img:iconography()
  : Creates the iconography for corresp
  :
+ : @author Dennis Ried
 ~:)
 declare %private function img:iconography4corresp($node as node(), $model as map(*), $lang as xs:string) as map(*) {
+    let $wikidata-images := img:wikidata-images($model, $lang)
+    return 
+    map { 
+        'iconographyImages' : $wikidata-images,
+        'portrait' : ($wikidata-images, img:get-generic-portrait($model, $lang) )[1]
+    }
+};
+
+(:~
+ : Helper function for img:iconography()
+ : Creates the iconography for biblio
+ :
+ : @author Dennis Ried
+~:)
+declare %private function img:iconography4biblio($node as node(), $model as map(*), $lang as xs:string) as map(*) {
     let $wikidata-images := img:wikidata-images($model, $lang)
     return 
     map { 
@@ -196,7 +220,9 @@ declare %private function img:wikipedia-images($model as map(*), $lang as xs:str
     let $wikiModel := ($model?doc//tei:idno | $model?doc//mei:altId) => er:wikipedia-article-url($lang) => er:wikipedia-article($lang)
     let $wikiArticle := $wikiModel?wikiContent 
     (: Look for images in wikipedia infobox (for organizations and english wikipedia) and thumbnails  :)
-    let $images := $wikiArticle//xhtml:td[@class='infobox-image']//xhtml:img | $wikiArticle//xhtml:figure[@typeof='mw:File/Thumb']//xhtml:img
+    let $images := 
+        $wikiArticle//xhtml:td[@class='infobox-image']//xhtml:img |
+ $wikiArticle//xhtml:figure[@typeof='mw:File/Thumb']//xhtml:img
     return 
         for $img in $images
         let $tmpPicURI := ($img/@src)[1]
@@ -215,10 +241,11 @@ declare %private function img:wikipedia-images($model as map(*), $lang as xs:str
             siehe https://groups.google.com/forum/?hl=en#!topic/iiif-discuss/UTD181dxKtU
             https://github.com/Toollabs/zoomviewer
         :)
-        let $caption :=  if($img/ancestor::xhtml:td[@class='infobox-image'])
-        				 then $img/ancestor::xhtml:td[@class='infobox-image']//xhtml:div[@class='infobox-caption']
-             			 else if($img/ancestor::xhtml:figure//xhtml:figcaption)
-             			 then $img/ancestor::xhtml:figure//xhtml:figcaption
+        let $caption :=  
+            if($img/ancestor::xhtml:td[@class='infobox-image']) then
+        				 $img/ancestor::xhtml:td[@class='infobox-image']//xhtml:div[@class='infobox-caption']
+             			 else if($img/ancestor::xhtml:figure[1]/xhtml:figcaption) then 
+             			 $img/ancestor::xhtml:figure[1]/xhtml:figcaption
              			 else ()
         return 
             if($thumbURI castable as xs:anyURI) then
@@ -233,8 +260,9 @@ declare %private function img:wikipedia-images($model as map(*), $lang as xs:str
                            let $iiifInfo := er:wikimedia-iiif(functx:substring-after-last($linkTarget, ':'))
                            return
                               try {
-                                 if($iiifInfo('height') > 340) then $iiifInfo('@id') || '/full/,340/0/native.jpg'
-                                 else $iiifInfo('@id') || '/full/full/0/native.jpg'
+                                 (: need to fix the IIIF image id due to some bug(?) in the zoomviewer.toolforge.org service :)
+                                 if($iiifInfo('height') gt                                 340) then replace($iiifInfo('@id'), 'cache/', 'fcgi-bin/iipsrv.fcgi/?iiif=cache%2F') || '/full/,340/0/native.jpg'
+                                 else replace($iiifInfo('@id'), 'cache/', 'fcgi-bin/iipsrv.fcgi/?iiif=cache%2F') || '/full/full/0/native.jpg'
                               }
                               catch * { $thumbURI }
                         default return 
@@ -420,7 +448,9 @@ declare %private function img:bildindex-images($model as map(*), $lang as xs:str
                     'linkTarget' : $div/xhtml:figure/xhtml:a/@href,
                     'source' : 'Bildindex der Kunst und Architektur',
                     'url' : function($size) {
-                        $picURI
+                        if($picURI = '/images/nopic_large.png')
+                    then ()
+                        else $picURI
                     }
                 }
             else ()
@@ -440,6 +470,7 @@ declare %private function img:wega-images($model as map(*), $lang as xs:string) 
         for $fig in core:getOrCreateColl('iconography', $model('docID'), true())//tei:figure[tei:graphic]
         let $docType := 
             if($fig/tei:figDesc/tei:listPlace) then 'places'
+            else if($fig/tei:figDesc/tei:listOrg) then 'orgs'
             else 'persons'
         let $iiifURI := $iiifImageApi || encode-for-uri(string-join(($docType, substring($model('docID'), 1, 5) || 'xx', $model('docID'), $fig/tei:graphic/@url), '/'))
         order by $fig/@n (: markup with <figure n="portrait"> takes precedence  :)
@@ -457,17 +488,6 @@ declare %private function img:wega-images($model as map(*), $lang as xs:string) 
                 }
             }
 };
-
-(:
-http://192.168.3.104:9091/digilib2.3.3/Scaler/IIIF/letters%2FA0412xx%2FA041234%2F1817-07-10_05_AM_Weber_an_Caroline_D-B_1r.tif/1023,1023,1006,1023/,256/0/native.jpg
-http://weber-gesamtausgabe.de/digilib/servlet/Scaler?fn=persons/A0020xx/A002068/weber_bardua.jpg&dh=195&mo=q2
-http://weber-gesamtausgabe.de/digilib/Scaler/IIIF/letters%2FA0412xx%2FA041234%2F1817-07-10_05_AM_Weber_an_Caroline_D-B_1r.tif/1023,1023,1006,1023/,256/0/native.jpg
-http://192.168.3.104:9091/digilib2.3.3/Scaler/IIIF/persons%2FA0020xx%2FA002068%2Fweber_bardua.jpg/0/0/0/native.jpg
-https://tools.wmflabs.org/zoomviewer/iiif.php?f=Adam_of_Wurttemberg_by_D.Bossi.jpg
-http://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/63ba02c8870af5888cd78aebf971b3f9.tif/full/,340/0/native.jpg
-http://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/63ba02c8870af5888cd78aebf971b3f9.tif
-:)
-
 
 declare 
     %templates:default("lang", "en")
@@ -497,6 +517,7 @@ declare %private function img:get-generic-portrait($model as map(*), $lang as xs
         else if(config:is-work($model('docID')) and $model('doc')//tei:biblStruct[@type='painting']) then 'painting'
         else if(config:is-work($model('docID'))) then 'otherWork'
         else if(config:is-corresp($model('docID'))) then 'corresp'
+        else if(config:is-biblio($model('docID'))) then 'biblio'
         else $model('doc')//tei:sex/text()
     return
         map {
@@ -516,7 +537,7 @@ declare %private function img:get-generic-portrait($model as map(*), $lang as xs
                     case 'film' return config:link-to-current-app('resources/img/icons/icon_film.svg')
                     case 'longPlay' return config:link-to-current-app('resources/img/icons/icon_vinyl.svg')
                     case 'compactDisc' return config:link-to-current-app('resources/img/icons/icon_compactDisc.svg')
-                    case 'otherWork' return config:link-to-current-app('resources/img/icons/icon_biblio.png')
+                    case 'otherWork' case 'biblio' return config:link-to-current-app('resources/img/icons/icon_biblio.svg')
                     case 'corresp' return config:link-to-current-app('resources/img/icons/icon_corresp.svg')
                     case 'painting' return config:link-to-current-app('resources/img/icons/icon_painting.svg')
                     default return config:link-to-current-app('resources/img/icons/icon_person.svg')
@@ -531,7 +552,7 @@ declare %private function img:get-generic-portrait($model as map(*), $lang as xs
                     case 'film' return config:link-to-current-app('resources/img/icons/icon_film.svg')
                     case 'longPlay' return config:link-to-current-app('resources/img/icons/icon_vinyl.svg')
                     case 'compactDisc' return config:link-to-current-app('resources/img/icons/icon_compactDisc.svg')
-                    case 'otherWork' return config:link-to-current-app('resources/img/icons/icon_biblio.png')
+                    case 'otherWork' case 'biblio' return config:link-to-current-app('resources/img/icons/icon_biblio.svg')
                     case 'painting' return config:link-to-current-app('resources/img/icons/icon_painting.svg')
                     case 'corresp' return config:link-to-current-app('resources/img/icons/icon_corresp.svg')
                     default return config:link-to-current-app('resources/img/icons/icon_person.svg')

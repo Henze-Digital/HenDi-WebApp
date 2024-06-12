@@ -4,6 +4,7 @@ enum:
   - addressee
   - asksam-cat
   - authors
+  - authorsText
   - biblioType
   - composers
   - corresp
@@ -37,3 +38,4 @@ enum:
   - vorlageform
   - works
   - workTitle
+  - workType

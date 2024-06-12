@@ -12,3 +12,5 @@ hendi-secrets
 libs
 hendi-pkg-webapp
 node_modules
+CITATION.cff
+data/catalogues/options.xml

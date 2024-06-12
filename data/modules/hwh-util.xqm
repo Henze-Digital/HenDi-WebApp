@@ -152,3 +152,28 @@ declare function hwh-util:shorten-fullnames($nameStr as xs:string?) as xs:string
     return
         string-join(($forenames,$surname),' ')
 };
+
+(:~
+ : Returns the given nodes in a specific order
+ : @author  Dennis Ried
+ : @param   $relatorGrp A node sequence to order
+:)
+declare function hwh-util:ordering-relators($relatorGrps as node()*) as node()* {
+
+	for $relatorGrp in $relatorGrps
+		let $relator :=  $relatorGrp/@role
+		let $relatorOrder := switch ($relator)
+								case 'cmp' return '001'
+								case 'aut' return '002'
+								case 'lbt' return '003'
+								case 'trl' return '004'
+								case 'edt' return '005'
+								case 'cnd' return '006'
+								case 'ard' return '007'
+								case 'cst' return '008'
+								case 'std' return '009'
+								default return '999'
+		order by $relatorOrder
+		return
+			$relatorGrp
+};

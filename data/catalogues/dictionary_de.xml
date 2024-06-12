@@ -100,7 +100,7 @@
     <entry xml:id="facsimile">Faksimile</entry>
     <entry xml:id="editorial">Apparat</entry>
     <entry xml:id="series">Reihe</entry>
-    <entry xml:id="transcription">Übertragung</entry>
+    <entry xml:id="transcription">Übertragen von</entry>
     <entry xml:id="textSource">Textzeuge</entry>
     <entry xml:id="textSources">Textzeugen</entry>
     <entry xml:id="correspondingSources">Dazugehörige Textwiedergaben</entry>
@@ -131,10 +131,20 @@
     <entry xml:id="generalRemark">Generalvermerk</entry>
     <!--  XSL-Ausgaben  -->
     <entry xml:id="addMargin">am Rand hinzugefügt</entry>
+	<entry xml:id="addMargin-right">am rechten Rand hinzugefügt</entry>
+	<entry xml:id="addMargin-left">am linken Rand hinzugefügt</entry>
+	<entry xml:id="addMargin-top">am oberen Rand hinzugefügt</entry>
+	<entry xml:id="addMargin-bottom">am unteren Rand hinzugefügt</entry>
     <entry xml:id="addInline">in der Zeile hinzugefügt</entry>
     <entry xml:id="addBelow">unter der Zeile hinzugefügt</entry>
     <entry xml:id="addAbove">über der Zeile hinzugefügt</entry>
     <entry xml:id="addDefault">hinzugefügt</entry>
+    <entry xml:id="pMargin">Abschnitt am Rand stehend</entry>
+	<entry xml:id="pMargin-right">Abschnitt am rechten Rand stehend</entry>
+	<entry xml:id="pMargin-left">Abschnitt am linken Rand stehend</entry>
+	<entry xml:id="pMargin-top">Abschnitt am oberen Rand stehend</entry>
+	<entry xml:id="pMargin-bottom">Abschnitt am unteren Rand stehend</entry>
+	<entry xml:id="pDefault">Abschnitt</entry>
     <entry xml:id="popoverTitle.add">Hinzufügung</entry>
     <entry xml:id="popoverTitle.subst">Ersetzung</entry>
     <entry xml:id="popoverTitle.handshift">Schriftwechsel</entry>
@@ -144,14 +154,15 @@
     <entry xml:id="substMargin">Ersetzung am Rand</entry>
     <entry xml:id="substMixed">Ersetzung an mehreren Stellen</entry>-->
     <entry xml:id="popoverTitle.del">Löschung</entry>
+    <entry xml:id="popoverTitle.hi">Hervorhebung</entry>
     <entry xml:id="delGap">gelöschter Text nicht lesbar</entry>
     <entry xml:id="delStrikethrough">durchgestrichen</entry>
     <entry xml:id="delOverwritten">gelöscht durch Überschreibung</entry>
-    <entry xml:id="delOvertyped">gelöscht durch Überschriebung</entry>
+    <entry xml:id="delOvertyped">gelöscht durch Überschreibung</entry>
     <entry xml:id="substDel">ersetzt durch</entry>
     <entry xml:id="substDelOverwritten">überschrieben mit</entry>
     <entry xml:id="substDelStrikethrough">durchgestrichen und ersetzt mit</entry>
-    <entry xml:id="substDelOvertyped">maschinell überschrieben mit</entry>
+    <entry xml:id="substDelOvertyped">überschrieben mit</entry>
     <entry xml:id="delErased">gelöscht</entry>
     <entry xml:id="delOrthoRealised">Tilgung orthographisch realisiert</entry>
     <entry xml:id="choiceCorr">in der Vorlage</entry>
@@ -165,6 +176,8 @@
     <entry xml:id="unclearDefault">unsichere Lesung</entry>
     <entry xml:id="gapDefault">unleserliche Stelle</entry><!-- Übertragung nicht möglich -->
     <entry xml:id="outofScope">außerhalb des Editionsrahmens</entry>
+    <entry xml:id="hiUnderline">Unterstreichung</entry>
+    
     <entry xml:id="handshiftManuscript">handschriftlich</entry>
     <entry xml:id="handshiftTypescript">Typoskript</entry>
     <entry xml:id="handNoteHeadManuscript">Manuskript</entry>
@@ -199,7 +212,7 @@
     <entry xml:id="versionInformation">Version %1 vom %2</entry>
     <!--  Search  -->
     <entry xml:id="advancedSearch">Erweiterte Suche</entry>
-    <entry xml:id="WeGA-Search">Henze-Digital-Suche</entry>
+    <entry xml:id="WeGA-Search">HenDi-Suche</entry>
     <entry xml:id="perPage">pro Seite</entry>
     <entry xml:id="additionalSearchRow">Weiteres Suchfeld hinzufügen</entry>
     <entry xml:id="no_prefix">Volltext</entry>
@@ -260,6 +273,41 @@
     <entry xml:id="noBioFoundReason3">Es handelt sich um eine allgemein bekannte Person, die bereits ausreichend an anderer Stelle erschlossen ist, vgl. etwa den Wikipedia-Link</entry>
     <entry xml:id="noDataFound">Keine Angaben gefunden</entry>
     <entry xml:id="dateUnknown">Datum unbekannt</entry>
+    <!--  Schlüsselwörter aus MARC Code List for Relators, siehe http://www.loc.gov/marc/relators/relaterm.html  -->
+    <entry xml:id="act">Schauspiel</entry>
+    <entry xml:id="ard">Inszenierung</entry>
+    <entry xml:id="art">Künstler*in</entry>
+    <entry xml:id="arr">Bearbeitung</entry>
+    <entry xml:id="aus">Drehbuch</entry>
+    <entry xml:id="aut">Verfasst von</entry>
+    <entry xml:id="chr">Choreographie</entry>
+    <entry xml:id="cmp">Komposition</entry>
+    <entry xml:id="cnd">Dirigat</entry>
+    <entry xml:id="cst">Kostüme</entry>
+    <entry xml:id="dte">Widmung an</entry>
+    <entry xml:id="drt">Direktion</entry>
+    <entry xml:id="edt">Herausgabe</entry>
+    <entry xml:id="editorial_assistant">Redaktionsassistenz</entry>
+    <entry xml:id="flm">Filmedition</entry>
+    <entry xml:id="fmd">Filmdirektion</entry>
+    <entry xml:id="fmp">Filmproduktion</entry>
+    <entry xml:id="itr">Instrumente</entry>
+    <entry xml:id="mcp">Musikkopist</entry>
+    <entry xml:id="msd">Musikalische Direktion</entry>
+    <entry xml:id="mus">Ausführung</entry>
+    <entry xml:id="lbt">Libretto</entry>
+    <entry xml:id="lyr">Textdichtung</entry>
+    <entry xml:id="pdr">Projekt Direktion</entry>
+    <entry xml:id="pmn">Produktionsmanagement</entry>
+    <entry xml:id="prn">Produktionsfirma</entry>
+    <entry xml:id="pro">Produktion</entry>
+    <entry xml:id="rce">Aufnahmeleitung (Ton)</entry>
+    <entry xml:id="scr">Schreiber</entry>
+    <entry xml:id="sng">Gesang</entry>
+    <entry xml:id="std">Bühnenbild</entry>
+    <entry xml:id="trc">Einrichtung</entry>
+    <entry xml:id="trl">Übersetzung</entry>
+    <entry xml:id="vdg">Film (Video)</entry>
     <!--  Facets  -->
     <entry xml:id="filter">Filter</entry>
     <entry xml:id="dedicatees">Widmung an</entry>
@@ -280,9 +328,10 @@
     <entry xml:id="approved">bearbeitet</entry>
     <entry xml:id="biblioType">Literaturtyp</entry>
     <entry xml:id="albumblatt">Albumblatt</entry>
-    <entry xml:id="authors">Text</entry>
+    <entry xml:id="authors">Text von</entry>
     <entry xml:id="editors">Herausgegeben von</entry>
     <entry xml:id="publication">Veröffentlicht</entry>
+    <entry xml:id="publishingPeriod">Erschienen</entry>
     <entry xml:id="pubPlace">Verlagsort</entry>
     <entry xml:id="publisher">Verlag</entry>
     <entry xml:id="guestbookEntry">Gästebucheintrag</entry>
@@ -290,6 +339,9 @@
     <entry xml:id="weisung">Weisung</entry>
     <entry xml:id="eingabe">Eingabe</entry>
     <entry xml:id="vortrag">Vortrag</entry>
+	<entry xml:id="informationAboutTheBiblio">Informationen zum Bibliographie-Eintrag</entry>
+	<entry xml:id="isPartOf">Enthalten in</entry>
+	<entry xml:id="hasPart">Enthält</entry>
     <!--  Development  -->
     <entry xml:id="common">Allgemeines</entry>
     <!-- HTML Meta Daten (description) -->
@@ -359,18 +411,20 @@
     <entry xml:id="reset">Zurücksetzen</entry>
     <entry xml:id="confirm">Abschicken</entry>
     <!--  Biblio Typen  -->
-    <entry xml:id="article">Zeitschriftenaufsatz</entry>
+    <entry xml:id="article">Aufsatz</entry>
+    <entry xml:id="book">Monographie</entry>
+    <entry xml:id="inbook">Buchkapitel</entry>
     <entry xml:id="incollection">Sammelbandbeitrag</entry>
     <entry xml:id="inproceedings">Aufsatz in Konferenzbericht</entry>
-    <entry xml:id="score">Notenband</entry>
+	<entry xml:id="journal">Zeitung/Zeitschrift</entry>
+    <entry xml:id="thesis">Abschlussarbeit</entry>
     <entry xml:id="misc">Varia</entry>
-    <entry xml:id="book">Monographie</entry>
-    <entry xml:id="review">Rezension</entry>
-    <entry xml:id="phdthesis">Dissertation</entry>
-    <entry xml:id="online">Online-Veröffentlichung</entry>
-    <entry xml:id="inbook">Buchkapitel</entry>
-    <entry xml:id="mastersthesis">Master-/Magisterarbeit</entry>
+    <entry xml:id="online">Online</entry>
 	<entry xml:id="painting">Gemälde</entry>
+	<entry xml:id="poem">Gerdicht</entry>
+	<entry xml:id="libretto">Libretto</entry>
+    <entry xml:id="review">Rezension</entry>
+    <entry xml:id="score">Notenband</entry>
     <!--  Various  -->
     <entry xml:id="correspondence">Briefe</entry>
     <entry xml:id="corresp">Briefwechsel</entry>
@@ -445,6 +499,7 @@
     <entry xml:id="apply">Anwenden</entry>
     <entry xml:id="checkAll">Alles an/abwählen</entry>
     <entry xml:id="indices">Register</entry>
+    <entry xml:id="catalogData">Katalogdaten</entry>
     <entry xml:id="showPersonSingleView">Zeige Personeneintrag zu %1</entry>
     <entry xml:id="showLetterSingleView">Zeige Einzelbriefansicht</entry>
     <entry xml:id="showDiaryDay">Zeige Tagebucheintrag von %1 für den %2</entry>
@@ -495,6 +550,7 @@
     <entry xml:id="all">alle</entry>
     <entry xml:id="none">keine</entry>
     <entry xml:id="only">nur</entry>
+    <entry xml:id="all_corresp">Alle Briefwechsel</entry>
     <entry xml:id="all_diaries">Alle Tagebücher</entry>
     <entry xml:id="all_writings">Alle Schriften</entry>
     <entry xml:id="all_letters">Alle Briefe</entry>
@@ -530,7 +586,8 @@
     <entry xml:id="faq">FAQ</entry>
     <entry xml:id="pleaseEnterSearchTerms">Bitte Suchbegriffe eintragen</entry>
     <entry xml:id="searchTerm">Suchbegriff</entry>
-    <entry xml:id="credits">Danksagungen</entry>
+    <entry xml:id="credits">Dank</entry>
+	<entry xml:id="legalSuccession">Rechtsnachfolge</entry>
     <entry xml:id="calendar">Kalender</entry>
 	<entry xml:id="thematicCommentaries">Erläuterungen</entry>
 	<entry xml:id="thematicCom">Erläuterung</entry>
@@ -660,32 +717,33 @@
     <entry xml:id="da">Dänisch</entry>
     <entry xml:id="it">Italienisch</entry>
     <entry xml:id="fr">Französisch</entry>
-	<entry xml:id="persons_mentioned">Erwähnte Personen</entry>
-	<entry xml:id="works_mentioned">Erwähnte Werke</entry>
-	<entry xml:id="places_mentioned">Erwähnte Orte</entry>
-	<entry xml:id="siglum">Sigle</entry>
-	<entry xml:id="team">Team</entry>
-	<entry xml:id="settings">Einstellungen</entry>
+    <entry xml:id="persons_mentioned">Erwähnte Personen</entry>
+    <entry xml:id="works_mentioned">Erwähnte Werke</entry>
+    <entry xml:id="places_mentioned">Erwähnte Orte</entry>
+    <entry xml:id="siglum">Sigle</entry>
+    <entry xml:id="team">Team</entry>
+    <entry xml:id="settings">Einstellungen</entry>
     <entry xml:id="emphases">Hervorhebungen</entry>
 	<entry xml:id="supplied-marker">Herausgeberergänzungen</entry>
-	<entry xml:id="show_markers_paragraph">Zeige Markierungen im Text</entry>
-	<entry xml:id="chars">Zeichen</entry>
-	<entry xml:id="words">Wörter</entry>
-	<entry xml:id="lines">Zeilen</entry>
-	<entry xml:id="charsSg">Zeichen</entry>
-	<entry xml:id="wordsSg">Wort</entry>
-	<entry xml:id="linesSg">Zeile</entry>
-	<entry xml:id="approx">ca.</entry>
-	<entry xml:id="supplied">ergänzt von den Hg.</entry>
-	<entry xml:id="geonamesFeatureClass">Ortstyp</entry>
-	<entry xml:id="geonamesFeatureClass_P">Stadt, Ort, …</entry>
-	<entry xml:id="geonamesFeatureClass_A">Land, Staat, Region, …</entry>
-	<entry xml:id="geonamesFeatureClass_H">Fluss, See, …</entry>
-	<entry xml:id="geonamesFeatureClass_L">Park, Anlage, …</entry>
-	<entry xml:id="geonamesFeatureClass_S">Gebäude, Farm, …</entry>
-	<entry xml:id="geonamesFeatureClass_T">Berg, Hügel, …</entry>
-	<entry xml:id="geonamesFeatureClass_V">Wald, Heide, …</entry>
-	
+    <entry xml:id="show_markers_paragraph">Zeige Markierungen im Text</entry>
+    <entry xml:id="chars">Zeichen</entry>
+    <entry xml:id="words">Wörter</entry>
+    <entry xml:id="lines">Zeilen</entry>
+    <entry xml:id="charsSg">Zeichen</entry>
+    <entry xml:id="wordsSg">Wort</entry>
+    <entry xml:id="linesSg">Zeile</entry>
+    <entry xml:id="approx">ca.</entry>
+    <entry xml:id="supplied">ergänzt von den Hg.</entry>
+    <entry xml:id="geonamesFeatureClass">Ortstyp</entry>
+    <entry xml:id="geonamesFeatureClass_P">Stadt, Ort</entry>
+    <entry xml:id="geonamesFeatureClass_A">Land, Staat, Region</entry>
+    <entry xml:id="geonamesFeatureClass_H">Fluss, See</entry>
+    <entry xml:id="geonamesFeatureClass_L">Park, Anlage</entry>
+    <entry xml:id="geonamesFeatureClass_R">Strasse</entry>
+    <entry xml:id="geonamesFeatureClass_S">Gebäude</entry>
+    <entry xml:id="geonamesFeatureClass_T">Berg, Hügel</entry>
+    <entry xml:id="geonamesFeatureClass_V">Wald, Heide</entry>
+    
     <entry xml:id="further">Folgend</entry>
     
     <!-- colors -->
@@ -694,7 +752,7 @@
     <entry xml:id="color.blue.dark">dunkelblau</entry>
     <entry xml:id="color.dark">dunkel</entry>
     <entry xml:id="color.black">schwarz</entry>
-    <entry xml:id="color.pink">rosa (pink)</entry>
+    <entry xml:id="color.pink">pink</entry>
     <entry xml:id="color.red">rot</entry>
     <entry xml:id="color.red.light">hellrot</entry>
     <entry xml:id="color.red.dark">dunkerot</entry>
@@ -714,8 +772,7 @@
     <entry xml:id="medium.pencil.colored">Buntstift</entry>
     <entry xml:id="medium.pencil.ink">Tuschestift</entry>
     <entry xml:id="medium.pen">Füller</entry>
-    <entry xml:id="medium.pen.felt">Filzstift</entry>
-    <entry xml:id="medium.pen.fine">Fineliner</entry>
+    <entry xml:id="medium.pen.felt">Filzstift/Fineliner</entry>
     <entry xml:id="medium.pen.ball">Kugelschreiber</entry>
     <entry xml:id="medium.ribbon">Farbband (Schreibmaschine)</entry>
     
@@ -770,12 +827,13 @@
 	<entry xml:id="isEnclosureOf">Ist Beilage zu</entry>
 	<entry xml:id="hasEnclosure">Mit Beilage</entry>
 	<entry xml:id="enclosure">Beilage</entry>
-    <entry xml:id="isEnvelopeOf">Ist Briefumschlag von</entry>
+    <entry xml:id="isEnvelopeOf">Ist Briefumschlag zu</entry>
     <entry xml:id="hasEnvelope">Mit Briefumschlag</entry>
     <entry xml:id="envelope">Briefumschlag</entry>
 	
 	<entry xml:id="previewDocument">Dies ist eine reduzierte Voransicht. Wechseln Sie für weitere Informationen zur</entry>
 	<entry xml:id="switchDocumentView">Edition des Dokuments</entry>
+	<entry xml:id="switchEnvelopeView">Edition des Umschlags</entry>
     
     <entry xml:id="workTypeMedium">Medium</entry>
     <entry xml:id="music">Musikalisches Werk</entry>
@@ -794,40 +852,7 @@
     <entry xml:id="pa">Privataufführung</entry>
     
     <!-- marc relators -->
-    <entry xml:id="act">Schauspiel</entry>
-    <entry xml:id="ard">Inszenierung</entry>
-    <entry xml:id="art">Künstler*in</entry>
-    <entry xml:id="arr">Bearbeitung</entry>
-    <entry xml:id="aus">Drehbuch</entry>
-    <entry xml:id="aut">Verfasst von</entry>
-    <entry xml:id="chr">Choreographie</entry>
-    <entry xml:id="cmp">Komposition</entry>
-    <entry xml:id="cnd">Dirigat</entry>
-    <entry xml:id="cst">Kostüme</entry>
-    <entry xml:id="dte">Widmung an</entry>
-    <entry xml:id="drt">Direktion</entry>
-    <entry xml:id="edt">Herausgabe</entry>
-    <entry xml:id="editorial_assistant">Redaktionsassistenz</entry>
-    <entry xml:id="flm">Filmedition</entry>
-    <entry xml:id="fmd">Filmdirektion</entry>
-    <entry xml:id="fmp">Filmproduktion</entry>
-    <entry xml:id="itr">Instrumente</entry>
-    <entry xml:id="mcp">Musikkopist</entry>
-    <entry xml:id="msd">Musikalische Direktion</entry>
-    <entry xml:id="mus">Ausführung</entry>
-    <entry xml:id="lbt">Libretto</entry>
-    <entry xml:id="lyr">Textdichtung</entry>
-    <entry xml:id="pdr">Projekt Direktion</entry>
-    <entry xml:id="pmn">Produktionsmanagement</entry>
-    <entry xml:id="prn">Produktionsfirma</entry>
-    <entry xml:id="pro">Produktion</entry>
-    <entry xml:id="rce">Aufnahmeleitung (Ton)</entry>
-    <entry xml:id="scr">Schreiber</entry>
-    <entry xml:id="sng">Gesang</entry>
-    <entry xml:id="std">Bühnenbild</entry>
-    <entry xml:id="trc">Einrichtung</entry>
-    <entry xml:id="trl">Übersetzung</entry>
-    <entry xml:id="vdg">Film (Video)</entry>
+    
     
     <entry xml:id="events">Ereignisse</entry>
     <entry xml:id="event">Ereignis</entry>
@@ -835,6 +860,7 @@
     <entry xml:id="furtherDetails">Weitere Angaben</entry>
 	
 	<entry xml:id="textRotation">Text im Uhrzeigersinn gedreht</entry>
+	<entry xml:id="rotation">Rotation</entry>
     <entry xml:id="annotation">Anmerkung</entry>
 	<entry xml:id="introduction">Einführung</entry>
 	<entry xml:id="general">Allgemein</entry>
@@ -866,6 +892,13 @@
 	<entry xml:id="orgType.shop">Geschäft</entry>
 	<entry xml:id="orgType.television">Fernsehen</entry>
 	<entry xml:id="orgType.theater">Theater</entry>
+    
+    <!-- certainty -->
+    <entry xml:id="cert.by">durch</entry>
+    <entry xml:id="cert.high">wahrscheinlich</entry>
+    <entry xml:id="cert.medium">vermutlich</entry>
+    <entry xml:id="cert.low">möglicherweise</entry>
+	<entry xml:id="text">Literatur</entry>
 	
 	<entry xml:id="additions">Hinzufügungen</entry>
 	<entry xml:id="deletions">Streichungen</entry>

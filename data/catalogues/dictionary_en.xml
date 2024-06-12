@@ -100,7 +100,7 @@
     <entry xml:id="facsimile">Facsimile</entry>
     <entry xml:id="editorial">Editorial</entry>
     <entry xml:id="series">Series</entry>
-    <entry xml:id="transcription">Transcription</entry>
+    <entry xml:id="transcription">Transcribed by</entry>
     <entry xml:id="textSource">Text Source</entry>
     <entry xml:id="textSources">Text Sources</entry>
     <entry xml:id="correspondingSources">Corresponding sources</entry>
@@ -131,10 +131,20 @@
     <entry xml:id="generalRemark">General Remark</entry>
     <!--  XSL-Ausgaben  -->
     <entry xml:id="addMargin">added in the margin</entry>
+	<entry xml:id="addMargin-right">added in the right margin</entry>
+	<entry xml:id="addMargin-left">added in the left margin</entry>
+	<entry xml:id="addMargin-top">added at the top margin</entry>
+	<entry xml:id="addMargin-bottom">added at the bottom margin</entry>
     <entry xml:id="addInline">added inline</entry>
     <entry xml:id="addBelow">added below</entry>
     <entry xml:id="addAbove">added above</entry>
     <entry xml:id="addDefault">added</entry>
+    <entry xml:id="pMargin">Section in the margin</entry>
+    <entry xml:id="pMargin-right">Section in the right margin</entry>
+    <entry xml:id="pMargin-left">Section in the left margin</entry>
+    <entry xml:id="pMargin-top">Section at the top margin</entry>
+    <entry xml:id="pMargin-bottom">Section at the bottom margin</entry>
+    <entry xml:id="pDefault">Section</entry>
     <entry xml:id="popoverTitle.add">Addition</entry>
     <entry xml:id="popoverTitle.subst">Substitution</entry>
     <entry xml:id="popoverTitle.handshift">Hand shift</entry>
@@ -143,7 +153,8 @@
     <entry xml:id="substBelow">Substitution below the line</entry>
     <entry xml:id="substMargin">Substitution in the margin</entry>
     <entry xml:id="substMixed">Substitution in several places</entry>-->
-    <entry xml:id="popoverTitle.del">deleted text</entry>
+    <entry xml:id="popoverTitle.del">Deleted text</entry>
+    <entry xml:id="popoverTitle.hi">Emphasis</entry>
     <entry xml:id="delGap">deleted text illegible</entry>
     <entry xml:id="delStrikethrough">crossed out</entry>
 	<entry xml:id="delOverwritten">deleted by overwriting</entry>
@@ -164,7 +175,9 @@
     <entry xml:id="noRdg">No text present</entry>
     <entry xml:id="unclearDefault">uncertain transcription</entry>
     <entry xml:id="gapDefault">illegible text</entry>
-    <entry xml:id="outofScope">beyond edition scope</entry>
+    <entry xml:id="outofScope">beyond edition scope</entry> 
+    <entry xml:id="paperloss">Paperloss</entry>
+    <entry xml:id="hiUnderline">Underlining</entry>
 	<entry xml:id="paperloss">Paperloss</entry>
 	<entry xml:id="smoke">Damage due to smoke</entry>
 	<entry xml:id="seal">Damage due to seal</entry>
@@ -199,7 +212,7 @@
     <entry xml:id="versionInformation">Version %1 of %2</entry>
     <!--  Search  -->
     <entry xml:id="advancedSearch">Advanced Search</entry>
-    <entry xml:id="WeGA-Search">Henze-Digital-Search</entry>
+    <entry xml:id="WeGA-Search">HenDi-Search</entry>
     <entry xml:id="perPage">per page</entry>
     <entry xml:id="additionalSearchRow">Add further input field</entry>
     <entry xml:id="no_prefix">Full-Text</entry>
@@ -260,6 +273,41 @@
     <entry xml:id="noBioFoundReason3">It is a well known person where enough information is available online elsewhere, see e.g Wikipedia</entry>
     <entry xml:id="noDataFound">no data found</entry>
     <entry xml:id="dateUnknown">date unknown</entry>
+    <!--  Schlüsselwörter aus MARC Code List for Relators, siehe http://www.loc.gov/marc/relators/relaterm.html  -->
+    <entry xml:id="act">Actor</entry>
+    <entry xml:id="ard">Artistic director</entry>
+    <entry xml:id="art">Artist</entry>
+    <entry xml:id="arr">Arranger</entry>
+    <entry xml:id="aus">Screenwriter</entry>
+    <entry xml:id="aut">Author</entry>
+    <entry xml:id="cnd">Conductor</entry>
+    <entry xml:id="cmp">Composer</entry>
+    <entry xml:id="chr">Choreographer</entry>
+    <entry xml:id="cst">Costume designer</entry>
+    <entry xml:id="drt">Director</entry>
+    <entry xml:id="dte">Dedicatee</entry>
+    <entry xml:id="edt">Editor</entry>
+    <entry xml:id="editorial_assistant">Editorial Assistant</entry>
+    <entry xml:id="flm">Film editor</entry>
+    <entry xml:id="fmd">Film director</entry>
+    <entry xml:id="fmp">Film producer</entry>
+    <entry xml:id="itr">Instrumentalist</entry>
+    <entry xml:id="lbt">Librettist</entry>
+    <entry xml:id="lyr">Lyricist</entry>
+    <entry xml:id="mcp">Music copyist</entry>
+    <entry xml:id="msd">Musical director</entry>
+    <entry xml:id="mus">Performer</entry>
+    <entry xml:id="pdr">Project director</entry>
+    <entry xml:id="pmn">Production manager</entry>
+    <entry xml:id="prn">Production company</entry>
+    <entry xml:id="pro">Producer</entry>
+    <entry xml:id="rce">Recording engineer</entry>
+    <entry xml:id="scr">Scribe</entry>
+    <entry xml:id="sng">Singer</entry>
+    <entry xml:id="std">Set designer</entry>
+    <entry xml:id="trc">Transcriber</entry>
+    <entry xml:id="trl">Translator</entry>
+    <entry xml:id="vdg">Videographer</entry>
     
     <!--  Facets  -->
     <entry xml:id="filter">Filter</entry>
@@ -280,16 +328,20 @@
     <entry xml:id="approved">approved</entry>
     <entry xml:id="biblioType">Entry type</entry>
     <entry xml:id="albumblatt">Albumblatt</entry>
-    <entry xml:id="authors">Authors</entry>
-    <entry xml:id="editors">Editor</entry>
+    <entry xml:id="authors">Author(s)</entry>
+    <entry xml:id="editors">Editor(s)</entry>
     <entry xml:id="publication">Published</entry>
+    <entry xml:id="publishingPeriod">Published</entry>
     <entry xml:id="pubPlace">Publication Place</entry>
     <entry xml:id="publisher">Publisher</entry>
     <entry xml:id="guestbookEntry">Guestbook Entry</entry>
     <entry xml:id="dedication">Dedication</entry>
     <entry xml:id="weisung">Weisung</entry>
     <entry xml:id="eingabe">Eingabe</entry>
-    <entry xml:id="vortrag">Vortrag</entry>
+    <entry xml:id="vortrag">Talk</entry>
+	<entry xml:id="informationAboutTheBiblio">Information about the bibliographic item</entry>
+	<entry xml:id="isPartOf">Is part of</entry>
+	<entry xml:id="hasPart">Has parts</entry>
     <!--  Development  -->
     <entry xml:id="common">Common</entry>
     <!-- HTML Meta Daten -->
@@ -350,17 +402,19 @@
     <entry xml:id="confirm">Confirm</entry>
     <!--  Biblio Typen  -->
     <entry xml:id="article">Article</entry>
+    <entry xml:id="book">Book</entry>
+    <entry xml:id="inbook">In Book</entry>
     <entry xml:id="incollection">In Collection</entry>
     <entry xml:id="inproceedings">In Proceedings</entry>
-    <entry xml:id="score">Score</entry>
+    <entry xml:id="journal">Journal/Newspaper</entry>
+    <entry xml:id="thesis">Thesis</entry>
     <entry xml:id="misc">Misc</entry>
-    <entry xml:id="book">Book</entry>
-    <entry xml:id="review">Review</entry>
-    <entry xml:id="phdthesis">PhD Thesis</entry>
     <entry xml:id="online">Online</entry>
-    <entry xml:id="inbook">In Book</entry>
-    <entry xml:id="mastersthesis">Masters Thesis</entry>
     <entry xml:id="painting">Painting</entry>
+    <entry xml:id="poem">Poem</entry>
+    <entry xml:id="libretto">Libretto</entry>
+    <entry xml:id="review">Review</entry>
+    <entry xml:id="score">Score</entry>
     <!--  Various  -->
     <entry xml:id="correspondence">Letters</entry>
     <entry xml:id="corresp">Correspondence</entry>
@@ -435,6 +489,7 @@
     <entry xml:id="apply">Apply</entry>
     <entry xml:id="checkAll">(un)check all</entry>
     <entry xml:id="indices">Indices</entry>
+	<entry xml:id="catalogData">Catalogue Data</entry>
     <entry xml:id="showPersonSingleView">Show further information for %1</entry>
     <entry xml:id="showLetterSingleView">Display single letter</entry>
     <entry xml:id="showDiaryDay">Show diary entry from %1 for %2</entry>
@@ -485,6 +540,7 @@
     <entry xml:id="all">all</entry>
     <entry xml:id="none">none</entry>
     <entry xml:id="only">only</entry>
+    <entry xml:id="all_corresp">All Correspondences</entry>
     <entry xml:id="all_diaries">All Diaries</entry>
     <entry xml:id="all_writings">All Writings</entry>
     <entry xml:id="all_letters">All Letters</entry>
@@ -521,6 +577,7 @@
     <entry xml:id="pleaseEnterSearchTerms">Please enter search terms</entry>
     <entry xml:id="searchTerm">search term</entry>
     <entry xml:id="credits">Credits</entry>
+	<entry xml:id="legalSuccession">Legal Succession</entry>
     <entry xml:id="calendar">Calendar</entry>
 	<entry xml:id="thematicCommentaries">Explanatory Notes</entry>
 	<entry xml:id="thematicCom">Explanatory Note</entry>
@@ -605,6 +662,7 @@
     <entry xml:id="country">Country</entry>
     <entry xml:id="placenames">Place names</entry>
     <entry xml:id="informationAboutTheWork">Information about the work</entry>
+    
     <entry xml:id="noWorkDetailsFound">No detailed work description recorded</entry>
     <entry xml:id="noWorkDetailsFoundReason">Further information about the work not available due to one of the following causes:</entry>
     <entry xml:id="noWorkDetailsFoundReason3">It is a well known work where enough information is available online elsewhere, see e.g Wikipedia</entry>
@@ -650,32 +708,31 @@
     <entry xml:id="da">Danish</entry>
     <entry xml:id="it">Italian</entry>
     <entry xml:id="fr">French</entry>
-    
-	<entry xml:id="persons_mentioned">Mentioned Persons</entry>
-	<entry xml:id="works_mentioned">Mentioned Works</entry>
-	<entry xml:id="places_mentioned">Mentioned Places</entry>
-	<entry xml:id="siglum">Siglum</entry>
-	<entry xml:id="team">Team</entry>
-	<entry xml:id="settings">Settings</entry>
-    <entry xml:id="emphases">Emphases</entry>
-	<entry xml:id="supplied-marker">Editor's supplement</entry>
-	<entry xml:id="show_markers_paragraph">Show markers in text</entry>
-	<entry xml:id="chars">characters</entry>
-	<entry xml:id="words">words</entry>
-	<entry xml:id="lines">lines</entry>
-	<entry xml:id="charsSg">character</entry>
-	<entry xml:id="wordsSg">word</entry>
-	<entry xml:id="linesSg">line</entry>
-	<entry xml:id="approx">approx.</entry>
-	<entry xml:id="supplied">supplied by the editors</entry>
-	<entry xml:id="geonamesFeatureClass">Type of Place</entry>
-	<entry xml:id="geonamesFeatureClass_P">City, Village, …</entry>
-	<entry xml:id="geonamesFeatureClass_A">Country, State, Region, …</entry>
-	<entry xml:id="geonamesFeatureClass_H">Stream, Lake, …</entry>
-	<entry xml:id="geonamesFeatureClass_L">Parks, Area, …</entry>
-	<entry xml:id="geonamesFeatureClass_S">Spot, Building, Farm</entry>
-	<entry xml:id="geonamesFeatureClass_T">Mountain, Hill, Rock, …</entry>
-	<entry xml:id="geonamesFeatureClass_V">Forest, Heath, …</entry>
+    <entry xml:id="persons_mentioned">Mentioned Persons</entry>
+    <entry xml:id="works_mentioned">Mentioned Works</entry>
+    <entry xml:id="places_mentioned">Mentioned Places</entry>
+    <entry xml:id="siglum">Siglum</entry>
+    <entry xml:id="team">Team</entry>
+    <entry xml:id="settings">Settings</entry>
+    <entry xml:id="supplied-marker">Editor's supplement</entry>
+    <entry xml:id="show_markers_paragraph">Show markers in text</entry>
+    <entry xml:id="chars">characters</entry>
+    <entry xml:id="words">words</entry>
+    <entry xml:id="lines">lines</entry>
+    <entry xml:id="charsSg">character</entry>
+    <entry xml:id="wordsSg">word</entry>
+    <entry xml:id="linesSg">line</entry>
+    <entry xml:id="approx">approx.</entry>
+    <entry xml:id="supplied">supplied by the editors</entry>
+    <entry xml:id="geonamesFeatureClass">Type of Place</entry>
+    <entry xml:id="geonamesFeatureClass_P">City, Village</entry>
+    <entry xml:id="geonamesFeatureClass_A">Country, State, Region</entry>
+    <entry xml:id="geonamesFeatureClass_H">Stream, Lake</entry>
+    <entry xml:id="geonamesFeatureClass_L">Park, Area</entry>
+    <entry xml:id="geonamesFeatureClass_R">Road, Street</entry>
+    <entry xml:id="geonamesFeatureClass_S">Spot, Building</entry>
+    <entry xml:id="geonamesFeatureClass_T">Mountain, Hill, Rock</entry>
+    <entry xml:id="geonamesFeatureClass_V">Forest, Heath</entry>
     
     <entry xml:id="further">Following</entry>
     
@@ -705,8 +762,7 @@
     <entry xml:id="medium.pencil.colored">colored pencil</entry>
     <entry xml:id="medium.pencil.ink">ink pencil</entry>
     <entry xml:id="medium.pen">pen</entry>
-    <entry xml:id="medium.pen.felt">felt pen</entry>
-    <entry xml:id="medium.pen.fine">fineliner</entry>
+    <entry xml:id="medium.pen.felt">felt pen/fineliner</entry>
     <entry xml:id="medium.pen.ball">ball pen</entry>
     <entry xml:id="medium.ribbon">ribbon</entry>
     
@@ -767,6 +823,7 @@
 	
 	<entry xml:id="previewDocument">This is a reduced preview. For further information switch to</entry>
 	<entry xml:id="switchDocumentView">the edition of the Dokument</entry>
+	<entry xml:id="switchEnvelopeView">the edition of the Envelope</entry>
     
     <entry xml:id="workTypeMedium">Medium</entry>
     <entry xml:id="music">Musical work</entry>
@@ -783,49 +840,14 @@
     <entry xml:id="us">World's premiere broadcast</entry>
     <entry xml:id="ea">First performance</entry>
     <entry xml:id="pa">Private performance</entry>
-    
-    <!-- other marc relators -->
-    <entry xml:id="act">Actor</entry>
-    <entry xml:id="ard">Artistic director</entry>
-    <entry xml:id="art">Artist</entry>
-    <entry xml:id="arr">Arranger</entry>
-    <entry xml:id="aus">Screenwriter</entry>
-    <entry xml:id="aut">Author</entry>
-    <entry xml:id="cnd">Conductor</entry>
-    <entry xml:id="cmp">Composer</entry>
-    <entry xml:id="chr">Choreographer</entry>
-    <entry xml:id="cst">Costume designer</entry>
-    <entry xml:id="drt">Director</entry>
-    <entry xml:id="dte">Dedicatee</entry>
-    <entry xml:id="edt">Editor</entry>
-    <entry xml:id="editorial_assistant">Editorial Assistant</entry>
-    <entry xml:id="flm">Film editor</entry>
-    <entry xml:id="fmd">Film director</entry>
-    <entry xml:id="fmp">Film producer</entry>
-    <entry xml:id="itr">Instrumentalist</entry>
-    <entry xml:id="lbt">Librettist</entry>
-    <entry xml:id="lyr">Lyricist</entry>
-    <entry xml:id="mcp">Music copyist</entry>
-    <entry xml:id="msd">Musical director</entry>
-    <entry xml:id="mus">Performer</entry>
-    <entry xml:id="pdr">Project director</entry>
-    <entry xml:id="pmn">Production manager</entry>
-    <entry xml:id="prn">Production company</entry>
-    <entry xml:id="pro">Producer</entry>
-    <entry xml:id="rce">Recording engineer</entry>
-    <entry xml:id="scr">Scribe</entry>
-    <entry xml:id="sng">Singer</entry>
-    <entry xml:id="std">Set designer</entry>
-    <entry xml:id="trc">Transcriber</entry>
-    <entry xml:id="trl">Translator</entry>
-    <entry xml:id="vdg">Videographer</entry>
-    
+        
     <entry xml:id="events">Events</entry>
     <entry xml:id="event">Event</entry>
     <entry xml:id="textualSource">Textual source</entry>
     <entry xml:id="furtherDetails">Further details</entry>
 	
 	<entry xml:id="textRotation">Text turned clockwise</entry>
+    <entry xml:id="rotation">Rotation</entry>
     <entry xml:id="annotation">Annotation</entry>
 	<entry xml:id="introduction">Introduction</entry>
 	<entry xml:id="general">General</entry>
@@ -857,6 +879,13 @@
 	<entry xml:id="orgType.shop">Shop</entry>
 	<entry xml:id="orgType.television">Television</entry>
 	<entry xml:id="orgType.theater">Theater</entry>
+    
+    <!-- certainty -->
+    <entry xml:id="cert.by">by</entry>
+    <entry xml:id="cert.high">probably</entry>
+    <entry xml:id="cert.medium">supposedly</entry>
+    <entry xml:id="cert.low">possibly</entry>
+	<entry xml:id="text">Literature</entry>
 	
 	<entry xml:id="additions">Additions</entry>
 	<entry xml:id="deletions">Deletions</entry>

@@ -26,7 +26,7 @@ declare function wdt:orgs($item as item()*) as map(*) {
         'name' : 'orgs',
         'prefix' : substring(config:get-option('orgsIdPattern'), 1, 3),
         'check' : function() as xs:boolean {
-            if($item castable as xs:string) then matches($item, config:wrap-regex('orgsIdPattern'))
+            if($item castable as xs:string and crud:docAvailable($item)) then matches($item, config:wrap-regex('orgsIdPattern'))
             else false()
         },
         'filter' : function() as document-node()* {
@@ -93,7 +93,7 @@ declare function wdt:persons($item as item()*) as map(*) {
         'name' : 'persons',
         'prefix' : substring(config:get-option('personsIdPattern'), 1, 3),
         'check' : function() as xs:boolean {
-            if($item castable as xs:string) then matches($item, config:wrap-regex('personsIdPattern'))
+            if($item castable as xs:string and crud:docAvailable($item)) then matches($item, config:wrap-regex('personsIdPattern'))
             else false()
         },
         'filter' : function() as document-node()* {
@@ -131,10 +131,10 @@ declare function wdt:persons($item as item()*) as map(*) {
         },
         'label-facets' : function() as xs:string? {
             typeswitch($item)
-                case xs:string return crud:doc($item)//tei:persName[@type = 'reg']/str:normalize-space(.)
-                case xs:untypedAtomic return crud:doc($item)//tei:persName[@type = 'reg']/str:normalize-space(.)
-                case document-node() return str:normalize-space(($item//tei:persName[@type = 'reg']))
-                case element() return str:normalize-space(($item/root()//tei:persName[@type = 'reg']))
+                case xs:string return crud:doc($item)//tei:persName[@type = 'reg'] => str:normalize-space()
+                case xs:untypedAtomic return crud:doc($item)//tei:persName[@type = 'reg'] => str:normalize-space()
+                case document-node() return $item//tei:persName[@type = 'reg'] => str:normalize-space()
+                case element() return $item/root()//tei:persName[@type = 'reg'] => str:normalize-space()
                 default return wega-util:log-to-file('error', 'wdt:persons()("label-facests"): failed to get string')
         },
         'memberOf' : ('search','indices', 'sitemap', 'unary-docTypes'),
@@ -340,7 +340,6 @@ declare function wdt:corresp($item as item()*) as map(*) {
     }
 };
 
-
 declare function wdt:translations($item as item()*) as map(*) {
     let $text-types := tokenize(config:get-option('textTypes'), '\s+')
     let $constructTranslationHead := function($TEI as element(tei:TEI)) as element(tei:title) {
@@ -407,7 +406,6 @@ declare function wdt:translations($item as item()*) as map(*) {
     }
 };
 
-
 declare function wdt:writings($item as item()*) as map(*) {
     let $filter := function($docs as document-node()*) as document-node()* {
         $docs/root()/descendant::tei:text[range:eq(@type, ('performance-review', 'historic-news', 'concert_announcements', 'work-review', 'biographical', 'literature'))]/root() 
@@ -465,7 +463,7 @@ declare function wdt:writings($item as item()*) as map(*) {
                 case 'html' return wega-util:transform($title-element, doc(concat($config:xsl-collection-path, '/common_main.xsl')), config:get-xsl-params(())) 
                 default return wega-util:log-to-file('error', 'wdt:letters()("title"): unsupported serialization "' || $serialization || '"')
         },
-        'memberOf' : ('search', 'indices', 'sitemap', 'unary-docTypes'),
+        'memberOf' : ('indices', 'sitemap', 'unary-docTypes'),
         'search' : function($query as element(query)) {
             $item[tei:TEI]//tei:body[ft:query(., $query)] | 
             $item[tei:TEI]//tei:title[ft:query(., $query)] |
@@ -550,10 +548,10 @@ declare function wdt:works($item as item()*) as map(*) {
         },
         'label-facets' : function() as xs:string? {
             typeswitch($item)
-            case xs:string return str:normalize-space((crud:doc($item)//mei:work[1]/mei:title/mei:titlePart[@type='main']|(crud:doc($item)//tei:biblStruct)[1]//tei:title)[1])
-            case xs:untypedAtomic return str:normalize-space((crud:doc($item)//mei:work[1]/mei:title/mei:titlePart[@type='main']|(crud:doc($item)//tei:biblStruct)[1]//tei:title)[1])
-            case document-node() return str:normalize-space(($item//mei:work[1]/mei:title/mei:titlePart[@type='main']|($item//tei:biblStruct)[1]//tei:title)[1])
-            case element() return str:normalize-space(($item//mei:work[1]/mei:title/mei:titlePart[@type='main']|($item//tei:biblStruct)[1]//tei:title)[1])
+            case xs:string return (crud:doc($item)//mei:work[1]/mei:title/mei:titlePart[@type='main']|(crud:doc($item)//tei:biblStruct)[1]//tei:title)[1] => str:normalize-space()
+            case xs:untypedAtomic return (crud:doc($item)//mei:work[1]/mei:title/mei:titlePart[@type='main']|(crud:doc($item)//tei:biblStruct)[1]//tei:title)[1] => str:normalize-space()
+            case document-node() return ($item//mei:work[1]/mei:title/mei:titlePart[@type='main']|($item//tei:biblStruct)[1]//tei:title)[1] => str:normalize-space()
+            case element() return ($item//mei:work[1]/mei:title/mei:titlePart[@type='main']|($item//tei:biblStruct)[1]//tei:title)[1] => str:normalize-space()
             default return wega-util:log-to-file('error', 'wdt:works()("label-facests"): failed to get string')
         },
         'memberOf' : ('search', 'indices', 'unary-docTypes', 'sitemap'),
@@ -562,7 +560,7 @@ declare function wdt:works($item as item()*) as map(*) {
             $item[tei:TEI]/tei:TEI[ft:query(., $query)] | 
             $item[mei:mei]//mei:title[ft:query(., $query)] |
             $item[tei:TEI]//tei:title[ft:query(., $query)]
-        }
+       }
     }
 };
 
@@ -697,10 +695,14 @@ declare function wdt:iconography($item as item()*) as map(*) {
             else false()
         },
         'filter' : function() as document-node()* {
-            $item/root()[descendant::tei:person/@corresp]
+            $item/root()/descendant::tei:person[@corresp]/root() | 
+            $item/root()/descendant::tei:place[@corresp]/root() |
+            $item/root()/descendant::tei:org[@corresp]/root()
         },
         'filter-by-person' : function($personID as xs:string) as document-node()* {
-            $item/root()/descendant::tei:person[@corresp = $personID]/root()
+            $item/root()/descendant::tei:person[@corresp = $personID]/root() |
+            $item/root()/descendant::tei:place[@corresp = $personID]/root() |
+            $item/root()/descendant::tei:org[@corresp = $personID]/root()
         },
         'filter-by-date' : function($dateFrom as xs:date?, $dateTo as xs:date?) as document-node()* {
             ()
@@ -711,12 +713,12 @@ declare function wdt:iconography($item as item()*) as map(*) {
             for $i in wdt:iconography($item)('filter')() order by sort:index('iconography', $i) descending return $i
         },
         'init-collection' : function() as document-node()* {
-            crud:data-collection('iconography')[descendant::tei:person/@corresp]
+            crud:data-collection('iconography')//(tei:place|tei:person|tei:org)[@corresp]/root()
         },
         'init-sortIndex' : function() as item()* {
-            sort:create-index-callback('iconography', wdt:iconography(())('init-collection')(), function($node) { $node//tei:person/data(@corresp) }, ())
+            sort:create-index-callback('iconography', wdt:iconography(())('init-collection')(), function($node) { $node//data(@corresp) }, ())
         },
-        'memberOf' : (),
+        'memberOf' : ('unary-docTypes'),
         'search' : ()
     }
 };
@@ -820,7 +822,8 @@ declare function wdt:biblio($item as item()*) as map(*) {
                 case xs:untypedAtomic return crud:doc($item)/tei:biblStruct
                 case document-node() return $item/tei:biblStruct
                 default return $item/root()/tei:biblStruct
-            let $html-title := bibl:printCitation($biblStruct, <xhtml:p/>, 'de')
+            let $html-title := wega-util:transform(($biblStruct//tei:title)[1], doc(concat($config:xsl-collection-path, '/common_main.xsl')), config:get-xsl-params(()))
+(:            let $html-title := <xhtml:p>{($biblStruct//tei:title)[1]//text()}</xhtml:p>:)
             return
                 switch($serialization)
                 case 'txt' return str:normalize-space($html-title)
@@ -842,7 +845,7 @@ declare function wdt:places($item as item()*) as map(*) {
         'name' : 'places',
         'prefix' : substring(config:get-option('placesIdPattern'), 1, 3),
         'check' : function() as xs:boolean {
-            if($item castable as xs:string) then matches($item, config:wrap-regex('placesIdPattern'))
+            if($item castable as xs:string and crud:docAvailable($item)) then matches($item, config:wrap-regex('placesIdPattern'))
             else false()
         },
         'filter' : function() as document-node()* {
@@ -1012,7 +1015,7 @@ declare function wdt:documents($item as item()*) as map(*) {
         'filter-by-person' : function($personID as xs:string) as document-node()* {
             if(matches($personID, config:wrap-regex('correspIdPattern')))
             then(
-                 let $personIDs := crud:data-collection('letters')//tei:*[contains(@key, $personID)][ancestor::tei:listRelation]/root()//@key[matches(., config:wrap-regex('documentsIdPattern'))]/string()
+                 let $personIDs := (crud:data-collection('letters')//tei:*[contains(@key, $personID)][ancestor::tei:listRelation]/root()//@key[matches(., config:wrap-regex('documentsIdPattern'))]/string(), crud:data-collection('documents')//tei:*[contains(@key, $personID)][ancestor::tei:listRelation]/root()/tei:TEI/@xml:id/string())
                     => distinct-values()
                  return
                      $item/node()[functx:contains-any-of(@xml:id, $personIDs)]/root()
@@ -1133,7 +1136,6 @@ declare function wdt:addenda($item as item()*) as map(*) {
     }
 };
 
-
 declare function wdt:contacts($item as item()*) as map(*) {
     map {
         'name' : 'contacts',
@@ -1193,7 +1195,7 @@ declare function wdt:backlinks($item as item()*) as map(*) {
                 crud:data-collection('news')//tei:author[@key = $personID][ancestor::tei:fileDesc]/root()  |
                 crud:data-collection('thematicCommentaries')//tei:author[@key = $personID][ancestor::tei:fileDesc]/root()  |
                 crud:data-collection('documents')//tei:author[@key = $personID][ancestor::tei:fileDesc]/root() |
-                crud:data-collection('works')//mei:persName[@codedval = $personID][ancestor::mei:respStmt]/root()
+                crud:data-collection('works')//(mei:persName[@codedval = $personID][ancestor::mei:composer]|tei:author[@key = $personID])/root()
                 (: Not necessary to exclude keys from works encoded in tei :)
             let $docsMentioned := 
                 crud:data-collection('letters')//tei:*[contains(@key,$personID)][not(ancestor::tei:publicationStmt)]/root() | 
@@ -1206,7 +1208,8 @@ declare function wdt:backlinks($item as item()*) as map(*) {
                 crud:data-collection('biblio')//tei:term[.=$personID]/root() |
                 crud:data-collection('thematicCommentaries')//tei:*[contains(@key,$personID)][not(ancestor::tei:publicationStmt)]/root() |
                 crud:data-collection('documents')//tei:*[contains(@key,$personID)][not(ancestor::tei:publicationStmt)]/root() |
-                crud:data-collection('var')//tei:*[contains(@key,$personID)][not(ancestor::tei:publicationStmt)]/root()
+                crud:data-collection('var')//tei:*[contains(@key,$personID)][not(ancestor::tei:publicationStmt)]/root() |
+                crud:data-collection('works')//(mei:*[contains(@codedval, $personID)][ancestor::mei:work]|tei:*[contains(@key, $personID)][ancestor::tei:biblStruct])/root()
             return
                 $docsMentioned except $docsAuthor
         },

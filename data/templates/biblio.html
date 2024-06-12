@@ -15,25 +15,24 @@
 					<div class="col-sm-10">
 						<ol class="breadcrumb">
 							<li>
-                                <a href="$link/index">Home</a>
-                            </li>
+								<a href="$link/index">Home</a>
+							</li>
 							<div data-template="app:breadcrumb-person" data-template-key="breadcrumb-person">
 								<li>
 									<span data-template="app-shared:output" data-template-key="breadcrumb-person">Hans Werner Henze</span>
 								</li>
 							</div>
 							<li>
-                                <a data-template="app:breadcrumb-docType">Werke</a>
-                            </li>
+								<a data-template="app:breadcrumb-docType">Bibliographie</a>
+							</li>
 							<li>
-                                <span data-template="app-shared:print" data-template-key="docID">A020040</span> <span data-template="app-shared:if-not-matches" data-template-key="docType" data-template-value="news" data-template-wrap="no">
-                                    <span data-template="app:status" class="docStatus">in Bearbeitung</span>
-                                </span>
-                            </li>
+								<span data-template="app-shared:print" data-template-key="docID">A1100475</span>
+							</li>
 						</ol>
 					</div>
 					<div class="col-sm-2 d-none d-lg-block backLinkInBreadcrumb" onclick="history.back();">
-						<i class="fa fa-arrow-left"/> <span data-template="lang:translate">back</span> 
+						<i class="fa fa-arrow-left"/>
+						<span data-template="lang:translate">back</span>
 					</div>
 				</div>
 			</div>
@@ -41,30 +40,31 @@
 				<div class="row breadcrumb" data-template="search:get-session-for-singleview">
 					<div class="col-md-4">
 						<a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-prev-item-url">
-                            <i class="fa fa-arrow-left"/> <span data-template="lang:translate">prevMatch</span>
-                        </a>
+							<i class="fa fa-arrow-left"/>
+							<span data-template="lang:translate">prevMatch</span>
+						</a>
 					</div>
 					<div class="col-md-4">
 						<span data-template="app-shared:print" data-template-key="index-of-current-doc">15</span> / <a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-backlink">
-                            <span data-template="search:results-count">124 Suchergebnisse</span> (»<span data-template="app-shared:print" data-template-key="query-string-org">Carl Weber</span>«)</a>
+							<span data-template="search:results-count">124 Suchergebnisse</span> (»<span data-template="app-shared:print" data-template-key="query-string-org">Carl Weber</span>«)</a>
 					</div>
 					<div class="col-md-4">
 						<a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-next-item-url">
-                            <span data-template="lang:translate">nextMatch</span> <i class="fa fa-arrow-right"/>
-                        </a>
+							<span data-template="lang:translate">nextMatch</span>
+							<i class="fa fa-arrow-right"/>
+						</a>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="container paddingTopIcon paddingBottomIcon" data-template="app:work-basic-data">
-		<div data-template="templates:include" data-template-path="templates/includes/download-modal-mei.html"/>
+	<div class="container paddingTopIcon paddingBottomIcon" data-template="app:biblio-basic-data">
+		<div data-template="templates:include" data-template-path="templates/includes/download-modal-tei.html"/>
 		<div class="row" id="meta" data-template="img:iconography">
 			<div class="col-md-3 col-sm-6">
-				<!--<img id="portrait-placeholder" class="img-fluid" src="$resources/img/icons/icon_person_unbekannt_gross.png" alt="Placeholder Image" width="260" height="340"/>-->
 				<div class="portrait large">
 					<div class="front">
-						<img class="img-fluid" src="$resources/img/icons/icon_person_placeholder.png" alt="Placeholder Image" data-template="img:portrait" data-template-size="large"/>
+						<img class="img-fluid" src="$resources/img/icons/icon_biblio.svg" alt="Placeholder Image" data-template="img:portrait" data-template-size="large"/>
 					</div>
 					<div class="back colored">
 						<h3 data-template="lang:translate">imageSource</h3>
@@ -74,40 +74,21 @@
 			</div>
 			<div class="col-md paddingBottomIcon col-sm-6 basicdata">
 				<h2 data-template="lang:translate">basic_data</h2>
-				<ol class="media" data-template="app-shared:each" data-template-from="ids" data-template-to="id">
-					<li data-template="app:prepare-work-id">
-                        <b data-template="app-shared:print" data-template-key="id-key">WeV:</b> <span data-template="app-shared:print" data-template-key="id-value">9911</span>
-                    </li>
-				</ol>
-				<ol class="media" data-template="app-shared:each" data-template-from="titles" data-template-to="title">
+				<ol class="media" data-template="app-shared:if-exists" data-template-key="biblioType">
 					<li>
-                        <strong data-template="lang:translate">title</strong>: <span data-template="app-shared:output" data-template-key="title">Ein Titel</span>
-                    </li>
-				</ol>
-				<ol class="media" data-template="app-shared:each" data-template-from="altTitles" data-template-to="title">
-					<li>
-                        <strong data-template="lang:translate">altTitle</strong>: <span data-template="app-shared:output" data-template-key="title">Ein Titel</span>
-                    </li>
-				</ol>
-				<ol class="media" data-template="app-shared:each" data-template-from="descTitles" data-template-to="title">
-					<li>
-                        <strong data-template="lang:translate">descTitle</strong>: <span data-template="app-shared:output" data-template-key="title">Ein beschreibender Titel</span>
-					</li>
-				</ol>
-				<ol class="media" data-template="app-shared:if-matches" data-template-key="workType" data-template-value="tape lp cd film painting">
-					<li>
-						<strong data-template="lang:translate">workTypeMedium</strong>: <span data-template="app-shared:print" data-template-key="workTypeLabel">Film</span>
+						<strong data-template="lang:translate">workTypeMedium</strong>: <span data-template="app-shared:print" data-template-key="biblioTypeLabel">Book</span>
 					</li>
 				</ol>
 				<ol class="media" data-template="app-shared:each" data-template-from="relatorGrps" data-template-to="relatorGrp">
 					<li>
-						<strong data-template="app:preview-relator-role"/>: 
-						<span data-template="app:preview-relator-name" data-template-popover="true"/>
+						<strong data-template="app:preview-relator-role"/>: <span data-template="app:preview-relator-name" data-template-popover="true"/>
 					</li>
 				</ol>
 				<ol class="media" data-template="app-shared:each" data-template-from="publication" data-template-to="title">
 					<li>
-						<strong data-template="lang:translate">publication</strong>: <span data-template="app-shared:output" data-template-key="title">Jahr</span>
+						<span data-template="app-shared:if-matches" data-template-key="biblioType" data-template-value="journal"><strong data-template="lang:translate">publishingPeriod</strong>: </span>
+						<span data-template="app-shared:if-not-matches" data-template-key="biblioType" data-template-value="journal"><strong data-template="lang:translate">publication</strong>: </span>
+						<span data-template="app-shared:output" data-template-key="title">Jahr</span>
 					</li>
 				</ol>
 				<ol class="media" data-template="app-shared:each" data-template-from="pubPlace" data-template-to="title">
@@ -130,7 +111,7 @@
 						<strong data-template="lang:translate">isPartOf</strong>:
 						<ol>
 							<li>
-								<span data-template="app-shared:output" data-template-key="isPartOf">Titel</span>
+								<span data-template="app-shared:output" data-template-key="isPartOf">Titel, Seitenzahl</span>
 							</li>
 						</ol>
 					</li>
@@ -145,36 +126,33 @@
 						</ol>
 					</li>
 				</ol>
-				<ol class="media" data-template="app-shared:if-exists" data-template-key="hasComponents">
-					<li>
-						<strong data-template="lang:translate">hasPart</strong>:
-						<ol>
-							<li data-template="app-shared:each" data-template-from="hasComponents" data-template-to="hasComponent">
-								<strong data-template="lang:translate">title</strong>: <span data-template="app-shared:output" data-template-key="hasComponent">Eintrag</span>
-							</li>
-						</ol>
-					</li>
-				</ol>
 			</div>
-		    <div data-template="templates:include" data-template-path="templates/includes/iconography.html"/>
+			<div class="col-md col-sm-12 iconographie">
+				<div data-template="app-shared:if-exists" data-template-key="iconographyImages" data-template-wrap="no">
+					<h2 data-template="lang:translate">iconography</h2>
+				</div>
+				<div class="iconographythumbnail" data-template="app-shared:each" data-template-from="iconographyImages" data-template-to="iconographyImage" data-template-max="30">
+					<img data-template="img:iconographyImage" src="dummy.jpg"/>
+				</div>
+			</div>
 		</div>
 	</div>
 	<!-- Nav tabs -->
-	<div id="details" data-template="app:work-details">
+	<div id="details" data-template="app:biblio-details">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-10 col-12">
 					<nav class="greedy">
 						<ul class="resp-tabs-list links easyResponsiveTabs">
 							<li>
-                                <a data-template="app:person-main-tab" href="#biographies">descriptions</a>
-                            </li>
+								<a data-template="app:person-main-tab" href="#biographies">descriptions</a>
+							</li>
 							<li>
-                                <a data-template="app:person-main-tab" href="#sources" data-target="$docID/sources.html">sources</a>
-                            </li>
+								<a data-template="app:person-main-tab" href="#sources" data-target="$docID/sources.html">sources</a>
+							</li>
 							<li>
-                                <a data-template="app:person-main-tab" href="#backlinks" data-target="$docID/backlinks.html">backlinks</a>
-                            </li>
+								<a data-template="app:person-main-tab" href="#backlinks" data-target="$docID/backlinks.html">backlinks</a>
+							</li>
 						</ul>
 						<button data-template="lang:translate">more</button>
 						<ul class="hidden-links hidden"/>
@@ -204,11 +182,9 @@
 												<li class="nav-item gradient-light">
 													<a class="nav-link" data-toggle="tab" href="#gndText" data-template="app:ajax-tab">gnd-entry</a>
 												</li>
-												<!--
-                                                <li class="nav-item gradient-light">
-                                                    <a class="nav-link" data-toggle="tab" href="#gnd-beacon" data-template="app:ajax-tab">gnd-beacon</a>
-                                                </li>
-                                                -->
+												<li class="nav-item gradient-light">
+													<a class="nav-link" data-toggle="tab" href="#gnd-beacon" data-template="app:ajax-tab">gnd-beacon</a>
+												</li>
 												<li class="nav-item gradient-light">
 													<a class="nav-link" data-toggle="tab" href="#XMLPreview" data-template="app:ajax-tab">XML-Preview</a>
 												</li>
@@ -222,7 +198,7 @@
 										<!-- Tab panes -->
 										<div class="tab-content">
 											<div class="tab-pane active fade in" id="hendiInfo">
-												<h2 data-template="lang:translate">informationAboutTheWork</h2>
+												<h2 data-template="lang:translate">informationAboutTheBiblio</h2>
 												<div data-template="app-shared:if-exists" data-template-key="dedicatees">
 													<h3 data-template="lang:translate">dedicatees</h3>
 													<ul>
@@ -264,11 +240,9 @@
 											<div class="tab-pane fade" id="gndText">
 												<h2>GND</h2>
 											</div>
-											<!--
-                                            <div class="tab-pane fade" id="gnd-beacon">
-                                                <h2>GND Beacon Links</h2>
-                                            </div>
-                                            -->
+											<div class="tab-pane fade" id="gnd-beacon">
+												<h2>GND Beacon Links</h2>
+											</div>
 											<div class="tab-pane fade" id="XMLPreview">
 												<h2>XML</h2>
 												<!--<pre class="prettyprint"><code class="language-xml"><![CDATA[<element xmlns="http://bla.org"><foo>some text</foo></element>]]></code></pre>-->
@@ -296,25 +270,21 @@
 			<div class="row permaLink">
 				<div class="col-md-9" data-template="app-shared:if-matches" data-template-key="lang" data-template-value="de">
 					<h4>Empfohlene Zitierweise</h4>
-					<p>Hans Werner Henzes künstlerisches Netzwerk. Digitale Briefedition, <span data-template="app-shared:print" data-template-key="permalink">http://www.henze-digital.zenmem.de/ID</span> (<span data-template="app-shared:output" data-template-key="versionNews">Version NUMBER vom DATE</span>)
-						<br/>
+					<p>Hans Werner Henzes künstlerisches Netzwerk. Digitale Briefedition, <span data-template="app-shared:print" data-template-key="permalink">http://www.henze-digital.zenmem.de/ID</span> (<span data-template="app-shared:output" data-template-key="versionNews">Version NUMBER vom DATE</span>) <br/>
 						<span data-template="app-shared:print" data-template-key="latestChange">Letzte Änderung dieses Dokuments am 12. Juni 2024 durch Dennis Ried</span>
 					</p>
 				</div>
 				<div class="col-md-9" data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">
 					<h4>Proposed citation</h4>
-					<p>Hans Werner Henze's network of artists. Digital letter edition, <span data-template="app-shared:print" data-template-key="permalink">http://www.henze-digital.zenmem.de/ID</span> (<span data-template="app-shared:output" data-template-key="versionNews">Version NUMBER vom DATE</span>)
-						<br/>
+					<p>Hans Werner Henze's network of artists. Digital letter edition, <span data-template="app-shared:print" data-template-key="permalink">http://www.henze-digital.zenmem.de/ID</span> (<span data-template="app-shared:output" data-template-key="versionNews">Version NUMBER vom DATE</span>) <br/>
 						<span data-template="app-shared:print" data-template-key="latestChange">Letzte Last change of this document by Dennis Ried on June 12, 2024</span>
 					</p>
 				</div>
 			</div>
 			<div class="row bugreport">
 				<div class="col-md-9">
-					<p data-template="app-shared:if-matches" data-template-key="lang" data-template-value="de">Wenn Ihnen auf dieser Seite ein Fehler oder eine Ungenauigkeit aufgefallen ist, <br/>so bitten wir um eine kurze Nachricht an
-						<a href="#" class="obfuscate-email" data-template="app-shared:print" data-template-key="bugEmail">bugEmail</a>.</p>
-					<p data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">If you've spotted some error or inaccurateness please do not hesitate to inform us via 
-						<a href="#" class="obfuscate-email" data-template="app-shared:print" data-template-key="bugEmail">bugEmail</a>.</p>
+					<p data-template="app-shared:if-matches" data-template-key="lang" data-template-value="de">Wenn Ihnen auf dieser Seite ein Fehler oder eine Ungenauigkeit aufgefallen ist, <br/>so bitten wir um eine kurze Nachricht an <a href="#" class="obfuscate-email" data-template="app-shared:print" data-template-key="bugEmail">bugEmail</a>.</p>
+					<p data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">If you've spotted some error or inaccurateness please do not hesitate to inform us via <a href="#" class="obfuscate-email" data-template="app-shared:print" data-template-key="bugEmail">bugEmail</a>.</p>
 				</div>
 			</div>
 		</div>

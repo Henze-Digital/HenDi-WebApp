@@ -68,6 +68,15 @@ text-decoration-line: underline;
     font-size: smaller;
 }
 
+.tei_hi_backgroundGray {
+	background-color: #E0E0E0;
+}
+
+.tei_hi_borderBloc {
+    border: 2px dotted gray;
+    width: fit-content;
+}
+
 /* Used in wikipedia transformations */
 .tei_hi_typewriter {
     font-family: monospace;
@@ -116,7 +125,7 @@ hr.tei_pb-text {
 }
 
 hr.tei_pb-text:before {
-    content: attr(data-content);
+    content: '↓ ' attr(data-content) ' ↓';
     display: inline-block;
     background: #fff;
     font-weight: bold;
@@ -137,7 +146,7 @@ hr.tei_pb-text:before {
 }
 
 .tei_choice, .tei_subst {
-	display: inline-block;
+	display: inline;
 }
 
 /*  for development … */
@@ -306,6 +315,10 @@ li.listSubTitle {
     p { margin-bottom: 0px; }
 }
 
+.tei_address {
+    line-height: 1.4;
+}
+
 .teiLetter_opener {
     display: inline;
     margin-bottom: 0px;
@@ -374,4 +387,10 @@ li.listSubTitle {
 .tei_castGrp_h2 {
     font-weight: normal;
     font-variant: small-caps;
+}
+
+.tei_p_strip {
+    -webkit-box-shadow: 6px 4px 5px -2px rgba(0,0,0,0.56); 
+    box-shadow: 6px 4px 5px -2px rgba(0,0,0,0.56);
+    background: #fffff0;
 }

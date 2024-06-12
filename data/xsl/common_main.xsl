@@ -1,5 +1,4 @@
-<xsl:stylesheet xmlns="http://www.w3.
-    org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mei="http://www.music-encoding.org/ns/mei" xmlns:exist="http://exist.sourceforge.net/NS/exist" xmlns:teix="http://www.tei-c.org/ns/Examples" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:functx="http://www.functx.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" xmlns:hendi="http://henze-digital.zenmem.de/ns/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" version="2.0">
+<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mei="http://www.music-encoding.org/ns/mei" xmlns:exist="http://exist.sourceforge.net/NS/exist" xmlns:teix="http://www.tei-c.org/ns/Examples" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:functx="http://www.functx.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" xmlns:hendi="http://henze-digital.zenmem.de/ns/1.0" version="2.0">
     
     <xsl:output encoding="UTF-8" method="html" omit-xml-declaration="yes" indent="no"/>
 
@@ -8,8 +7,8 @@
     <!--  *********************************************  -->
 <!--    <xsl:variable name="optionsFile" select="'/db/webapp/xml/wegaOptions.xml'"/>-->
     <xsl:variable name="blockLevelElements" as="xs:string+" select="('p', 'list', 'table')"/>
-    <xsl:variable name="musical-symbols" as="xs:string" select="'[&#x1d100;-&#x1d1ff;♭-♯]+'"/>
-    <xsl:variable name="fa-exclamation-circle" as="xs:string" select="'&#xf06a;'"/>
+    <xsl:variable name="musical-symbols" as="xs:string" select="'[𝄀-𝇿♭-♯]+'"/>
+    <xsl:variable name="fa-exclamation-circle" as="xs:string" select="''"/>
     <xsl:param name="optionsFile"/>
     <xsl:param name="baseHref"/>
     <xsl:param name="lang"/>
@@ -33,7 +32,7 @@
     <xsl:template name="dots">
         <xsl:param name="count" select="1"/>
         <xsl:if test="$count &gt; 0">
-            <xsl:text>&#160;</xsl:text>
+            <xsl:text> </xsl:text>
             <xsl:call-template name="dots">
                 <xsl:with-param name="count" select="$count - 1"/>
             </xsl:call-template>
@@ -83,12 +82,12 @@
                         <xsl:when test="not($marker) and self::tei:app">
                             <xsl:text>Δ</xsl:text>
                         </xsl:when>
-                        <xsl:when test="not($marker) and self::tei:handShift[@script='manuscript']">
+                        <xsl:when test="not($marker) and (self::tei:handShift[@script='manuscript'] or self::tei:handShift[substring-after(@corresp,'#') = wega:doc($docID)//tei:handNote[@script='manuscript']/@xml:id])">
                             <xsl:element name="i">
                                 <xsl:attribute name="class">fa-solid fa-feather-pointed</xsl:attribute>
                             </xsl:element>                    
                         </xsl:when>
-                        <xsl:when test="not($marker) and self::tei:handShift[@script='typescript']">
+                        <xsl:when test="not($marker) and (self::tei:handShift[@script='typescript'] or self::tei:handShift[substring-after(@corresp,'#') = wega:doc($docID)//tei:handNote[@script='typescript']/@xml:id])">
                             <xsl:element name="i">
                                 <xsl:attribute name="class">fa-regular fa-keyboard</xsl:attribute>
                             </xsl:element>
@@ -103,6 +102,11 @@
                             <xsl:element name="i">
                                 <xsl:attribute name="class">fa-regular fa-flag</xsl:attribute>
                             </xsl:element>
+                        </xsl:when>
+                        <xsl:when test="not($marker) and (self::tei:p|self::tei:fw)[@hendi:rotation]">
+                            <xsl:element name="i">
+                                <xsl:attribute name="class">fa-solid fa-arrow-rotate-right</xsl:attribute>
+                            </xsl:element>                    
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:text>‡</xsl:text> <!-- to be changed in apparatus.xsl too if necessary -->
@@ -533,6 +537,9 @@
             </xsl:attribute>
             <xsl:apply-templates mode="#current"/>
         </xsl:element>
+        <xsl:if test="@hand">
+            <xsl:call-template name="popover"/>
+        </xsl:if>
     </xsl:template>
 	
 	<xsl:template match="tei:hi[@rend='capital']" mode="#all">
@@ -546,6 +553,9 @@
     <xsl:template match="tei:pb" priority="0.5">
         <xsl:variable name="pbTitleText">
             <xsl:choose>
+                <xsl:when test="matches(@n, '\d(r|v)')">
+                    <xsl:value-of select="replace(replace(@n,'r',' recto'),'v',' verso')"/>
+                </xsl:when>
                 <xsl:when test="@n">
                     <xsl:value-of select="concat(wega:getLanguageString('pageBreak', $lang), ' (', wega:getLanguageString('pp', $lang), ' ', @n, ')')"/>
                 </xsl:when>
@@ -1027,7 +1037,16 @@
                     <xsl:with-param name="double" select="$doubleQuotes"/>
                     <xsl:with-param name="typescript" select="$isTypescript"/>
                     <xsl:with-param name="lang">
-                        <xsl:variable name="docLang" select="wega:get-doc-languages($docID)[1]"/>
+                        <xsl:variable name="docLang">
+                            <xsl:choose>
+                            <xsl:when test="$lang">
+                                    <xsl:value-of select="$lang"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:value-of select="wega:get-doc-languages($docID)[1]"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:variable>
                         <xsl:choose>
                             <xsl:when test="ancestor::tei:body and @xml:lang">
                                 <xsl:value-of select="@xml:lang"/>
@@ -1124,7 +1143,9 @@
             </xsl:choose>
         </xsl:variable>
         <xsl:element name="i">
-            <xsl:attribute name="class"><xsl:value-of select="concat('fa-', $fontweight,' fa-',.)"/></xsl:attribute>
+            <xsl:attribute name="class">
+                <xsl:value-of select="concat('fa-', $fontweight,' fa-',.)"/>
+            </xsl:attribute>
         </xsl:element>
     </xsl:template>
     
