@@ -16,6 +16,7 @@ declare namespace xhtml="http://www.w3.org/1999/xhtml";
 declare namespace exist="http://exist.sourceforge.net/NS/exist";
 declare namespace util="http://exist-db.org/xquery/util";
 declare namespace repo="http://exist-db.org/xquery/repo";
+declare namespace pkg="http://expath.org/ns/pkg";
 declare namespace expath="http://expath.org/ns/pkg";
 import module namespace functx="http://www.functx.com";
 import module namespace str="http://xquery.weber-gesamtausgabe.de/modules/str" at "xmldb:exist:///db/apps/WeGA-WebApp-lib/xquery/str.xqm";
@@ -78,7 +79,8 @@ declare
 	    map {
 	        'deployment-date' : date:format-date(xs:dateTime($config:repo-descriptor/repo:deployed) cast as xs:date,
 	        $config:default-date-picture-string($model?lang), $model?lang),
-	        'deployment-version' : 'v' || config:expath-descriptor()/@version/string()
+	        'deployment-version' : 'v' || config:expath-descriptor()/@version/string(),
+	        'data-version' : doc('/db/apps/HenDi-Data/expath-pkg.xml')/pkg:package/@version/string()
 	    }
 };
 

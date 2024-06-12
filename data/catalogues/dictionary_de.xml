@@ -139,6 +139,12 @@
     <entry xml:id="addBelow">unter der Zeile hinzugefügt</entry>
     <entry xml:id="addAbove">über der Zeile hinzugefügt</entry>
     <entry xml:id="addDefault">hinzugefügt</entry>
+    <entry xml:id="pMargin">Abschnitt am Rand stehend</entry>
+	<entry xml:id="pMargin-right">Abschnitt am rechten Rand stehend</entry>
+	<entry xml:id="pMargin-left">Abschnitt am linken Rand stehend</entry>
+	<entry xml:id="pMargin-top">Abschnitt am oberen Rand stehend</entry>
+	<entry xml:id="pMargin-bottom">Abschnitt am unteren Rand stehend</entry>
+	<entry xml:id="pDefault">Abschnitt</entry>
     <entry xml:id="popoverTitle.add">Hinzufügung</entry>
     <entry xml:id="popoverTitle.subst">Ersetzung</entry>
     <entry xml:id="popoverTitle.handshift">Schriftwechsel</entry>
@@ -325,6 +331,7 @@
     <entry xml:id="authors">Text von</entry>
     <entry xml:id="editors">Herausgegeben von</entry>
     <entry xml:id="publication">Veröffentlicht</entry>
+    <entry xml:id="publishingPeriod">Erschienen</entry>
     <entry xml:id="pubPlace">Verlagsort</entry>
     <entry xml:id="publisher">Verlag</entry>
     <entry xml:id="guestbookEntry">Gästebucheintrag</entry>
@@ -853,6 +860,7 @@
     <entry xml:id="furtherDetails">Weitere Angaben</entry>
 	
 	<entry xml:id="textRotation">Text im Uhrzeigersinn gedreht</entry>
+	<entry xml:id="rotation">Rotation</entry>
     <entry xml:id="annotation">Anmerkung</entry>
 	<entry xml:id="introduction">Einführung</entry>
 	<entry xml:id="general">Allgemein</entry>

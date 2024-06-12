@@ -1,0 +1,84 @@
+.collapseSingle
+{
+  cursor: pointer;  
+}
+
+a.collapseSingle, a.collapseSingle:hover 
+{
+    color:inherit;
+    text-decoration:none;
+}
+
+.collapseSingle[aria-expanded="false"]:after
+{
+    font-family: "Font Awesome 6 Free";
+    font-style: normal;
+    font-weight: 900;
+    text-decoration: inherit;
+    content:  "\f13a";
+    margin-left: 10px;
+}
+
+.collapseSingle:after
+{
+    font-family: "Font Awesome 6 Free";
+    font-style: normal;
+    font-weight: 900;
+    text-decoration: inherit;
+    content:  "\f139";
+    margin-left: 10px;
+    font-size: smaller;
+}
+
+.collapseSingle[aria-expanded="false"]
+{
+    margin-bottom: 15px;
+    border-bottom: 4px solid $gray-lightest!important;
+    padding-bottom:0!important;
+}
+
+.accordionItem[aria-expanded=false] h2:before {
+  font-family: "Font Awesome 6 Free";
+  font-style: normal;
+  font-weight: 900;
+  text-decoration: inherit;
+  content: "\f138";
+  margin-right: 10px;
+  font-size: smaller;
+}
+
+.accordionItem h2:before {
+  display: inline;
+  font-family: "Font Awesome 6 Free";
+  font-style: normal;
+  font-weight: 900;
+  text-decoration: inherit;
+  content: "\f13a";
+  margin-right: 10px;
+  font-size: smaller;
+}
+
+.collapseMarker, .collapseMarker:hover, .collapseMarker:focus {
+    cursor:pointer;
+    color:inherit;
+    text-decoration:none;
+}
+
+.collapseMarker.collapsed:after {
+    font-family: "Font Awesome 6 Free";
+    font-style: normal;
+    font-weight: 900;
+    text-decoration: inherit;
+    content:  "\f13a";
+    margin-left: 4px;
+}
+
+.collapseMarker:after {
+    font-family: "Font Awesome 6 Free";
+    font-style: normal;
+    font-weight: 900;
+    text-decoration: inherit;
+    content:  "\f139";
+    margin-left: 4px;
+}
+

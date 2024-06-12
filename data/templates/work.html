@@ -14,10 +14,22 @@
 				<div class="row">
 					<div class="col-sm-10">
 						<ol class="breadcrumb">
-							<li><a href="$link/index">Home</a></li>
-							<li><a data-template="app:breadcrumb-person">Carl Maria von Weber</a></li>
-							<li><a data-template="app:breadcrumb-docType">Werke</a></li>
-							<li><span data-template="app-shared:print" data-template-key="docID">A020040</span> <span data-template="app-shared:if-not-matches" data-template-key="docType" data-template-value="news" data-template-wrap="no"><span data-template="app:status" class="docStatus">in Bearbeitung</span></span></li>
+							<li>
+                                <a href="$link/index">Home</a>
+                            </li>
+							<div data-template="app:breadcrumb-person" data-template-key="breadcrumb-person">
+								<li>
+									<span data-template="app-shared:output" data-template-key="breadcrumb-person">Hans Werner Henze</span>
+								</li>
+							</div>
+							<li>
+                                <a data-template="app:breadcrumb-docType">Werke</a>
+                            </li>
+							<li>
+                                <span data-template="app-shared:print" data-template-key="docID">A020040</span> <span data-template="app-shared:if-not-matches" data-template-key="docType" data-template-value="news" data-template-wrap="no">
+                                    <span data-template="app:status" class="docStatus">in Bearbeitung</span>
+                                </span>
+                            </li>
 						</ol>
 					</div>
 					<div class="col-sm-2 d-none d-lg-block backLinkInBreadcrumb" onclick="history.back();">
@@ -28,13 +40,18 @@
 			<div data-template="templates:if-parameter-set" data-template-param="q">
 				<div class="row breadcrumb" data-template="search:get-session-for-singleview">
 					<div class="col-md-4">
-						<a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-prev-item-url"><i class="fa fa-arrow-left"/> <span data-template="lang:translate">prevMatch</span></a>
+						<a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-prev-item-url">
+                            <i class="fa fa-arrow-left"/> <span data-template="lang:translate">prevMatch</span>
+                        </a>
 					</div>
 					<div class="col-md-4">
-						<span data-template="app-shared:print" data-template-key="index-of-current-doc">15</span> / <a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-backlink"><span data-template="search:results-count">124 Suchergebnisse</span> (»<span data-template="app-shared:print" data-template-key="query-string-org">Carl Weber</span>«)</a>
+						<span data-template="app-shared:print" data-template-key="index-of-current-doc">15</span> / <a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-backlink">
+                            <span data-template="search:results-count">124 Suchergebnisse</span> (»<span data-template="app-shared:print" data-template-key="query-string-org">Carl Weber</span>«)</a>
 					</div>
 					<div class="col-md-4">
-						<a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-next-item-url"><span data-template="lang:translate">nextMatch</span> <i class="fa fa-arrow-right"/></a>
+						<a href="$link/search" data-template="app-shared:set-attr" data-template-attr="href" data-template-key="search-next-item-url">
+                            <span data-template="lang:translate">nextMatch</span> <i class="fa fa-arrow-right"/>
+                        </a>
 					</div>
 				</div>
 			</div>
@@ -58,16 +75,23 @@
 			<div class="col-md paddingBottomIcon col-sm-6 basicdata">
 				<h2 data-template="lang:translate">basic_data</h2>
 				<ol class="media" data-template="app-shared:each" data-template-from="ids" data-template-to="id">
-					<li data-template="app:prepare-work-id"><b data-template="app-shared:print" data-template-key="id-key">WeV:</b> <span data-template="app-shared:print" data-template-key="id-value">9911</span></li>
+					<li data-template="app:prepare-work-id">
+                        <b data-template="app-shared:print" data-template-key="id-key">WeV:</b> <span data-template="app-shared:print" data-template-key="id-value">9911</span>
+                    </li>
 				</ol>
 				<ol class="media" data-template="app-shared:each" data-template-from="titles" data-template-to="title">
-					<li><strong data-template="lang:translate">title</strong>: <span data-template="app-shared:output" data-template-key="title">Ein Titel</span></li>
+					<li>
+                        <strong data-template="lang:translate">title</strong>: <span data-template="app-shared:output" data-template-key="title">Ein Titel</span>
+                    </li>
 				</ol>
 				<ol class="media" data-template="app-shared:each" data-template-from="altTitles" data-template-to="title">
-					<li><strong data-template="lang:translate">altTitle</strong>: <span data-template="app-shared:output" data-template-key="title">Ein Titel</span></li>
+					<li>
+                        <strong data-template="lang:translate">altTitle</strong>: <span data-template="app-shared:output" data-template-key="title">Ein Titel</span>
+                    </li>
 				</ol>
 				<ol class="media" data-template="app-shared:each" data-template-from="descTitles" data-template-to="title">
-					<li><strong data-template="lang:translate">descTitle</strong>: <span data-template="app-shared:output" data-template-key="title">Ein beschreibender Titel</span>
+					<li>
+                        <strong data-template="lang:translate">descTitle</strong>: <span data-template="app-shared:output" data-template-key="title">Ein beschreibender Titel</span>
 					</li>
 				</ol>
 				<ol class="media" data-template="app-shared:if-matches" data-template-key="workType" data-template-value="tape lp cd film painting">
@@ -101,6 +125,36 @@
 						<strong data-template="lang:translate">annotation</strong>: <span data-template="app-shared:output" data-template-key="annotation">Anmerkungstext</span>
 					</li>
 				</ol>
+				<ol class="media" data-template="app-shared:if-exists" data-template-key="isPartOf">
+					<li>
+						<strong data-template="lang:translate">isPartOf</strong>:
+						<ol>
+							<li>
+								<span data-template="app-shared:output" data-template-key="isPartOf">Titel</span>
+							</li>
+						</ol>
+					</li>
+				</ol>
+				<ol class="media" data-template="app-shared:if-exists" data-template-key="hasParts">
+					<li>
+						<strong data-template="lang:translate">hasPart</strong>:
+						<ol data-template="app-shared:each" data-template-from="hasParts" data-template-to="hasPart">
+							<li>
+								<span data-template="app-shared:output" data-template-key="hasPart">Eintrag</span>
+							</li>
+						</ol>
+					</li>
+				</ol>
+				<ol class="media" data-template="app-shared:if-exists" data-template-key="hasComponents">
+					<li>
+						<strong data-template="lang:translate">hasPart</strong>:
+						<ol>
+							<li data-template="app-shared:each" data-template-from="hasComponents" data-template-to="hasComponent">
+								<strong data-template="lang:translate">title</strong>: <span data-template="app-shared:output" data-template-key="hasComponent">Eintrag</span>
+							</li>
+						</ol>
+					</li>
+				</ol>
 			</div>
 		    <div data-template="templates:include" data-template-path="templates/includes/iconography.html"/>
 		</div>
@@ -112,9 +166,15 @@
 				<div class="col-md-10 col-12">
 					<nav class="greedy">
 						<ul class="resp-tabs-list links easyResponsiveTabs">
-							<li><a data-template="app:person-main-tab" href="#biographies">descriptions</a></li>
-							<li><a data-template="app:person-main-tab" href="#sources" data-target="$docID/sources.html">sources</a></li>
-							<li><a data-template="app:person-main-tab" href="#backlinks" data-target="$docID/backlinks.html">backlinks</a></li>
+							<li>
+                                <a data-template="app:person-main-tab" href="#biographies">descriptions</a>
+                            </li>
+							<li>
+                                <a data-template="app:person-main-tab" href="#sources" data-target="$docID/sources.html">sources</a>
+                            </li>
+							<li>
+                                <a data-template="app:person-main-tab" href="#backlinks" data-target="$docID/backlinks.html">backlinks</a>
+                            </li>
 						</ul>
 						<button data-template="lang:translate">more</button>
 						<ul class="hidden-links hidden"/>
@@ -238,14 +298,14 @@
 					<h4>Empfohlene Zitierweise</h4>
 					<p>Hans Werner Henzes künstlerisches Netzwerk. Digitale Briefedition, <span data-template="app-shared:print" data-template-key="permalink">http://www.henze-digital.zenmem.de/ID</span> (<span data-template="app-shared:output" data-template-key="versionNews">Version NUMBER vom DATE</span>)
 						<br/>
-						<!--                        <span data-template="app-shared:print" data-template-key="latestChange">Letzte Änderung dieses Dokuments am 22. Mai 2014 durch Peter Stadler</span>-->
+						<span data-template="app-shared:print" data-template-key="latestChange">Letzte Änderung dieses Dokuments am 12. Juni 2024 durch Dennis Ried</span>
 					</p>
 				</div>
 				<div class="col-md-9" data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">
 					<h4>Proposed citation</h4>
 					<p>Hans Werner Henze's network of artists. Digital letter edition, <span data-template="app-shared:print" data-template-key="permalink">http://www.henze-digital.zenmem.de/ID</span> (<span data-template="app-shared:output" data-template-key="versionNews">Version NUMBER vom DATE</span>)
 						<br/>
-						<!--                        <span data-template="app-shared:print" data-template-key="latestChange">Letzte Änderung dieses Dokuments am DATE durch EDITOR</span>-->
+						<span data-template="app-shared:print" data-template-key="latestChange">Letzte Last change of this document by Dennis Ried on June 12, 2024</span>
 					</p>
 				</div>
 			</div>

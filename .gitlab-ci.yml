@@ -3,7 +3,7 @@ variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
     IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-    HENDI_CI_IMAGE: registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image:v1-1-0
+    HENDI_CI_IMAGE: registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image:v1-2-0
     GIT_SUBMODULE_STRATEGY: recursive # is also defined in the jobs. Why?
     GIT_DEPTH: 5
     #URL_CI_REGISTRY: "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp"
@@ -84,3 +84,23 @@ build:stable:
     - when: never
   after_script:
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ./hendi-pkg-webapp/HenDi-WebApp-*.xar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hendi-webapp/stable/HenDi-WebApp-latest.xar"'
+
+build:stable-zenodo:
+  stage: build
+  image: $HENDI_CI_IMAGE
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+  script:
+    - ant xar -Dbuild.env.ci=true -DCI_JOB_TOKEN=${CI_JOB_TOKEN} -Dpublishing=true
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - if: $CI_COMMIT_BRANCH == "stable"
+      when: always
+    - if: $BUILD_WEBAPP_STABLE == "true"
+      when: always
+    - if: $CI_COMMIT_BRANCH =~ /^release/
+      when: always
+    - when: never
+  after_script:
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ./hendi-pkg-webapp/HenDi-WebApp-*.zip "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hendi-webapp/stable-zenodo/HenDi-WebApp-latest.zip"'

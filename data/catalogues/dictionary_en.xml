@@ -139,6 +139,12 @@
     <entry xml:id="addBelow">added below</entry>
     <entry xml:id="addAbove">added above</entry>
     <entry xml:id="addDefault">added</entry>
+    <entry xml:id="pMargin">Section in the margin</entry>
+    <entry xml:id="pMargin-right">Section in the right margin</entry>
+    <entry xml:id="pMargin-left">Section in the left margin</entry>
+    <entry xml:id="pMargin-top">Section at the top margin</entry>
+    <entry xml:id="pMargin-bottom">Section at the bottom margin</entry>
+    <entry xml:id="pDefault">Section</entry>
     <entry xml:id="popoverTitle.add">Addition</entry>
     <entry xml:id="popoverTitle.subst">Substitution</entry>
     <entry xml:id="popoverTitle.handshift">Hand shift</entry>
@@ -325,6 +331,7 @@
     <entry xml:id="authors">Author(s)</entry>
     <entry xml:id="editors">Editor(s)</entry>
     <entry xml:id="publication">Published</entry>
+    <entry xml:id="publishingPeriod">Published</entry>
     <entry xml:id="pubPlace">Publication Place</entry>
     <entry xml:id="publisher">Publisher</entry>
     <entry xml:id="guestbookEntry">Guestbook Entry</entry>
@@ -840,6 +847,7 @@
     <entry xml:id="furtherDetails">Further details</entry>
 	
 	<entry xml:id="textRotation">Text turned clockwise</entry>
+    <entry xml:id="rotation">Rotation</entry>
     <entry xml:id="annotation">Annotation</entry>
 	<entry xml:id="introduction">Introduction</entry>
 	<entry xml:id="general">General</entry>

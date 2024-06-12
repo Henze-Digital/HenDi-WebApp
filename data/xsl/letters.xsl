@@ -1,7 +1,7 @@
-<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:functx="http://www.functx.com" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" version="2.0">
+<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:functx="http://www.functx.com" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" xmlns:hendi="http://henze-digital.zenmem.de/ns/1.0" version="2.0">
 	<xsl:output encoding="UTF-8" method="html" omit-xml-declaration="yes" indent="no"/>
 	<xsl:strip-space elements="*"/>
-	<xsl:preserve-space elements="tei:q tei:quote tei:item tei:cell tei:p tei:dateline tei:closer tei:opener tei:hi tei:addrLine tei:settlement tei:persName tei:rs tei:name tei:placeName tei:country tei:district tei:bloc tei:seg tei:l tei:head tei:salute tei:date tei:subst tei:add tei:orgName tei:lem tei:rdg tei:provenance tei:acquisition tei:damage tei:bibl"/>
+	<xsl:preserve-space elements="tei:q tei:quote tei:item tei:cell tei:p tei:head tei:dateline tei:closer tei:opener tei:hi tei:addrLine tei:settlement tei:persName tei:rs tei:name tei:placeName tei:country tei:district tei:bloc tei:seg tei:l tei:head tei:salute tei:date tei:subst tei:add tei:orgName tei:lem tei:rdg tei:provenance tei:acquisition tei:damage tei:bibl"/>
 	<xsl:include href="common_link.xsl"/>
 	<xsl:include href="common_main.xsl"/>
 	<xsl:include href="apparatus.xsl"/>
@@ -245,6 +245,9 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:attribute>
+					<xsl:if test="@hendi:rotation">
+					    <xsl:call-template name="popover"/>
+					</xsl:if>
 					<xsl:apply-templates/>
 				</xsl:element>
 			</xsl:when>
@@ -260,6 +263,9 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:attribute>
+					<xsl:if test="@hendi:rotation">
+					    <xsl:call-template name="popover"/>
+					</xsl:if>
 					<xsl:apply-templates/>
 				</xsl:element>
 			</xsl:otherwise>
@@ -338,9 +344,14 @@
 				<xsl:text>inlineEnd</xsl:text>
 			</xsl:if>
 		</xsl:variable>
+		<xsl:variable name="address">
+			<xsl:if test="exists(tei:address) and count(./node()) lt 4">
+				<xsl:text>tei_address</xsl:text>
+			</xsl:if>
+		</xsl:variable>
 		<xsl:element name="p">
 			<xsl:attribute name="class">
-				<xsl:value-of select="string-join(($p-rend, $p-type-strip, $inlineEnd),' ')"/>
+				<xsl:value-of select="string-join(($p-rend, $p-type-strip, $inlineEnd, $address),' ')"/>
 			</xsl:attribute>
 			<xsl:apply-templates/>
 		</xsl:element>
@@ -354,6 +365,36 @@
 		</xsl:element>
 	</xsl:template>
 	
+	<xsl:template match="tei:head[not(@type='sub')][parent::tei:div]">
+		<xsl:element name="{concat('h', count(ancestor::tei:div) +1)}">
+			<xsl:attribute name="id">
+				<xsl:choose>
+					<xsl:when test="@xml:id">
+						<xsl:value-of select="@xml:id"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="generate-id()"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
+			<xsl:apply-templates/>
+		</xsl:element>
+	</xsl:template>
+	
+	<xsl:template match="tei:head[@type='sub']">
+		<xsl:element name="h3">
+			<xsl:apply-templates select="@xml:id"/>
+			<xsl:apply-templates/>
+		</xsl:element>
+	</xsl:template>
+	
+	<xsl:template match="tei:head[@type='quote']">
+		<xsl:element name="h4">
+			<xsl:apply-templates select="@xml:id"/>
+			<xsl:attribute name="class">quote</xsl:attribute>
+			<xsl:apply-templates/>
+		</xsl:element>
+	</xsl:template>
 	<xsl:template match="tei:stamp">
 		<xsl:element name="div">
 			<xsl:variable name="position">

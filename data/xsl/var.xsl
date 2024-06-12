@@ -40,7 +40,7 @@
     <xsl:template match="tei:divGen[@type='endNotes']">
         <xsl:call-template name="createEndnotesFromNotes"/>
     </xsl:template>
-
+    
     <xsl:template match="tei:div">
         <xsl:variable name="uniqueID">
             <xsl:choose>
@@ -53,16 +53,65 @@
             </xsl:choose>
         </xsl:variable>
         <xsl:element name="div">
-            <xsl:attribute name="id" select="$uniqueID"/>
-            <xsl:if test="@type">
-                <xsl:attribute name="class" select="@type"/>
-            </xsl:if>
-            <xsl:if test="matches(@xml:id, '^para\d+$')">
-                <xsl:call-template name="create-para-label">
-                    <xsl:with-param name="no" select="substring-after(@xml:id, 'para')"/>
-                </xsl:call-template>
-            </xsl:if>
-            <xsl:apply-templates/>
+            <xsl:choose>
+                <xsl:when test="not(parent::tei:div) and (tei:p or tei:list)">
+                    <xsl:element name="div">
+                        <xsl:attribute name="class"><xsl:if test="@type">
+                                <xsl:value-of select="@type"/>
+                            </xsl:if>
+                        </xsl:attribute>
+                        <xsl:element name="div">
+<!--                            <xsl:attribute name="class">card-header</xsl:attribute>-->
+                            <xsl:attribute name="id">
+                                <xsl:value-of select="concat('heading-',$uniqueID)"/>
+                            </xsl:attribute>
+                            <xsl:element name="div">
+                                <xsl:element name="button">
+                                    <xsl:attribute name="class">btn btn-link btn-block text-left accordionItem</xsl:attribute>
+                                    <xsl:attribute name="type">button</xsl:attribute>
+                                    <xsl:attribute name="data-toggle">collapse</xsl:attribute>
+                                    <xsl:attribute name="data-target">
+                                        <xsl:value-of select="concat('#collapse-',$uniqueID)"/>
+                                    </xsl:attribute>
+                                    <xsl:attribute name="aria-expanded">false</xsl:attribute>
+                                    <xsl:attribute name="aria-controls">
+                                        <xsl:value-of select="concat('collapse-',$uniqueID)"/>
+                                    </xsl:attribute>
+                                    <xsl:apply-templates select="tei:head"/>
+                                </xsl:element>
+                            </xsl:element>
+                        </xsl:element>
+                    </xsl:element>
+                    <xsl:element name="div">
+                        <xsl:attribute name="class">collapse</xsl:attribute>
+                        <xsl:attribute name="id">
+                            <xsl:value-of select="concat('collapse-',$uniqueID)"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="aria-labelledby">
+                            <xsl:value-of select="concat('heading-',$uniqueID)"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="data-parent">#transcription</xsl:attribute>
+                        <xsl:element name="div">
+                            <xsl:attribute name="class">card-body</xsl:attribute>
+                            <xsl:apply-templates select="node()[not(self::tei:head)]"/>
+                        </xsl:element>
+                    </xsl:element>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:element name="div">
+                        <xsl:attribute name="id" select="$uniqueID"/>
+                        <xsl:if test="@type">
+                            <xsl:attribute name="class" select="@type"/>
+                        </xsl:if>
+                        <xsl:if test="matches(@xml:id, '^para\d+$')">
+                            <xsl:call-template name="create-para-label">
+                                <xsl:with-param name="no" select="substring-after(@xml:id, 'para')"/>
+                            </xsl:call-template>
+                        </xsl:if>
+                        <xsl:apply-templates/>
+                    </xsl:element>
+                </xsl:otherwise>
+            </xsl:choose>
         </xsl:element>
     </xsl:template>
 
@@ -279,12 +328,24 @@
 	<xsl:template match="tei:specList">
 		<ul style="padding: 0.5em;">
 			<xsl:for-each select="tei:specDesc">
-				<li style="padding: 7px;"><a href="{concat('/Projekt/Editionsrichtlinien/Elemente/ref-', @key, '.html')}">
+				<li style="padding: 7px;">
+                    <a href="{concat('/Projekt/Editionsrichtlinien/Elemente/ref-', @key, '.html')}">
 					<div class="row">
-						<div class="col-1"><span style="border: solid 2pt #181c62;padding: 0.5em;"><i class="fa-solid fa-code"></i></span></div>
-						<div class="col-11"><span style="margin-left: 0.5em;"><xsl:text>&lt;</xsl:text><xsl:value-of select="@key"/><xsl:text>&gt;</xsl:text></span></div>
+						<div class="col-1">
+                                <span style="border: solid 2pt #181c62;padding: 0.5em;">
+                                    <i class="fa-solid fa-code"/>
+                                </span>
+                            </div>
+						<div class="col-11">
+                                <span style="margin-left: 0.5em;">
+                                    <xsl:text>&lt;</xsl:text>
+                                    <xsl:value-of select="@key"/>
+                                    <xsl:text>&gt;</xsl:text>
+                                </span>
+                            </div>
 					</div>
-				</a></li>
+				</a>
+                </li>
 			</xsl:for-each>
 		</ul>
 	</xsl:template>
