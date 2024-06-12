@@ -899,4 +899,14 @@
     <entry xml:id="cert.medium">vermutlich</entry>
     <entry xml:id="cert.low">möglicherweise</entry>
 	<entry xml:id="text">Literatur</entry>
+	
+	<!-- stamps -->
+    <entry xml:id="stamp">Stempel</entry>
+    <entry xml:id="stampType-stamp">Briefmarke</entry>
+    <entry xml:id="stampType-oneline">Stempel (einzeilig)</entry>
+    <entry xml:id="stampType-round">Rundstempel</entry>
+    <entry xml:id="stampType-square">Stempel (quadratisch)</entry>
+    <entry xml:id="stampType-rectangular">Stempel (rechteckig)</entry>
+    <entry xml:id="notClassified">Nicht klassifiziert</entry>
+    <entry xml:id="moreInfoInApparatus">Für weitere Informationen siehe den Apparat</entry>
 </dictionary>
