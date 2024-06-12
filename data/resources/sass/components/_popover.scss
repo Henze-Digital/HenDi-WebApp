@@ -106,6 +106,9 @@
     &.show .arrow::after {
         border-with:0.5rem 0.5rem 0.5rem 0;
     }
+	a[data-toggle="popover"] {
+    	display:none;
+	}
 }
 
 /* adds space between work title and opus number  */

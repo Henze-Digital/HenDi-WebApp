@@ -108,6 +108,12 @@
                                 <xsl:attribute name="class">fa-solid fa-arrow-rotate-right</xsl:attribute>
                             </xsl:element>                    
                         </xsl:when>
+                        <xsl:when test="not($marker) and self::tei:stamp">
+                            <xsl:choose>
+                			    <xsl:when test="@type='stamp'"><i class="fa-solid fa-image"></i></xsl:when>
+                			    <xsl:otherwise><i class="fa-solid fa-stamp"></i></xsl:otherwise>
+                			</xsl:choose>
+                        </xsl:when>
                         <xsl:otherwise>
                             <xsl:text>‡</xsl:text> <!-- to be changed in apparatus.xsl too if necessary -->
                         </xsl:otherwise>
