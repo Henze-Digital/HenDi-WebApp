@@ -51,9 +51,9 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <xsl:choose>
-            <xsl:when test="$enclosure"/>
-            <xsl:otherwise>
+<!--        <xsl:choose>-->
+<!--            <xsl:when test="$enclosure"/>-->
+<!--            <xsl:otherwise>-->
                 <xsl:element name="a">
                     <xsl:attribute name="class" select="string-join(('noteMarker', $marker), ' ')"/>
                     <xsl:attribute name="id" select="concat('ref-', $id)"/>
@@ -119,8 +119,8 @@
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:element>
-            </xsl:otherwise>
-        </xsl:choose>
+<!--            </xsl:otherwise>-->
+<!--        </xsl:choose>-->
     </xsl:template>
 
     <xsl:template name="createEndnotes">
