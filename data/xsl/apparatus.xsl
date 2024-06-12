@@ -274,6 +274,10 @@
          </xsl:with-param>
          <xsl:with-param name="explanation">
             <xsl:apply-templates/>
+            <span class="moreInfoInApparatus">
+                <hr/>
+                <xsl:value-of select="wega:getLanguageString('moreInfoInApparatus', $lang)"/>
+            </span>
          </xsl:with-param>
       </xsl:call-template>
    </xsl:template>
