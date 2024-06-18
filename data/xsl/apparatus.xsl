@@ -220,9 +220,9 @@
    </xsl:template>
    
    <xsl:template match="tei:figDesc">
-      <xsl:text>[</xsl:text>
+      <!--<xsl:text>[</xsl:text>
       <xsl:value-of select="wega:getLanguageString('figure', $lang)"/>
-      <xsl:text>]</xsl:text>
+      <xsl:text>]</xsl:text>-->
       <xsl:call-template name="popover"/>
    </xsl:template>
    
