@@ -110,8 +110,12 @@
                         </xsl:when>
                         <xsl:when test="not($marker) and self::tei:stamp">
                             <xsl:choose>
-                			    <xsl:when test="@type='stamp'"><i class="fa-solid fa-image"></i></xsl:when>
-                			    <xsl:otherwise><i class="fa-solid fa-stamp"></i></xsl:otherwise>
+                			    <xsl:when test="@type='stamp'">
+                            <i class="fa-solid fa-rug"></i>
+                        </xsl:when>
+                			    <xsl:otherwise>
+                            <i class="fa-solid fa-stamp"/>
+                        </xsl:otherwise>
                 			</xsl:choose>
                         </xsl:when>
                         <xsl:otherwise>
