@@ -1158,7 +1158,7 @@
       <xsl:variable name="counter">
          <xsl:choose>
             <xsl:when test="$counter-param='note'">
-               <xsl:number count="tei:note[@type=('commentary', 'definition')] | tei:choice | tei:figDesc | tei:p[@hendi:rotation] | tei:foreign[@xml:id]" level="any"/>
+               <xsl:number count="tei:note[@type=('commentary', 'definition')] | tei:choice | tei:figDesc | tei:stamp | tei:p[@hendi:rotation] | tei:foreign[@xml:id]" level="any"/>
             </xsl:when>
             <xsl:when test="$counter-param='handNote'">
                <xsl:number count="tei:handNote" level="any"/>
