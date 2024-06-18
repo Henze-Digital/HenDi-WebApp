@@ -303,8 +303,15 @@
    </xsl:template>
    
 	<xsl:template match="tei:p[@hendi:rotation]">
+      <xsl:variable name="p-rend">
+			<xsl:if test="@rend">
+				<xsl:value-of select="concat('textAlign-',@rend)"/>
+			</xsl:if>
+		</xsl:variable>
       <xsl:element name="p">
-        <xsl:attribute name="class">tei_hi_borderBloc</xsl:attribute>
+        <xsl:attribute name="class">
+				<xsl:value-of select="string-join(('tei_hi_borderBloc', $p-rend),' ')"/>
+			</xsl:attribute>
         <xsl:call-template name="popover"/>
         <xsl:apply-templates/>
       </xsl:element>
