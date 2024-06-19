@@ -1,27 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-    xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" 
-    xmlns:tei="http://www.tei-c.org/ns/1.0" 
-    xmlns:rng="http://relaxng.org/ns/structure/1.0" 
-    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-    xmlns:fn="http://www.w3.org/2005/xpath-functions" 
-    xmlns:mei="http://www.music-encoding.org/ns/mei"
-    xmlns="http://www.w3.org/1999/xhtml" 
-    version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mei="http://www.music-encoding.org/ns/mei" xmlns="http://www.w3.org/1999/xhtml" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" version="2.0">
     
     <xsl:output encoding="UTF-8" method="html" omit-xml-declaration="yes" indent="no"/>
     <!-- 
         because HTML does not support nested links (aka html:a elements) we need to attach the link to the deepest element; 
         thus exclude all elements with the following child elements 
     -->
-	<xsl:variable name="linkableElements" as="xs:string+" select="('persName', 'rs', 'name', 'characterName', 'orgName', 'country', 'district', 'bloc', 'geogName', 'sic', 'del', 'add', 'subst', 'damage', 'choice', 'unclear', 'app', 'note', 'region', 'settlement', 'bibl')"/>
+    <xsl:variable name="linkableElements" as="xs:string+" select="('persName', 'rs', 'name', 'characterName', 'orgName', 'country', 'district', 'bloc', 'geogName', 'sic', 'del', 'add', 'subst', 'damage', 'choice', 'unclear', 'app', 'note', 'region', 'settlement', 'bibl')"/>
     
     <!--  *********************************************  -->
     <!--  *                  Templates                *  -->
     <!--  *********************************************  -->
-	<xsl:template match="tei:persName | tei:author | tei:orgName | tei:country | tei:district | tei:bloc | tei:geogName | mei:persName | tei:name | tei:region | tei:settlement | mei:settlement | mei:geogName | mei:corpName | mei:title[@codedval] | tei:placeName[@key] | tei:bibl[@key]" 
-        mode="#all">
+    <xsl:template match="tei:persName | tei:author | tei:orgName | tei:country | tei:district | tei:bloc | tei:geogName | mei:persName | tei:name | tei:region | tei:settlement | mei:settlement | mei:geogName | mei:corpName | mei:title[@codedval] | tei:placeName[@key] | tei:bibl[@key]" mode="#all">
         <xsl:choose>
             <xsl:when test="@key or @codedval">
                 <xsl:call-template name="createLink"/>
@@ -31,7 +20,7 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-
+    
     <xsl:template match="tei:rs | tei:name[@type='works']" mode="#all">
         <!--
             Need to distinguish between docTypes with support for single views and those with tooltips only 
@@ -61,11 +50,11 @@
             <xsl:apply-templates/>
         </xsl:element>
     </xsl:template>
-
+    
     <xsl:template match="tei:characterName" mode="#all">
         <xsl:call-template name="createSpan"/>
     </xsl:template>
-
+    
     <xsl:template match="tei:ref | mei:ref" mode="#all">
         <xsl:element name="a">
             <xsl:apply-templates select="@xml:id"/>
@@ -92,8 +81,7 @@
         for previews. Hence, links with fragment identifiers (e.g. `<ref target='wega:A090092#chapter-links'>`)
         will be transformed to simple links without preview popover
     -->
-    <xsl:template match="tei:ref[contains(@target, 'hendi:')][not(contains(@target, '#'))] |
-        mei:ref[contains(@target, 'hendi:')][not(contains(@target, '#'))]" mode="#all">
+    <xsl:template match="tei:ref[contains(@target, 'hendi:')][not(contains(@target, '#'))] |         mei:ref[contains(@target, 'hendi:')][not(contains(@target, '#'))]" mode="#all">
         <xsl:choose>
             <xsl:when test="count(tokenize(@target, '\s+')) gt 1">
                 <xsl:call-template name="createSpan"/>
@@ -121,7 +109,7 @@
     <xsl:template match="@key[not(matches(., '\s'))] | @codedval[not(matches(., '\s'))]">
         <xsl:attribute name="href" select="wega:createLinkToDoc(., $lang)"/>
     </xsl:template>
-
+    
     <xsl:template name="createLink">
         <xsl:choose>
             <xsl:when test="exists((@key, @codedval, @target)) and not(descendant::*[local-name(.) = $linkableElements])">
@@ -140,7 +128,7 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-
+    
     <xsl:template name="createSpan">
         <xsl:element name="span">
             <xsl:apply-templates select="@xml:id"/>
@@ -159,10 +147,10 @@
             </xsl:attribute>
             <xsl:if test="exists((@key, @codedval, @target))">
                 <xsl:variable name="urls" as="xs:string+">
-                	<xsl:for-each select="descendant-or-self::*/@key | descendant-or-self::*/@codedval | descendant-or-self::*/@target[starts-with(., 'hendi:')]">
+                    <xsl:for-each select="descendant-or-self::*/@key | descendant-or-self::*/@codedval | descendant-or-self::*/@target[starts-with(., 'hendi:')]">
                         <xsl:for-each select="tokenize(normalize-space(.), '\s+')">
                             <xsl:choose>
-                            	<xsl:when test="starts-with(.,'hendi:')">
+                                <xsl:when test="starts-with(.,'hendi:')">
                                     <xsl:value-of select="wega:createLinkToDoc(substring(., 7, 8), $lang)"/>
                                 </xsl:when>
                                 <xsl:when test="matches(., '^A\d{2}[A-F0-9]{5}$')">
@@ -183,10 +171,7 @@
     
     <xsl:function name="wega:preview-class" as="xs:string">
         <xsl:param name="myNode" as="element()"/>
-        <xsl:variable name="keys" select="
-            for $key in tokenize(($myNode/@scribe, $myNode/@key, $myNode/@codedval, $myNode/@target/replace(., 'hendi:', '')), '\s+')
-            return substring($key, 1, 8)
-            " as="xs:string+"/>
+        <xsl:variable name="keys" select="             for $key in tokenize(($myNode/@scribe, $myNode/@key, $myNode/@codedval, $myNode/@target/replace(., 'hendi:', '')), '\s+')             return substring($key, 1, 8)             " as="xs:string+"/>
         <xsl:variable name="class" as="xs:string">
             <xsl:choose>
                 <xsl:when test="count(distinct-values(for $key in $keys return substring($key, 1,3))) = 1">
@@ -197,5 +182,5 @@
         </xsl:variable>
         <xsl:value-of select="string-join(('preview', $class, $keys), ' ')"/>
     </xsl:function>
-
+    
 </xsl:stylesheet>
