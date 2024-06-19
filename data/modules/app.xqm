@@ -1779,14 +1779,16 @@ declare
              else (
                  (: adding link to editorial :)
                 (: element xhtml:p {attribute style {'text-align: end;'}, lang:get-language-string('detailsAvailable', $lang), ': ', <a xmlns="http://www.w3.org/1999/xhtml" href="#editorial">{lang:get-language-string('generalRemark', $lang)}</a>, '.'}, :)
-                element xhtml:div {
+                if($doc//tei:notesStmt/tei:note[@type="editorial"][1])
+                then(element xhtml:div {
                     attribute class {'alert alert-info text-center'},
          	        concat(lang:get-language-string('detailsAvailable', $lang), ': '), 
          	        element xhtml:a {
          	            attribute href {'#editorial'},
          	            concat(lang:get-language-string('generalRemark', $lang), '.')
                     }
-             	},
+             	})
+             	else(),
                 wega-util:transform($textRoot, $xslt1, $xslParams)
             )
          let $foot := 
