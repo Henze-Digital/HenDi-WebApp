@@ -108,6 +108,7 @@
     
     <xsl:template match="@key[not(matches(., '\s'))] | @codedval[not(matches(., '\s'))]">
         <xsl:attribute name="href" select="wega:createLinkToDoc(., $lang)"/>
+        <xsl:attribute name="certainty" select="parent::node()/@cert"/>
     </xsl:template>
     
     <xsl:template name="createLink">
