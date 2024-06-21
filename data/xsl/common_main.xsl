@@ -103,7 +103,7 @@
                                 <xsl:attribute name="class">fa-regular fa-flag</xsl:attribute>
                             </xsl:element>
                         </xsl:when>
-                        <xsl:when test="not($marker) and (self::tei:p|self::tei:fw)[@hendi:rotation]">
+                        <xsl:when test="not($marker) and (self::tei:p|self::tei:fw|self::tei:opener|self::tei:closer)[@hendi:rotation]">
                             <xsl:element name="i">
                                 <xsl:attribute name="class">fa-solid fa-arrow-rotate-right</xsl:attribute>
                             </xsl:element>                    

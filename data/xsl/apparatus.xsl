@@ -2,7 +2,7 @@
 
    <xsl:variable name="doc" select="wega:doc($docID)"/>
 	<xsl:variable name="textConstitutionNodes" as="node()*" select=".//tei:subst | .//tei:add[not(parent::tei:subst)] | .//tei:gap[not(@reason='outOfScope' or parent::tei:del)] | .//tei:sic[not(parent::tei:choice)] | .//tei:del[not(parent::tei:subst)] | .//tei:unclear[not(parent::tei:choice) and not(parent::tei:choice)] | .//tei:note[@type='textConst'] | .//tei:handShift | .//tei:supplied[parent::tei:damage] | .//tei:damage[not(node())] | .//tei:hi[@hand]"/>
-	<xsl:variable name="commentaryNodes" as="node()*" select=".//tei:note[@type=('commentary', 'definition')] | .//tei:choice | .//tei:figDesc | .//tei:foreign[@xml:id] | .//tei:p[@hendi:rotation] | .//tei:fw[@hendi:rotation] | .//tei:stamp"/>
+   <xsl:variable name="commentaryNodes" as="node()*" select=".//tei:note[@type=('commentary', 'definition')] | .//tei:choice | .//tei:figDesc | .//tei:foreign[@xml:id] | .//tei:p[@hendi:rotation] | .//tei:fw[@hendi:rotation] | .//tei:opener[@hendi:rotation] | .//tei:closer[@hendi:rotation] | .//tei:stamp"/>
 	<xsl:variable name="autoCommentaryNodes" as="node()*" select=".//tei:persName[not(@key)] | .//tei:orgName[not(@key)] | .//tei:placeName[not(@key)]"/>
 	<xsl:variable name="internalNodes" as="node()*" select=".//tei:note[@type='internal']"/>
    <xsl:variable name="rdgNodes" as="node()*" select=".//tei:app"/>
@@ -302,7 +302,7 @@
       </xsl:call-template>
    </xsl:template>
    
-	<xsl:template match="tei:p[@hendi:rotation]">
+   <xsl:template match="tei:p[@hendi:rotation]|tei:opener[@hendi:rotation]|tei:closer[@hendi:rotation]">
       <xsl:variable name="p-rend">
 			<xsl:if test="@rend">
 				<xsl:value-of select="concat('textAlign-',@rend)"/>
@@ -317,7 +317,7 @@
       </xsl:element>
    </xsl:template>
    
-   <xsl:template match="tei:p[@hendi:rotation]|tei:fw[@hendi:rotation]" mode="apparatus">
+   <xsl:template match="tei:p[@hendi:rotation]|tei:fw[@hendi:rotation]|tei:opener[@hendi:rotation]|tei:closer[@hendi:rotation]" mode="apparatus">
       <xsl:variable name="id" select="wega:createID(.)"/>
       <xsl:call-template name="apparatusEntry">
          <xsl:with-param name="title" select="wega:getLanguageString('note_commentary', $lang)"/>
@@ -1030,7 +1030,7 @@
     
    <xsl:template match="tei:note" mode="lemma"/>
    <xsl:template match="tei:figDesc" mode="lemma"/>
-   <xsl:template match="tei:p[@hendi:rotation]" mode="lemma"/>
+   <xsl:template match="tei:p[@hendi:rotation]|tei:opener[@hendi:rotation]|tei:closer[@hendi:rotation]" mode="lemma"/>
 	<xsl:template match="tei:foreign" mode="lemma">
 		<xsl:apply-templates/>
 	</xsl:template>
@@ -1165,7 +1165,7 @@
       <xsl:variable name="counter">
          <xsl:choose>
             <xsl:when test="$counter-param='note'">
-               <xsl:number count="tei:note[@type=('commentary', 'definition')] | tei:choice | tei:figDesc | tei:stamp | tei:p[@hendi:rotation] | tei:foreign[@xml:id]" level="any"/>
+               <xsl:number count="tei:note[@type=('commentary', 'definition')] | tei:choice | tei:figDesc | tei:stamp | tei:p[@hendi:rotation] | tei:opener[@hendi:rotation] | tei:closer[@hendi:rotation] | tei:foreign[@xml:id]" level="any"/>
             </xsl:when>
             <xsl:when test="$counter-param='handNote'">
                <xsl:number count="tei:handNote" level="any"/>
