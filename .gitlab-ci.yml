@@ -32,7 +32,7 @@ update:submodules:
         echo "No changes detected. Nothing to commit."
       else
         git add submodules/HenDi-ODD
-        git commit -m "CI: update submodule HenDi-ODD"
+        git commit -m "CI update submodule HenDi-ODD"
         git push origin HEAD:${CI_COMMIT_REF_NAME} -o ci.skip
       fi
   rules:
