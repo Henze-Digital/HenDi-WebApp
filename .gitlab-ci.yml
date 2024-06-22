@@ -23,7 +23,7 @@ update:submodules:
     - git remote set-url origin https://HENDI_WEBAPP_CI_TOKEN_NAME:${HENDI_WEBAPP_CI_TOKEN}@git.uni-paderborn.de/vife/henze-digital/hwh-webapp.git
     - git pull origin ${CI_COMMIT_REF_NAME} #--allow-unrelated-histories
     - cd submodules/HenDi-ODD
-    - git remote set-url origin https://HENDI_ODD_CI_TOKEN_NAME:${HENDI_ODD_CI_TOKEN}@git.uni-paderborn.de/vife/henze-digital/hwh-webapp.git
+    - git remote set-url origin https://HENDI_ODD_CI_TOKEN_NAME:${HENDI_ODD_CI_TOKEN}@git.uni-paderborn.de/vife/henze-digital/HenDi-ODD.git
     - git pull origin develop
     - cd ../../
     - |- 
