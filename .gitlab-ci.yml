@@ -35,7 +35,7 @@ update:submodules:
         git commit -m "CI: update submodule HenDi-ODD"
         git push origin HEAD:${CI_COMMIT_REF_NAME} -o ci.skip
       fi
-  only:
+  rules:
     - if: $CI_PIPELINE_SOURCE == "pipeline"
     - if: $TRIGGER_UPDATE_SUBMODULE == "true"
 
