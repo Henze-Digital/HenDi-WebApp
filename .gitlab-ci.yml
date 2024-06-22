@@ -36,8 +36,7 @@ update:submodules:
         git push origin HEAD:${CI_COMMIT_REF_NAME} -o ci.skip
       fi
   rules:
-    - if: $CI_PIPELINE_SOURCE == "pipeline"
-    - if: $TRIGGER_UPDATE_SUBMODULE == "true"
+    - if: $CI_PIPELINE_SOURCE == "trigger"
 
 # jobs for building the webapp
 build:develop:
