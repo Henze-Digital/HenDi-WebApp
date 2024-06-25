@@ -763,7 +763,7 @@
     <entry xml:id="medium.pencil.ink">ink pencil</entry>
     <entry xml:id="medium.pen">pen</entry>
     <entry xml:id="medium.pen.felt">felt pen/fineliner</entry>
-    <entry xml:id="medium.pen.ball">ball pen</entry>
+	<entry xml:id="medium.pen.ball">ballpoint pen</entry>
     <entry xml:id="medium.ribbon">ribbon</entry>
     
     <!-- physical description -->
