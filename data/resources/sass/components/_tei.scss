@@ -250,7 +250,7 @@ li.listSubTitle {
     <signed> und <seg> werden als 'block' gesetzt, 
     damit die Textausrichtung (s.u.) modifiziert werden kann 
 */
-.tei_segBlock {
+.tei_segBlock, .tei_signed {
     display: block;
 }
 

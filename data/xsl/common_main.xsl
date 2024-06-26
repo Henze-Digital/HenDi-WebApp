@@ -111,7 +111,7 @@
                         <xsl:when test="not($marker) and self::tei:stamp">
                             <xsl:choose>
                 			    <xsl:when test="@type='stamp'">
-                            <i class="fa-solid fa-rug"></i>
+                            <i class="fa-solid fa-rug"/>
                         </xsl:when>
                 			    <xsl:otherwise>
                             <i class="fa-solid fa-stamp"/>
@@ -495,7 +495,7 @@
         brauchen daher keinen Zeilenumbruch mehr 
     -->
     <xsl:template match="tei:lb[(following-sibling::text()[not(functx:all-whitespace(.))] | following-sibling::*)[1] = following-sibling::tei:seg[@rend]]" priority="0.6"/>
-    <xsl:template match="tei:lb[(following-sibling::text()[not(functx:all-whitespace(.))] | following-sibling::*)[1] = following-sibling::tei:signed[@rend]]" priority="0.6"/>
+<!--    <xsl:template match="tei:lb[(following-sibling::text()[not(functx:all-whitespace(.))] | following-sibling::*)[1] = following-sibling::tei:signed[@rend]]" priority="0.6"/>-->
 
     <xsl:template match="text()" mode="#all">
         <xsl:variable name="regex" select="string-join((&#34;'&#34;, $musical-symbols, $fa-exclamation-circle), '|')"/>
@@ -983,7 +983,7 @@
         	<xsl:attribute name="class">
         		<xsl:value-of select="'tei_signed'"/>
         		<xsl:if test="@rend">
-        			<xsl:value-of select="concat('textAlign-',@rend)"/>
+        			<xsl:value-of select="concat(' textAlign-',@rend)"/>
         		</xsl:if>
         	</xsl:attribute>
             <xsl:apply-templates/>
