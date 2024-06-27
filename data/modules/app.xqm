@@ -1423,13 +1423,17 @@ declare
                                     order by crud:doc($value)//(tei:persName|tei:orgName)[@type='reg'] ! string-join(str:txtFromTEI(., $lang), '')
                                     return
                                         $value
+        let $annotation := for $each in $model('doc')//tei:notesStmt/tei:note[@type = 'annotation']
+                            let $eachLangSensitive := if($each/@xml:lang) then($each[@xml:lang=$lang]) else($each)
+                            return
+                                $eachLangSensitive/string()
         return
 	        map{
 	            'letterEarliest' : $letterEarliest,
 	            'letterLatest' : $letterLatest,
 	            'correspPartners' : $correspPartners,
 	            'editors' : $editors,
-	            'annotation' : $model('doc')//tei:notesStmt/tei:note[@type = 'annotation']/string()
+	            'annotation' : $annotation
 	        }
 };
 
