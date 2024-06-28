@@ -1392,18 +1392,25 @@ declare
 
 declare 
     %templates:default("lang", "en")
-    %templates:default("popover", "false")
-    function app:preview-editors-name($node as node(), $model as map(*), $lang as xs:string, $popover as xs:string) as element() {
-        let $key := $model('editors')[1] (: Quick fix, because multiple editor names are not allowed in $doc2keyAvailable :)
-        let $myPopover := wega-util-shared:semantic-boolean($popover)
-        let $doc2keyAvailable := crud:docAvailable($key)
-        return
-            if($key and $myPopover and $doc2keyAvailable)
-            then app:createDocLink(crud:doc($key), crud:doc($key)//(tei:persName|tei:orgName)[@type='reg'] ! string-join(str:txtFromTEI(., $lang), ''), $lang, (), true())
-            else element xhtml:span {
-                if($key and $doc2keyAvailable) then wdt:lookup(config:get-doctype-by-id($key), data($key))?title('txt')
-                else str:normalize-space($model('editors'))
-            }
+    %templates:default("popover", "true")
+    function app:preview-editors($node as node(), $model as map(*), $lang as xs:string, $popover as xs:string) as element()* {
+        let $keys := $model('editors')
+        for $key in $keys
+            let $myPopover := wega-util-shared:semantic-boolean($popover)
+            let $doc2keyAvailable := crud:docAvailable($key)
+                return
+                    <li class="media editors" xmlns="http://www.w3.org/1999/xhtml">
+						<span class="pull-left">
+							<i class="fa fa-user"/>
+						</span> {
+                            if($key and $myPopover and $doc2keyAvailable)
+                            then app:createDocLink(crud:doc($key), crud:doc($key)//(tei:persName|tei:orgName)[@type='reg'] ! string-join(str:txtFromTEI(., $lang), ''), $lang, (), true())
+                            else element xhtml:span {
+                                if($key and $doc2keyAvailable) then wdt:lookup(config:get-doctype-by-id($key), data($key))?title('txt')
+                                else str:normalize-space($key)
+                            }
+                        }
+					</li>
 };
 
 declare 
