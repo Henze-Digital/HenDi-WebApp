@@ -334,11 +334,6 @@
 				<xsl:value-of select="concat('textAlign-',@rend)"/>
 			</xsl:if>
 		</xsl:variable>
-		<xsl:variable name="p-type-strip">
-			<xsl:if test="@type='strip'">
-				<xsl:text>tei_p_strip</xsl:text>
-			</xsl:if>
-		</xsl:variable>
 		<xsl:variable name="inlineEnd">
 			<xsl:if test="exists(following-sibling::element()[1][self::tei:closer[@rend='inline']])">
 				<xsl:text>inlineEnd</xsl:text>
@@ -351,8 +346,15 @@
 		</xsl:variable>
 		<xsl:element name="p">
 			<xsl:attribute name="class">
-				<xsl:value-of select="string-join(($p-rend, $p-type-strip, $inlineEnd, $address),' ')"/>
+				<xsl:value-of select="string-join(($p-rend, $inlineEnd, $address),' ')"/>
 			</xsl:attribute>
+			<xsl:apply-templates/>
+		</xsl:element>
+	</xsl:template>
+	
+	<xsl:template match="tei:seg[@type='strip']">
+		<xsl:element name="span">
+			<xsl:attribute name="class">tei_type_strip</xsl:attribute>
 			<xsl:apply-templates/>
 		</xsl:element>
 	</xsl:template>
