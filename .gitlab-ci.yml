@@ -11,6 +11,7 @@ variables:
 stages:
   - update
   - build
+  - clean
 
 # jobs for updating
 update:submodules:
@@ -103,3 +104,12 @@ build:stable-zenodo:
     - when: never
   after_script:
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ./hendi-pkg-webapp/HenDi-WebApp-*.zip "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hendi-webapp/stable-zenodo/HenDi-WebApp-latest.zip"'
+
+clean:pipelines:
+  stage: clean
+  image: ubuntu:latest
+  before_script:
+    - apt update -y
+    - apt install -y curl jq
+  script:
+    - sh delete-pipelines.sh
