@@ -617,7 +617,7 @@
                <xsl:when test="@place='below'">
                   <xsl:text> tei_hi_subscript</xsl:text>
                </xsl:when>
-               <xsl:when test="starts-with(@place,'margin')">
+               <xsl:when test="starts-with(@place,'margin') or @place = 'inline'">
                   <xsl:text> tei_hi_backgroundGray</xsl:text>
                </xsl:when>
             </xsl:choose>
