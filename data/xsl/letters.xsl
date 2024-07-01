@@ -1,4 +1,4 @@
-<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:functx="http://www.functx.com" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" xmlns:hendi="http://henze-digital.zenmem.de/ns/1.0" version="2.0">
+<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:functx="http://www.functx.com" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" xmlns:hendi="http://henze-digital.zenmem.de/ns/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" version="2.0">
 	<xsl:output encoding="UTF-8" method="html" omit-xml-declaration="yes" indent="no"/>
 	<xsl:strip-space elements="*"/>
 	<xsl:preserve-space elements="tei:q tei:quote tei:item tei:cell tei:p tei:head tei:dateline tei:closer tei:opener tei:hi tei:addrLine tei:settlement tei:persName tei:rs tei:name tei:placeName tei:country tei:district tei:bloc tei:seg tei:l tei:head tei:salute tei:date tei:subst tei:add tei:orgName tei:lem tei:rdg tei:provenance tei:acquisition tei:damage tei:bibl"/>
@@ -398,5 +398,15 @@
 		</xsl:element>
 	</xsl:template>
 	
+	<xsl:template match="tei:notatedMusic">
+	    <xsl:variable name="sourceID" select="./@source/string()"/>
+	    <xsl:variable name="sourceDocUri" select="concat('xmldb:exist:///db/apps/HenDi-Data/notatedmusic/', $sourceID, '.mei')"/>
+		<xsl:element name="div">
+    		<xsl:attribute name="id">
+                <xsl:value-of select="$sourceID"/>
+            </xsl:attribute>
+		</xsl:element>
+	    <xhtml:script type="text/javascript">renderMusic(<xsl:value-of select="$sourceID"/>, <xsl:value-of select="$sourceDocUri"/>);</xhtml:script>
+	</xsl:template>
 	
 </xsl:stylesheet>
