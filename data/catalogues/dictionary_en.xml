@@ -860,6 +860,7 @@
 	<entry xml:id="orgType.archive">Archive</entry>
 	<entry xml:id="orgType.association">Association</entry>
 	<entry xml:id="orgType.broadcaster">Broadcaster</entry>
+	<entry xml:id="orgType.ballet">Ballet</entry>
 	<entry xml:id="orgType.choir">Choir</entry>
 	<entry xml:id="orgType.company">Company</entry>
 	<entry xml:id="orgType.festival">Festival</entry>

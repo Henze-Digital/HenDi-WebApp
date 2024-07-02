@@ -873,6 +873,7 @@
 	<entry xml:id="orgType.archive">Archiv</entry>
 	<entry xml:id="orgType.association">Gesellschaft</entry>
 	<entry xml:id="orgType.broadcaster">Sendeanstalt</entry>
+	<entry xml:id="orgType.ballet">Ballett</entry>
 	<entry xml:id="orgType.choir">Chor</entry>
 	<entry xml:id="orgType.company">Unternehmen</entry>
 	<entry xml:id="orgType.festival">Festival</entry>
