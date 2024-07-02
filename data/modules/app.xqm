@@ -1068,13 +1068,32 @@ declare
         }
         let $hasParts := function($doc as document-node(), $linking as xs:boolean) {
             let $files := crud:data-collection('biblio')[.//tei:monogr[@sameAs = $doc/tei:biblStruct/@xml:id]]
-            let $titles := for $file in $files/tei:biblStruct
+            let $items := for $file in $files/tei:biblStruct
                             let $id := $file/@xml:id
                             let $title := $file//tei:title[1]/text()
+                            let $author := ($file//tei:author)[1]
+                            let $year := if($file//tei:date/@when) then($file//tei:date/@when)
+                                         else if($file//tei:biblscope[@unit='jg']) then($file//tei:biblscope[@unit='jg'])
+                                         else if($file//tei:biblscope[@unit='nr']) then($file//tei:biblscope[@unit='nr'])
+                                         else()
+                            group by $year
+                            order by $year
                             return
-                                <a href="/{$id}.html" xmlns="http://www.w3.org/1999/xhtml">{$title}</a>
+                                <li year="{$year}">
+                                    <a href="/{$id}.html" xmlns="http://www.w3.org/1999/xhtml">{string-join(($author,$title),': ')}</a>
+                                </li>
+            
+            
             return
-                $titles
+                <xhtml:ol class="media">
+					{for $item in $items
+					    return
+					        <li><strong>{$item/@year/substring(.,1,4)}</strong>
+        						<ol>
+        							{$items}
+        						</ol>
+    						</li>}
+				</xhtml:ol>
         }
         
         return
