@@ -342,6 +342,7 @@
 	<entry xml:id="informationAboutTheBiblio">Informationen zum Bibliographie-Eintrag</entry>
 	<entry xml:id="isPartOf">Enthalten in</entry>
 	<entry xml:id="hasPart">Enthält</entry>
+	<entry xml:id="seeAlso">Siehe auch</entry>
     <!--  Development  -->
     <entry xml:id="common">Allgemeines</entry>
     <!-- HTML Meta Daten (description) -->

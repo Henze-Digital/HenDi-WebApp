@@ -342,6 +342,7 @@
 	<entry xml:id="informationAboutTheBiblio">Information about the bibliographic item</entry>
 	<entry xml:id="isPartOf">Is part of</entry>
 	<entry xml:id="hasPart">Has parts</entry>
+	<entry xml:id="seeAlso">See also</entry>
     <!--  Development  -->
     <entry xml:id="common">Common</entry>
     <!-- HTML Meta Daten -->

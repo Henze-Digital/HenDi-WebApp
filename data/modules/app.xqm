@@ -811,12 +811,23 @@ declare function app:place-details($node as node(), $model as map(*)) as map(*) 
 declare 
     %templates:wrap
     function app:place-basic-data($node as node(), $model as map(*)) as map(*) {
-        map {
-            'geonames-id' : str:normalize-space(($model?doc//tei:idno[@type='geonames'])[1]),
-            'coordinates' : str:normalize-space($model?doc//tei:geo),
-            'residences': $model('doc')//tei:label[.='Ort'][parent::tei:state]/following-sibling::tei:desc/tei:* ! str:normalize-space(.),
-            'geonamesFeatureCode': $model('doc')//tei:label[.='Kategorie'][parent::tei:state]/following-sibling::tei:desc ! str:normalize-space(.)
-        }
+        let $isAssociatedWith := for $association in $model('doc')//tei:relation[@name="association"]
+                                    return
+                                        <li><a href="/{$association/@key}.html" xmlns="http://www.w3.org/1999/xhtml">{crud:doc($association/@key)//tei:placeName[@type='reg']}</a></li>
+        let $isAssociatedBy := for $association in crud:data-collection('places')[.//tei:relation[@name="association"][@key=$model('docID')]]
+                                  let $id := $association//tei:place/@xml:id
+                                  let $placeName := crud:doc($id)//tei:placeName[@type='reg']
+                                  return
+                                  <li><a href="/{$id}.html" xmlns="http://www.w3.org/1999/xhtml">{$placeName}</a></li>
+        return
+            map {
+                'geonames-id' : str:normalize-space(($model?doc//tei:idno[@type='geonames'])[1]),
+                'coordinates' : str:normalize-space($model?doc//tei:geo),
+                'residences': $model('doc')//tei:label[.='Ort'][parent::tei:state]/following-sibling::tei:desc/tei:* ! str:normalize-space(.),
+                'geonamesFeatureCode': $model('doc')//tei:label[.='Kategorie'][parent::tei:state]/following-sibling::tei:desc ! str:normalize-space(.),
+                'isAssociatedWith': $isAssociatedWith,
+                'isAssociatedBy': $isAssociatedBy
+            }
 };
 
 declare 
