@@ -811,10 +811,10 @@ declare function app:place-details($node as node(), $model as map(*)) as map(*) 
 declare 
     %templates:wrap
     function app:place-basic-data($node as node(), $model as map(*)) as map(*) {
-        let $isAssociatedWith := for $association in $model('doc')//tei:relation[@name="association"]
+        let $isAssociatedWith := for $association in $model('doc')//(tei:relation[@name="association"]|tei:settlement|tei:country|tei:region|tei:district|tei:bloc)
                                     return
                                         <li><a href="/{$association/@key}.html" xmlns="http://www.w3.org/1999/xhtml">{crud:doc($association/@key)//tei:placeName[@type='reg']}</a></li>
-        let $isAssociatedBy := for $association in crud:data-collection('places')[.//tei:relation[@name="association"][@key=$model('docID')]]
+        let $isAssociatedBy := for $association in crud:data-collection('places')[.//(tei:relation[@name="association"]|tei:settlement|tei:country|tei:region|tei:district|tei:bloc)[@key=$model('docID')]]
                                   let $id := $association//tei:place/@xml:id
                                   let $placeName := crud:doc($id)//tei:placeName[@type='reg']
                                   return
