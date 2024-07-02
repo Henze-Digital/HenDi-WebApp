@@ -210,9 +210,9 @@ $.fn.initDatepicker = function () {
     $(this).each(function(a,b) {
         $(b).datepicker({
             dateFormat: "yy-mm-dd",
-            minDate: "1810-02-26",
-            maxDate: "1826-06-03",
-            defaultDate: getDiaryDate(),
+            minDate: "1926-01-01",
+            maxDate: "2013-12-31",
+            defaultDate: "1966-07-01",
             changeMonth: true,
             changeYear: true,
             onSelect: function(dateText) {
