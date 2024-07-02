@@ -1241,7 +1241,8 @@ declare
     function app:print-corresp-intro($node as node(), $model as map(*), $lang as xs:string) as element(xhtml:div)* {
         let $themComm:= app:inject-query($model?doc/*)
         let $intro := collection(config:get-option('dataCollectionPath') || '/thematicCommentaries')/node()[@xml:id=$themComm//tei:relation[@name='introduction']/@key]
-        let $text-transformed := wega-util:transform($intro//tei:text//tei:div[@xml:lang=$lang][position() lt 5], doc(concat($config:xsl-collection-path, '/var.xsl')), config:get-xsl-params(()))
+        let $text-transformed := wega-util:transform($intro//tei:text//tei:div[@xml:lang=$lang][position() lt 5], doc(concat($config:xsl-collection-path, '/var.xsl')), config:get-xsl-params( map {
+            'intro' : true()}))
         return
             $text-transformed
 };
