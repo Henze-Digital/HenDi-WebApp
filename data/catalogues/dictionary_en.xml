@@ -206,7 +206,7 @@
     <entry xml:id="help">Help</entry>
     <entry xml:id="redirect">Redirected from %1</entry>
     <!--  footer  -->
-    <entry xml:id="lastChangeDateWithAuthor">Last change of this document by %2 on %1</entry>
+    <entry xml:id="lastChangeDateWithAuthor">Last change of this document by %2 on %1 (%3)</entry>
     <entry xml:id="lastChangeDateWithoutAuthor">Last change of this document on %1</entry>
     <entry xml:id="proposedCitation">Proposed citation: Hans Werner Henze's network of artists. Digital Edition</entry>
     <entry xml:id="versionInformation">Version %1 of %2</entry>
