@@ -175,6 +175,26 @@
                         <div class="media-body"> <span data-template="app-shared:print" data-template-key="bibl">https://henze-digital.zenmem.de</span>
                         </div>
                     </li>
+                    <ol class="media" data-template="app-shared:if-exists" data-template-key="isAssociatedWith">
+							<li>
+								<strong data-template="lang:translate">seeAlso</strong>:
+								<ol data-template="app-shared:each" data-template-from="isAssociatedWith" data-template-to="association">
+									<li>
+										<span data-template="app-shared:output" data-template-key="association">Assoziierte Person/Organisation</span>
+									</li>
+								</ol>
+							</li>
+						</ol>
+						<ol class="media" data-template="app-shared:if-exists" data-template-key="isAssociatedBy">
+							<li>
+								<strong data-template="lang:translate">seeAlso</strong>:
+								<ol data-template="app-shared:each" data-template-from="isAssociatedBy" data-template-to="association">
+									<li>
+										<span data-template="app-shared:output" data-template-key="association">Assoziierte Person/Organisation</span>
+									</li>
+								</ol>
+							</li>
+						</ol>
                 </ol>
             </div>
             <div data-template="templates:include" data-template-path="templates/includes/iconography.html"/>

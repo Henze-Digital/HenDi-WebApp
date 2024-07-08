@@ -95,7 +95,6 @@ declare
         let $formatedDate := 
             try { date:format-date($date, $config:default-date-picture-string($lang), $lang) }
             catch * { wega-util:log-to-file('warn', 'Failed to get Subversion properties for ' || $model('docID') ) }
-        let $revision := map:get($svnProps, 'rev') => substring(1,8)
         let $version := config:expath-descriptor()/@version => string()
         let $versionDate := date:format-date(xs:date(config:get-option('versionDate')), $config:default-date-picture-string($lang), $lang)
         return
@@ -104,7 +103,7 @@ declare
                 'permalink' : config:permalink($model('docID')),
                 'versionNews' : app:createDocLink(crud:doc(config:get-option('versionNews')), lang:get-language-string('versionInformation',($version, $versionDate), $lang), $lang, ()),
                 'latestChange' :
-                    if($config:isDevelopment) then lang:get-language-string('lastChangeDateWithAuthor',($formatedDate,$author,$revision),$lang)
+                    if($config:isDevelopment) then lang:get-language-string('lastChangeDateWithAuthor',($formatedDate,$author),$lang)
                     else lang:get-language-string('lastChangeDateWithoutAuthor', $formatedDate, $lang)
             }
 };
@@ -1164,6 +1163,14 @@ declare
                                             else(<span>{$each}</span>)
                             return
                                 ($return, if($i lt count(($wegaSpecs, $hendiSpecs))) then(',&#160;') else())
+        let $isAssociatedWith := for $association in $model('doc')//(tei:relation[@name="isAssociatedWith"]|tei:affiliation[@key])
+                                    return
+                                        <li><a href="/{$association/@key}.html" xmlns="http://www.w3.org/1999/xhtml">{crud:doc($association/@key)//(tei:persName|tei:orgName)[@type='reg']}</a></li>
+        let $isAssociatedBy := for $association in (crud:data-collection('orgs')|crud:data-collection('persons'))[.//(tei:relation[@name="isAssociatedWith"]|tei:affiliation)[@key=$model('docID')]]
+                                  let $id := $association//(tei:person|tei:org)/@xml:id
+                                  let $objectName := crud:doc($id)//(tei:persName|tei:orgName)[@type='reg']
+                                  return
+                                  <li><a href="/{$id}.html" xmlns="http://www.w3.org/1999/xhtml">{$objectName}</a></li>
         return
 	        map{
 	            'fullnames' : $model('doc')//tei:persName[@type = 'full'] ! string-join(str:txtFromTEI(., $lang), ''),
@@ -1184,7 +1191,9 @@ declare
 	            'residences' : $residences,
 	            'states' : for $each in $model('doc')//tei:state[@type='orgType']//tei:term return lang:get-language-string('orgType.' || $each, $lang),
 	            'bibls' : $model('doc')//tei:listBibl/tei:bibl,
-	            'addrLines' : $model('doc')//tei:addrLine[ancestor::tei:affiliation[tei:orgName='Carl-Maria-von-Weber-Gesamtausgabe']] 
+	            'addrLines' : $model('doc')//tei:addrLine[ancestor::tei:affiliation[tei:orgName='Carl-Maria-von-Weber-Gesamtausgabe']],
+	            'isAssociatedWith': $isAssociatedWith,
+                'isAssociatedBy': $isAssociatedBy
 	        }
 };
 
