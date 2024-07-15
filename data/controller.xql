@@ -217,6 +217,14 @@ else    if (matches($exist:path, '^/cmif_v2.xml$')) then
     	</forward>
     </dispatch>
 
+(: OAI-PMH-Interface :)
+else if (matches($exist:path, '/(en|de)/' || config:get-option('generalIdPattern') || '(.*)/oai.xml')) then
+    <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+        <forward url="{concat($exist:controller, '/modules/oai.xql')}">
+            <set-attribute name="docID" value="{substring(substring-after($exist:path, 'de/'), 1, 7), substring(substring-after($exist:path, 'en/'), 1, 7)}"/>
+        </forward>
+    </dispatch>
+
 (: Sitemap :)
 else if (matches($exist:path, '^/sitemap(/?|/index.xml)?$') or matches($exist:path, '^/sitemap/sitemap_(en|de).xml.(gz|zip)$')) then
     <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
