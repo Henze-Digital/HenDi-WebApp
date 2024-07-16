@@ -847,7 +847,7 @@
     <entry xml:id="textualSource">Textual source</entry>
     <entry xml:id="furtherDetails">Further details</entry>
 	
-	<entry xml:id="textRotation">Text turned clockwise</entry>
+	<entry xml:id="textRotation">Text rotated clockwise</entry>
     <entry xml:id="rotation">Rotation</entry>
     <entry xml:id="annotation">Annotation</entry>
 	<entry xml:id="introduction">Introduction</entry>
