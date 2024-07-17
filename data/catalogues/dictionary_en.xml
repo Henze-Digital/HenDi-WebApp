@@ -567,7 +567,7 @@
     <entry xml:id="figure">Figure</entry>
     <entry xml:id="figDesc">Figure Description</entry>
     <entry xml:id="textConstitution">Text Constitution</entry>
-    <entry xml:id="autoCommentaryNodes">Automatical Commentary</entry>
+    <entry xml:id="autoCommentaryNodes">Automatic Commentary</entry>
     <entry xml:id="note_commentary">Commentary</entry>
     <entry xml:id="note_definition">Definition</entry>
     <entry xml:id="note_textConst">Text Constitution</entry>
