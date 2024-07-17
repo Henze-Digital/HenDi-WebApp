@@ -1898,6 +1898,19 @@ declare
         str:normalize-space($model('doc')/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title[@level='s'])
 };
 
+declare %private function app:translate-resp($resp as node(), $lang as xs:string) as xs:string {
+	if($lang = 'en')
+	then(
+		  switch ($resp)
+		      case 'Übersetzung' return 'Translation'
+		      case 'Übertragung' return 'Transkription'
+		      case 'Kommentierung' return 'Commentary'
+		      case 'Sprachliche Beratung' return 'Language advice'
+		      default return $resp
+	    )
+	else($resp)
+};
+
 declare 
     %templates:wrap
     %templates:default("lang", "en")
@@ -1905,7 +1918,7 @@ declare
         functx:distinct-deep(
         let $respStmts := for $respStmt in $model?respStmts
         					return (
-            					<dt xmlns="http://www.w3.org/1999/xhtml">{str:normalize-space($respStmt/tei:resp)}</dt>,
+            					<dt xmlns="http://www.w3.org/1999/xhtml">{app:translate-resp($respStmt/tei:resp, $lang)}</dt>,
 					            <dd xmlns="http://www.w3.org/1999/xhtml">{str:normalize-space(string-join($respStmt/tei:name, '; '))}</dd>
         							)
         let $trlDocs := collection(config:get-option('dataCollectionPath'))//tei:relation[@name='isTranslationOf'][@key=$model?docID]/root()
@@ -1916,8 +1929,9 @@ declare
                                 case 'en' return 'gb'
                                 default return $trlDocLang
             let $trlLang := element span { attribute class {'fi fi-' || $trlDocLang}}
+            let $respLabel := app:translate-resp($trlRespStmt/tei:resp, $lang)
             let $respStmtsRelated := 
-            	(<dt xmlns="http://www.w3.org/1999/xhtml">{str:normalize-space($trlRespStmt/tei:resp), '&#160;', $trlLang}</dt>,
+            	(<dt xmlns="http://www.w3.org/1999/xhtml">{$respLabel, '&#160;', $trlLang}</dt>,
                 <dd xmlns="http://www.w3.org/1999/xhtml">{str:normalize-space(string-join($trlRespStmt/tei:name, '; '))}</dd>)
         return
             ($respStmts, $respStmtsRelated)
