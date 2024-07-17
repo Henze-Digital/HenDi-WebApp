@@ -103,7 +103,7 @@
     <entry xml:id="transcription">Transcribed by</entry>
     <entry xml:id="textSource">Text Source</entry>
     <entry xml:id="textSources">Text Sources</entry>
-    <entry xml:id="correspondingSources">Corresponding sources</entry>
+    <entry xml:id="correspondingSources">Already published in</entry>
     <entry xml:id="repository">Repository</entry>
     <entry xml:id="physicalDescription">Physical Description</entry>
     <entry xml:id="tradition">Tradition</entry>
