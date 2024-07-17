@@ -1973,10 +1973,10 @@ declare
                 case element(tei:msFrag) return wega-util:transform($model($key)/tei:msIdentifier, doc(concat($config:xsl-collection-path, '/editorial.xsl')), config:get-xsl-params(()))
                 case element(tei:msDesc) return wega-util:transform($model($key)/tei:msIdentifier, doc(concat($config:xsl-collection-path, '/editorial.xsl')), config:get-xsl-params(()))
                 case element(tei:biblStruct) return bibl:printCitation($model($key), <xhtml:span class="biblio-entry"/>, $model('lang'))
-                case element(tei:bibl) return 
-                    let $processed := wega-util:transform($model($key), doc(concat($config:xsl-collection-path, '/document.xsl')), config:get-xsl-params(()))
+                case element(tei:bibl) return <xhtml:a href="/{$model($key)/@key}">{bibl:printCitation(crud:doc($model($key)/@key)//tei:biblStruct, <xhtml:span/>, $model('lang'))}</xhtml:a>
+                (:  :    let $processed := wega-util:transform($model($key), doc(concat($config:xsl-collection-path, '/document.xsl')), config:get-xsl-params(()))
                     return if ($processed instance of xs:string+) then <span xmlns="http://www.w3.org/1999/xhtml">{$processed}</span>
-                    else $processed
+                    else $processed :)
                 default return <span xmlns="http://www.w3.org/1999/xhtml" class="noDataFound">{lang:get-language-string('noDataFound',$model('lang'))}</span>
         let $sourceCategory := if($model($key)/@rend) then lang:get-language-string($model($key)/@rend,$model('lang')) else ()
         let $sourceData-content :=

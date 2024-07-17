@@ -261,9 +261,9 @@
                                                 <div data-template="app-shared:if-exists" data-template-key="additionalSources" data-template-wrap="no">
                                                     <h4 data-template="lang:translate" class="media-heading">correspondingSources</h4>
                                                 </div>
-                                                <ul class="tei_list" data-template="app-shared:if-exists" data-template-key="additionalSources">
+                                                <ul class="tei_unorderedList" data-template="app-shared:if-exists" data-template-key="additionalSources">
                                                     <li data-template="app-shared:each" data-template-from="additionalSources" data-template-to="additionalSource">
-                                                        <div data-template="app:print-Source" data-template-key="additionalSource">
+                                                        <div data-template="app:print-Source" data-template-key="additionalSource" style="display: inline;">
                                                             <span data-template="app-shared:if-exists" data-template-key="sourceCategory" data-template-wrap="no">
                                                                 <span data-template="app-shared:print" data-template-key="sourceCategory"/>: 
                                                             </span>
