@@ -3,7 +3,7 @@
     <xsl:param name="createSecNos" select="false()"/>
     <xsl:param name="secNoOffset" select="0"/>
     <xsl:param name="uri"/>
-    <xsl:param name="intro" required="no" select="false()" as="xs:boolean"/>
+    <xsl:param name="collapse" required="no" select="false()" as="xs:boolean"/>
     <xsl:param name="main-source-file" select="'/db/apps/HenDi-WebApp/guidelines/guidelines-de-hendiAll.compiled.xml'"/>
     <xsl:strip-space elements="*"/>
     <xsl:preserve-space elements="tei:q tei:quote tei:cell tei:p tei:hi tei:persName tei:rs tei:workName tei:characterName tei:placeName tei:code tei:eg tei:item tei:head tei:date tei:orgName tei:note tei:lem tei:rdg tei:add tei:bibl"/>
@@ -55,7 +55,7 @@
         </xsl:variable>
         <xsl:element name="div">
             <xsl:choose>
-                <xsl:when test="not(parent::tei:div) and (tei:p or tei:list) and $intro = false()">
+                <xsl:when test="not(parent::tei:div) and (tei:p or tei:list) and $collapse = true()">
                     <xsl:element name="div">
                         <xsl:attribute name="class">
                             <xsl:if test="@type">

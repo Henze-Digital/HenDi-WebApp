@@ -1262,8 +1262,7 @@ declare
     function app:print-corresp-intro($node as node(), $model as map(*), $lang as xs:string) as element(xhtml:div)* {
         let $themComm:= app:inject-query($model?doc/*)
         let $intro := collection(config:get-option('dataCollectionPath') || '/thematicCommentaries')/node()[@xml:id=$themComm//tei:relation[@name='introduction']/@key]
-        let $text-transformed := wega-util:transform($intro//tei:text//tei:div[@xml:lang=$lang][position() lt 5], doc(concat($config:xsl-collection-path, '/var.xsl')), config:get-xsl-params( map {
-            'intro' : true()}))
+        let $text-transformed := wega-util:transform($intro//tei:text//tei:div[@xml:lang=$lang][position() lt 5], doc(concat($config:xsl-collection-path, '/var.xsl')), config:get-xsl-params(()))
         return
             $text-transformed
 };
@@ -1793,7 +1792,8 @@ declare
             'dbPath' : document-uri($doc),
             'docID' : $docID,
             'transcript' : 'true',
-            'createSecNos' : if($docID = ('A070010', 'A070001F')) then 'true' else ()
+            'createSecNos' : if($docID = ('A070010', 'A070001F')) then 'true' else (),
+            'collapse' : if(starts-with($docID,'A09')) then (true()) else (false())
             } )
         let $xslt1 := 
             switch($docType)
