@@ -103,7 +103,7 @@
     <entry xml:id="transcription">Transcribed by</entry>
     <entry xml:id="textSource">Text Source</entry>
     <entry xml:id="textSources">Text Sources</entry>
-    <entry xml:id="correspondingSources">Already published in</entry>
+    <entry xml:id="correspondingSources">Corresponding sources</entry>
     <entry xml:id="repository">Repository</entry>
     <entry xml:id="physicalDescription">Physical Description</entry>
     <entry xml:id="tradition">Tradition</entry>
@@ -343,6 +343,8 @@
 	<entry xml:id="isPartOf">Is part of</entry>
 	<entry xml:id="hasPart">Has parts</entry>
 	<entry xml:id="seeAlso">See also</entry>
+	<entry xml:id="isAssociatedWith">Superordinate</entry>
+	<entry xml:id="isAssociatedBy">Subordinate</entry>
     <!--  Development  -->
     <entry xml:id="common">Common</entry>
     <!-- HTML Meta Daten -->
@@ -567,7 +569,7 @@
     <entry xml:id="figure">Figure</entry>
     <entry xml:id="figDesc">Figure Description</entry>
     <entry xml:id="textConstitution">Text Constitution</entry>
-    <entry xml:id="autoCommentaryNodes">Automatic Commentary</entry>
+    <entry xml:id="autoCommentaryNodes">Automatical Commentary</entry>
     <entry xml:id="note_commentary">Commentary</entry>
     <entry xml:id="note_definition">Definition</entry>
     <entry xml:id="note_textConst">Text Constitution</entry>
@@ -847,7 +849,7 @@
     <entry xml:id="textualSource">Textual source</entry>
     <entry xml:id="furtherDetails">Further details</entry>
 	
-	<entry xml:id="textRotation">Text rotated clockwise</entry>
+	<entry xml:id="textRotation">Text turned clockwise</entry>
     <entry xml:id="rotation">Rotation</entry>
     <entry xml:id="annotation">Annotation</entry>
 	<entry xml:id="introduction">Introduction</entry>

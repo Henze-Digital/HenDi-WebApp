@@ -103,7 +103,7 @@
     <entry xml:id="transcription">Übertragen von</entry>
     <entry xml:id="textSource">Textzeuge</entry>
     <entry xml:id="textSources">Textzeugen</entry>
-    <entry xml:id="correspondingSources">Bereits publiziert in</entry>
+    <entry xml:id="correspondingSources">Dazugehörige Textwiedergaben</entry>
     <entry xml:id="repository">Bibliothek</entry>
     <entry xml:id="physicalDescription">Quellenbeschreibung</entry>
     <entry xml:id="tradition">Überlieferung</entry>
@@ -343,6 +343,8 @@
 	<entry xml:id="isPartOf">Enthalten in</entry>
 	<entry xml:id="hasPart">Enthält</entry>
 	<entry xml:id="seeAlso">Siehe auch</entry>
+	<entry xml:id="isAssociatedWith">Übergeordnet</entry>
+	<entry xml:id="isAssociatedBy">Untergeordnet</entry>
     <!--  Development  -->
     <entry xml:id="common">Allgemeines</entry>
     <!-- HTML Meta Daten (description) -->
@@ -911,5 +913,4 @@
     <entry xml:id="stampType-rectangular">Stempel (rechteckig)</entry>
     <entry xml:id="notClassified">Nicht klassifiziert</entry>
     <entry xml:id="moreInfoInApparatus">Für weitere Informationen siehe den Apparat</entry>
-	
 </dictionary>
