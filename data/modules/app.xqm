@@ -1166,7 +1166,7 @@ declare
         let $isAssociatedWith := for $association in $model('doc')//(tei:relation[@name="isAssociatedWith"]|tei:affiliation/tei:*[@key])
                                     return
                                         <li><a href="/{$association/@key}.html" xmlns="http://www.w3.org/1999/xhtml">{crud:doc($association/@key)//(tei:persName|tei:orgName)[@type='reg']}</a></li>
-        let $isAssociatedBy := for $association in (crud:data-collection('orgs')|crud:data-collection('persons'))[.//(tei:relation[@name="isAssociatedWith"]|tei:affiliation)[@key=$model('docID')]]
+        let $isAssociatedBy := for $association in (crud:data-collection('orgs')|crud:data-collection('persons'))[.//(tei:relation[@name="isAssociatedWith"]|tei:affiliation/tei:*)[@key=$model('docID')]]
                                   let $id := $association//(tei:person|tei:org)/@xml:id
                                   let $objectName := crud:doc($id)//(tei:persName|tei:orgName)[@type='reg']
                                   return
