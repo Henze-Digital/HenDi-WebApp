@@ -1101,7 +1101,7 @@ declare
 					    return
 					        <li><strong>{$item/@year/substring(.,1,4)}</strong>
         						<ol>
-        							{$items}
+        							{$item}
         						</ol>
     						</li>}
 				</xhtml:ol>
@@ -1163,7 +1163,7 @@ declare
                                             else(<span>{$each}</span>)
                             return
                                 ($return, if($i lt count(($wegaSpecs, $hendiSpecs))) then(',&#160;') else())
-        let $isAssociatedWith := for $association in $model('doc')//(tei:relation[@name="isAssociatedWith"]|tei:affiliation[@key])
+        let $isAssociatedWith := for $association in $model('doc')//(tei:relation[@name="isAssociatedWith"]|tei:affiliation/tei:*[@key])
                                     return
                                         <li><a href="/{$association/@key}.html" xmlns="http://www.w3.org/1999/xhtml">{crud:doc($association/@key)//(tei:persName|tei:orgName)[@type='reg']}</a></li>
         let $isAssociatedBy := for $association in (crud:data-collection('orgs')|crud:data-collection('persons'))[.//(tei:relation[@name="isAssociatedWith"]|tei:affiliation)[@key=$model('docID')]]
