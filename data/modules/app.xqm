@@ -1903,7 +1903,7 @@ declare %private function app:translate-resp($resp as node(), $lang as xs:string
 	then(
 		  switch ($resp)
 		      case 'Übersetzung' return 'Translation'
-		      case 'Übertragung' return 'Transkription'
+		      case 'Übertragung' return 'Transcription'
 		      case 'Kommentierung' return 'Commentary'
 		      case 'Sprachliche Beratung' return 'Language advice'
 		      default return $resp
