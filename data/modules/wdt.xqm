@@ -845,7 +845,7 @@ declare function wdt:places($item as item()*) as map(*) {
         'name' : 'places',
         'prefix' : substring(config:get-option('placesIdPattern'), 1, 3),
         'check' : function() as xs:boolean {
-            if($item castable as xs:string and crud:docAvailable($item)) then matches($item, config:wrap-regex('placesIdPattern'))
+            if($item castable as xs:string) then matches($item, config:wrap-regex('placesIdPattern'))
             else false()
         },
         'filter' : function() as document-node()* {
