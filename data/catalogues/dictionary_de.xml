@@ -206,7 +206,7 @@
     <entry xml:id="help">Hilfe</entry>
     <entry xml:id="redirect">Weitergeleitet von %1</entry>
     <!--  footer  -->
-    <entry xml:id="lastChangeDateWithAuthor">Letzte Änderung dieses Dokuments am %1 durch %2</entry>
+	<entry xml:id="lastChangeDateWithAuthor">Letzte Änderung dieses Dokuments am %1 durch %2 (%3)</entry>
     <entry xml:id="lastChangeDateWithoutAuthor">Letzte Änderung dieses Dokuments am %1</entry>
     <entry xml:id="proposedCitation">Empfohlene Zitierweise: Hans Werner Henzes künstlerisches Netzwerk. Digitale Edition</entry>
     <entry xml:id="versionInformation">Version %1 vom %2</entry>
@@ -286,7 +286,7 @@
     <entry xml:id="cst">Kostüme</entry>
     <entry xml:id="dte">Widmung an</entry>
     <entry xml:id="drt">Direktion</entry>
-    <entry xml:id="edt">Herausgabe</entry>
+    <entry xml:id="edt">Herausgegeben von</entry>
     <entry xml:id="editorial_assistant">Redaktionsassistenz</entry>
     <entry xml:id="flm">Filmedition</entry>
     <entry xml:id="fmd">Filmdirektion</entry>
@@ -342,6 +342,9 @@
 	<entry xml:id="informationAboutTheBiblio">Informationen zum Bibliographie-Eintrag</entry>
 	<entry xml:id="isPartOf">Enthalten in</entry>
 	<entry xml:id="hasPart">Enthält</entry>
+	<entry xml:id="seeAlso">Siehe auch</entry>
+	<entry xml:id="isAssociatedWith">Übergeordnet</entry>
+	<entry xml:id="isAssociatedBy">Untergeordnet</entry>
     <!--  Development  -->
     <entry xml:id="common">Allgemeines</entry>
     <!-- HTML Meta Daten (description) -->
@@ -873,6 +876,7 @@
 	<entry xml:id="orgType.archive">Archiv</entry>
 	<entry xml:id="orgType.association">Gesellschaft</entry>
 	<entry xml:id="orgType.broadcaster">Sendeanstalt</entry>
+	<entry xml:id="orgType.ballet">Ballett</entry>
 	<entry xml:id="orgType.choir">Chor</entry>
 	<entry xml:id="orgType.company">Unternehmen</entry>
 	<entry xml:id="orgType.festival">Festival</entry>

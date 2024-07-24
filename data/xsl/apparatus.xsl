@@ -492,7 +492,10 @@
                   <xsl:sequence select="wega:enquote($lemma)"/>
                </xsl:when>
             </xsl:choose>
-            <xsl:sequence select="hendi:getHandFeatures(.)"/>
+            <xsl:choose>
+                <xsl:when test="tei:add/@hand"><xsl:sequence select="hendi:getHandFeatures(tei:add)"/></xsl:when>
+                <xsl:otherwise><xsl:sequence select="hendi:getHandFeatures(.)"/></xsl:otherwise>
+            </xsl:choose>
          </xsl:with-param>
       </xsl:call-template>
    </xsl:template>
@@ -617,7 +620,7 @@
                <xsl:when test="@place='below'">
                   <xsl:text> tei_hi_subscript</xsl:text>
                </xsl:when>
-               <xsl:when test="starts-with(@place,'margin')">
+               <xsl:when test="starts-with(@place,'margin') or @place = 'inline'">
                   <xsl:text> tei_hi_backgroundGray</xsl:text>
                </xsl:when>
             </xsl:choose>
