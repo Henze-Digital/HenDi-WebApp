@@ -1125,8 +1125,12 @@
    <xsl:template match="tei:foreign[@xml:id]|(tei:p|tei:seg)[starts-with(@xml:id,'sec.')]" mode="apparatus">
 		<xsl:variable name="getLemmaLang">
 		    <xsl:choose>
-		        <xsl:when test="not(@xml:lang)"><xsl:value-of select="$doc//tei:langUsage/tei:language[1]/@ident"/></xsl:when>
-		        <xsl:otherwise><xsl:value-of select="@xml:lang"/></xsl:otherwise>
+		        <xsl:when test="not(@xml:lang)">
+                    <xsl:value-of select="$doc//tei:langUsage/tei:language[1]/@ident"/>
+                </xsl:when>
+		        <xsl:otherwise>
+                    <xsl:value-of select="@xml:lang"/>
+                </xsl:otherwise>
 		    </xsl:choose>
 		</xsl:variable>
 		<xsl:variable name="getLemmaLangContent">
