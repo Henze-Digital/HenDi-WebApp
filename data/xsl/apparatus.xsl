@@ -2,7 +2,7 @@
 
    <xsl:variable name="doc" select="wega:doc($docID)"/>
 	<xsl:variable name="textConstitutionNodes" as="node()*" select=".//tei:subst | .//tei:add[not(parent::tei:subst)] | .//tei:gap[not(@reason='outOfScope' or parent::tei:del)] | .//tei:sic[not(parent::tei:choice)] | .//tei:del[not(parent::tei:subst)] | .//tei:unclear[not(parent::tei:choice) and not(parent::tei:choice)] | .//tei:note[@type='textConst'] | .//tei:handShift | .//tei:supplied[parent::tei:damage] | .//tei:damage[not(node())] | .//tei:hi[@hand]"/>
-   <xsl:variable name="commentaryNodes" as="node()*" select=".//tei:note[@type=('commentary', 'definition')] | .//tei:choice | .//tei:figDesc | .//tei:foreign[@xml:id] | .//tei:p[@hendi:rotation] | .//tei:fw[@hendi:rotation] | .//tei:opener[@hendi:rotation] | .//tei:closer[@hendi:rotation] | .//tei:stamp"/>
+   <xsl:variable name="commentaryNodes" as="node()*" select=".//tei:note[@type=('commentary', 'definition')] | .//tei:choice | .//tei:figDesc | .//tei:foreign[@xml:id] | .//(tei:p|tei:seg)[starts-with(@xml:id,'sec.')] | .//tei:p[@hendi:rotation] | .//tei:fw[@hendi:rotation] | .//tei:opener[@hendi:rotation] | .//tei:closer[@hendi:rotation] | .//tei:stamp"/>
 	<xsl:variable name="autoCommentaryNodes" as="node()*" select=".//tei:persName[not(@key)] | .//tei:orgName[not(@key)] | .//tei:placeName[not(@key)]"/>
 	<xsl:variable name="internalNodes" as="node()*" select=".//tei:note[@type='internal']"/>
    <xsl:variable name="rdgNodes" as="node()*" select=".//tei:app"/>
@@ -282,11 +282,15 @@
                <xsl:otherwise>
                     <xsl:choose>
             			<xsl:when test="not(@type='stamp')">
-                            <xsl:text>[</xsl:text><xsl:value-of select="wega:getLanguageString(concat('stampType-', @type), $lang)"/><xsl:text>]</xsl:text>
+                            <xsl:text>[</xsl:text>
+                                <xsl:value-of select="wega:getLanguageString(concat('stampType-', @type), $lang)"/>
+                                <xsl:text>]</xsl:text>
                         </xsl:when>
                         <xsl:when test="@type='stamp'"/>
             			<xsl:otherwise>
-            			    <xsl:text>[</xsl:text><xsl:value-of select="wega:getLanguageString('notClassified', $lang)"/><xsl:text>]</xsl:text>
+            			    <xsl:text>[</xsl:text>
+                                <xsl:value-of select="wega:getLanguageString('notClassified', $lang)"/>
+                                <xsl:text>]</xsl:text>
             			</xsl:otherwise>
             		</xsl:choose>
                </xsl:otherwise>
@@ -493,8 +497,12 @@
                </xsl:when>
             </xsl:choose>
             <xsl:choose>
-                <xsl:when test="tei:add/@hand"><xsl:sequence select="hendi:getHandFeatures(tei:add)"/></xsl:when>
-                <xsl:otherwise><xsl:sequence select="hendi:getHandFeatures(.)"/></xsl:otherwise>
+                <xsl:when test="tei:add/@hand">
+                        <xsl:sequence select="hendi:getHandFeatures(tei:add)"/>
+                    </xsl:when>
+                <xsl:otherwise>
+                        <xsl:sequence select="hendi:getHandFeatures(.)"/>
+                    </xsl:otherwise>
             </xsl:choose>
          </xsl:with-param>
       </xsl:call-template>
@@ -1034,7 +1042,7 @@
    <xsl:template match="tei:note" mode="lemma"/>
    <xsl:template match="tei:figDesc" mode="lemma"/>
    <xsl:template match="tei:p[@hendi:rotation]|tei:opener[@hendi:rotation]|tei:closer[@hendi:rotation]" mode="lemma"/>
-	<xsl:template match="tei:foreign" mode="lemma">
+	<xsl:template match="tei:foreign|(tei:p|tei:seg)[starts-with(@xml:id,'sec.')]" mode="lemma">
 		<xsl:apply-templates/>
 	</xsl:template>
 	<xsl:template match="tei:lb" mode="lemma">
@@ -1096,7 +1104,7 @@
    </xsl:template>
 	
 	
-	<xsl:template match="tei:foreign[@xml:id]">
+   <xsl:template match="tei:foreign[@xml:id]|(tei:p|tei:seg)[starts-with(@xml:id,'sec.')]">
 		<xsl:variable name="foreignId" select="@xml:id"/>
 		<xsl:variable name="trlNotes" select="$doc//tei:note[@type='translation' and substring-after(@corresp,'#') = $foreignId]"/>
 		<xsl:element name="span">
@@ -1113,13 +1121,23 @@
 		</xsl:element>
 	</xsl:template>
 	
-	<xsl:template match="tei:foreign[@xml:id]" mode="apparatus">
+   <xsl:template match="tei:foreign[@xml:id]|(tei:p|tei:seg)[starts-with(@xml:id,'sec.')]" mode="apparatus">
+		<xsl:variable name="getLemmaLang">
+		    <xsl:choose>
+		        <xsl:when test="not(@xml:lang)"><xsl:value-of select="$doc//tei:langUsage/tei:language[1]/@ident"/></xsl:when>
+		        <xsl:otherwise><xsl:value-of select="@xml:lang"/></xsl:otherwise>
+		    </xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="getLemmaLangContent">
+            <xsl:sequence select=".//text()[not(parent::tei:del)]"/>
+		</xsl:variable>
 		<xsl:call-template name="apparatusEntry">
 			<xsl:with-param name="counter-param">
 				<xsl:value-of select="'note'"/>
 			</xsl:with-param>
 			<xsl:with-param name="title" select="wega:getLanguageString('translationAid', $lang)"/>
-			<xsl:with-param name="lemmaLang" select="@xml:lang"/>
+			<xsl:with-param name="lemmaLang" select="$getLemmaLang"/>
+			<xsl:with-param name="lemmaLangContent" select="$getLemmaLangContent"/>
 			<xsl:with-param name="translation" select="."/>
 		</xsl:call-template>
 	</xsl:template>
@@ -1161,6 +1179,7 @@
       <xsl:param name="lemma" as="item()*"/>
       <xsl:param name="lemmaAlt" as="item()*"/>
       <xsl:param name="lemmaLang" as="item()*"/>
+      <xsl:param name="lemmaLangContent" as="item()*"/>
       <xsl:param name="explanation" as="item()*"/>
    	  <xsl:param name="translation" as="item()*"/>
       <xsl:param name="counter-param"/>
@@ -1168,7 +1187,7 @@
       <xsl:variable name="counter">
          <xsl:choose>
             <xsl:when test="$counter-param='note'">
-               <xsl:number count="tei:note[@type=('commentary', 'definition')] | tei:choice | tei:figDesc | tei:stamp | tei:p[@hendi:rotation] | tei:opener[@hendi:rotation] | tei:closer[@hendi:rotation] | tei:foreign[@xml:id]" level="any"/>
+               <xsl:number count="tei:note[@type=('commentary', 'definition')] | tei:choice | tei:figDesc | tei:stamp | tei:p[@hendi:rotation] | tei:opener[@hendi:rotation] | tei:closer[@hendi:rotation] | tei:foreign[@xml:id] | (tei:p|tei:seg)[starts-with(@xml:id,'sec.')]" level="any"/>
             </xsl:when>
             <xsl:when test="$counter-param='handNote'">
                <xsl:number count="tei:handNote" level="any"/>
@@ -1218,7 +1237,7 @@
       			   </xsl:choose>
       			</xsl:element>
       			<xsl:text> </xsl:text>
-      			<xsl:sequence select="$lemmaLang/parent::node()//text()[not(parent::tei:del)]"/>
+      			<xsl:sequence select="$lemmaLangContent"/>
       		</xsl:element>
       	</xsl:if>
          <xsl:if test="$explanation">

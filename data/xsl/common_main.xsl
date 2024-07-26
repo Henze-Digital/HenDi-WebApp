@@ -98,7 +98,7 @@
                                 <xsl:attribute name="class">fa-regular fa-info</xsl:attribute>
                             </xsl:element>                    
                         </xsl:when>
-                    	<xsl:when test="not($marker) and self::tei:foreign">
+                        <xsl:when test="not($marker) and self::tei:foreign|(self::tei:p|self::tei:seg)[starts-with(@xml:id,'sec.')]">
                             <xsl:element name="i">
                                 <xsl:attribute name="class">fa-regular fa-flag</xsl:attribute>
                             </xsl:element>
@@ -263,28 +263,32 @@
                             	</xsl:element>
                             </xsl:when>
                             <xsl:when test="@rend='single up'">
-                            	<xsl:element name="span"><xsl:attribute name="style">display: inline-flex;</xsl:attribute>
+                            	<xsl:element name="span">
+                                    <xsl:attribute name="style">display: inline-flex;</xsl:attribute>
                                 <xsl:text>‘</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>‘</xsl:text>
                             	</xsl:element>
                             </xsl:when>
                             <xsl:when test="@rend=('double down', 'down')">
-                            	<xsl:element name="span"><xsl:attribute name="style">display: inline-flex;</xsl:attribute>
+                            	<xsl:element name="span">
+                                    <xsl:attribute name="style">display: inline-flex;</xsl:attribute>
                             	<xsl:text>„</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>„</xsl:text>
                             	</xsl:element>
                             </xsl:when>
                             <xsl:when test="@rend=('double up', 'up')">
-                            	<xsl:element name="span"><xsl:attribute name="style">display: inline-flex;</xsl:attribute>
+                            	<xsl:element name="span">
+                                    <xsl:attribute name="style">display: inline-flex;</xsl:attribute>
                                 <xsl:text>“</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>“</xsl:text>
                             	</xsl:element>
                             </xsl:when>
                             <xsl:otherwise>
-                            	<xsl:element name="span"><xsl:attribute name="style">display: inline-flex;</xsl:attribute>
+                            	<xsl:element name="span">
+                                    <xsl:attribute name="style">display: inline-flex;</xsl:attribute>
                                 <xsl:text>"</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>"</xsl:text>
@@ -330,35 +334,40 @@
                     <xsl:otherwise>
                         <xsl:choose>
                             <xsl:when test="@rend='single down'">
-                            	<xsl:element name="span"><xsl:attribute name="style">display: inline-flex;</xsl:attribute>
+                            	<xsl:element name="span">
+                                    <xsl:attribute name="style">display: inline-flex;</xsl:attribute>
                             		<xsl:text>‘</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>‘</xsl:text>
                             	</xsl:element>
                             </xsl:when>
                             <xsl:when test="@rend='single up'">
-                            	<xsl:element name="span"><xsl:attribute name="style">display: inline-flex;</xsl:attribute>
+                            	<xsl:element name="span">
+                                    <xsl:attribute name="style">display: inline-flex;</xsl:attribute>
                             	<xsl:text>’</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>’</xsl:text>
                             	</xsl:element>
                             </xsl:when>
                             <xsl:when test="@rend='double down'">
-                            	<xsl:element name="span"><xsl:attribute name="style">display: inline-flex;</xsl:attribute>
+                            	<xsl:element name="span">
+                                    <xsl:attribute name="style">display: inline-flex;</xsl:attribute>
                             	<xsl:text>“</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>“</xsl:text>
                             	</xsl:element>
                             </xsl:when>
                             <xsl:when test="@rend='double up'">
-                            	<xsl:element name="span"><xsl:attribute name="style">display: inline-flex;</xsl:attribute>
+                            	<xsl:element name="span">
+                                    <xsl:attribute name="style">display: inline-flex;</xsl:attribute>
                             	<xsl:text>”</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>”</xsl:text>
                             	</xsl:element>
                             </xsl:when>
                             <xsl:otherwise>
-                            	<xsl:element name="span"><xsl:attribute name="style">display: inline-flex;</xsl:attribute>
+                            	<xsl:element name="span">
+                                    <xsl:attribute name="style">display: inline-flex;</xsl:attribute>
                                 <xsl:text>"</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>"</xsl:text>
@@ -404,35 +413,40 @@
                     <xsl:otherwise>
                         <xsl:choose>
                             <xsl:when test="@rend='single down'">
-                            	<xsl:element name="span"><xsl:attribute name="style">display: inline-flex;</xsl:attribute>
+                            	<xsl:element name="span">
+                                    <xsl:attribute name="style">display: inline-flex;</xsl:attribute>
                             		<xsl:text>‹</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>‹</xsl:text>
                             	</xsl:element>
                             </xsl:when>
                             <xsl:when test="@rend='single up'">
-                            	<xsl:element name="span"><xsl:attribute name="style">display: inline-flex;</xsl:attribute>
+                            	<xsl:element name="span">
+                                    <xsl:attribute name="style">display: inline-flex;</xsl:attribute>
                                 <xsl:text>›</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>›</xsl:text>
                             	</xsl:element>
                             </xsl:when>
                             <xsl:when test="@rend='double down'">
-                            	<xsl:element name="span"><xsl:attribute name="style">display: inline-flex;</xsl:attribute>
+                            	<xsl:element name="span">
+                                    <xsl:attribute name="style">display: inline-flex;</xsl:attribute>
                             		<xsl:text>«</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>«</xsl:text>
                             	</xsl:element>
                             </xsl:when>
                             <xsl:when test="@rend='double up'">
-                            	<xsl:element name="span"><xsl:attribute name="style">display: inline-flex;</xsl:attribute>
+                            	<xsl:element name="span">
+                                    <xsl:attribute name="style">display: inline-flex;</xsl:attribute>
                             	<xsl:text>»</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>»</xsl:text>
                             	</xsl:element>
                             </xsl:when>
                             <xsl:otherwise>
-                            	<xsl:element name="span"><xsl:attribute name="style">display: inline-flex;</xsl:attribute>
+                            	<xsl:element name="span">
+                                    <xsl:attribute name="style">display: inline-flex;</xsl:attribute>
                                 <xsl:text>"</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>"</xsl:text>
@@ -449,7 +463,8 @@
                         <xsl:apply-templates mode="#current"/>
                     </xsl:when>
                     <xsl:when test="$lang eq 'de' and $double">
-                    	<xsl:element name="span"><xsl:attribute name="style">display: inline-flex;</xsl:attribute>
+                    	<xsl:element name="span">
+                            <xsl:attribute name="style">display: inline-flex;</xsl:attribute>
                     	<xsl:text>„</xsl:text>
                         <xsl:apply-templates mode="#current"/>
                         <xsl:if test="$ellipsis">
@@ -459,7 +474,8 @@
                     	</xsl:element>
                     </xsl:when>
                     <xsl:when test="$lang eq 'en' and $double">
-                    	<xsl:element name="span"><xsl:attribute name="style">display: inline-flex;</xsl:attribute>
+                    	<xsl:element name="span">
+                            <xsl:attribute name="style">display: inline-flex;</xsl:attribute>
                     	<xsl:text>“</xsl:text>
                         <xsl:apply-templates mode="#current"/>
                         <xsl:if test="$ellipsis">
@@ -469,7 +485,8 @@
                     	</xsl:element>
                     </xsl:when>
                     <xsl:when test="$lang eq 'es' and $double">
-                    	<xsl:element name="span"><xsl:attribute name="style">display: inline-flex;</xsl:attribute>
+                    	<xsl:element name="span">
+                            <xsl:attribute name="style">display: inline-flex;</xsl:attribute>
                     	<xsl:text>«</xsl:text>
                         <xsl:apply-templates mode="#current"/>
                         <xsl:if test="$ellipsis">
@@ -480,28 +497,32 @@
                     </xsl:when>
                     <!-- German single quotation marks -->
                     <xsl:when test="$lang eq 'de' and not($double)">
-                    	<xsl:element name="span"><xsl:attribute name="style">display: inline-flex;</xsl:attribute>
+                    	<xsl:element name="span">
+                            <xsl:attribute name="style">display: inline-flex;</xsl:attribute>
                     	<xsl:text>‚</xsl:text>
                         <xsl:apply-templates mode="#current"/>
                         <xsl:text>‘</xsl:text>
                     	</xsl:element>
                     </xsl:when>
                     <xsl:when test="$lang eq 'en' and not($double)">
-                    	<xsl:element name="span"><xsl:attribute name="style">display: inline-flex;</xsl:attribute>
+                    	<xsl:element name="span">
+                            <xsl:attribute name="style">display: inline-flex;</xsl:attribute>
                     	<xsl:text>‘</xsl:text>
                         <xsl:apply-templates mode="#current"/>
                         <xsl:text>’</xsl:text>
                     	</xsl:element>
                     </xsl:when>
                     <xsl:when test="$lang eq 'es' and not($double)">
-                    	<xsl:element name="span"><xsl:attribute name="style">display: inline-flex;</xsl:attribute>
+                    	<xsl:element name="span">
+                            <xsl:attribute name="style">display: inline-flex;</xsl:attribute>
                     		<xsl:text>‹</xsl:text>
                         <xsl:apply-templates mode="#current"/>
                         <xsl:text>›</xsl:text>
                     	</xsl:element>
                     </xsl:when>
                     <xsl:otherwise>
-                    	<xsl:element name="span"><xsl:attribute name="style">display: inline-flex;</xsl:attribute>
+                    	<xsl:element name="span">
+                            <xsl:attribute name="style">display: inline-flex;</xsl:attribute>
                         <xsl:text>"</xsl:text>
                         <xsl:apply-templates mode="#current"/>
                         <xsl:text>"</xsl:text>
