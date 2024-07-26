@@ -930,13 +930,14 @@
 	</xsl:template>
 	
 	<xsl:template match="tei:supplied[parent::tei:damage]" mode="apparatus">
+		<xsl:variable name="agent" select="concat('textLoss.', ./parent::tei:damage/@agent/string())"/>
 		<xsl:call-template name="apparatusEntry">
 			<xsl:with-param name="title" select="wega:getLanguageString('damageDefault',$lang)"/>
 			<xsl:with-param name="lemma">
 				<xsl:apply-templates mode="lemma"/>
 			</xsl:with-param>
 			<xsl:with-param name="explanation">
-				<xsl:value-of select="wega:getLanguageString('textLoss.punch',$lang)"/>
+				<xsl:value-of select="wega:getLanguageString($agent,$lang)"/>
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
