@@ -189,13 +189,14 @@
         </xsl:element>
     </xsl:template>
 
-    <xsl:template match="tei:additional">
-        <!--<xsl:element name="h4">
+    <xsl:template match="tei:additional"/>
+    <!--<xsl:template match="tei:additional">
+        <xsl:element name="h4">
             <xsl:attribute name="class">media-heading</xsl:attribute>
             <xsl:value-of select="wega:getLanguageString('prints', $lang)"/>
         </xsl:element>
-        <xsl:apply-templates/>-->
-    </xsl:template>
+        <xsl:apply-templates/>
+    </xsl:template>-->
 
     <!--<xsl:template match="tei:listBibl">
         <xsl:element name="ul">

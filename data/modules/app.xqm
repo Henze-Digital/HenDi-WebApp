@@ -1101,7 +1101,7 @@ declare
 					    return
 					        <li><strong>{$item/@year/substring(.,1,4)}</strong>
         						<ol>
-        							{$items}
+        							{$item}
         						</ol>
     						</li>}
 				</xhtml:ol>
@@ -1163,10 +1163,10 @@ declare
                                             else(<span>{$each}</span>)
                             return
                                 ($return, if($i lt count(($wegaSpecs, $hendiSpecs))) then(',&#160;') else())
-        let $isAssociatedWith := for $association in $model('doc')//(tei:relation[@name="isAssociatedWith"]|tei:affiliation[@key])
+        let $isAssociatedWith := for $association in $model('doc')//(tei:relation[@name="isAssociatedWith"]|tei:affiliation/tei:*[@key])
                                     return
                                         <li><a href="/{$association/@key}.html" xmlns="http://www.w3.org/1999/xhtml">{crud:doc($association/@key)//(tei:persName|tei:orgName)[@type='reg']}</a></li>
-        let $isAssociatedBy := for $association in (crud:data-collection('orgs')|crud:data-collection('persons'))[.//(tei:relation[@name="isAssociatedWith"]|tei:affiliation)[@key=$model('docID')]]
+        let $isAssociatedBy := for $association in (crud:data-collection('orgs')|crud:data-collection('persons'))[.//(tei:relation[@name="isAssociatedWith"]|tei:affiliation/tei:*)[@key=$model('docID')]]
                                   let $id := $association//(tei:person|tei:org)/@xml:id
                                   let $objectName := crud:doc($id)//(tei:persName|tei:orgName)[@type='reg']
                                   return
@@ -1262,8 +1262,7 @@ declare
     function app:print-corresp-intro($node as node(), $model as map(*), $lang as xs:string) as element(xhtml:div)* {
         let $themComm:= app:inject-query($model?doc/*)
         let $intro := collection(config:get-option('dataCollectionPath') || '/thematicCommentaries')/node()[@xml:id=$themComm//tei:relation[@name='introduction']/@key]
-        let $text-transformed := wega-util:transform($intro//tei:text//tei:div[@xml:lang=$lang][position() lt 5], doc(concat($config:xsl-collection-path, '/var.xsl')), config:get-xsl-params( map {
-            'intro' : true()}))
+        let $text-transformed := wega-util:transform($intro//tei:text//tei:div[@xml:lang=$lang][position() lt 5], doc(concat($config:xsl-collection-path, '/var.xsl')), config:get-xsl-params(()))
         return
             $text-transformed
 };
@@ -1793,7 +1792,8 @@ declare
             'dbPath' : document-uri($doc),
             'docID' : $docID,
             'transcript' : 'true',
-            'createSecNos' : if($docID = ('A070010', 'A070001F')) then 'true' else ()
+            'createSecNos' : if($docID = ('A070010', 'A070001F')) then 'true' else (),
+            'collapse' : if(starts-with($docID,'A09')) then (true()) else (false())
             } )
         let $xslt1 := 
             switch($docType)
@@ -1898,6 +1898,19 @@ declare
         str:normalize-space($model('doc')/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title[@level='s'])
 };
 
+declare %private function app:translate-resp($resp as node(), $lang as xs:string) as xs:string {
+	if($lang = 'en')
+	then(
+		  switch ($resp)
+		      case 'Übersetzung' return 'Translation'
+		      case 'Übertragung' return 'Transcription'
+		      case 'Kommentierung' return 'Commentary'
+		      case 'Sprachliche Beratung' return 'Language advice'
+		      default return $resp
+	    )
+	else($resp)
+};
+
 declare 
     %templates:wrap
     %templates:default("lang", "en")
@@ -1905,7 +1918,7 @@ declare
         functx:distinct-deep(
         let $respStmts := for $respStmt in $model?respStmts
         					return (
-            					<dt xmlns="http://www.w3.org/1999/xhtml">{str:normalize-space($respStmt/tei:resp)}</dt>,
+            					<dt xmlns="http://www.w3.org/1999/xhtml">{app:translate-resp($respStmt/tei:resp, $lang)}</dt>,
 					            <dd xmlns="http://www.w3.org/1999/xhtml">{str:normalize-space(string-join($respStmt/tei:name, '; '))}</dd>
         							)
         let $trlDocs := collection(config:get-option('dataCollectionPath'))//tei:relation[@name='isTranslationOf'][@key=$model?docID]/root()
@@ -1916,8 +1929,9 @@ declare
                                 case 'en' return 'gb'
                                 default return $trlDocLang
             let $trlLang := element span { attribute class {'fi fi-' || $trlDocLang}}
+            let $respLabel := app:translate-resp($trlRespStmt/tei:resp, $lang)
             let $respStmtsRelated := 
-            	(<dt xmlns="http://www.w3.org/1999/xhtml">{str:normalize-space($trlRespStmt/tei:resp), '&#160;', $trlLang}</dt>,
+            	(<dt xmlns="http://www.w3.org/1999/xhtml">{$respLabel, '&#160;', $trlLang}</dt>,
                 <dd xmlns="http://www.w3.org/1999/xhtml">{str:normalize-space(string-join($trlRespStmt/tei:name, '; '))}</dd>)
         return
             ($respStmts, $respStmtsRelated)
@@ -1959,10 +1973,10 @@ declare
                 case element(tei:msFrag) return wega-util:transform($model($key)/tei:msIdentifier, doc(concat($config:xsl-collection-path, '/editorial.xsl')), config:get-xsl-params(()))
                 case element(tei:msDesc) return wega-util:transform($model($key)/tei:msIdentifier, doc(concat($config:xsl-collection-path, '/editorial.xsl')), config:get-xsl-params(()))
                 case element(tei:biblStruct) return bibl:printCitation($model($key), <xhtml:span class="biblio-entry"/>, $model('lang'))
-                case element(tei:bibl) return 
-                    let $processed := wega-util:transform($model($key), doc(concat($config:xsl-collection-path, '/document.xsl')), config:get-xsl-params(()))
+                case element(tei:bibl) return <xhtml:a href="/{$model($key)/@key}">{bibl:printCitation(crud:doc($model($key)/@key)//tei:biblStruct, <xhtml:span/>, $model('lang'))}</xhtml:a>
+                (:  :    let $processed := wega-util:transform($model($key), doc(concat($config:xsl-collection-path, '/document.xsl')), config:get-xsl-params(()))
                     return if ($processed instance of xs:string+) then <span xmlns="http://www.w3.org/1999/xhtml">{$processed}</span>
-                    else $processed
+                    else $processed :)
                 default return <span xmlns="http://www.w3.org/1999/xhtml" class="noDataFound">{lang:get-language-string('noDataFound',$model('lang'))}</span>
         let $sourceCategory := if($model($key)/@rend) then lang:get-language-string($model($key)/@rend,$model('lang')) else ()
         let $sourceData-content :=

@@ -191,6 +191,7 @@
 	<entry xml:id="ink">Tintenfleck</entry>
 	<entry xml:id="damageDefault">Beschädigung</entry>
 	<entry xml:id="textLoss.punch">Textverlust durch Lochung</entry>
+	<entry xml:id="textLoss.pasting">Textverlust durch Überklebung</entry>
 	<entry xml:id="textLoss.ink">Textverlust durch Tinte</entry>
 	<entry xml:id="illegible">unleserliche Stelle</entry>
     <!--  doc_singleView  -->
@@ -343,6 +344,8 @@
 	<entry xml:id="isPartOf">Enthalten in</entry>
 	<entry xml:id="hasPart">Enthält</entry>
 	<entry xml:id="seeAlso">Siehe auch</entry>
+	<entry xml:id="isAssociatedWith">Übergeordnet</entry>
+	<entry xml:id="isAssociatedBy">Untergeordnet</entry>
     <!--  Development  -->
     <entry xml:id="common">Allgemeines</entry>
     <!-- HTML Meta Daten (description) -->

@@ -116,16 +116,6 @@
 						</ol>
 					</li>
 				</ol>
-				<ol class="media" data-template="app-shared:if-exists" data-template-key="hasParts">
-					<li>
-						<strong data-template="lang:translate">hasPart</strong>:
-						<ol data-template="app-shared:each" data-template-from="hasParts" data-template-to="hasPart">
-							<li>
-								<span data-template="app-shared:output" data-template-key="hasPart">Eintrag</span>
-							</li>
-						</ol>
-					</li>
-				</ol>
 			</div>
 			<div class="col-md col-sm-12 iconographie">
 				<div data-template="app-shared:if-exists" data-template-key="iconographyImages" data-template-wrap="no">
@@ -199,39 +189,51 @@
 										<div class="tab-content">
 											<div class="tab-pane active fade in" id="hendiInfo">
 												<h2 data-template="lang:translate">informationAboutTheBiblio</h2>
-												<div data-template="app-shared:if-exists" data-template-key="dedicatees">
-													<h3 data-template="lang:translate">dedicatees</h3>
-													<ul>
-														<li data-template="app-shared:each" data-template-from="dedicatees" data-template-to="relator">
-															<span data-template="app:preview-relator-name" data-template-popover="true">Amalie, Königin von Sachsen</span>
+												<div data-template="app:biblio-basic-data">
+													<ol class="media" data-template="app-shared:if-exists" data-template-key="hasParts">
+														<li>
+															<strong data-template="lang:translate">hasPart</strong>:
+															<ol data-template="app-shared:each" data-template-from="hasParts" data-template-to="hasPart">
+																<li>
+																	<span data-template="app-shared:output" data-template-key="hasPart">Eintrag</span>
+																</li>
+															</ol>
 														</li>
-													</ul>
-												</div>
-												<div data-template="app-shared:if-exists" data-template-key="creation">
-													<h3 data-template="lang:translate">creation</h3>
-													<div data-template="app-shared:output" data-template-key="creation"/>
-												</div>
-												<div data-template="app-shared:if-exists" data-template-key="events">
-													<h3 data-template="lang:translate">events</h3>
-													<div data-template="app-shared:output" data-template-key="events"/>
-												</div>
-												<div data-template="app-shared:if-exists" data-template-key="castList">
-													<h3 data-template="lang:translate">castList</h3>
-													<div data-template="app-shared:output" data-template-key="castList"/>
-												</div>
-												<div data-template="app-shared:if-exists" data-template-key="perfResList">
-													<h3 data-template="lang:translate">perfResList</h3>
-													<div data-template="app-shared:output" data-template-key="perfResList"/>
-												</div>
-												<div data-template="app-shared:if-exists" data-template-key="notesStmt">
-													<h3 data-template="lang:translate">mei_notesStmt</h3>
-													<div data-template="app-shared:output" data-template-key="notesStmt"/>
-												</div>
-												<div data-template="app-shared:if-not-exists" data-template-key="dedicatees creation castList perfResList" data-template-or="false">
-													<!-- Wenn in der Werkdatei keine Detailinformationen (dedicatees, creation) gefunden werden, dann wird der folgende Standardtext ausgegeben -->
-													<p>
-														<i data-template="lang:translate">noWorkDetailsFound</i>
-													</p>
+													</ol>
+													<div data-template="app-shared:if-exists" data-template-key="dedicatees">
+														<h3 data-template="lang:translate">dedicatees</h3>
+														<ul>
+															<li data-template="app-shared:each" data-template-from="dedicatees" data-template-to="relator">
+																<span data-template="app:preview-relator-name" data-template-popover="true">Amalie, Königin von Sachsen</span>
+															</li>
+														</ul>
+													</div>
+													<div data-template="app-shared:if-exists" data-template-key="creation">
+														<h3 data-template="lang:translate">creation</h3>
+														<div data-template="app-shared:output" data-template-key="creation"/>
+													</div>
+													<div data-template="app-shared:if-exists" data-template-key="events">
+														<h3 data-template="lang:translate">events</h3>
+														<div data-template="app-shared:output" data-template-key="events"/>
+													</div>
+													<div data-template="app-shared:if-exists" data-template-key="castList">
+														<h3 data-template="lang:translate">castList</h3>
+														<div data-template="app-shared:output" data-template-key="castList"/>
+													</div>
+													<div data-template="app-shared:if-exists" data-template-key="perfResList">
+														<h3 data-template="lang:translate">perfResList</h3>
+														<div data-template="app-shared:output" data-template-key="perfResList"/>
+													</div>
+													<div data-template="app-shared:if-exists" data-template-key="notesStmt">
+														<h3 data-template="lang:translate">mei_notesStmt</h3>
+														<div data-template="app-shared:output" data-template-key="notesStmt"/>
+													</div>
+													<div data-template="app-shared:if-not-exists" data-template-key="dedicatees creation castList perfResList hasParts" data-template-or="false">
+														<!-- Wenn in der Werkdatei keine Detailinformationen (dedicatees, creation) gefunden werden, dann wird der folgende Standardtext ausgegeben -->
+														<p>
+															<i data-template="lang:translate">noWorkDetailsFound</i>
+														</p>
+													</div>
 												</div>
 											</div>
 											<div class="tab-pane fade" id="wikipediaText">
@@ -284,7 +286,7 @@
 			<div class="row bugreport">
 				<div class="col-md-9">
 					<p data-template="app-shared:if-matches" data-template-key="lang" data-template-value="de">Wenn Ihnen auf dieser Seite ein Fehler oder eine Ungenauigkeit aufgefallen ist, <br/>so bitten wir um eine kurze Nachricht an <a href="#" class="obfuscate-email" data-template="app-shared:print" data-template-key="bugEmail">bugEmail</a>.</p>
-					<p data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">If you've spotted some error or inaccurateness please do not hesitate to inform us via <a href="#" class="obfuscate-email" data-template="app-shared:print" data-template-key="bugEmail">bugEmail</a>.</p>
+					<p data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">If you've spotted some error or inaccuracy please do not hesitate to inform us via <a href="#" class="obfuscate-email" data-template="app-shared:print" data-template-key="bugEmail">bugEmail</a>.</p>
 				</div>
 			</div>
 		</div>

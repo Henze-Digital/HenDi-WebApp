@@ -177,8 +177,10 @@ declare function wdt:letters($item as item()*) as map(*) {
                                 return
                                     hwh-util:shorten-fullnames($addressee)
         let $addressee := $addresseesShorten => string-join('/') 
-        let $letterClass := if($TEI//tei:msDesc[1]//tei:objectDesc[1]/@form)
-        					then(lang:get-language-string(concat('physDesc.objectDesc.form.', $TEI//tei:msDesc[1]//tei:objectDesc[1]/@form),$lang))
+        let $letterClass := if($TEI//tei:sourceDesc/tei:msDesc//tei:objectDesc[1]/@form)
+        					then(lang:get-language-string(concat('physDesc.objectDesc.form.', $TEI//tei:sourceDesc/tei:msDesc//tei:objectDesc[1]/@form),$lang))
+        					else if(count($TEI//tei:witness/tei:msDesc//tei:objectDesc[1]/@form) gt 0)
+        					then(lang:get-language-string(concat('physDesc.objectDesc.form.', ($TEI//tei:witness)[1]/tei:msDesc//tei:objectDesc[1]/@form),$lang))
         					else(lang:get-language-string('physDesc.objectDesc.form.document', $lang))
         let $letterEnvelope := if($TEI//tei:relation[@name='hasEnvelope'])
         						then(lang:get-language-string('physDesc.objectDesc.form.envelope',$lang))
