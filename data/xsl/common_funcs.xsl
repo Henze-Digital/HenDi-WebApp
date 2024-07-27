@@ -1,15 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-    xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" 
-    xmlns:hendi="http://henze-digital.zenmem.de/ns/1.0" 
-    xmlns:tei="http://www.tei-c.org/ns/1.0" 
-    xmlns:xhtml="http://www.w3.org/1999/xhtml"
-    xmlns:rng="http://relaxng.org/ns/structure/1.0" 
-    xmlns:functx="http://www.functx.com" 
-    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-    xmlns:mei="http://www.music-encoding.org/ns/mei" version="2.0">
-    
+<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mei="http://www.music-encoding.org/ns/mei" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:functx="http://www.functx.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" xmlns:hendi="http://henze-digital.zenmem.de/ns/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" version="2.0">
+	
     <!--  *********************************************  -->
     <!--  *             Global Functions              *  -->
     <!--  *********************************************  -->
@@ -277,7 +267,7 @@
                 <xsl:attribute name="class" select="'suppliedCurrencySymbol'"/>
                 <xsl:choose>
                     <xsl:when test="$measure/@unit = 'f'">
-                        <xsl:value-of select="' &#402;'"/>
+                        <xsl:value-of select="' ƒ'"/>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:value-of select="concat(' ', $measure/@unit)"/>
@@ -338,10 +328,7 @@
         <xsl:param name="str" as="xs:string"/>
         <xsl:if test="$str != ''">
             <xsl:variable name="len" select="string-length($str)"/>
-            <xsl:value-of select="
-                if ( $len lt 2 ) then string-length(substring-before('0 1 2 3 4 5 6 7 8 9 AaBbCcDdEeFf',$str)) idiv 2
-                else wega:hex2dec(substring($str,1,$len - 1))*16 + wega:hex2dec(substring($str,$len))
-            "/>
+            <xsl:value-of select="                 if ( $len lt 2 ) then string-length(substring-before('0 1 2 3 4 5 6 7 8 9 AaBbCcDdEeFf',$str)) idiv 2                 else wega:hex2dec(substring($str,1,$len - 1))*16 + wega:hex2dec(substring($str,$len))             "/>
         </xsl:if>
     </xsl:function>
     
@@ -442,20 +429,6 @@
         </xsl:choose>    
     </xsl:function>
 	
-	<xsl:function name="hendi:preview-class" as="xs:string">
-		<xsl:param name="myNode" as="element()"/>
-		<xsl:variable name="keys" select="             for $key in tokenize(($myNode/@scribe, $myNode/@key, $myNode/@codedval, $myNode/@target/replace(., 'hendi:', '')), '\s+')             return substring($key, 1, 8)             " as="xs:string+"/>
-		<xsl:variable name="class" as="xs:string">
-			<xsl:choose>
-				<xsl:when test="count(distinct-values(for $key in $keys return substring($key, 1,3))) = 1">
-					<xsl:value-of select="wega:get-doctype-by-id($keys[1])"/>
-				</xsl:when>
-				<xsl:otherwise>mixed</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-		<xsl:value-of select="string-join(('preview', $class, $keys), ' ')"/>
-	</xsl:function>
-
     <xsl:function name="wega:get-backref-id" as="xs:string">
         <xsl:param name="id" as="xs:string?"/>
         <xsl:value-of select="concat('backref-', $id)"/>
@@ -477,10 +450,7 @@
         <xsl:param name="arg" as="xs:string?"/>
         <xsl:param name="changeFrom" as="xs:string*"/>
         <xsl:param name="changeTo" as="xs:string*"/>
-        <xsl:sequence select="
-            if (count($changeFrom) &gt; 0) then functx:replace-multi(replace($arg, $changeFrom[1], functx:if-absent($changeTo[1],'')), $changeFrom[position() &gt; 1], $changeTo[position() &gt; 1])
-            else $arg"
-        />
+        <xsl:sequence select="             if (count($changeFrom) &gt; 0) then functx:replace-multi(replace($arg, $changeFrom[1], functx:if-absent($changeTo[1],'')), $changeFrom[position() &gt; 1], $changeTo[position() &gt; 1])             else $arg"/>
     </xsl:function>
     
     <xsl:function name="functx:if-absent" as="item()*">
@@ -489,8 +459,7 @@
         <xsl:sequence select="if (exists($arg)) then $arg else $value"/>
     </xsl:function>
     
-    <xsl:function name="functx:change-element-ns-deep" as="node()*"
-        xmlns:functx="http://www.functx.com">
+    <xsl:function name="functx:change-element-ns-deep" as="node()*">
         <xsl:param name="nodes" as="node()*"/>
         <xsl:param name="newns" as="xs:string"/>
         <xsl:param name="prefix" as="xs:string"/>
@@ -499,21 +468,13 @@
             <xsl:variable name="node" select="."/>
             <xsl:choose>
                 <xsl:when test="$node instance of element()">
-                    <xsl:element name="{concat($prefix,
-                        if ($prefix = '')
-                        then ''
-                        else ':',
-                        local-name($node))}"
-                        namespace="{$newns}">
-                        <xsl:sequence select="($node/@*,
-                            functx:change-element-ns-deep($node/node(),
-                            $newns, $prefix))"/>
+                    <xsl:element name="{concat($prefix,                         if ($prefix = '')                         then ''                         else ':',                         local-name($node))}" namespace="{$newns}">
+                        <xsl:sequence select="($node/@*,                             functx:change-element-ns-deep($node/node(),                             $newns, $prefix))"/>
                     </xsl:element>
                 </xsl:when>
                 <xsl:when test="$node instance of document-node()">
                     <xsl:document>
-                        <xsl:sequence select="functx:change-element-ns-deep(
-                            $node/node(), $newns, $prefix)"/>
+                        <xsl:sequence select="functx:change-element-ns-deep(                             $node/node(), $newns, $prefix)"/>
                     </xsl:document>
                 </xsl:when>
                 <xsl:otherwise>
@@ -534,46 +495,30 @@
         <xsl:sequence select="some $nodeInSeq in $seq/descendant-or-self::*/(.|@*) satisfies deep-equal($nodeInSeq,$node)"/>
     </xsl:function>
     
-    <xsl:function name="functx:substring-before-if-contains" as="xs:string?"
-        xmlns:functx="http://www.functx.com">
+    <xsl:function name="functx:substring-before-if-contains" as="xs:string?">
         <xsl:param name="arg" as="xs:string?"/>
         <xsl:param name="delim" as="xs:string"/>
         
-        <xsl:sequence select="
-            if (contains($arg,$delim))
-            then substring-before($arg,$delim)
-            else $arg
-            "/>
+        <xsl:sequence select="             if (contains($arg,$delim))             then substring-before($arg,$delim)             else $arg             "/>
     </xsl:function>
     
-    <xsl:function name="functx:substring-after-last" as="xs:string"
-        xmlns:functx="http://www.functx.com">
+    <xsl:function name="functx:substring-after-last" as="xs:string">
         <xsl:param name="arg" as="xs:string?"/>
         <xsl:param name="delim" as="xs:string"/>
         
-        <xsl:sequence select="
-            replace ($arg,concat('^.*',functx:escape-for-regex($delim)),'')
-            "/>
+        <xsl:sequence select="             replace ($arg,concat('^.*',functx:escape-for-regex($delim)),'')             "/>
     </xsl:function>
     
-    <xsl:function name="functx:escape-for-regex" as="xs:string"
-        xmlns:functx="http://www.functx.com">
+    <xsl:function name="functx:escape-for-regex" as="xs:string">
         <xsl:param name="arg" as="xs:string?"/>
         
-        <xsl:sequence select="
-            replace($arg,
-            '(\.|\[|\]|\\|\||\-|\^|\$|\?|\*|\+|\{|\}|\(|\))','\\$1')
-            "/>
+        <xsl:sequence select="             replace($arg,             '(\.|\[|\]|\\|\||\-|\^|\$|\?|\*|\+|\{|\}|\(|\))','\\$1')             "/>
     </xsl:function>
     
-    <xsl:function name="functx:capitalize-first" as="xs:string?"
-        xmlns:functx="http://www.functx.com">
+    <xsl:function name="functx:capitalize-first" as="xs:string?">
         <xsl:param name="arg" as="xs:string?"/>
         
-        <xsl:sequence select="
-            concat(upper-case(substring($arg,1,1)),
-            substring($arg,2))
-            "/>
+        <xsl:sequence select="             concat(upper-case(substring($arg,1,1)),             substring($arg,2))             "/>
     </xsl:function>
     
 </xsl:stylesheet>
