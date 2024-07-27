@@ -121,7 +121,7 @@
 			<xsl:when test="exists((@key, @codedval, @target)) and not(descendant::*[local-name(.) = $linkableElements])">
 				<xsl:element name="a">
 					<xsl:attribute name="class">
-						<xsl:value-of select="wega:preview-class(.)"/>
+						<xsl:value-of select="hendi:preview-class(.)"/>
 					</xsl:attribute>
 					<!--<xsl:attribute name="href" select="wega:createLinkToDoc((@key, @codedval), $lang)"/>-->
 					<xsl:apply-templates select="@key | @codedval | @target"/>
@@ -141,7 +141,7 @@
 			<xsl:attribute name="class">
 				<xsl:choose>
 					<xsl:when test="exists((@key, @codedval, @target))">
-						<xsl:value-of select="wega:preview-class(.)"/>
+						<xsl:value-of select="hendi:preview-class(.)"/>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:for-each select="string-to-codepoints(normalize-space(.))">
@@ -175,7 +175,7 @@
 		</xsl:element>
 	</xsl:template>
 	
-	<xsl:function name="wega:preview-class" as="xs:string">
+	<xsl:function name="hendi:preview-class" as="xs:string">
 		<xsl:param name="myNode" as="element()"/>
 		<xsl:variable name="keys" select="             for $key in tokenize(($myNode/@scribe, $myNode/@key, $myNode/@codedval, $myNode/@target/replace(., 'hendi:', '')), '\s+')             return substring($key, 1, 8)             " as="xs:string+"/>
 		<xsl:variable name="class" as="xs:string">

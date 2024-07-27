@@ -1332,7 +1332,7 @@
               </xsl:if>
               <xsl:element name="a">
                  <xsl:attribute name="class">
-                    <xsl:value-of select="wega:preview-class($handNote)"/>
+                    <xsl:value-of select="hendi:preview-class($handNote)"/>
                  </xsl:attribute>
                  <xsl:attribute name="href" select="wega:createLinkToDoc($handNoteScribe, $lang)"/>
                  <xsl:value-of select="wega:doc($handNoteScribe)//tei:persName[@type='reg']"/>
@@ -1362,7 +1362,7 @@
       <xsl:text>, </xsl:text>
       <xsl:element name="a">
          <xsl:attribute name="class">
-            <xsl:value-of select="wega:preview-class($handNote)"/>
+            <xsl:value-of select="hendi:preview-class($handNote)"/>
          </xsl:attribute>
          <xsl:attribute name="href" select="wega:createLinkToDoc($handNoteScribe, $lang)"/>
          <xsl:value-of select="wega:doc($handNoteScribe)//tei:persName[@type='reg']/normalize-space(.)"/>

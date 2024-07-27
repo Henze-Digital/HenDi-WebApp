@@ -441,6 +441,20 @@
             <xsl:otherwise><xsl:sequence select="false()"/></xsl:otherwise>
         </xsl:choose>    
     </xsl:function>
+	
+	<xsl:function name="hendi:preview-class" as="xs:string">
+		<xsl:param name="myNode" as="element()"/>
+		<xsl:variable name="keys" select="             for $key in tokenize(($myNode/@scribe, $myNode/@key, $myNode/@codedval, $myNode/@target/replace(., 'hendi:', '')), '\s+')             return substring($key, 1, 8)             " as="xs:string+"/>
+		<xsl:variable name="class" as="xs:string">
+			<xsl:choose>
+				<xsl:when test="count(distinct-values(for $key in $keys return substring($key, 1,3))) = 1">
+					<xsl:value-of select="wega:get-doctype-by-id($keys[1])"/>
+				</xsl:when>
+				<xsl:otherwise>mixed</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:value-of select="string-join(('preview', $class, $keys), ' ')"/>
+	</xsl:function>
 
     <xsl:function name="wega:get-backref-id" as="xs:string">
         <xsl:param name="id" as="xs:string?"/>
