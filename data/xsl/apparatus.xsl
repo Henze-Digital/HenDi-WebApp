@@ -937,7 +937,7 @@
 				<xsl:apply-templates mode="lemma"/>
 			</xsl:with-param>
 			<xsl:with-param name="explanation">
-				<xsl:value-of select="wega:getLanguageString($agent,$lang)"/>
+				<xsl:value-of select="wega:getLanguageString($data-title,$lang)"/>
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
