@@ -1134,7 +1134,7 @@
 		    </xsl:choose>
 		</xsl:variable>
 		<xsl:variable name="getLemmaLangContent">
-            <xsl:sequence select=".//text()[not(parent::tei:del)]"/>
+			<xsl:sequence select=".//text()[not(parent::tei:del|ancestor::tei:note|parent::tei:corr/parent::tei:subst)]"/>
 		</xsl:variable>
 		<xsl:call-template name="apparatusEntry">
 			<xsl:with-param name="counter-param">
