@@ -298,7 +298,7 @@
 		</xsl:choose>
 	</xsl:template>
 	
-	<xsl:template match="tei:addrLine | tei:opener[@rend] | tei:dateline[@rend]">
+	<xsl:template match="tei:addrLine | tei:opener[@rend] | tei:dateline[@rend] | tei:signed[@rend]">
 		<xsl:element name="span">
 			<xsl:attribute name="class">
 				<xsl:if test="@rend=('inlineApart','right','left','center')">
