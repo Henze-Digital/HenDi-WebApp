@@ -1087,17 +1087,17 @@ declare
                                          else if($file//tei:biblscope[@unit='jg']) then($file//tei:biblscope[@unit='jg'])
                                          else if($file//tei:biblscope[@unit='nr']) then($file//tei:biblscope[@unit='nr'])
                                          else()
-                            group by $year
                             order by $year
                             return
-                                <li year="{$year}">
-                                    <a href="/{$id}.html" xmlns="http://www.w3.org/1999/xhtml">{string-join(($author,$title),': ')}</a>
-                                </li>
+                                <li xmlns="http://www.w3.org/1999/xhtml" year="{$year}"><a href="/{$id}.html">{string-join(($author,$title),': ')}</a></li>
             
             
             return
                 <xhtml:ol class="media">
 					{for $item in $items
+					    let $year := $item/@year
+					    group by $year
+					    order by $year
 					    return
 					        <li><strong>{$item/@year/substring(.,1,4)}</strong>
         						<ol>
