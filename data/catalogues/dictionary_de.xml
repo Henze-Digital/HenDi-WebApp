@@ -320,6 +320,7 @@
     <entry xml:id="chronology">Chronologie</entry>
     <entry xml:id="undated">undatiert</entry>
     <entry xml:id="unpublished">ungedruckt</entry>
+    <entry xml:id="isPublishedIn">Veröffentlich in</entry>
     <entry xml:id="residences">Wirkorte</entry>
     <entry xml:id="residencesOrgs">orte</entry>
     <entry xml:id="revisionDescStatus">Dokumentenstatus</entry>

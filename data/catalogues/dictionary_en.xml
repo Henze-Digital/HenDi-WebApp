@@ -321,6 +321,7 @@
     <entry xml:id="chronology">Chronology</entry>
     <entry xml:id="undated">undated</entry>
     <entry xml:id="unpublished">unpublished</entry>
+	<entry xml:id="isPublishedIn">Published in</entry>
     <entry xml:id="residences">Places of action</entry>
     <entry xml:id="revisionDescStatus">Document status</entry>
     <entry xml:id="docStatus">Document status</entry>

@@ -915,6 +915,22 @@ declare
                     wega-util:transform($segment, doc(concat($config:xsl-collection-path, '/works.xsl')), config:get-xsl-params(()))
             }</span>
         }
+        let $isPublishedIn := function($doc as document-node(), $alt as xs:boolean) {
+            for $monogr in $doc//tei:sourceDesc/tei:biblStruct/tei:monogr
+                let $files := crud:data-collection('biblio')[./tei:biblStruct/@xml:id = $monogr/@sameAs]
+                for $file in $files/tei:biblStruct
+                    let $id := $file/@xml:id
+                    let $title := $file//tei:title[1]/text()
+                    let $author := ($file//tei:author)[1]
+                    let $type := $file/@type
+                    let $year := if($file//tei:date/@when) then($file//tei:date/@when)
+                                 else if($file//tei:biblscope[@unit='jg']) then($file//tei:biblscope[@unit='jg'])
+                                 else if($file//tei:biblscope[@unit='nr']) then($file//tei:biblscope[@unit='nr'])
+                                 else()
+                    order by $year
+                    return
+                        <li xmlns="http://www.w3.org/1999/xhtml" year="{$year}"><a href="/{$id}.html">{string-join(($author,$title),': '), if($type) then(' (' || lang:get-language-string($type, $model('lang')) || ')') else()}</a></li>
+        }
         let $workType := ($model?doc//(mei:term|mei:work[not(parent::mei:componentList)]|tei:biblStruct)[1]/(@class|@type)/data())[1]
         let $relators := query:relators($model?doc)[(self::mei:*|self::tei:*)/@role[not(. = ('edt'))] or self::tei:author or (self::mei:persName|self::mei:corpName)[@role][parent::mei:contributor]]
         let $relatorsGrouped := for $each in functx:distinct-deep($relators)
@@ -959,6 +975,7 @@ declare
             'descTitles' : $print-titles-desc($model?doc),
             'annotations' : $annotations($model?doc),
             'publication': $publication($model?doc, true()),
+            'isPublishedIn': $isPublishedIn($model?doc, true()),
             'publisher': $publisher($model?doc, true()),
             'pubPlace': $pubPlace($model?doc, true()),
             'isPartOf' : $isPartOf($model?doc, true()),
@@ -1078,18 +1095,19 @@ declare
                 <a href="/{$key}.html" xmlns="http://www.w3.org/1999/xhtml">{$title}{bibl:biblScope($model?doc/tei:biblStruct/tei:monogr, $lang)}</a>
         }
         let $hasParts := function($doc as document-node(), $linking as xs:boolean) {
-            let $files := crud:data-collection('biblio')[.//tei:monogr[@sameAs = $doc/tei:biblStruct/@xml:id]]
-            let $items := for $file in $files/tei:biblStruct
+            let $files := (crud:data-collection('biblio'), crud:data-collection('works'))[.//tei:monogr[@sameAs = $doc/tei:biblStruct/@xml:id]]
+            let $items := for $file in ($files/tei:biblStruct,$files//tei:sourceDesc/tei:biblStruct)
                             let $id := $file/@xml:id
                             let $title := $file//tei:title[1]/text()
                             let $author := ($file//tei:author)[1]
+                            let $type := $file/@type
                             let $year := if($file//tei:date/@when) then($file//tei:date/@when)
                                          else if($file//tei:biblscope[@unit='jg']) then($file//tei:biblscope[@unit='jg'])
                                          else if($file//tei:biblscope[@unit='nr']) then($file//tei:biblscope[@unit='nr'])
                                          else()
                             order by $year
                             return
-                                <li xmlns="http://www.w3.org/1999/xhtml" year="{$year}"><a href="/{$id}.html">{string-join(($author,$title),': ')}</a></li>
+                                <li xmlns="http://www.w3.org/1999/xhtml" year="{$year}"><a href="/{$id}.html">{string-join(($author,$title),': '), if($type) then(' (' || lang:get-language-string($type, $lang) || ')') else()}</a></li>
             
             
             return

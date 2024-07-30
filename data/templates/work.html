@@ -155,6 +155,16 @@
 						</ol>
 					</li>
 				</ol>
+				<ol class="media" data-template="app-shared:if-exists" data-template-key="isPublishedIn">
+					<li>
+						<strong data-template="lang:translate">isPublishedIn</strong>:
+						<ol>
+							<li data-template="app-shared:each" data-template-from="isPublishedIn" data-template-to="item">
+								<span data-template="app-shared:output" data-template-key="item">Eintrag</span>
+							</li>
+						</ol>
+					</li>
+				</ol>
 			</div>
 		    <div data-template="templates:include" data-template-path="templates/includes/iconography.html"/>
 		</div>
