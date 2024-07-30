@@ -514,10 +514,10 @@ declare function wdt:works($item as item()*) as map(*) {
         },
         'init-sortIndex' : function() as item()* {
             sort:create-index-callback('works', wdt:works(())('init-collection')(), function($node) { 
-                if($node//mei:fileDesc/mei:titleStmt/mei:title)
-                then(hwh-util:prepareTitleForSorting($node//mei:fileDesc/mei:titleStmt/mei:title[1]))
-                else if($node//mei:work)
+                if($node//mei:work)
                 then(hwh-util:prepareTitleForSorting(($node//mei:work/mei:title)[1]//mei:titlePart[@type='main']))
+                else if($node//mei:fileDesc/mei:titleStmt/mei:title)
+                then(hwh-util:prepareTitleForSorting($node//mei:fileDesc/mei:titleStmt/mei:title[1]))
                 else if($node//tei:biblStruct//tei:title)
                 then(hwh-util:prepareTitleForSorting(($node//tei:biblStruct//tei:title)[1]))
                 else('zzzzz')
