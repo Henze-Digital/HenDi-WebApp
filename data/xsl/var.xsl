@@ -374,7 +374,18 @@
                 <xsl:with-param name="dot" select="true()"/>
             </xsl:call-template>
         </xsl:if>
-        <xsl:value-of select="count($div/preceding-sibling::tei:div[not(following::tei:divGen)][tei:head][ancestor-or-self::tei:div/@xml:lang=$lang]) + 1 +$offset"/>
+        <xsl:variable name="preceding-divs" as="node()*">
+            <!-- when xml:lang information is present only the respective divs need to be taken into account -->
+            <xsl:choose>
+                <xsl:when test="$div/ancestor-or-self::tei:div/@xml:lang">
+                    <xsl:sequence select="$div/preceding-sibling::tei:div[not(following::tei:divGen)][tei:head][ancestor-or-self::tei:div/@xml:lang=$lang]"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:sequence select="$div/preceding-sibling::tei:div[not(following::tei:divGen)][tei:head]"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:value-of select="count($preceding-divs) + 1 +$offset"/>
         <xsl:if test="$dot">
             <xsl:text>. </xsl:text>
         </xsl:if>
@@ -451,7 +462,7 @@
                         <xsl:attribute name="data-title" select="concat(wega:getLanguageString('endNote', $lang), ' ', position())"/>
                         <xsl:element name="a">
                             <xsl:attribute name="class">endnote_backlink</xsl:attribute>
-                            <xsl:attribute name="href" select="concat('#ref-', @xml:id)"/>
+                            <xsl:attribute name="href" select="wega:get-backref-link(@xml:id)"/>
                             <xsl:value-of select="position()"/>
                         </xsl:element>
                         <xsl:apply-templates/>
@@ -548,9 +559,7 @@
                 <xsl:when test="$head = '&gt;'">&amp;gt;</xsl:when>
                 <xsl:when test="$head = '&#34;'">&amp;quot;</xsl:when>
                 <xsl:when test="$head = &#34;'&#34;">&amp;apos;</xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="$head"/>
-                </xsl:otherwise>
+                <xsl:otherwise><xsl:value-of select="$head"/></xsl:otherwise>
             </xsl:choose>
             <xsl:call-template name="verbatim-xml">
                 <xsl:with-param name="text" select="$tail"/>

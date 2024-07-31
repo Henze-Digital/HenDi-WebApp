@@ -824,8 +824,7 @@ declare function wdt:biblio($item as item()*) as map(*) {
                 case xs:untypedAtomic return crud:doc($item)/tei:biblStruct
                 case document-node() return $item/tei:biblStruct
                 default return $item/root()/tei:biblStruct
-            let $html-title := wega-util:transform(($biblStruct//tei:title)[1], doc(concat($config:xsl-collection-path, '/common_main.xsl')), config:get-xsl-params(()))
-(:            let $html-title := <xhtml:p>{($biblStruct//tei:title)[1]//text()}</xhtml:p>:)
+            let $html-title := bibl:printCitation($biblStruct, <xhtml:p/>, 'de')
             return
                 switch($serialization)
                 case 'txt' return str:normalize-space($html-title)
@@ -847,7 +846,7 @@ declare function wdt:places($item as item()*) as map(*) {
         'name' : 'places',
         'prefix' : substring(config:get-option('placesIdPattern'), 1, 3),
         'check' : function() as xs:boolean {
-            if($item castable as xs:string and crud:docAvailable($item)) then matches($item, config:wrap-regex('placesIdPattern'))
+            if($item castable as xs:string) then matches($item, config:wrap-regex('placesIdPattern'))
             else false()
         },
         'filter' : function() as document-node()* {

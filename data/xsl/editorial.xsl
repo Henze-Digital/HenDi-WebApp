@@ -248,15 +248,9 @@
         <xsl:element name="span">
             <xsl:attribute name="class" select="concat('tei_', local-name())"/>
             <!--<xsl:attribute name="id" select="wega:createID(.)"/>-->
-            <xsl:element name="span">
-                <xsl:attribute name="class">brackets_supplied</xsl:attribute>
-                <xsl:text>[</xsl:text>
-            </xsl:element>
+            <xsl:element name="span"><xsl:attribute name="class">brackets_supplied</xsl:attribute><xsl:text>[</xsl:text></xsl:element>
             <xsl:apply-templates/>
-            <xsl:element name="span">
-                <xsl:attribute name="class">brackets_supplied</xsl:attribute>
-                <xsl:text>]</xsl:text>
-            </xsl:element>
+            <xsl:element name="span"><xsl:attribute name="class">brackets_supplied</xsl:attribute><xsl:text>]</xsl:text></xsl:element>
         </xsl:element>
     </xsl:template>
     
@@ -264,7 +258,7 @@
         <xsl:element name="span">
             <xsl:attribute name="class" select="concat('tei_', local-name())"/>
             <xsl:apply-templates/>
-            <xsl:text> [sic]</xsl:text>
+            <xsl:text>&#x00A0;[sic!]</xsl:text>
         </xsl:element>
     </xsl:template>
     
@@ -276,7 +270,7 @@
     </xsl:template>-->
 
 
-    <!--<xsl:template match="tei:quote|tei:q">
+    <!--<xsl:template match="tei:quote">
         <xsl:text>"</xsl:text>
         <xsl:apply-templates/>
         <xsl:text>"</xsl:text>

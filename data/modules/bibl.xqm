@@ -11,6 +11,7 @@ import module namespace lang="http://xquery.weber-gesamtausgabe.de/modules/lang"
 import module namespace str="http://xquery.weber-gesamtausgabe.de/modules/str" at "xmldb:exist:///db/apps/WeGA-WebApp-lib/xquery/str.xqm";
 import module namespace wega-util="http://xquery.weber-gesamtausgabe.de/modules/wega-util" at "wega-util.xqm";
 import module namespace date="http://xquery.weber-gesamtausgabe.de/modules/date" at "xmldb:exist:///db/apps/WeGA-WebApp-lib/xquery/date.xqm";
+import module namespace crud="http://xquery.weber-gesamtausgabe.de/modules/crud" at "crud.xqm";
 (:import module namespace functx="http://www.functx.com";:)
 
 (:~
@@ -328,4 +329,60 @@ declare %private function bibl:printNote($notes as element(tei:note)*, $lang as 
         <xhtml:a class="noteMarker biblioNote" data-toggle="popover" data-ref="#{$id}">*</xhtml:a>,
  <xhtml:div id="{$id}" data-title="{lang:get-language-string('gl_note', $lang)}" style="display:none;">{$content}</xhtml:div>
       )
+};
+
+(:~
+ : Replace standard hyphens with ndashs 
+ :)
+declare %private function bibl:normalize-hyphen($biblScope as element(tei:biblScope)) as xs:string {
+    replace($biblScope, '-', '–')
+};
+
+(:~
+ : Process idno elements to output DOIs and alike
+ :)
+declare %private function bibl:idno($idnos as element(tei:idno)*) as element(xhtml:span)* {
+    for $idno in $idnos
+    return
+        switch($idno/@type)
+        case 'DOI' return <xhtml:span class="idno_DOI">, DOI: <xhtml:a href="{concat('https://doi.org/',  normalize-space($idno))}">{$idno => data(), ' '} <i class="fa fa-external-link" aria-hidden="true"></i></xhtml:a></xhtml:span>
+        case 'WeGA' return <xhtml:span class="idno_WeGA">, Volltext verfügbar unter <xhtml:a href="{config:permalink($idno)}">{$idno => data()}</xhtml:a></xhtml:span>
+        default return <xhtml:span class="{concat('idno_', $idno/@type)}">, online unter <xhtml:a href="{$idno => data()}">{$idno => data(), ' '} <i class="fa fa-external-link" aria-hidden="true"></i></xhtml:a></xhtml:span>
+};
+
+(:~
+ : Process editors
+ : Helper function for bibl:printBookCitation and bibl:printIncollectionCitation
+ :)
+declare %private function bibl:edited-by($biblStruct as element(tei:biblStruct), $lang as xs:string) as item()* {
+    let $editors := bibl:printCitationAuthors($biblStruct/tei:monogr/tei:editor, $lang)
+    let $ders as xs:boolean := 
+        count($biblStruct/tei:monogr/tei:editor) eq 1 and 
+        count($biblStruct/tei:analytic/tei:author) eq 1 and 
+        exists($biblStruct/tei:monogr/tei:editor/@key) and
+        exists($biblStruct/tei:analytic/tei:author/@key) and
+        $biblStruct/tei:monogr/tei:editor/@key = $biblStruct/tei:analytic/tei:author/@key
+    let $dens as xs:boolean :=
+        count($biblStruct/tei:monogr/tei:editor) gt 1 and 
+        count($biblStruct/tei:analytic/tei:author) gt 1 and
+        count($biblStruct/tei:analytic/tei:author) eq count($biblStruct/tei:monogr/tei:editor) and 
+        (every $i in ($biblStruct/tei:analytic/tei:author | $biblStruct/tei:monogr/tei:editor) satisfies $i/@key) and 
+        (every $i in $biblStruct/tei:analytic/tei:author/@key satisfies $i = $biblStruct/tei:monogr/tei:editor/@key)
+    let $sex := 
+        if($ders)
+        then crud:doc($biblStruct/tei:monogr/tei:editor/@key)//tei:sex
+        else ()
+    return
+        if(exists($editors)) 
+        then 
+            if($dens)
+            then (concat(', ', lang:get-language-string('edBy', $lang), ' '), <xhtml:span class="editor">{lang:get-language-string('edByIdemPl', $lang)}</xhtml:span>)
+            else
+                if($sex = 'm') 
+                then (concat(', ', lang:get-language-string('edBy', $lang), ' '), <xhtml:span class="editor">{lang:get-language-string('edByIdemM', $lang)}</xhtml:span>)
+                else 
+                    if($sex = 'f') 
+                    then (concat(', ', lang:get-language-string('edBy', $lang), ' '), <xhtml:span class="editor">{lang:get-language-string('edByIdemF', $lang)}</xhtml:span>)
+                    else (concat(', ', lang:get-language-string('edBy', $lang), ' '), $editors) 
+        else ()
 };

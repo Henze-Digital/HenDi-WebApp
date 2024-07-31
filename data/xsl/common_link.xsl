@@ -1,4 +1,4 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mei="http://www.music-encoding.org/ns/mei" xmlns="http://www.w3.org/1999/xhtml" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mei="http://www.music-encoding.org/ns/mei" xmlns="http://www.w3.org/1999/xhtml" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" xmlns:hendi="http://henze-digital.zenmem.de/ns/1.0" version="2.0">
 	
 	<xsl:output encoding="UTF-8" method="html" omit-xml-declaration="yes" indent="no"/>
 	<!-- 
@@ -6,7 +6,6 @@
         thus exclude all elements with the following child elements 
     -->
 	<xsl:variable name="linkableElements" as="xs:string+" select="('persName', 'rs', 'name', 'characterName', 'orgName', 'country', 'district', 'bloc', 'geogName', 'sic', 'del', 'add', 'subst', 'damage', 'choice', 'unclear', 'app', 'note', 'region', 'settlement', 'bibl')"/>
-	
 	<!--  *********************************************  -->
 	<!--  *                  Templates                *  -->
 	<!--  *********************************************  -->
@@ -60,7 +59,7 @@
 			<xsl:apply-templates select="@xml:id"/>
 			<xsl:apply-templates select="@target"/>
 			<xsl:if test="@type='footnoteAnchor'">
-				<xsl:attribute name="id" select="concat('backref-', substring(@target, 2))"/>
+				<xsl:attribute name="id" select="wega:get-backref-id(substring(@target, 2))"/>
 				<xsl:attribute name="class">fn-ref</xsl:attribute>
 			</xsl:if>
 			<xsl:apply-templates mode="#current"/>
@@ -121,7 +120,7 @@
 			<xsl:when test="exists((@key, @codedval, @target)) and not(descendant::*[local-name(.) = $linkableElements])">
 				<xsl:element name="a">
 					<xsl:attribute name="class">
-						<xsl:value-of select="wega:preview-class(.)"/>
+						<xsl:value-of select="hendi:preview-class(.)"/>
 					</xsl:attribute>
 					<!--<xsl:attribute name="href" select="wega:createLinkToDoc((@key, @codedval), $lang)"/>-->
 					<xsl:apply-templates select="@key | @codedval | @target"/>
@@ -141,7 +140,7 @@
 			<xsl:attribute name="class">
 				<xsl:choose>
 					<xsl:when test="exists((@key, @codedval, @target))">
-						<xsl:value-of select="wega:preview-class(.)"/>
+						<xsl:value-of select="hendi:preview-class(.)"/>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:for-each select="string-to-codepoints(normalize-space(.))">
@@ -175,7 +174,7 @@
 		</xsl:element>
 	</xsl:template>
 	
-	<xsl:function name="wega:preview-class" as="xs:string">
+	<xsl:function name="hendi:preview-class" as="xs:string">
 		<xsl:param name="myNode" as="element()"/>
 		<xsl:variable name="keys" select="             for $key in tokenize(($myNode/@scribe, $myNode/@key, $myNode/@codedval, $myNode/@target/replace(., 'hendi:', '')), '\s+')             return substring($key, 1, 8)             " as="xs:string+"/>
 		<xsl:variable name="class" as="xs:string">

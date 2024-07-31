@@ -163,61 +163,6 @@
 		</xsl:choose>
 	</xsl:template>
 	
-	<!--<xsl:template match="tei:rdg"/>
-    <xsl:template match="tei:lem">
-        <xsl:apply-templates/>
-    </xsl:template>-->
-	
-	<!--<xsl:template match="tei:app">
-        <xsl:variable name="appInlineID">
-            <xsl:number level="any"/>
-        </xsl:variable>
-        <xsl:choose>
-            <!-\-    tei:rdg[@cause='kein_Absatz'] nicht existent in den Daten. Dieser Zweig kann entfallen.       -\->
-            <xsl:when test="./tei:rdg[@cause='kein_Absatz']">
-                <span class="teiLetter_noteDefinitionMark" onmouseout="UnTip()">
-                    <xsl:attribute name="onmouseover">
-                        <xsl:text>TagToTip('</xsl:text>
-                        <xsl:value-of select="concat('app_',$appInlineID)"/>
-                        <xsl:text>')</xsl:text>
-                    </xsl:attribute>
-                    <xsl:text>*</xsl:text>
-                </span>
-                <span class="teiLetter_noteInline">
-                    <xsl:attribute name="id">
-                        <xsl:value-of select="concat('app_',$appInlineID)"/>
-                    </xsl:attribute>
-                    <xsl:text>Lesart ohne Absatz</xsl:text>
-                </span>
-            </xsl:when>
-            <xsl:otherwise>
-                <span class="teiLetter_lem" onmouseout="UnTip()">
-                    <xsl:attribute name="onmouseover">
-                        <xsl:text>TagToTip('</xsl:text>
-                        <xsl:value-of select="concat('app_',$appInlineID)"/>
-                        <xsl:text>')</xsl:text>
-                    </xsl:attribute>
-                    <xsl:apply-templates select="./tei:lem"/>
-                </span>
-                <span class="teiLetter_noteInline">
-                    <xsl:attribute name="id">
-                        <xsl:value-of select="concat('app_',$appInlineID)"/>
-                    </xsl:attribute>
-                    <xsl:text>Lesart(en): </xsl:text>
-                    <xsl:for-each select="./tei:rdg">
-                        <xsl:value-of select="normalize-space(.)"/>
-                        <xsl:if test="position()!=last()">
-                            <xsl:text>; </xsl:text>
-                        </xsl:if>
-                    </xsl:for-each>
-                </span>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>-->
-	
-	<!--<xsl:template match="tei:title[@level='a']">
-        <xsl:apply-templates/>
-    </xsl:template>-->
 	<xsl:template match="text()[parent::tei:title]">
 		<xsl:choose>
 			<xsl:when test="$lang eq 'en'">
