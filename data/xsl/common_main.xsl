@@ -856,13 +856,13 @@
                     <xsl:value-of select="'600,'"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:value-of select="concat(',',wega:getOption('figureHeight'))"/>
+                    <xsl:value-of select="'full'"/>
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
         <xsl:variable name="title">
             <!-- desc within notatedMusic and figDesc within figures -->
-            <xsl:apply-templates select="parent::*/tei:desc | parent::*/tei:figDesc"/>
+            <xsl:value-of select="normalize-space(string-join((parent::tei:*/tei:desc | parent::tei:*/tei:figDesc)//text(), ' '))"/>
         </xsl:variable>
         <xsl:choose>
             <xsl:when test="starts-with(@url, 'http')">
