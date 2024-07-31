@@ -6,7 +6,7 @@
     <xsl:param name="collapse" required="no" select="false()" as="xs:boolean"/>
     <xsl:param name="main-source-file" select="'/db/apps/HenDi-WebApp/guidelines/guidelines-de-hendiAll.compiled.xml'"/>
     <xsl:strip-space elements="*"/>
-    <xsl:preserve-space elements="tei:q tei:quote tei:cell tei:p tei:hi tei:persName tei:rs tei:workName tei:characterName tei:placeName tei:code tei:eg tei:item tei:head tei:date tei:orgName tei:note tei:lem tei:rdg tei:add tei:bibl"/>
+    <xsl:preserve-space elements="tei:q tei:quote tei:cell tei:p tei:hi tei:persName tei:rs tei:workName tei:characterName tei:placeName tei:code tei:eg tei:item tei:head tei:date tei:orgName tei:note tei:lem tei:rdg tei:add"/>
     <xsl:include href="common_link.xsl"/>
     <xsl:include href="common_main.xsl"/>
 	<!--<xsl:include href="tagdocs.xsl"/>-->
