@@ -193,7 +193,7 @@ declare function wdt:letters($item as item()*) as map(*) {
         let $letterClass := if($letterEnvelope or $letterEnclosures)
         					then($letterClass || ' (' || lang:get-language-string('with',$lang) || ' ' || string-join(($letterEnvelope, $letterEnclosures), concat(' ', lang:get-language-string('and',$lang),' ')) || ')')
         					else($letterClass)
-        let $letterClass := if($TEI//tei:msDesc[1]//tei:objectDesc[1]//tei:material[@function='copy.carbon']) then($letterClass || ' [' || lang:get-language-string('physDesc.objectDesc.material.copy.carbon',$lang) || '] ' || lang:get-language-string('from', $lang) || ' ')
+        let $letterClass := if(($TEI//tei:msDesc)[1]//tei:objectDesc[1]//tei:material[@function='copy.carbon']) then($letterClass || ' [' || lang:get-language-string('physDesc.objectDesc.material.copy.carbon',$lang) || '] ' || lang:get-language-string('from', $lang) || ' ')
                             else($letterClass || ' ' || lower-case(lang:get-language-string('from', $lang)) || ' ')
         return (
             element tei:title {
