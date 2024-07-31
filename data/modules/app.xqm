@@ -1097,8 +1097,8 @@ declare
         let $hasParts := function($doc as document-node(), $linking as xs:boolean) {
             let $files := (crud:data-collection('biblio'), crud:data-collection('works'))[.//tei:monogr[@sameAs = $doc/tei:biblStruct/@xml:id]]
             let $items := for $file in ($files/tei:biblStruct,$files//tei:sourceDesc/tei:biblStruct)
-                            let $id := $file/@xml:id
-                            let $title := $file//tei:title[1]/text()
+                            let $id := if($file/@xml:id) then($file/@xml:id) else($file/ancestor::tei:TEI/@xml:id)
+                            let $title := if($file//tei:title[1]/text()) then($file//tei:title[1]/text()) else(($file/ancestor::tei:*//tei:title[not(@level='s')])[1])
                             let $author := ($file//tei:author)[1]
                             let $type := $file/@type
                             let $year := if($file//tei:date/@when) then($file//tei:date/@when)
