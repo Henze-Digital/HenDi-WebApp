@@ -627,7 +627,9 @@
 	<xsl:template match="tei:hi[@rend='capital']" mode="#all">
 		<xsl:element name="span">
 			<xsl:attribute name="class" select="'text-uppercase'"/>
-			<xsl:apply-templates mode="#current"/>
+			<xsl:for-each select="./node()">
+	        <xsl:apply-templates select="." mode="#current"/><xsl:text> </xsl:text>
+	    </xsl:for-each>
 		</xsl:element>
 	</xsl:template>
     
