@@ -44,7 +44,7 @@ a.collapseSingle, a.collapseSingle:hover
   text-decoration: inherit;
   content: "\f138";
   margin-right: 10px;
-  font-size: smaller;
+  font-size: 1.3rem;
 }
 
 .accordionItem h2:before {
@@ -55,7 +55,11 @@ a.collapseSingle, a.collapseSingle:hover
   text-decoration: inherit;
   content: "\f13a";
   margin-right: 10px;
-  font-size: smaller;
+  font-size: 1.3rem;
+}
+
+.accordionItem h2 {
+  font-size: 1.5rem;
 }
 
 .collapseMarker, .collapseMarker:hover, .collapseMarker:focus {
