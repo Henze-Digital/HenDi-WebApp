@@ -55,7 +55,7 @@
         </xsl:variable>
         <xsl:element name="div">
             <xsl:choose>
-                <xsl:when test="not(parent::tei:div) and (tei:p or tei:list) and $collapse = true()">
+                <xsl:when test="not(parent::tei:div) and (tei:div or tei:p or tei:list) and $collapse = true()">
                     <xsl:element name="div">
                         <xsl:attribute name="class">
                             <xsl:if test="@type">
