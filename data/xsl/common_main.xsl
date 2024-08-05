@@ -903,6 +903,8 @@
                         <xsl:attribute name="title" select="normalize-space($title)"/>
                         <xsl:attribute name="alt" select="normalize-space($title)"/>
                         <xsl:attribute name="src" select="concat($imageBaseURL, '/full/', $figureSize, '/0/native.jpg')"/>
+                    	<xsl:if test="./@height"><xsl:attribute name="height" select="./@height"/></xsl:if>
+                    	<xsl:if test="./@width"><xsl:attribute name="width" select="./@width"/></xsl:if>
                     </xsl:element>
                 </xsl:element>
             </xsl:otherwise>
