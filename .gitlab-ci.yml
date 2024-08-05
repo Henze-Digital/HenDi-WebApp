@@ -3,28 +3,36 @@ variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
     IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-    HENDI_CI_IMAGE: registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image:v1-1-0
+    HENDI_CI_IMAGE: registry.git.uni-paderborn.de/vife/henze-digital/hendi-ci-docker-image:v1-2-0
     GIT_SUBMODULE_STRATEGY: recursive # is also defined in the jobs. Why?
-    GIT_DEPTH: 5
+    GIT_DEPTH: 20
     #URL_CI_REGISTRY: "registry.git.uni-paderborn.de/vife/henze-digital/hwh-webapp"
 
 stages:
   - update
   - build
+  - clean
 
 # jobs for updating
 update:submodules:
   stage: update
   image: $HENDI_CI_IMAGE
   script:
+    - echo "set up git configuration"
     - git config user.email "${GITLAB_USER_EMAIL}"
     - git config user.name "${GITLAB_USER_NAME}"
     - git config pull.rebase true
-    - git remote set-url origin https://${HENDI_DATA_CI_TOKEN_NAME}:${HENDI_DATA_CI_TOKEN}@git.uni-paderborn.de/vife/henze-digital/hwh-webapp.git
+    - git remote set-url origin https://HENDI_WEBAPP_CI_TOKEN_NAME:${HENDI_WEBAPP_CI_TOKEN}@git.uni-paderborn.de/vife/henze-digital/hwh-webapp.git
     - git pull origin ${CI_COMMIT_REF_NAME} #--allow-unrelated-histories
+    - echo "navigate to submodule"
     - cd submodules/HenDi-ODD
-    - git checkout develop
-    - git pull
+    - echo "set up git configuration (submodule)"
+    - git config user.email "${GITLAB_USER_EMAIL}"
+    - git config user.name "${GITLAB_USER_NAME}"
+    - git config pull.rebase true
+    - git remote set-url origin https://HENDI_ODD_CI_TOKEN_NAME:${HENDI_ODD_CI_TOKEN}@git.uni-paderborn.de/vife/henze-digital/HenDi-ODD.git
+    - git pull origin develop
+    - echo "navigate to main repository"
     - cd ../../
     - |- 
       if [[ -z $(git status -s) ]];
@@ -32,12 +40,11 @@ update:submodules:
         echo "No changes detected. Nothing to commit."
       else
         git add submodules/HenDi-ODD
-        git commit -m "auto update submodule"
+        git commit -m "CI update submodule HenDi-ODD"
         git push origin HEAD:${CI_COMMIT_REF_NAME} -o ci.skip
       fi
-  only:
-    variables:
-      - $TRIGGER_UPDATE_SUBMODULE == "true"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "trigger"
 
 # jobs for building the webapp
 build:develop:
@@ -104,3 +111,12 @@ build:stable-zenodo:
     - when: never
   after_script:
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ./hendi-pkg-webapp/HenDi-WebApp-*.zip "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hendi-webapp/stable-zenodo/HenDi-WebApp-latest.zip"'
+
+clean:pipelines:
+  stage: clean
+  image: ubuntu:latest
+  before_script:
+    - apt update -y
+    - apt install -y curl jq
+  script:
+    - sh delete-pipelines.sh

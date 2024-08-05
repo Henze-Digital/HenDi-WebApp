@@ -133,12 +133,18 @@
     <entry xml:id="addMargin">added in the margin</entry>
 	<entry xml:id="addMargin-right">added in the right margin</entry>
 	<entry xml:id="addMargin-left">added in the left margin</entry>
-	<entry xml:id="addMargin-top">added at the top margin</entry>
-	<entry xml:id="addMargin-bottom">added at the bottom margin</entry>
+	<entry xml:id="addMargin-top">added in the top margin</entry>
+	<entry xml:id="addMargin-bottom">added in the bottom margin</entry>
     <entry xml:id="addInline">added inline</entry>
     <entry xml:id="addBelow">added below</entry>
     <entry xml:id="addAbove">added above</entry>
     <entry xml:id="addDefault">added</entry>
+    <entry xml:id="pMargin">Section in the margin</entry>
+    <entry xml:id="pMargin-right">Section in the right margin</entry>
+    <entry xml:id="pMargin-left">Section in the left margin</entry>
+    <entry xml:id="pMargin-top">Section at the top margin</entry>
+    <entry xml:id="pMargin-bottom">Section at the bottom margin</entry>
+    <entry xml:id="pDefault">Section</entry>
     <entry xml:id="popoverTitle.add">Addition</entry>
     <entry xml:id="popoverTitle.subst">Substitution</entry>
     <entry xml:id="popoverTitle.handshift">Hand shift</entry>
@@ -179,6 +185,7 @@
 	<entry xml:id="ink">Damage due to ink</entry>
 	<entry xml:id="damageDefault">Damage</entry>
 	<entry xml:id="textLoss.punch">Text loss by punch</entry>
+	<entry xml:id="textLoss.pasting">Text loss by pasting over</entry>
 	<entry xml:id="textLoss.ink">Text loss by ink</entry>
 	<entry xml:id="illegible">illegible</entry>
     <entry xml:id="handshiftManuscript">handwritten</entry>
@@ -200,7 +207,7 @@
     <entry xml:id="help">Help</entry>
     <entry xml:id="redirect">Redirected from %1</entry>
     <!--  footer  -->
-    <entry xml:id="lastChangeDateWithAuthor">Last change of this document by %2 on %1</entry>
+    <entry xml:id="lastChangeDateWithAuthor">Last change of this document by %2 on %1 (%3)</entry>
     <entry xml:id="lastChangeDateWithoutAuthor">Last change of this document on %1</entry>
     <entry xml:id="proposedCitation">Proposed citation: Hans Werner Henze's network of artists. Digital Edition</entry>
     <entry xml:id="versionInformation">Version %1 of %2</entry>
@@ -314,6 +321,7 @@
     <entry xml:id="chronology">Chronology</entry>
     <entry xml:id="undated">undated</entry>
     <entry xml:id="unpublished">unpublished</entry>
+	<entry xml:id="isPublishedIn">Published in</entry>
     <entry xml:id="residences">Places of action</entry>
     <entry xml:id="revisionDescStatus">Document status</entry>
     <entry xml:id="docStatus">Document status</entry>
@@ -336,6 +344,9 @@
 	<entry xml:id="informationAboutTheBiblio">Information about the bibliographic item</entry>
 	<entry xml:id="isPartOf">Is part of</entry>
 	<entry xml:id="hasPart">Has parts</entry>
+	<entry xml:id="seeAlso">See also</entry>
+	<entry xml:id="isAssociatedWith">Superordinate</entry>
+	<entry xml:id="isAssociatedBy">Subordinate</entry>
     <!--  Development  -->
     <entry xml:id="common">Common</entry>
     <!-- HTML Meta Daten -->
@@ -757,7 +768,7 @@
     <entry xml:id="medium.pencil.ink">ink pencil</entry>
     <entry xml:id="medium.pen">pen</entry>
     <entry xml:id="medium.pen.felt">felt pen/fineliner</entry>
-    <entry xml:id="medium.pen.ball">ball pen</entry>
+	<entry xml:id="medium.pen.ball">ballpoint pen</entry>
     <entry xml:id="medium.ribbon">ribbon</entry>
     
     <!-- physical description -->
@@ -841,6 +852,7 @@
     <entry xml:id="furtherDetails">Further details</entry>
 	
 	<entry xml:id="textRotation">Text turned clockwise</entry>
+    <entry xml:id="rotation">Rotation</entry>
     <entry xml:id="annotation">Annotation</entry>
 	<entry xml:id="introduction">Introduction</entry>
 	<entry xml:id="general">General</entry>
@@ -853,6 +865,7 @@
 	<entry xml:id="orgType.archive">Archive</entry>
 	<entry xml:id="orgType.association">Association</entry>
 	<entry xml:id="orgType.broadcaster">Broadcaster</entry>
+	<entry xml:id="orgType.ballet">Ballet</entry>
 	<entry xml:id="orgType.choir">Choir</entry>
 	<entry xml:id="orgType.company">Company</entry>
 	<entry xml:id="orgType.festival">Festival</entry>
@@ -879,4 +892,14 @@
     <entry xml:id="cert.medium">supposedly</entry>
     <entry xml:id="cert.low">possibly</entry>
 	<entry xml:id="text">Literature</entry>
+	
+	<!-- stamps -->
+	<entry xml:id="stamp">Stamp</entry>
+	<entry xml:id="stampType-stamp">Postmark</entry>
+	<entry xml:id="stampType-oneline">Stamp (oneline)</entry>
+	<entry xml:id="stampType-round">Stamp (round)</entry>
+	<entry xml:id="stampType-square">Stamp (square)</entry>
+	<entry xml:id="stampType-rectangular">Stamp (rectangular)</entry>
+	<entry xml:id="notClassified">Not classified</entry>
+	<entry xml:id="moreInfoInApparatus">For more information see apparatus</entry>
 </dictionary>

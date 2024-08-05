@@ -3,7 +3,7 @@
     <xsl:output encoding="UTF-8" method="html" omit-xml-declaration="yes" indent="no"/>
     
     <xsl:strip-space elements="*"/>
-	<xsl:preserve-space elements="tei:p tei:dateline tei:closer tei:opener tei:hi tei:persName tei:rs tei:workName tei:characterName tei:placeName tei:seg tei:footnote tei:head tei:orgName tei:note tei:q tei:quote tei:provenance tei:acquisition tei:bibl"/>
+    <xsl:preserve-space elements="tei:p tei:dateline tei:closer tei:opener tei:hi tei:persName tei:rs tei:workName tei:characterName tei:placeName tei:seg tei:footnote tei:head tei:orgName tei:note tei:quote tei:provenance tei:acquisition"/>
     
     <xsl:include href="common_main.xsl"/>
     <xsl:include href="common_link.xsl"/>
@@ -189,13 +189,14 @@
         </xsl:element>
     </xsl:template>
 
-    <xsl:template match="tei:additional">
-        <!--<xsl:element name="h4">
+    <xsl:template match="tei:additional"/>
+    <!--<xsl:template match="tei:additional">
+        <xsl:element name="h4">
             <xsl:attribute name="class">media-heading</xsl:attribute>
             <xsl:value-of select="wega:getLanguageString('prints', $lang)"/>
         </xsl:element>
-        <xsl:apply-templates/>-->
-    </xsl:template>
+        <xsl:apply-templates/>
+    </xsl:template>-->
 
     <!--<xsl:template match="tei:listBibl">
         <xsl:element name="ul">

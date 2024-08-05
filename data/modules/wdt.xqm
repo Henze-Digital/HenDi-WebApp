@@ -177,8 +177,10 @@ declare function wdt:letters($item as item()*) as map(*) {
                                 return
                                     hwh-util:shorten-fullnames($addressee)
         let $addressee := $addresseesShorten => string-join('/') 
-        let $letterClass := if($TEI//tei:msDesc[1]//tei:objectDesc[1]/@form)
-        					then(lang:get-language-string(concat('physDesc.objectDesc.form.', $TEI//tei:msDesc[1]//tei:objectDesc[1]/@form),$lang))
+        let $letterClass := if($TEI//tei:sourceDesc/tei:msDesc//tei:objectDesc[1]/@form)
+        					then(lang:get-language-string(concat('physDesc.objectDesc.form.', $TEI//tei:sourceDesc/tei:msDesc//tei:objectDesc[1]/@form),$lang))
+        					else if(count($TEI//tei:witness/tei:msDesc//tei:objectDesc[1]/@form) gt 0)
+        					then(lang:get-language-string(concat('physDesc.objectDesc.form.', ($TEI//tei:witness)[1]/tei:msDesc//tei:objectDesc[1]/@form),$lang))
         					else(lang:get-language-string('physDesc.objectDesc.form.document', $lang))
         let $letterEnvelope := if($TEI//tei:relation[@name='hasEnvelope'])
         						then(lang:get-language-string('physDesc.objectDesc.form.envelope',$lang))
@@ -191,7 +193,7 @@ declare function wdt:letters($item as item()*) as map(*) {
         let $letterClass := if($letterEnvelope or $letterEnclosures)
         					then($letterClass || ' (' || lang:get-language-string('with',$lang) || ' ' || string-join(($letterEnvelope, $letterEnclosures), concat(' ', lang:get-language-string('and',$lang),' ')) || ')')
         					else($letterClass)
-        let $letterClass := if($TEI//tei:msDesc[1]//tei:objectDesc[1]//tei:material[@function='copy.carbon']) then($letterClass || ' [' || lang:get-language-string('physDesc.objectDesc.material.copy.carbon',$lang) || '] ' || lang:get-language-string('from', $lang) || ' ')
+        let $letterClass := if(($TEI//tei:msDesc)[1]//tei:objectDesc[1]//tei:material[@function='copy.carbon']) then($letterClass || ' [' || lang:get-language-string('physDesc.objectDesc.material.copy.carbon',$lang) || '] ' || lang:get-language-string('from', $lang) || ' ')
                             else($letterClass || ' ' || lower-case(lang:get-language-string('from', $lang)) || ' ')
         return (
             element tei:title {
@@ -512,10 +514,10 @@ declare function wdt:works($item as item()*) as map(*) {
         },
         'init-sortIndex' : function() as item()* {
             sort:create-index-callback('works', wdt:works(())('init-collection')(), function($node) { 
-                if($node//mei:fileDesc/mei:titleStmt/mei:title)
-                then(hwh-util:prepareTitleForSorting($node//mei:fileDesc/mei:titleStmt/mei:title[1]))
-                else if($node//mei:work)
+                if($node//mei:work)
                 then(hwh-util:prepareTitleForSorting(($node//mei:work/mei:title)[1]//mei:titlePart[@type='main']))
+                else if($node//mei:fileDesc/mei:titleStmt/mei:title)
+                then(hwh-util:prepareTitleForSorting($node//mei:fileDesc/mei:titleStmt/mei:title[1]))
                 else if($node//tei:biblStruct//tei:title)
                 then(hwh-util:prepareTitleForSorting(($node//tei:biblStruct//tei:title)[1]))
                 else('zzzzz')

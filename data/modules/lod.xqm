@@ -235,6 +235,11 @@ declare %private function lod:DC.description($model as map(*), $lang as xs:strin
  : Helper function for creating the page title
 ~:)
 declare %private function lod:page-title($model as map(*), $lang as xs:string) as xs:string? {
+    let $orgTypes := for $each in $model('doc')//tei:state[tei:label='Art der Institution' or @type='orgType']/tei:desc/tei:term
+                        return
+                            lang:get-language-string('orgType.' || $each, $lang)
+    let $orgTypeList := ' (' || str:list($orgTypes, $lang, 0, lang:get-language-string#2) || ')'
+    return
     if($model?specID) then lang:get-language-string('metaTitleGuidelinesSpecs', ($model?specID, $model?schemaID), $lang)
     else if($model?chapID) then 
         switch($model?chapID)
@@ -251,7 +256,7 @@ declare %private function lod:page-title($model as map(*), $lang as xs:string) a
             case 'persons' return concat(str:print-forename-surname(query:title($model('docID'))), ' – ', lang:get-language-string('tabTitle_bio', $lang))
             case 'letters' case 'corresp' case 'biblio' case 'writings' case 'news' case 'var' case 'thematicCommentaries' case 'documents' case 'places' case 'works' case 'addenda' return wdt:lookup($model('docType'), $model('doc'))('title')('txt')
             case 'diaries' return concat(query:get-authorName($model('doc')), ' – ', lang:get-language-string('diarySingleViewTitle', wdt:lookup($model('docType'), $model('doc'))('title')('txt'), $lang))
-            case 'orgs' return query:title($model('docID')) || ' (' || str:list($model('doc')//tei:state[tei:label='Art der Institution']/tei:desc, $lang, 0, lang:get-language-string#2) || ') – ' || lang:get-language-string('tabTitle_bioOrgs', $lang)
+            case 'orgs' return query:title($model('docID')) || $orgTypeList || ' – ' || lang:get-language-string('tabTitle_bioOrgs', $lang)
             case 'error' return lang:get-language-string('metaTitleError', $lang)
             default return wega-util:log-to-file('warn', 'Missing HTML page title for ' || $model('docID') || ' – ' || $model('docType') || ' – ' || request:get-uri())
 };

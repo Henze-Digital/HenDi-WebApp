@@ -92,11 +92,7 @@
 						<strong>
 							<span data-template="lang:translate">editors</span>:</strong>
 					</li>
-					<li class="media editors" data-template="app-shared:each" data-template-from="editors" data-template-to="editor">
-						<span class="pull-left">
-							<i class="fa fa-user"/>
-						</span> <span class="media-body" data-template="app:preview-editors-name" data-template-popover="true">Nachname, Vorname</span>
-					</li>
+					<li class="media editors" data-template="app:preview-editors"/>
 					<div data-template="app-shared:if-exists" data-template-key="annotation" data-template-wrap="no">
 						<li>
 							<strong>
@@ -176,13 +172,15 @@
 										<!-- Tab panes -->
 										<div class="tab-content">
 											<div class="tab-pane active fade in" id="hendiInfo">
-												<div data-template="app:print-corresp-intro">
-													<!-- Wenn kein Text gefunden wird, dann wird der folgende Standardtext gewählt-->
-													<p>
-														<i data-template="lang:translate">noTextFound</i>
-													</p>
+												<div class="accordion" id="transcription">
+													<div data-template="app:print-corresp-intro">
+														<!-- Wenn kein Text gefunden wird, dann wird der folgende Standardtext gewählt-->
+														<p>
+															<i data-template="lang:translate">noTextFound</i>
+														</p>
+													</div>
+													<div data-template="app:print-corresp-intro-readmore">read more</div>
 												</div>
-												<div data-template="app:print-corresp-intro-readmore">read more</div>
 											</div>
 											<div class="tab-pane fade" id="XMLPreview">
 												<h2>XML</h2>
@@ -229,14 +227,14 @@
 					<h4>Empfohlene Zitierweise</h4>
 					<p>Hans Werner Henzes künstlerisches Netzwerk. Digitale Briefedition, <span data-template="app-shared:print" data-template-key="permalink">http://www.henze-digital.zenmem.de/ID</span> (<span data-template="app-shared:output" data-template-key="versionNews">Version NUMBER vom DATE</span>)
 						<br/>
-						<!--                        <span data-template="app-shared:print" data-template-key="latestChange">Letzte Änderung dieses Dokuments am 22. Mai 2014 durch Peter Stadler</span>-->
+						<span data-template="app-shared:print" data-template-key="latestChange">Letzte Änderung dieses Dokuments am 12. Juni 2024 durch Dennis Ried</span>
 					</p>
 				</div>
 				<div class="col-md-9" data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">
 					<h4>Proposed citation</h4>
 					<p>Hans Werner Henze's network of artists. Digital letter edition, <span data-template="app-shared:print" data-template-key="permalink">http://www.henze-digital.zenmem.de/ID</span> (<span data-template="app-shared:output" data-template-key="versionNews">Version NUMBER vom DATE</span>)
 						<br/>
-						<!--                        <span data-template="app-shared:print" data-template-key="latestChange">Letzte Änderung dieses Dokuments am DATE durch EDITOR</span>-->
+						<span data-template="app-shared:print" data-template-key="latestChange">Letzte Last change of this document by Dennis Ried on June 12, 2024</span>
 					</p>
 				</div>
 			</div>
@@ -244,7 +242,7 @@
 				<div class="col-md-9">
 					<p data-template="app-shared:if-matches" data-template-key="lang" data-template-value="de">Wenn Ihnen auf dieser Seite ein Fehler oder eine Ungenauigkeit aufgefallen ist, <br/>so bitten wir um eine kurze Nachricht an
 						<a href="#" class="obfuscate-email" data-template="app-shared:print" data-template-key="bugEmail">bugEmail</a>.</p>
-					<p data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">If you've spotted some error or inaccurateness please do not hesitate to inform us via 
+					<p data-template="app-shared:if-matches" data-template-key="lang" data-template-value="en">If you've spotted some error or inaccuracy please do not hesitate to inform us via 
 						<a href="#" class="obfuscate-email" data-template="app-shared:print" data-template-key="bugEmail">bugEmail</a>.</p>
 				</div>
 			</div>

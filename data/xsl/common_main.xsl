@@ -1,5 +1,4 @@
-<xsl:stylesheet xmlns="http://www.w3.
-    org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mei="http://www.music-encoding.org/ns/mei" xmlns:exist="http://exist.sourceforge.net/NS/exist" xmlns:teix="http://www.tei-c.org/ns/Examples" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:functx="http://www.functx.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" xmlns:hendi="http://henze-digital.zenmem.de/ns/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" version="2.0">
+<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mei="http://www.music-encoding.org/ns/mei" xmlns:exist="http://exist.sourceforge.net/NS/exist" xmlns:teix="http://www.tei-c.org/ns/Examples" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:functx="http://www.functx.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" xmlns:hendi="http://henze-digital.zenmem.de/ns/1.0" version="2.0">
     
     <xsl:output encoding="UTF-8" method="html" omit-xml-declaration="yes" indent="no"/>
 
@@ -8,8 +7,8 @@
     <!--  *********************************************  -->
 <!--    <xsl:variable name="optionsFile" select="'/db/webapp/xml/wegaOptions.xml'"/>-->
     <xsl:variable name="blockLevelElements" as="xs:string+" select="('p', 'list', 'table')"/>
-    <xsl:variable name="musical-symbols" as="xs:string" select="'[&#x1d100;-&#x1d1ff;♭-♯]+'"/>
-    <xsl:variable name="fa-exclamation-circle" as="xs:string" select="'&#xf06a;'"/>
+    <xsl:variable name="musical-symbols" as="xs:string" select="'[𝄀-𝇿♭-♯]+'"/>
+    <xsl:variable name="fa-exclamation-circle" as="xs:string" select="''"/>
     <xsl:param name="optionsFile"/>
     <xsl:param name="baseHref"/>
     <xsl:param name="lang"/>
@@ -33,7 +32,7 @@
     <xsl:template name="dots">
         <xsl:param name="count" select="1"/>
         <xsl:if test="$count &gt; 0">
-            <xsl:text>&#160;</xsl:text>
+            <xsl:text> </xsl:text>
             <xsl:call-template name="dots">
                 <xsl:with-param name="count" select="$count - 1"/>
             </xsl:call-template>
@@ -52,9 +51,9 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <xsl:choose>
-            <xsl:when test="$enclosure"/>
-            <xsl:otherwise>
+<!--        <xsl:choose>-->
+<!--            <xsl:when test="$enclosure"/>-->
+<!--            <xsl:otherwise>-->
                 <xsl:element name="a">
                     <xsl:attribute name="class" select="string-join(('noteMarker', $marker), ' ')"/>
                     <xsl:attribute name="id" select="concat('ref-', $id)"/>
@@ -99,18 +98,33 @@
                                 <xsl:attribute name="class">fa-regular fa-info</xsl:attribute>
                             </xsl:element>                    
                         </xsl:when>
-                    	<xsl:when test="not($marker) and self::tei:foreign">
+                        <xsl:when test="not($marker) and self::tei:foreign|(self::tei:p|self::tei:seg)[starts-with(@xml:id,'sec.')]">
                             <xsl:element name="i">
                                 <xsl:attribute name="class">fa-regular fa-flag</xsl:attribute>
                             </xsl:element>
+                        </xsl:when>
+                        <xsl:when test="not($marker) and (self::tei:p|self::tei:fw|self::tei:opener|self::tei:closer)[@hendi:rotation]">
+                            <xsl:element name="i">
+                                <xsl:attribute name="class">fa-solid fa-arrow-rotate-right</xsl:attribute>
+                            </xsl:element>                    
+                        </xsl:when>
+                        <xsl:when test="not($marker) and self::tei:stamp">
+                            <xsl:choose>
+                			    <xsl:when test="@type='stamp'">
+                            <i class="fa-solid fa-rug"/>
+                        </xsl:when>
+                			    <xsl:otherwise>
+                            <i class="fa-solid fa-stamp"/>
+                        </xsl:otherwise>
+                			</xsl:choose>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:text>‡</xsl:text> <!-- to be changed in apparatus.xsl too if necessary -->
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:element>
-            </xsl:otherwise>
-        </xsl:choose>
+<!--            </xsl:otherwise>-->
+<!--        </xsl:choose>-->
     </xsl:template>
 
     <xsl:template name="createEndnotes">
@@ -182,14 +196,20 @@
                         <xsl:apply-templates mode="#current"/>
                     </xsl:when>
                     <xsl:when test="not($double)">
-                        <xsl:text>'</xsl:text>
+                    	<xsl:element name="span">
+                    		
+                    		<xsl:text>'</xsl:text>
                         <xsl:apply-templates mode="#current"/>
                         <xsl:text>'</xsl:text>
+                    	</xsl:element>
                     </xsl:when>
                     <xsl:otherwise>
+                    	<xsl:element name="span">
+                    		
                         <xsl:text>"</xsl:text>
                         <xsl:apply-templates mode="#current"/>
                         <xsl:text>"</xsl:text>
+                    	</xsl:element>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:when>
@@ -235,29 +255,44 @@
                     <xsl:otherwise>
                         <xsl:choose>
                             <xsl:when test="@rend='single down'">
-                                <xsl:text>,</xsl:text>
-                                <xsl:apply-templates mode="#current"/>
-                                <xsl:text>,</xsl:text>
+                            	<xsl:element name="span">
+                            		
+	                            	<xsl:text>,</xsl:text>
+	                                <xsl:apply-templates mode="#current"/>
+	                                <xsl:text>,</xsl:text>
+                            	</xsl:element>
                             </xsl:when>
                             <xsl:when test="@rend='single up'">
+                            	<xsl:element name="span">
+                                    
                                 <xsl:text>‘</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>‘</xsl:text>
+                            	</xsl:element>
                             </xsl:when>
                             <xsl:when test="@rend=('double down', 'down')">
-                                <xsl:text>„</xsl:text>
+                            	<xsl:element name="span">
+                                    
+                            	<xsl:text>„</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>„</xsl:text>
+                            	</xsl:element>
                             </xsl:when>
                             <xsl:when test="@rend=('double up', 'up')">
+                            	<xsl:element name="span">
+                                    
                                 <xsl:text>“</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>“</xsl:text>
+                            	</xsl:element>
                             </xsl:when>
                             <xsl:otherwise>
+                            	<xsl:element name="span">
+                                    
                                 <xsl:text>"</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>"</xsl:text>
+                            	</xsl:element>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:otherwise>
@@ -299,29 +334,44 @@
                     <xsl:otherwise>
                         <xsl:choose>
                             <xsl:when test="@rend='single down'">
-                                <xsl:text>‘</xsl:text>
+                            	<xsl:element name="span">
+                                    
+                            		<xsl:text>‘</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>‘</xsl:text>
+                            	</xsl:element>
                             </xsl:when>
                             <xsl:when test="@rend='single up'">
-                                <xsl:text>’</xsl:text>
+                            	<xsl:element name="span">
+                                    
+                            	<xsl:text>’</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>’</xsl:text>
+                            	</xsl:element>
                             </xsl:when>
                             <xsl:when test="@rend='double down'">
-                                <xsl:text>“</xsl:text>
+                            	<xsl:element name="span">
+                                    
+                            	<xsl:text>“</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>“</xsl:text>
+                            	</xsl:element>
                             </xsl:when>
                             <xsl:when test="@rend='double up'">
-                                <xsl:text>”</xsl:text>
+                            	<xsl:element name="span">
+                                    
+                            	<xsl:text>”</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>”</xsl:text>
+                            	</xsl:element>
                             </xsl:when>
                             <xsl:otherwise>
+                            	<xsl:element name="span">
+                                    
                                 <xsl:text>"</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>"</xsl:text>
+                            	</xsl:element>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:otherwise>
@@ -363,29 +413,44 @@
                     <xsl:otherwise>
                         <xsl:choose>
                             <xsl:when test="@rend='single down'">
-                                <xsl:text>‹</xsl:text>
+                            	<xsl:element name="span">
+                                    
+                            		<xsl:text>‹</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>‹</xsl:text>
+                            	</xsl:element>
                             </xsl:when>
                             <xsl:when test="@rend='single up'">
+                            	<xsl:element name="span">
+                                    
                                 <xsl:text>›</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>›</xsl:text>
+                            	</xsl:element>
                             </xsl:when>
                             <xsl:when test="@rend='double down'">
-                                <xsl:text>«</xsl:text>
+                            	<xsl:element name="span">
+                                    
+                            		<xsl:text>«</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>«</xsl:text>
+                            	</xsl:element>
                             </xsl:when>
                             <xsl:when test="@rend='double up'">
-                                <xsl:text>»</xsl:text>
+                            	<xsl:element name="span">
+                                    
+                            	<xsl:text>»</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>»</xsl:text>
+                            	</xsl:element>
                             </xsl:when>
                             <xsl:otherwise>
+                            	<xsl:element name="span">
+                                    
                                 <xsl:text>"</xsl:text>
                                 <xsl:apply-templates mode="#current"/>
                                 <xsl:text>"</xsl:text>
+                            	</xsl:element>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:otherwise>
@@ -398,49 +463,70 @@
                         <xsl:apply-templates mode="#current"/>
                     </xsl:when>
                     <xsl:when test="$lang eq 'de' and $double">
-                        <xsl:text>„</xsl:text>
+                    	<xsl:element name="span">
+                            
+                    	<xsl:text>„</xsl:text>
                         <xsl:apply-templates mode="#current"/>
                         <xsl:if test="$ellipsis">
                             <xsl:text>…</xsl:text>
                         </xsl:if>
                         <xsl:text>“</xsl:text>
+                    	</xsl:element>
                     </xsl:when>
                     <xsl:when test="$lang eq 'en' and $double">
-                        <xsl:text>“</xsl:text>
+                    	<xsl:element name="span">
+                            
+                    	<xsl:text>“</xsl:text>
                         <xsl:apply-templates mode="#current"/>
                         <xsl:if test="$ellipsis">
                             <xsl:text>…</xsl:text>
                         </xsl:if>
                         <xsl:text>”</xsl:text>
+                    	</xsl:element>
                     </xsl:when>
                     <xsl:when test="$lang eq 'es' and $double">
-                        <xsl:text>«</xsl:text>
+                    	<xsl:element name="span">
+                            
+                    	<xsl:text>«</xsl:text>
                         <xsl:apply-templates mode="#current"/>
                         <xsl:if test="$ellipsis">
                             <xsl:text>…</xsl:text>
                         </xsl:if>
                         <xsl:text>»</xsl:text>
+                    	</xsl:element>
                     </xsl:when>
                     <!-- German single quotation marks -->
                     <xsl:when test="$lang eq 'de' and not($double)">
-                        <xsl:text>‚</xsl:text>
+                    	<xsl:element name="span">
+                            
+                    	<xsl:text>‚</xsl:text>
                         <xsl:apply-templates mode="#current"/>
                         <xsl:text>‘</xsl:text>
+                    	</xsl:element>
                     </xsl:when>
                     <xsl:when test="$lang eq 'en' and not($double)">
-                        <xsl:text>‘</xsl:text>
+                    	<xsl:element name="span">
+                            
+                    	<xsl:text>‘</xsl:text>
                         <xsl:apply-templates mode="#current"/>
                         <xsl:text>’</xsl:text>
+                    	</xsl:element>
                     </xsl:when>
                     <xsl:when test="$lang eq 'es' and not($double)">
-                        <xsl:text>‹</xsl:text>
+                    	<xsl:element name="span">
+                            
+                    		<xsl:text>‹</xsl:text>
                         <xsl:apply-templates mode="#current"/>
                         <xsl:text>›</xsl:text>
+                    	</xsl:element>
                     </xsl:when>
                     <xsl:otherwise>
+                    	<xsl:element name="span">
+                            
                         <xsl:text>"</xsl:text>
                         <xsl:apply-templates mode="#current"/>
                         <xsl:text>"</xsl:text>
+                    	</xsl:element>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:otherwise>
@@ -481,7 +567,7 @@
         brauchen daher keinen Zeilenumbruch mehr 
     -->
     <xsl:template match="tei:lb[(following-sibling::text()[not(functx:all-whitespace(.))] | following-sibling::*)[1] = following-sibling::tei:seg[@rend]]" priority="0.6"/>
-    <xsl:template match="tei:lb[(following-sibling::text()[not(functx:all-whitespace(.))] | following-sibling::*)[1] = following-sibling::tei:signed[@rend]]" priority="0.6"/>
+<!--    <xsl:template match="tei:lb[(following-sibling::text()[not(functx:all-whitespace(.))] | following-sibling::*)[1] = following-sibling::tei:signed[@rend]]" priority="0.6"/>-->
 
     <xsl:template match="text()" mode="#all">
         <xsl:variable name="regex" select="string-join((&#34;'&#34;, $musical-symbols, $fa-exclamation-circle), '|')"/>
@@ -541,7 +627,9 @@
 	<xsl:template match="tei:hi[@rend='capital']" mode="#all">
 		<xsl:element name="span">
 			<xsl:attribute name="class" select="'text-uppercase'"/>
-			<xsl:apply-templates mode="#current"/>
+			<xsl:for-each select="./node()">
+	        <xsl:apply-templates select="." mode="#current"/>
+	    </xsl:for-each>
 		</xsl:element>
 	</xsl:template>
     
@@ -770,13 +858,13 @@
                     <xsl:value-of select="'600,'"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:value-of select="concat(',',wega:getOption('figureHeight'))"/>
+                    <xsl:value-of select="'full'"/>
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
         <xsl:variable name="title">
             <!-- desc within notatedMusic and figDesc within figures -->
-            <xsl:apply-templates select="parent::*/tei:desc | parent::*/tei:figDesc"/>
+            <xsl:value-of select="normalize-space(string-join((parent::tei:*/tei:desc | parent::tei:*/tei:figDesc)//text(), ' '))"/>
         </xsl:variable>
         <xsl:choose>
             <xsl:when test="starts-with(@url, 'http')">
@@ -815,6 +903,8 @@
                         <xsl:attribute name="title" select="normalize-space($title)"/>
                         <xsl:attribute name="alt" select="normalize-space($title)"/>
                         <xsl:attribute name="src" select="concat($imageBaseURL, '/full/', $figureSize, '/0/native.jpg')"/>
+                    	<xsl:if test="./@height"><xsl:attribute name="height" select="./@height"/></xsl:if>
+                    	<xsl:if test="./@width"><xsl:attribute name="width" select="./@width"/></xsl:if>
                     </xsl:element>
                 </xsl:element>
             </xsl:otherwise>
@@ -969,7 +1059,7 @@
         	<xsl:attribute name="class">
         		<xsl:value-of select="'tei_signed'"/>
         		<xsl:if test="@rend">
-        			<xsl:value-of select="concat('textAlign-',@rend)"/>
+        			<xsl:value-of select="concat(' textAlign-',@rend)"/>
         		</xsl:if>
         	</xsl:attribute>
             <xsl:apply-templates/>
@@ -1033,7 +1123,16 @@
                     <xsl:with-param name="double" select="$doubleQuotes"/>
                     <xsl:with-param name="typescript" select="$isTypescript"/>
                     <xsl:with-param name="lang">
-                        <xsl:variable name="docLang" select="wega:get-doc-languages($docID)[1]"/>
+                        <xsl:variable name="docLang">
+                            <xsl:choose>
+                            <xsl:when test="$lang">
+                                    <xsl:value-of select="$lang"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:value-of select="wega:get-doc-languages($docID)[1]"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:variable>
                         <xsl:choose>
                             <xsl:when test="ancestor::tei:body and @xml:lang">
                                 <xsl:value-of select="@xml:lang"/>
