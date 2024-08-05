@@ -628,7 +628,7 @@
 		<xsl:element name="span">
 			<xsl:attribute name="class" select="'text-uppercase'"/>
 			<xsl:for-each select="./node()">
-	        <xsl:apply-templates select="." mode="#current"/><xsl:text> </xsl:text>
+	        <xsl:apply-templates select="." mode="#current"/>
 	    </xsl:for-each>
 		</xsl:element>
 	</xsl:template>
