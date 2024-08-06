@@ -43,108 +43,75 @@ declare variable $oai:last-modified as xs:dateTime? :=
             functx:dateTime($year,$month,$day,0,0,0)
     );
 
-declare variable $oai:lang as xs:string := config:guess-language(());
-
 declare %private function oai:response-headers() as empty-sequence() {
     response:set-header('Access-Control-Allow-Origin', '*'),
     response:set-header('Last-Modified', date:rfc822($oai:last-modified)), 
     response:set-header('Cache-Control', 'max-age=300,public')
 };
 
-declare function oai:DC.description($id as xs:string?, $oai:lang as xs:string) as xs:string? {
-    let $docType := 'person'
-    let $doc := crud:doc($id)
-    let $orgTypes := for $each in $doc//tei:state[@type='orgType']/tei:desc/tei:term
-                        return
-                            lang:get-language-string(concat('orgType.',$each/text()), $oai:lang)
-    return
-    
-    switch($id)
-    case 'indices' return lang:get-language-string('metaDescriptionIndex-' || $docType, $oai:lang)
-    case 'home' return lang:get-language-string('metaDescriptionIndex', $oai:lang)
-    case 'search' return lang:get-language-string('metaDescriptionSearch', $oai:lang)
-    default return
-        switch($docType)
-        case 'persons' return 
-            let $dates := concat(date:printDate($doc//tei:birth/tei:date[1],$oai:lang,lang:get-language-string#3, $config:default-date-picture-string), '–', date:printDate($doc//tei:death/tei:date[1],$oai:lang,lang:get-language-string#3, $config:default-date-picture-string))
-            let $occupations := string-join($doc//tei:occupation/normalize-space(), ', ')
-            let $placesOfAction := string-join($doc//tei:residence/normalize-space(), ', ')
-            return concat(
-                lang:get-language-string('bioInfoAbout', $oai:lang), ' ', 
-                str:print-forename-surname(query:title($id)),'. ',
-                lang:get-language-string('pnd_dates', $oai:lang), ': ', 
-                $dates, '. ',
-                lang:get-language-string('occupations', $oai:lang), ': ',
-                $occupations, '. ',
-                lang:get-language-string('placesOfAction', $oai:lang), ': ', 
-                $placesOfAction
-            )
-        case 'letters' case 'writings' case 'documents' return str:normalize-space($doc//tei:note[@type='summary'])
-        case 'diaries' return str:shorten-TEI($doc/tei:ab, 150, $oai:lang)
-        case 'news' case 'var' case 'thematicCommentaries' return str:shorten-TEI($doc//tei:text//tei:p[not(starts-with(., 'Sorry'))], 150, $oai:lang)
-        case 'orgs' return wdt:orgs($doc)('title')('txt') || ': ' || str:list($orgTypes, $oai:lang, 0, lang:get-language-string#2)
-        case 'corresp' return lang:get-language-string('corresp', $oai:lang)
-        case 'biblio' return lang:get-language-string('biblio', $oai:lang)
-        case 'places' return lang:get-language-string('place', $oai:lang)
-        case 'works' return lang:get-language-string('workName', $oai:lang)
-        case 'addenda' return lang:get-language-string($docType, $oai:lang)
-        case 'error' return lang:get-language-string('metaDescriptionError', $oai:lang)
-        default return wega-util:log-to-file('warn', 'Missing HTML meta description for ' || $id || ' – ' || $docType || ' – ' || request:get-uri())
-};
-
-declare function oai:oai($id as xs:string) as node() {
+declare function oai:oai($model as map(*)) as node() {
 	<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
 		 <responseDate>{fn:current-dateTime()}</responseDate>
-		 <request verb="GetRecord" identifier="https://henze-digital.zenmem.de/de/{$id}" metadataPrefix="oai_dc">http://www.openarchives.org/OAI/2.0/oai_dc/</request> 
+		 <request verb="GetRecord" identifier="{lod:DC.identifier($model)}" metadataPrefix="oai_dc">http://www.openarchives.org/OAI/2.0/oai_dc/</request> 
 		 <GetRecord>
-			  {oai:record($id)}
+			  {oai:record($model)}
 		 </GetRecord> 
 	</OAI-PMH>      
 };
 
-declare function oai:record($id as xs:string) as node() {
-	<record xmlns="http://www.openarchives.org/OAI/2.0/">
-    	<header>
-          <identifier>https://henze-digital.zenmem.de/de/{$id}</identifier>
-          <datestamp>{fn:current-dateTime()}</datestamp>
-          <setSpec>DOCTYPE</setSpec>
-        </header>
-        <metadata>
-         <oai_dc:dc 
-             xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" 
-             xmlns:dc="http://purl.org/dc/elements/1.1/" 
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-             xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ 
-             http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
-           <dc:title>TITLE OF THE RECORD/PAGE</dc:title>
-           <dc:creator>SURNAME, FORENAME</dc:creator>
-           <dc:subject>SUBJECT</dc:subject>
-           <dc:description>{oai:DC.description($id, $oai:lang)}</dc:description>
-           <dc:date>{substring($oai:last-modified,1,10)}</dc:date>
-           <dc:identifier>{$id}</dc:identifier>
-         </oai_dc:dc>
-        </metadata>
-        <about> 
-          <provenance
-              xmlns="http://www.openarchives.org/OAI/2.0/provenance" 
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-              xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/provenance
-              http://www.openarchives.org/OAI/2.0/provenance.xsd">
-            <originDescription harvestDate="{fn:current-dateTime()}" altered="true">
-              <baseURL>https://henze-digital.zenmem.de</baseURL>
-              <identifier>{$id}</identifier>
-              <datestamp>{substring($oai:last-modified,1,10)}</datestamp>
-              <metadataNamespace>http://www.openarchives.org/OAI/2.0/oai_dc/</metadataNamespace>
-            </originDescription>
-          </provenance>
-        </about>
-	</record>      
+declare function oai:record($model as map(*)) as node() {
+    let $docID := $model('docID')
+    let $lang := $model('lang')
+    return
+    	<record xmlns="http://www.openarchives.org/OAI/2.0/">
+        	<header>
+              <identifier>{lod:DC.identifier($model)}</identifier>
+              <datestamp>{fn:current-dateTime()}</datestamp>
+              <setSpec>{$model('docType')}</setSpec>
+            </header>
+            <metadata>
+             <oai_dc:dc 
+                 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" 
+                 xmlns:dc="http://purl.org/dc/elements/1.1/" 
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+                 xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+               <dc:title>{lod:page-title($model, $lang)}</dc:title>
+               <dc:creator>{lod:DC.creator($model)}</dc:creator>
+               <dc:subject>{lod:DC.subject($model, $lang)}</dc:subject>
+               <dc:description>{lod:DC.description($model, $lang)}</dc:description>
+               <dc:date>{substring($oai:last-modified,1,10)}</dc:date>
+               <dc:identifier>{$docID}</dc:identifier>
+             </oai_dc:dc>
+            </metadata>
+            <about> 
+              <provenance
+                  xmlns="http://www.openarchives.org/OAI/2.0/provenance" 
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+                  xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/provenance http://www.openarchives.org/OAI/2.0/provenance.xsd">
+                <originDescription harvestDate="{fn:current-dateTime()}" altered="true">
+                  <baseURL>{config:get-option('permaLinkPrefix')}</baseURL>
+                  <identifier>{$docID}</identifier>
+                  <datestamp>{substring($oai:last-modified,1,10)}</datestamp>
+                  <metadataNamespace>http://www.openarchives.org/OAI/2.0/oai_dc/</metadataNamespace>
+                </originDescription>
+              </provenance>
+            </about>
+    	</record>      
 };
 
+let $lang := 'en'
 let $docID := request:get-attribute('docID')
+let $doc := crud:doc($docID)
+let $model := 
+    map { 
+        'lang': $lang,
+        'docID': $docID,
+        'doc': $doc,
+        'docType': config:get-doctype-by-id($docID)
+    }
 return
     (
         oai:response-headers(),
         response:set-status-code(202),
-        oai:oai($docID)
+        oai:oai($model)
     )
