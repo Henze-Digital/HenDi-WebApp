@@ -186,7 +186,7 @@ declare %private function lod:jsonld-entity($elem as element(), $lang as xs:stri
 (:~
  : Helper function for creating the page description
 ~:)
-declare %private function lod:DC.description($model as map(*), $lang as xs:string) as xs:string? {
+declare function lod:DC.description($model as map(*), $lang as xs:string) as xs:string? {
     let $orgTypes := for $each in $model('doc')//tei:state[@type='orgType']/tei:desc/tei:term
                         return
                             lang:get-language-string(concat('orgType.',$each/text()), $lang)
@@ -234,7 +234,7 @@ declare %private function lod:DC.description($model as map(*), $lang as xs:strin
 (:~
  : Helper function for creating the page title
 ~:)
-declare %private function lod:page-title($model as map(*), $lang as xs:string) as xs:string? {
+declare function lod:page-title($model as map(*), $lang as xs:string) as xs:string? {
     let $orgTypes := for $each in $model('doc')//tei:state[tei:label='Art der Institution' or @type='orgType']/tei:desc/tei:term
                         return
                             lang:get-language-string('orgType.' || $each, $lang)
@@ -264,7 +264,7 @@ declare %private function lod:page-title($model as map(*), $lang as xs:string) a
 (:~
  : Helper function for creating the page title
 ~:)
-declare %private function lod:DC.subject($model as map(*), $lang as xs:string) as xs:string? {
+declare function lod:DC.subject($model as map(*), $lang as xs:string) as xs:string? {
     if($model?specID or $model?chapID) then 'Guidelines; Encoding'
     else 
         switch($model('docID'))
@@ -288,7 +288,7 @@ declare %private function lod:DC.subject($model as map(*), $lang as xs:string) a
 (:~
  : Helper function for collecting creator information
 ~:)
-declare %private function lod:DC.creator($model as map(*)) as xs:string? {
+declare function lod:DC.creator($model as map(*)) as xs:string? {
     if($model('docID') = ('indices', 'home', 'search')) then 'Henze-Digital'
     else if($model?specID or $model?chapID) then 'Henze-Digital'
     else if(config:get-doctype-by-id($model('docID'))) then string-join($model('doc')//(tei:fileDesc/tei:titleStmt/tei:editor | mei:respStmt[@n="HWH"]/mei:persName[@role="edt"])/text(), '/')
@@ -305,7 +305,7 @@ declare %private function lod:DC.date($model as map(*)) as xs:string? {
 (:~
  : Helper function for collecting identifier information
 ~:)
-declare %private function lod:DC.identifier($model as map(*)) as xs:string? {
+declare function lod:DC.identifier($model as map(*)) as xs:string? {
     if($model('docID') = ('indices', 'search')) then request:get-url()
     else if($model('docID') = 'home') then 'https://henze-digital.zenmem.de'
     else if($model?specID or $model?chapID) then request:get-url()
