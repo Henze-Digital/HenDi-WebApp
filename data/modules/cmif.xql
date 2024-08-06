@@ -37,7 +37,10 @@ declare variable $ct:etag as xs:string? :=
     if(exists($ct:last-modified))
     then util:hash($ct:last-modified, 'md5')
     else ();
- declare function ct:create-header() as element(tei:teiHeader) {
+    
+declare variable $ct:version as xs:string := request:get-parameter('v', '1');
+
+declare function ct:create-header() as element(tei:teiHeader) {
     <teiHeader xmlns="http://www.tei-c.org/ns/1.0">
         <fileDesc>
             <titleStmt>
