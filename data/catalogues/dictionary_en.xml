@@ -482,6 +482,7 @@
     <entry xml:id="show">show</entry>
     <entry xml:id="hide">hide</entry>
     <entry xml:id="to">To</entry>
+	<entry xml:id="toBelongs">Of</entry>
     <entry xml:id="from">From</entry>
 	<entry xml:id="till">Till</entry>
     <entry xml:id="fromTo">from %1 to %2</entry>

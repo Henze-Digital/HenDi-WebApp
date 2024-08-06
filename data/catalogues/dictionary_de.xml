@@ -492,6 +492,7 @@
     <entry xml:id="show">einblenden</entry>
     <entry xml:id="hide">ausblenden</entry>
     <entry xml:id="to">An</entry>
+	<entry xml:id="toBelongs">Zu</entry>
     <entry xml:id="from">Von</entry>
 	<entry xml:id="till">Bis</entry>
     <entry xml:id="fromTo">vom %1 bis %2</entry>

@@ -193,12 +193,19 @@ declare function wdt:letters($item as item()*) as map(*) {
         let $letterClass := if($letterEnvelope or $letterEnclosures)
         					then($letterClass || ' (' || lang:get-language-string('with',$lang) || ' ' || string-join(($letterEnvelope, $letterEnclosures), concat(' ', lang:get-language-string('and',$lang),' ')) || ')')
         					else($letterClass)
-        let $letterClass := if(($TEI//tei:msDesc)[1]//tei:objectDesc[1]//tei:material[@function='copy.carbon']) then($letterClass || ' [' || lang:get-language-string('physDesc.objectDesc.material.copy.carbon',$lang) || '] ' || lang:get-language-string('from', $lang) || ' ')
-                            else($letterClass || ' ' || lower-case(lang:get-language-string('from', $lang)) || ' ')
+        let $letterClass := $letterClass || ' ' || (
+                                if(($TEI//tei:msDesc)[1]//tei:objectDesc[1]//tei:material[@function='copy.carbon'])
+                                then('[' || lang:get-language-string('physDesc.objectDesc.material.copy.carbon',$lang) || '] ' || lower-case(lang:get-language-string('from', $lang)))
+                                else()
+                            ) || (
+                                if($TEI//tei:relation[@name='isEnvelopeOf'])
+                                then (lower-case(lang:get-language-string('toBelongs', $lang)) || ':')
+                                else(lower-case(lang:get-language-string('from', $lang)))
+                            ) || ' '
         return (
             element tei:title {
                 if($letterClass) then ($letterClass) else(),
-                concat($sender, ' ', lower-case(lang:get-language-string('to',$lang)), ' ', $addressee, ','), $date
+                concat($sender, ' ', lower-case(lang:get-language-string('to',$lang)), ' ', $addressee, ','), string-join(tokenize($date, ' '),'&#8239;')
             }
         )
     }
