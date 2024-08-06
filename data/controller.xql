@@ -221,7 +221,7 @@ else    if (matches($exist:path, '^/cmif_v2.xml$')) then
 else if (matches($exist:path, '/(en|de)/' || config:get-option('generalIdPattern') || '(.*)/oai.xml')) then
     <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
         <forward url="{concat($exist:controller, '/modules/oai.xql')}">
-            <set-attribute name="docID" value="{substring(substring-after($exist:path, 'de/'), 1, 7), substring(substring-after($exist:path, 'en/'), 1, 7)}"/>
+            <set-attribute name="docID" value="{if(matches($exist:path, '/de/'))then(substring(substring-after($exist:path, 'de/'), 1, 8)) else(substring(substring-after($exist:path, 'en/'), 1, 8))}"/>
         </forward>
     </dispatch>
 
