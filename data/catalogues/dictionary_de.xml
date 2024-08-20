@@ -890,6 +890,7 @@
 	<entry xml:id="orgType.group">Gruppe</entry>
 	<entry xml:id="orgType.library">Bibliothek</entry>
 	<entry xml:id="orgType.military">militärisch</entry>
+	<entry xml:id="orgType.museum">Museum</entry>
 	<entry xml:id="orgType.music">musikalisch</entry>
 	<entry xml:id="orgType.orchestra">Orchester</entry>
 	<entry xml:id="orgType.organizer">Veranstalter</entry>

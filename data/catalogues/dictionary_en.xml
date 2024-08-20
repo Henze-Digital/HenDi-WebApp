@@ -877,6 +877,7 @@
 	<entry xml:id="orgType.group">Group</entry>
 	<entry xml:id="orgType.library">Library</entry>
 	<entry xml:id="orgType.military">Military</entry>
+	<entry xml:id="orgType.museum">Museum</entry>
 	<entry xml:id="orgType.music">Musical</entry>
 	<entry xml:id="orgType.orchestra">Orchestra</entry>
 	<entry xml:id="orgType.organizer">Organizer</entry>
