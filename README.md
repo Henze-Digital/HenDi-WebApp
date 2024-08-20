@@ -1,5 +1,7 @@
 # HWH-WebApp (Chaining of WeGA-WebApp)
 
+This repo contains WeGA-WebApp specifics for the Henze Digital Project. The build process updates the source code of the [WeGA-WebApp](https://github.com/Henze-Digital/WeGA-WebApp) and builds the HenDi-WebApp afterwards.
+
 ## Licence
 [![](https://img.shields.io/badge/license-BSD2-green.svg)](https://github.com/Edirom/WeGA-WebApp/blob/develop/LICENSE)
 [![](https://img.shields.io/badge/license-CC--BY--4.0-green.svg)](https://github.com/Edirom/WeGA-WebApp/blob/develop/LICENSE)
@@ -15,8 +17,6 @@ on `stable`
 ## On Github (public)
 [![GitHub release](https://img.shields.io/github/release/Henze-Digital/HenDi-WebApp.svg)](https://github.com/Henze-Digital/HenDi-WebApp/releases)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13137427.svg)](https://doi.org/10.5281/zenodo.13137427)
-
-This repo contains WeGA-WebApp specifics for the Henze Digital Project. The build process updates the source code of the [WeGA-WebApp](https://github.com/Henze-Digital/WeGA-WebApp) and builds the HenDi-WebApp afterwards.
 
 ## Release workfow
 
