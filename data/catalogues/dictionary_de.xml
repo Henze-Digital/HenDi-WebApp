@@ -180,10 +180,13 @@
     
     <entry xml:id="handshiftManuscript">handschriftlich</entry>
     <entry xml:id="handshiftTypescript">Typoskript</entry>
+    <entry xml:id="handshiftPrinted">gedruktes Dokument</entry>
     <entry xml:id="handNoteHeadManuscript">Manuskript</entry>
     <entry xml:id="handNoteHeadTypescript">Typoskript</entry>
+    <entry xml:id="handNoteHeadPrinted">Druck</entry>
     <entry xml:id="handNoteManuscript">Handschrift</entry>
     <entry xml:id="handNoteTypescript">Maschinenschrift</entry>
+    <entry xml:id="handNotePrinted">Druck</entry>
 	<entry xml:id="paperloss">Papierverlust</entry>
 	<entry xml:id="smoke">Beschädigung durch Rauch oder Feuer</entry>
 	<entry xml:id="seal">Beschädigung durch Siegel(einriss)</entry>
@@ -801,6 +804,7 @@
     
     <!-- objectDesc form types -->
     <entry xml:id="physDesc.objectDesc.form">Dokumenttyp</entry>
+    <entry xml:id="physDesc.objectDesc.form.card">Karte</entry>
     <entry xml:id="physDesc.objectDesc.form.card.business">Visitenkarte</entry>
 <!--    <entry xml:id="physDesc.objectDesc.form.card.letter">Briefkarte/Weihnachtskarte/Glückwunschkarte/Grußkarte</entry>-->
     <entry xml:id="physDesc.objectDesc.form.card.letter">Briefkarte</entry>
@@ -821,6 +825,9 @@
     <entry xml:id="physDesc.objectDesc.form.telegram">Telegramm</entry>
     <entry xml:id="physDesc.objectDesc.form.unknown">Unbekannt</entry>
 	<entry xml:id="physDesc.objectDesc.material.copy.carbon">Durchschlag</entry>
+	<entry xml:id="physDesc.objectDesc.material.copy.photo">Fotokopie</entry>
+	<entry xml:id="physDesc.objectDesc.material.copy">Abschrift</entry>
+	<entry xml:id="physDesc.objectDesc.material.fax">Fax</entry>
 	
 	<!-- hands -->
 	<entry xml:id="handNotes">Schreibstile</entry>
@@ -915,6 +922,7 @@
     <entry xml:id="stamp">Stempel</entry>
     <entry xml:id="stampType-stamp">Briefmarke</entry>
     <entry xml:id="stampType-oneline">Stempel (einzeilig)</entry>
+	<entry xml:id="stampType-rollerDate">Datumsstempel</entry>
     <entry xml:id="stampType-round">Rundstempel</entry>
     <entry xml:id="stampType-square">Stempel (quadratisch)</entry>
     <entry xml:id="stampType-rectangular">Stempel (rechteckig)</entry>

@@ -194,8 +194,8 @@ declare function wdt:letters($item as item()*) as map(*) {
         					then($letterClass || ' (' || lang:get-language-string('with',$lang) || ' ' || string-join(($letterEnvelope, $letterEnclosures), concat(' ', lang:get-language-string('and',$lang),' ')) || ')')
         					else($letterClass)
         let $letterClass := $letterClass || ' ' || (
-                                if(($TEI//tei:msDesc)[1]//tei:objectDesc[1]//tei:material[@function='copy.carbon'])
-                                then('[' || lang:get-language-string('physDesc.objectDesc.material.copy.carbon',$lang) || '] ')
+                                if(($TEI//tei:msDesc)[1]//tei:objectDesc[1]//tei:material[@function])
+                                then('[' || lang:get-language-string(('physDesc.objectDesc.material.' || ($TEI//tei:msDesc)[1]//tei:objectDesc[1]//tei:material/@function),$lang) || '] ')
                                 else()
                             ) || (
                                 if($TEI//tei:relation[@name='isEnvelopeOf'])

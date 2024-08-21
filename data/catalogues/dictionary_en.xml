@@ -189,11 +189,14 @@
 	<entry xml:id="textLoss.ink">Text loss by ink</entry>
 	<entry xml:id="illegible">illegible</entry>
     <entry xml:id="handshiftManuscript">handwritten</entry>
-    <entry xml:id="handshiftTypescript">typescript</entry>
+    <entry xml:id="handshiftTypescript">Typescript</entry>
+	<entry xml:id="handshiftPrinted">printed</entry>
     <entry xml:id="handNoteHeadManuscript">Manuscript</entry>
     <entry xml:id="handNoteHeadTypescript">Typescript</entry>
+	<entry xml:id="handNoteHeadPrinted">Print</entry>
     <entry xml:id="handNoteManuscript">Handwriting</entry>
     <entry xml:id="handNoteTypescript">Typescript</entry>
+	<entry xml:id="handNotePrinted">Print</entry>
     <!--  doc_singleView  -->
     <entry xml:id="docSingleViewTitle">Document view of %1</entry>
     <entry xml:id="textOfDoc">Text of document</entry>
@@ -791,6 +794,7 @@
     
     <!-- objectDesc form types -->
     <entry xml:id="physDesc.objectDesc.form">Document type</entry>
+    <entry xml:id="physDesc.objectDesc.form.card">Card</entry>
     <entry xml:id="physDesc.objectDesc.form.card.business">Business card</entry>
 <!--    <entry xml:id="physDesc.objectDesc.form.card.letter">Letter card/christmas card/congratulations card/greeting card</entry>-->
     <entry xml:id="physDesc.objectDesc.form.card.letter">Letter card</entry>
@@ -811,6 +815,9 @@
     <entry xml:id="physDesc.objectDesc.form.telegram">Telegram</entry>
     <entry xml:id="physDesc.objectDesc.form.unknown">Unknown</entry>
 	<entry xml:id="physDesc.objectDesc.material.copy.carbon">Carbon copy</entry>
+	<entry xml:id="physDesc.objectDesc.material.copy.photo">Photo copy</entry>
+	<entry xml:id="physDesc.objectDesc.material.copy">Copy (handwritten)</entry>
+	<entry xml:id="physDesc.objectDesc.material.fax">Fax</entry>
     
 	<!-- hands -->
 	<entry xml:id="handNotes">Writing styles</entry>
@@ -902,6 +909,7 @@
 	<entry xml:id="stamp">Stamp</entry>
 	<entry xml:id="stampType-stamp">Postmark</entry>
 	<entry xml:id="stampType-oneline">Stamp (oneline)</entry>
+	<entry xml:id="stampType-rollerDate">Stamp (date)</entry>
 	<entry xml:id="stampType-round">Stamp (round)</entry>
 	<entry xml:id="stampType-square">Stamp (square)</entry>
 	<entry xml:id="stampType-rectangular">Stamp (rectangular)</entry>
