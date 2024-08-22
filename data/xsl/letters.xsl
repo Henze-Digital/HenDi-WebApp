@@ -279,6 +279,11 @@
 				<xsl:value-of select="concat('textAlign-',@rend)"/>
 			</xsl:if>
 		</xsl:variable>
+		<xsl:variable name="p-place">
+			<xsl:if test="@place">
+				<xsl:value-of select="concat('p-place-',replace(@place,'\.','-'))"/>
+			</xsl:if>
+		</xsl:variable>
 		<xsl:variable name="inlineEnd">
 			<xsl:if test="exists(following-sibling::element()[1][self::tei:closer[@rend='inline']])">
 				<xsl:text>inlineEnd</xsl:text>
@@ -291,7 +296,7 @@
 		</xsl:variable>
 		<xsl:element name="p">
 			<xsl:attribute name="class">
-				<xsl:value-of select="string-join(($p-rend, $inlineEnd, $address),' ')"/>
+				<xsl:value-of select="string-join(($p-rend, $p-place, $inlineEnd, $address),' ')"/>
 			</xsl:attribute>
 			<xsl:apply-templates/>
 		</xsl:element>
