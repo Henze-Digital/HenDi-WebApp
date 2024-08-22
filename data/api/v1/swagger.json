@@ -320,7 +320,7 @@
                                     "default": "healthy",
                                     "description": "Status (healthy|unhealthy) of the currently running HenDi-WebApp"
                                 },
-                                "svnRevision": {
+                                "dataRevision": {
                                     "type": "integer",
                                     "description": "The Subversion revision of the currently installed HenDi-data"
                                 },
@@ -346,7 +346,7 @@
                                     "default": "unhealthy",
                                     "description": "Status (healthy|unhealthy) of the currently running HenDi-WebApp"
                                 },
-                                "svnRevision": {
+                                "dataRevision": {
                                     "type": "integer",
                                     "description": "The Subversion revision of the currently installed HenDi-data"
                                 },

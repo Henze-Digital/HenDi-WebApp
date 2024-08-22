@@ -32,8 +32,8 @@ declare option output:media-type "application/xml";
 declare option output:indent "yes";
 
 declare variable $oai:last-modified as xs:dateTime? := 
-    if($config:svn-change-history-file/dictionary/@dateTime castable as xs:dateTime) 
-    then $config:svn-change-history-file/dictionary/xs:dateTime(@dateTime)
+    if($config:data-change-history-file/dictionary/@dateTime castable as xs:dateTime) 
+    then $config:data-change-history-file/dictionary/xs:dateTime(@dateTime)
     else (
         let $versionDateSeq := tokenize(config:get-option('versionDate'),'-')
         let $year := subsequence($versionDateSeq,1,1)
