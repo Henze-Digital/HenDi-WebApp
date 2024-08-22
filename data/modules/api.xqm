@@ -463,8 +463,8 @@ declare %private function api:findByID($id as xs:string) as document-node()* {
 };
 
 (:
-declare function api:ant-currentSvnRev($model as map(*)) as xs:int? {
-    config:getCurrentSvnRev()
+declare function api:ant-currentDataRev($model as map(*)) as xs:int? {
+    config:getCurrentDataRev()
 };
 
 declare function api:ant-deleteResources($model as map(*)) {
@@ -483,7 +483,7 @@ declare function api:ant-deleteResources($model as map(*)) {
 };
 :)
 
-(:declare function api:ant-patchSvnHistory($model as map(*)) as map(*)? {
+(:declare function api:ant-patchDataHistory($model as map(*)) as map(*)? {
     if($model('data')/*/@head castable as xs:integer) then (
         update value $config:data-change-history-file/dictionary/@head with $model('data')/*/data(@head),
         for $entry in $model('data')//entry

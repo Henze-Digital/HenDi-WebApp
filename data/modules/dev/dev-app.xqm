@@ -62,7 +62,7 @@ declare
 declare 
     %templates:wrap
     function dev-app:ant-log($node as node(), $model as map(*)) as map(*) {
-        let $rev := config:getCurrentSvnRev()
+        let $rev := config:getCurrentDataRev()
         return
             if($rev) then 
                 map {

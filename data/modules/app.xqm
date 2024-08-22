@@ -89,12 +89,12 @@ declare
     %templates:wrap
     function app:documentFooter($node as node(), $model as map(*)) as map(*) {
         let $lang := $model('lang')
-        let $svnProps := config:get-svn-props($model('docID'))
-        let $author := map:get($svnProps, 'author')
-        let $date := xs:dateTime(map:get($svnProps, 'dateTime'))
+        let $dataProps := config:get-data-props($model('docID'))
+        let $author := map:get($dataProps, 'author')
+        let $date := xs:dateTime(map:get($dataProps, 'dateTime'))
         let $formatedDate := 
             try { date:format-date($date, $config:default-date-picture-string($lang), $lang) }
-            catch * { wega-util:log-to-file('warn', 'Failed to get Subversion properties for ' || $model('docID') ) }
+            catch * { wega-util:log-to-file('warn', 'Failed to get data history properties for ' || $model('docID') ) }
         let $version := config:expath-descriptor()/@version => string()
         let $versionDate := date:format-date(xs:date(config:get-option('versionDate')), $config:default-date-picture-string($lang), $lang)
         return
