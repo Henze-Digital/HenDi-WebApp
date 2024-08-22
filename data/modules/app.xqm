@@ -1438,12 +1438,12 @@ declare
     function app:preview-correspPartner-name($node as node(), $model as map(*), $lang as xs:string, $popover as xs:string) as element() {
         let $key := $model('correspPartner')
         let $myPopover := wega-util-shared:semantic-boolean($popover)
-        let $doc2keyAvailable := crud:docAvailable($key)
+        let $doc2key := crud:doc($key)
         return
-            if($key and $myPopover and $doc2keyAvailable)
-            then app:createDocLink(crud:doc($key), crud:doc($key)//(tei:persName|tei:orgName)[@type='reg'] ! string-join(str:txtFromTEI(., $lang), ''), $lang, (), true())
+            if($myPopover and $doc2key)
+            then app:createDocLink($doc2key, $doc2key//(tei:persName|tei:orgName)[@type='reg'] ! string-join(str:txtFromTEI(., $lang), ''), $lang, (), true())
             else element xhtml:span {
-                if($key and $doc2keyAvailable) then wdt:lookup(config:get-doctype-by-id($key), data($key))?title('txt')
+                if($doc2key) then wdt:lookup(config:get-doctype-by-id($key), data($key))?title('txt')
                 else str:normalize-space($model('correspPartner'))
             }
 };
@@ -1455,16 +1455,16 @@ declare
         let $keys := $model('editors')
         for $key in $keys
             let $myPopover := wega-util-shared:semantic-boolean($popover)
-            let $doc2keyAvailable := crud:docAvailable($key)
+            let $doc2key := crud:doc($key)
                 return
                     <li class="media editors" xmlns="http://www.w3.org/1999/xhtml">
 						<span class="pull-left">
 							<i class="fa fa-user"/>
 						</span> {
-                            if($key and $myPopover and $doc2keyAvailable)
-                            then app:createDocLink(crud:doc($key), crud:doc($key)//(tei:persName|tei:orgName)[@type='reg'] ! string-join(str:txtFromTEI(., $lang), ''), $lang, (), true())
+                            if($myPopover and $doc2key)
+                            then app:createDocLink($doc2key, $doc2key//(tei:persName|tei:orgName)[@type='reg'] ! string-join(str:txtFromTEI(., $lang), ''), $lang, (), true())
                             else element xhtml:span {
-                                if($key and $doc2keyAvailable) then wdt:lookup(config:get-doctype-by-id($key), data($key))?title('txt')
+                                if($doc2key) then wdt:lookup(config:get-doctype-by-id($key), data($key))?title('txt')
                                 else str:normalize-space($key)
                             }
                         }
@@ -2543,7 +2543,7 @@ declare
     for $relator at $i in $model('relatorGrp')/node()
         let $key := $relator/@codedval | $relator/@key
         let $myPopover := wega-util-shared:semantic-boolean($popover)
-        let $doc2keyAvailable := crud:docAvailable($key)
+        let $doc2key := crud:doc($key)
         let $relators-translation-lang :=
         	if($relator/(self::mei:*|self::tei:*)[@role[. = 'trl'] and @label])
         	then(
@@ -2554,7 +2554,7 @@ declare
 	            else wega-util:log-to-file('warn', 'app:preview-relator-trlLang(): Failed to reckognize label'))
             else()
         return
-            if($key and $myPopover and $doc2keyAvailable)
+            if($myPopover and $doc2key)
             then (if($i gt 1)
                   then(element xhtml:span {' | '})
                   else(),
@@ -2566,7 +2566,7 @@ declare
                 if($i gt 1)
                     then(element xhtml:span {' | '})
                     else(),
-                if($key and $doc2keyAvailable)
+                if($doc2key)
                     then wdt:lookup(config:get-doctype-by-id($key), data($key))?title('txt')
                     else (str:normalize-space($relator),
                 if($relators-translation-lang)
@@ -3057,7 +3057,7 @@ declare
 		for $person in $persons
 	        let $key := $person/@key
 	        let $myPopover := wega-util-shared:semantic-boolean($popover)
-	        let $doc2keyAvailable := crud:docAvailable($key)
+	        let $doc2key := crud:doc($key)
 	        let $resps := for $each in distinct-values($persons[. = $person]/parent::tei:respStmt/tei:resp)
 	                        order by $each
 	                        return $each
@@ -3065,10 +3065,10 @@ declare
 	        return
 	            <li>
 	                <span>{
-    	            	if($key and $myPopover and $doc2keyAvailable)
-    		            then (app:createDocLink(crud:doc($key), query:title($key), $lang, (), true()))
+    	            	if($myPopover and $doc2key)
+    		            then (app:createDocLink($doc2key, query:title($key), $lang, (), true()))
     		            else element xhtml:span {
-    		                if($key and $doc2keyAvailable)
+    		                if($doc2key)
     		                then wdt:lookup(config:get-doctype-by-id($key), data($key))?title('txt')
     		                else (str:normalize-space($person))
     		            }

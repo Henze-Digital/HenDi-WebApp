@@ -26,7 +26,7 @@ declare function wdt:orgs($item as item()*) as map(*) {
         'name' : 'orgs',
         'prefix' : substring(config:get-option('orgsIdPattern'), 1, 3),
         'check' : function() as xs:boolean {
-            if($item castable as xs:string and crud:docAvailable($item)) then matches($item, config:wrap-regex('orgsIdPattern'))
+            if($item castable as xs:string and crud:doc($item)) then matches($item, config:wrap-regex('orgsIdPattern'))
             else false()
         },
         'filter' : function() as document-node()* {
@@ -93,7 +93,7 @@ declare function wdt:persons($item as item()*) as map(*) {
         'name' : 'persons',
         'prefix' : substring(config:get-option('personsIdPattern'), 1, 3),
         'check' : function() as xs:boolean {
-            if($item castable as xs:string and crud:docAvailable($item)) then matches($item, config:wrap-regex('personsIdPattern'))
+            if($item castable as xs:string and crud:doc($item)) then matches($item, config:wrap-regex('personsIdPattern'))
             else false()
         },
         'filter' : function() as document-node()* {
