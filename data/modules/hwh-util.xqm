@@ -119,13 +119,14 @@ declare function hwh-util:prepareTitleForSorting($title as node()) as xs:string?
     => tokenize(' ')
     => string-join('_')
     => lower-case()
-    => replace("(^„)|(^l’)|(^l')|(la_)|(^le_)|(^les_)|(^un_)|(^une_)|(^the_) |(^a_)|(^an_)|(^der_)|(^die_)|(^das_)|(^ein_)|(^eine_)|(^el_)|(^i_)|(^il_)","")
+    => replace("(^„)|(^l’)|(^l')|(la_)|(^le_)|(^les_)|(^un_)|(^une_)|(^the_)|(^a_)|(^an_)|(^der_)|(^die_)|(^das_)|(^ein_)|(^eine_)|(^el_)|(^i_)|(^il_)","")
     => replace("^é","e")
     => replace("^œ","oe")
     => replace("^á","a")
     => replace("^ä","a")
     => replace("^ö","o")
     => replace("^ü","u")
+    => replace("ç","c")
 };
 (:~
  : Returns a string of the work Type
