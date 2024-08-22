@@ -94,7 +94,8 @@ declare
         let $date := xs:dateTime(map:get($dataProps, 'dateTime'))
         let $formatedDate := 
             try { date:format-date($date, $config:default-date-picture-string($lang), $lang) }
-            catch * { wega-util:log-to-file('warn', 'Failed to get data history properties for ' || $model('docID') ) }
+            catch * { wega-util:log-to-file('warn', 'Failed to get Subversion properties for ' || $model('docID') ) }
+        let $rev := map:get($dataProps, 'rev')
         let $version := config:expath-descriptor()/@version => string()
         let $versionDate := date:format-date(xs:date(config:get-option('versionDate')), $config:default-date-picture-string($lang), $lang)
         return
@@ -103,7 +104,7 @@ declare
                 'permalink' : config:permalink($model('docID')),
                 'versionNews' : app:createDocLink(crud:doc(config:get-option('versionNews')), lang:get-language-string('versionInformation',($version, $versionDate), $lang), $lang, ()),
                 'latestChange' :
-                    if($config:isDevelopment) then lang:get-language-string('lastChangeDateWithAuthor',($formatedDate,$author),$lang)
+                    if($config:isDevelopment) then lang:get-language-string('lastChangeDateWithAuthor',($formatedDate,$author,$rev),$lang)
                     else lang:get-language-string('lastChangeDateWithoutAuthor', $formatedDate, $lang)
             }
 };
