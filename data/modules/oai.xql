@@ -31,29 +31,28 @@ declare option output:indent "yes";
 
 (:~
  : Get the last date of modification from dataHistory.xml. Fallback: VersionDate from options.xml
- :
  : @author Dennis Ried 
+ :
+ : @param $docID The ID of the document
+ : return The date ad xs:dateTime or empty 
 :)
-declare variable $oai:last-modified as xs:dateTime? := 
-    if($config:data-change-history-file/dictionary/@dateTime castable as xs:dateTime) 
-    then $config:data-change-history-file/dictionary/xs:dateTime(@dateTime)
-    else (
-        let $versionDateSeq := tokenize(config:get-option('versionDate'),'-')
-        let $year := subsequence($versionDateSeq,1,1)
-        let $month := subsequence($versionDateSeq,2,1)
-        let $day := subsequence($versionDateSeq,3,1)
-        return
-            functx:dateTime($year,$month,$day,0,0,0)
-    );
+declare %private function oai:last-modified($docID) as xs:dateTime? { 
+    if($config:data-change-history-file//entry[@xml:id=$docID]/@dateTime castable as xs:dateTime) 
+    then ($config:data-change-history-file//entry[@xml:id=$docID]/@dateTime => xs:dateTime())
+    else if (config:get-option('versionDate') castable as xs:dateTime)
+    then(config:get-option('versionDate') => xs:dateTime())
+    else()
+    )
+};
 
 (:~
  : Create a header response
  :
  : @author Dennis Ried 
 :)
-declare %private function oai:response-headers() as empty-sequence() {
+declare %private function oai:response-headers($docID) as empty-sequence() {
     response:set-header('Access-Control-Allow-Origin', '*'),
-    response:set-header('Last-Modified', date:rfc822($oai:last-modified)), 
+    response:set-header('Last-Modified', date:rfc822(oai:last-modified($docID))), 
     response:set-header('Cache-Control', 'max-age=300,public')
 };
 
@@ -65,7 +64,7 @@ declare %private function oai:response-headers() as empty-sequence() {
 declare function oai:oai($model as map(*)) as node() {
 	<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
 		 <responseDate>{fn:current-dateTime()}</responseDate>
-		 <request verb="GetRecord" identifier="{lod:DC.identifier($model)}" metadataPrefix="oai_dc">http://www.openarchives.org/OAI/2.0/oai_dc/</request> 
+		 <request verb="GetRecord" identifier="{$lod-metadata?DC.identifier}" metadataPrefix="oai_dc">http://www.openarchives.org/OAI/2.0/oai_dc/</request> 
 		 <GetRecord>
 			  {oai:record($model)}
 		 </GetRecord> 
@@ -80,6 +79,7 @@ declare function oai:oai($model as map(*)) as node() {
 declare function oai:record($model as map(*)) as node() {
     let $docID := $model('docID')
     let $lang := $model('lang')
+    let $dc-date := oai:last-modified($docID) => substring(1,10)
     let $lod-metadata := lod:metadata(<node/>, $model, $lang)
     return
     	<record xmlns="http://www.openarchives.org/OAI/2.0/">
@@ -98,7 +98,7 @@ declare function oai:record($model as map(*)) as node() {
                <dc:creator>{$lod-metadata?DC.creator}</dc:creator>
                <dc:subject>{$lod-metadata?DC.subject}</dc:subject>
                <dc:description>{$lod-metadata?DC.description}</dc:description>
-               <dc:date>{substring($oai:last-modified,1,10)}</dc:date>
+               <dc:date>{$dc-date}</dc:date>
                <dc:identifier>{$docID}</dc:identifier>
              </oai_dc:dc>
             </metadata>
@@ -110,7 +110,7 @@ declare function oai:record($model as map(*)) as node() {
                 <originDescription harvestDate="{fn:current-dateTime()}" altered="true">
                   <baseURL>{config:get-option('permaLinkPrefix')}</baseURL>
                   <identifier>{$docID}</identifier>
-                  <datestamp>{substring($oai:last-modified,1,10)}</datestamp>
+                  <datestamp>{$dc-date}</datestamp>
                   <metadataNamespace>http://www.openarchives.org/OAI/2.0/oai_dc/</metadataNamespace>
                 </originDescription>
               </provenance>
@@ -118,8 +118,7 @@ declare function oai:record($model as map(*)) as node() {
     	</record>      
 };
 
-
-let $lang := 'en'
+let $lang := config:guess-language(())
 let $docID := request:get-attribute('docID')
 let $doc := crud:doc($docID)
 let $model := 
@@ -131,7 +130,7 @@ let $model :=
     }
 return
     (
-        oai:response-headers(),
+        oai:response-headers($docID),
         response:set-status-code(202),
         oai:oai($model)
     )
