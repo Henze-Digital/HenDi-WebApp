@@ -36,13 +36,12 @@ declare option output:indent "yes";
  : @param $docID The ID of the document
  : return The date ad xs:dateTime or empty 
 :)
-declare %private function oai:last-modified($docID) as xs:dateTime? { 
-    if($config:data-change-history-file//entry[@xml:id=$docID]/@dateTime castable as xs:dateTime) 
-    then ($config:data-change-history-file//entry[@xml:id=$docID]/@dateTime => xs:dateTime())
-    else if (config:get-option('versionDate') castable as xs:dateTime)
-    then(config:get-option('versionDate') => xs:dateTime())
-    else()
-    )
+declare %private function oai:last-modified($docID) as xs:dateTime {
+    let $props := config:get-data-props($docID)
+    return
+        if($props?dateTime castable as xs:dateTime) 
+        then ($props?dateTime => xs:dateTime())
+        else (fn:current-dateTime())
 };
 
 (:~
@@ -62,13 +61,15 @@ declare %private function oai:response-headers($docID) as empty-sequence() {
  : @author Dennis Ried 
 :)
 declare function oai:oai($model as map(*)) as node() {
-	<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
-		 <responseDate>{fn:current-dateTime()}</responseDate>
-		 <request verb="GetRecord" identifier="{$lod-metadata?DC.identifier}" metadataPrefix="oai_dc">http://www.openarchives.org/OAI/2.0/oai_dc/</request> 
-		 <GetRecord>
-			  {oai:record($model)}
-		 </GetRecord> 
-	</OAI-PMH>      
+    let $lod-metadata := lod:metadata(<node/>, $model, $model?lang)
+    return
+    	<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+    		 <responseDate>{fn:current-dateTime()}</responseDate>
+    		 <request verb="GetRecord" identifier="{$lod-metadata?DC.identifier}" metadataPrefix="oai_dc">http://www.openarchives.org/OAI/2.0/oai_dc/</request> 
+    		 <GetRecord>
+    			  {oai:record($model, $lod-metadata)}
+    		 </GetRecord> 
+    	</OAI-PMH>      
 };
 
 (:~
@@ -76,11 +77,10 @@ declare function oai:oai($model as map(*)) as node() {
  :
  : @author Dennis Ried 
 :)
-declare function oai:record($model as map(*)) as node() {
+declare function oai:record($model as map(*), $lod-metadata as map(*)) as node() {
     let $docID := $model('docID')
     let $lang := $model('lang')
     let $dc-date := oai:last-modified($docID) => substring(1,10)
-    let $lod-metadata := lod:metadata(<node/>, $model, $lang)
     return
     	<record xmlns="http://www.openarchives.org/OAI/2.0/">
         	<header>
