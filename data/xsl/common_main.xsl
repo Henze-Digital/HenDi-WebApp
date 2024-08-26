@@ -655,7 +655,7 @@
 	</xsl:template>
     
     <!--  Hier mit priority 0.5, da in Briefen und Tagebüchern unterschiedlich behandelt  -->
-    <xsl:template match="tei:pb" priority="0.5">
+	<xsl:template match="tei:pb" priority="0.5" name="render-pb">
         <xsl:variable name="pbTitleText">
             <xsl:choose>
                 <xsl:when test="matches(@n, '\d(r|v)')">

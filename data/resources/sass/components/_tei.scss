@@ -473,3 +473,42 @@ li.listSubTitle {
     	linear-gradient(#fff 0 0)  no-repeat
       	50%/calc(100% - 3*var(--r)) calc(100% - 3*var(--r));
 }
+
+/* boxing for telegrams and other */
+
+.box_outer
+{
+	border: solid;
+	padding: 20px;
+	box-shadow: 8px 8px 3px gray;
+	margin-left: -20px;
+	margin-right: -20px;
+	margin-bottom: 2.5em;
+	border-radius: 5px;
+}
+
+.box_inner_solid 
+{
+	border: 1px solid black;
+}
+
+.box_inner_dotted 
+{
+	border: 1px dotted black;
+}
+
+.box_inner_dashed 
+{
+	border: 1px dashed black;
+}
+
+.box_none 
+{
+	border: none!important;
+}
+
+.box_telegram
+{
+	overflow-x: scroll;
+	white-space: nowrap;
+}

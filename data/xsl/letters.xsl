@@ -22,9 +22,33 @@
 						<xsl:attribute name="style" select="'padding-top: 2em; padding-bottom: 0.5em;'"/>
 						[<xsl:value-of select="wega:getLanguageString('physDesc.objectDesc.form.envelope', $lang)"/>:]</xsl:element>
 					<xsl:element name="div">
-						<xsl:attribute name="style" select="'border: solid;'"/>
+						<xsl:attribute name="class" select="'box_outer'"/>
 						<xsl:apply-templates/>		
 					</xsl:element>
+				</xsl:when>
+				<xsl:when test="parent::tei:text/@type='telegram'">
+					<xsl:element name="div">
+						<xsl:attribute name="class" select="'box_outer'"/>
+						<xsl:apply-templates/>		
+					</xsl:element>
+				</xsl:when>
+				<xsl:when test="parent::tei:text/@type/starts-with(.,'card')">
+					<xsl:for-each select="element()">
+						<xsl:choose>
+						    <xsl:when test="self::tei:div">
+						        <xsl:element name="div">
+        							<xsl:attribute name="class" select="'box_outer'"/>
+        							<xsl:apply-templates/>
+						        </xsl:element>
+						    </xsl:when>
+						    <xsl:when test="self::tei:pb">
+						        <xsl:call-template name="render-pb"/>
+						    </xsl:when>
+						    <xsl:otherwise>
+						    	<xsl:apply-templates/>
+						    </xsl:otherwise>
+						</xsl:choose>
+					</xsl:for-each>
 				</xsl:when>
 				<xsl:when test="not(contains(parent::tei:text/@type,'document'))">
 					<xsl:if test="$doc//tei:handNote[1]/@script">
@@ -50,34 +74,30 @@
 	
 	<xsl:template match="tei:div[@type='row']">
 		<xsl:element name="div">
-			<xsl:attribute name="class" select="'row justify-content-center'"/>
-			<xsl:if test="ancestor::tei:text/@type = 'telegram'">
-			<xsl:choose>
-			    <xsl:when test="@rend='nobox'">
-                    <xsl:attribute name="style" select="'border: none;'"/>
-                </xsl:when>
-			    <xsl:otherwise>
-			        <xsl:attribute name="style" select="'border: solid;'"/>
-			    </xsl:otherwise>
-			</xsl:choose>
-			</xsl:if>
+			<xsl:attribute name="class">
+    			<xsl:text>row justify-content-center</xsl:text>
+    			<xsl:if test="ancestor::tei:text/@type = 'telegram'">
+        			<xsl:choose>
+        				<xsl:when test="@rend='nobox'"> box_none</xsl:when>
+        				<xsl:otherwise> box_inner_solid</xsl:otherwise>
+        			</xsl:choose>
+    			</xsl:if>
+    		</xsl:attribute>
 			<xsl:apply-templates select="./tei:div"/>
 		</xsl:element>
 	</xsl:template>
 	
 	<xsl:template match="tei:div[parent::tei:div[@type='row']]">
 		<xsl:element name="div">
-			<xsl:choose>
-				<xsl:when test="contains(@type, 'col-')">
-					<xsl:attribute name="class" select="@type"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:attribute name="class" select="'col'"/>
-				</xsl:otherwise>
-			</xsl:choose>
-			<xsl:if test="ancestor::tei:text/@type = 'telegram'">
-				<xsl:attribute name="style" select="'border: 0.5pt dashed; overflow-x: scroll; white-space: nowrap;'"/>
-			</xsl:if>
+			<xsl:attribute name="class">
+    			<xsl:choose>
+    				<xsl:when test="contains(@type, 'col-')">
+    					<xsl:value-of select="@type"/>
+    				</xsl:when>
+    				<xsl:otherwise>col</xsl:otherwise>
+    			</xsl:choose>
+				<xsl:if test="ancestor::tei:text/@type = 'telegram'"> box_telegram</xsl:if>
+			</xsl:attribute>
 			<xsl:apply-templates/>
 		</xsl:element>
 	</xsl:template>
@@ -86,14 +106,12 @@
 		<xsl:element name="div">
 			<xsl:apply-templates select="@xml:id"/>
 			<xsl:if test="@rend">
-				<xsl:choose>
-					<xsl:when test="@rend='box'">
-						<xsl:attribute name="style" select="'border: 1px solid black;'"/>
-					</xsl:when>
-					<xsl:when test="@rend='nobox'">
-						<xsl:attribute name="style" select="'border: none;'"/>
-					</xsl:when>
-				</xsl:choose>
+    			<xsl:attribute name="class">
+    				<xsl:choose>
+    					<xsl:when test="@rend='box'">box_inner_solid</xsl:when>
+    					<xsl:when test="@rend='nobox'">box_none</xsl:when>
+    				</xsl:choose>
+				</xsl:attribute>
 			</xsl:if>
 			<xsl:choose>
 				<xsl:when test="@type='writingSession'">
@@ -347,6 +365,5 @@
 			<xsl:apply-templates/>
 		</xsl:element>
 	</xsl:template>
-	
 	
 </xsl:stylesheet>
