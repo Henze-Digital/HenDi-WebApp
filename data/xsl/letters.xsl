@@ -17,22 +17,12 @@
 				<xsl:attribute name="style" select="'display: inline-grid; min-width: 80%;'"/>
 			</xsl:if>
 			<xsl:choose>
-				<xsl:when test="parent::tei:text/@type='envelope'">
-					<xsl:element name="h4">
-						<xsl:attribute name="style" select="'padding-top: 2em; padding-bottom: 0.5em;'"/>
-						[<xsl:value-of select="wega:getLanguageString('physDesc.objectDesc.form.envelope', $lang)"/>:]</xsl:element>
-					<xsl:element name="div">
-						<xsl:attribute name="class" select="'box_outer'"/>
-						<xsl:apply-templates/>		
-					</xsl:element>
-				</xsl:when>
-				<xsl:when test="parent::tei:text/@type='telegram'">
-					<xsl:element name="div">
-						<xsl:attribute name="class" select="'box_outer'"/>
-						<xsl:apply-templates/>		
-					</xsl:element>
-				</xsl:when>
-				<xsl:when test="parent::tei:text/@type/starts-with(.,'card')">
+				<xsl:when test="parent::tei:text[@type='envelope' or @type='telegram' or starts-with(@type,'card')]">
+					<xsl:if test="parent::tei:text/@type='envelope'">
+    					<xsl:element name="h4">
+    						<xsl:attribute name="style" select="'padding-top: 2em; padding-bottom: 0.5em;'"/>
+    						[<xsl:value-of select="wega:getLanguageString('physDesc.objectDesc.form.envelope', $lang)"/>:]</xsl:element>
+					</xsl:if>
 					<xsl:for-each select="element()">
 						<xsl:choose>
 						    <xsl:when test="self::tei:div">
