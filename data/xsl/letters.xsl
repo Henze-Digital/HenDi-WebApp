@@ -86,7 +86,7 @@
     				</xsl:when>
     				<xsl:otherwise>col</xsl:otherwise>
     			</xsl:choose>
-				<xsl:if test="ancestor::tei:text/@type = 'telegram'"> box_telegram</xsl:if>
+				<xsl:if test="ancestor::tei:text/@type = 'telegram'"> box_telegram box_inner_dotted</xsl:if>
 			</xsl:attribute>
 			<xsl:apply-templates/>
 		</xsl:element>
