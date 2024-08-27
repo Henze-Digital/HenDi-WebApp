@@ -6,7 +6,7 @@
     <xsl:param name="collapse" required="no" select="false()" as="xs:boolean"/>
     <xsl:param name="main-source-file" select="'/db/apps/HenDi-WebApp/guidelines/guidelines-de-hendiAll.compiled.xml'"/>
     <xsl:strip-space elements="*"/>
-    <xsl:preserve-space elements="tei:q tei:quote tei:cell tei:p tei:persName tei:rs tei:workName tei:characterName tei:placeName tei:code tei:eg tei:item tei:head tei:date tei:orgName tei:note tei:lem tei:rdg tei:add"/>
+    <xsl:preserve-space elements="tei:quote tei:cell tei:p tei:persName tei:rs tei:workName tei:characterName tei:placeName tei:code tei:eg tei:item tei:head tei:date tei:orgName tei:note tei:lem tei:rdg tei:add"/>
     <xsl:include href="common_link.xsl"/>
     <xsl:include href="common_main.xsl"/>
 	<!--<xsl:include href="tagdocs.xsl"/>-->
@@ -118,9 +118,6 @@
     </xsl:template>
 
     <xsl:template match="tei:head[not(@type='sub')][parent::tei:div]">
-<!--        <xsl:choose>-->
-<!--            <xsl:when test="//tei:divGen">-->
-                <!-- Überschrift h2 für Editionsrichtlinien und Weber-Biographie -->
                 <xsl:element name="{concat('h', count(ancestor::tei:div) +1)}">
                     <xsl:attribute name="id">
                         <xsl:choose>
@@ -141,21 +138,29 @@
                     </xsl:if>
                     <xsl:apply-templates/>
                 </xsl:element>
-<!--            </xsl:when>-->
-            <!--<xsl:otherwise>
-                <!-\- Ebenfalls h2 für Indexseite und Impressum -\->
-                <xsl:element name="{concat('h', count(ancestor::tei:div) +1)}">
-                    <xsl:apply-templates/>
-                </xsl:element>
-            </xsl:otherwise>-->
-        <!--</xsl:choose>-->
     </xsl:template>
 
     <xsl:template match="tei:head[@type='sub']">
-        <xsl:element name="h3">
-            <xsl:apply-templates select="@xml:id"/>
-            <xsl:apply-templates/>
-        </xsl:element>
+         <xsl:element name="{concat('h', count(ancestor::tei:div) +1)}">
+                    <xsl:attribute name="id">
+                        <xsl:choose>
+                            <xsl:when test="@xml:id">
+                                <xsl:value-of select="@xml:id"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="generate-id()"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:attribute>
+                    <xsl:if test="$createSecNos and not(./following::tei:divGen)">
+                        <xsl:call-template name="createSecNo">
+                            <xsl:with-param name="div" select="parent::tei:div"/>
+                            <xsl:with-param name="lang" select="$lang"/>
+                        </xsl:call-template>
+                        <xsl:text> </xsl:text>
+                    </xsl:if>
+                    <xsl:apply-templates/>
+                </xsl:element>
     </xsl:template>
 	
 	<xsl:template match="tei:head[@type='quote']">
@@ -559,7 +564,9 @@
                 <xsl:when test="$head = '&gt;'">&amp;gt;</xsl:when>
                 <xsl:when test="$head = '&#34;'">&amp;quot;</xsl:when>
                 <xsl:when test="$head = &#34;'&#34;">&amp;apos;</xsl:when>
-                <xsl:otherwise><xsl:value-of select="$head"/></xsl:otherwise>
+                <xsl:otherwise>
+                    <xsl:value-of select="$head"/>
+                </xsl:otherwise>
             </xsl:choose>
             <xsl:call-template name="verbatim-xml">
                 <xsl:with-param name="text" select="$tail"/>
