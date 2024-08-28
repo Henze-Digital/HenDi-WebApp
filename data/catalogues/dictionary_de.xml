@@ -187,12 +187,12 @@
     <entry xml:id="handNoteManuscript">Handschrift</entry>
     <entry xml:id="handNoteTypescript">Maschinenschrift</entry>
     <entry xml:id="handNotePrinted">Druck</entry>
-	<entry xml:id="paperloss">Papierverlust</entry>
-	<entry xml:id="smoke">Beschädigung durch Rauch oder Feuer</entry>
-	<entry xml:id="seal">Beschädigung durch Siegel(einriss)</entry>
-	<entry xml:id="water">Wasserschaden</entry>
-	<entry xml:id="ink">Tintenfleck</entry>
 	<entry xml:id="damageDefault">Beschädigung</entry>
+	<entry xml:id="textLoss.smoke">Beschädigung durch Rauch oder Feuer</entry>
+	<entry xml:id="textLoss.seal">Beschädigung durch Siegel(einriss)</entry>
+	<entry xml:id="textLoss.water">Wasserschaden</entry>
+	<entry xml:id="textLoss.ink">Tintenfleck</entry>
+	<entry xml:id="textLoss.paperloss">Papierverlust</entry>
 	<entry xml:id="textLoss.punch">Textverlust durch Lochung</entry>
 	<entry xml:id="textLoss.pasting">Textverlust durch Überklebung</entry>
 	<entry xml:id="textLoss.ink">Textverlust durch Tinte</entry>
