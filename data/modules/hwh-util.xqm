@@ -178,28 +178,3 @@ declare function hwh-util:ordering-relators($relatorGrps as node()*) as node()* 
 		return
 			$relatorGrp
 };
-
-(:~
- : Checks, if given $date is castable as xs:date or xs:dateTime and returns this date.
- : If $date is castable as xs:gYear the first or the last day of the year (depending on $latest) will be returned 
- : This is an alternative to date:getCastableDate() from WeGA-WebApp-lib
- : 
- : @author Dennis Ried
- : @param $date the date or dateTime to test as xs:string
- : @param $latest if $latest is set to true() the last day of the year will be returned
- : @return the (constructed) date as xs:date or xs:dateTime, empty-sequence() if no conversion is possible
- :)
-declare function hwh-util:getCastableDateTime($date as xs:string, $latest as xs:boolean) {
-    if($date castable as xs:date) then xs:date($date)
-    else if($date castable as xs:dateTime) then
-        xs:dateTime($date)
-    else if($date castable as xs:gYear) then 
-        if($latest) then xs:date(concat($date,'-12-31'))
-        else xs:date(concat($date,'-01-01'))
-    else if($date castable as xs:gYearMonth) then
-        if($latest) then xs:date(concat($date, '-', functx:days-in-month(xs:date(concat($date,'-01')))))
-        else xs:date(concat($date,'-01'))
-    else if($date castable as xs:gMonthDay) then xs:date(concat('9999-', substring-after($date, '--')))
-    else if($date castable as xs:gDay) then xs:date(concat('9999-12-', substring-after($date, '---')))
-    else()
-};

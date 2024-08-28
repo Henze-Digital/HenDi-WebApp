@@ -18,7 +18,6 @@ import module namespace crud="http://xquery.weber-gesamtausgabe.de/modules/crud"
 import module namespace core="http://xquery.weber-gesamtausgabe.de/modules/core" at "core.xqm";
 import module namespace wdt="http://xquery.weber-gesamtausgabe.de/modules/wdt" at "wdt.xqm";
 import module namespace wega-util="http://xquery.weber-gesamtausgabe.de/modules/wega-util" at "wega-util.xqm";
-import module namespace hwh-util="http://henze-digital.zenmem.de/modules/hwh-util" at "hwh-util.xqm";
 import module namespace er="http://xquery.weber-gesamtausgabe.de/modules/external-requests" at "external-requests.xqm";
 import module namespace functx="http://www.functx.com";
 import module namespace str="http://xquery.weber-gesamtausgabe.de/modules/str" at "xmldb:exist:///db/apps/WeGA-WebApp-lib/xquery/str.xqm";
@@ -324,7 +323,7 @@ declare function query:get-normalized-date($doc as document-node()) as xs:date? 
         switch(config:get-doctype-by-id($docID))
         (: for Weber writings the creation date should take precedence over the publication date :)
         case 'writings' return date:getOneNormalizedDate(($doc[query:get-authorID(.) = 'A002068']//tei:creation/tei:date[@* except @cert],query:get-main-source($doc)/tei:monogr/tei:imprint/tei:date)[1], false())
-        case 'letters' return hwh-util:getCastableDateTime(($doc//tei:correspAction[@type='sent']/tei:date, $doc//tei:correspAction[@type='received']/tei:date)[1], false())
+        case 'letters' return date:getOneNormalizedDate(($doc//tei:correspAction[@type='sent']/tei:date, $doc//tei:correspAction[@type='received']/tei:date)[1], false())
         case 'biblio' return date:getOneNormalizedDate($doc//tei:imprint[1]/tei:date, false())
         case 'diaries' return $doc/tei:ab/data(@n)
         case 'news' return $doc//tei:date[parent::tei:publicationStmt]/substring(@when,1,10)
