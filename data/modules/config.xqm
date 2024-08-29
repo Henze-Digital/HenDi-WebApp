@@ -48,8 +48,8 @@ declare variable $config:options-file as document-node() := doc($config:options-
 (: provide quick access to the options by pushing them to a map object :)
 declare variable $config:options as map(xs:string, xs:string*) := map:merge($config:options-file//entry ! map:entry(./string(@xml:id), str:normalize-space(.)));
 declare variable $config:data-collection-path as xs:string := config:get-option('dataCollectionPath');
-declare variable $config:svn-change-history-file as document-node()? := 
-    if(doc-available($config:data-collection-path || '/subversionHistory.xml')) then doc($config:data-collection-path || '/subversionHistory.xml')
+declare variable $config:data-change-history-file as document-node()? := 
+    if(doc-available($config:data-collection-path || '/dataHistory.xml')) then doc($config:data-collection-path || '/dataHistory.xml')
     else ();
 declare variable $config:tmp-collection-path as xs:string := $config:app-root || '/tmp';
 declare variable $config:xsl-collection-path as xs:string := $config:app-root || '/xsl';
@@ -445,7 +445,7 @@ declare function config:getCollectionPath($docID as xs:string) as xs:string? {
 
 (:~
  : Returns whether WeGA-data was updated after a given dateTime. 
- : If $dateTime is not castable as xs:dateTime or $config:svn-change-history-file is not present it returns true().
+ : If $dateTime is not castable as xs:dateTime or $config:data-change-history-file is not present it returns true().
  :
  : @author Peter Stadler
  : @param $dateTime the date to check
@@ -457,38 +457,38 @@ declare function config:eXistDbWasUpdatedAfterwards($dateTime as xs:dateTime?) a
 };
 
 (:~
- : Retrieves the dateTime of last eXist-db update by checking svnChangeHistoryFile
+ : Retrieves the dateTime of last eXist-db update by checking dataChangeHistoryFile
  :
  : @author Peter Stadler
  : @return xs:dateTime
 :)
 declare function config:getDateTimeOfLastDBUpdate() as xs:dateTime? {
-    if($config:svn-change-history-file) then xmldb:last-modified($config:data-collection-path, 'subversionHistory.xml')
+    if($config:data-change-history-file) then xmldb:last-modified($config:data-collection-path, 'dataHistory.xml')
     else ()
 };
 
 (:~
- : Returns the current head revision of the database as given by the 'svnChangeHistoryFile'
+ : Returns the current head revision of the database as given by the 'dataChangeHistoryFile'
  :
  : @author Peter Stadler
  : @return xs:int
 :)
-declare function config:getCurrentSvnRev() as xs:int? {
-    if($config:svn-change-history-file/dictionary/@head castable as xs:int) then $config:svn-change-history-file/dictionary/@head cast as xs:int
+declare function config:getCurrentDataRev() as xs:int? {
+    if($config:data-change-history-file/dictionary/@head castable as xs:int) then $config:data-change-history-file/dictionary/@head cast as xs:int
     else ()
 };
 
 (:~
- : Retrieves some subversion properties (latest revision, author, dateTime) for a given document ID
+ : Retrieves some data history properties (latest revision, author, dateTime) for a given document ID
  :
  : @author Peter Stadler
  : @param $docID the document ID
  : @return map()
 :)
 
-declare function config:get-svn-props($docID as xs:string) as map(*) {
+declare function config:get-data-props($docID as xs:string) as map(*) {
     map:merge(
-        for $prop in $config:svn-change-history-file//id($docID)/@*
+        for $prop in $config:data-change-history-file//id($docID)/@*
         return map:entry(local-name($prop), data($prop))
     )
 };

@@ -1,7 +1,7 @@
 <xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:functx="http://www.functx.com" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wega="http://xquery.weber-gesamtausgabe.de/webapp/functions/utilities" xmlns:hendi="http://henze-digital.zenmem.de/ns/1.0" version="2.0">
 	<xsl:output encoding="UTF-8" method="html" omit-xml-declaration="yes" indent="no"/>
 	<xsl:strip-space elements="*"/>
-	<xsl:preserve-space elements="tei:quote tei:item tei:cell tei:p tei:head tei:dateline tei:closer tei:opener tei:addrLine tei:settlement tei:rs tei:name tei:placeName tei:country tei:district tei:bloc tei:seg tei:l tei:head tei:salute tei:subst tei:add tei:lem tei:rdg tei:provenance tei:acquisition tei:damage "/>
+	<xsl:preserve-space elements="tei:quote tei:item tei:cell tei:p tei:head tei:dateline tei:closer tei:opener tei:addrLine tei:settlement tei:rs tei:name tei:persName tei:placeName tei:country tei:district tei:bloc tei:seg tei:l tei:head tei:salute tei:subst tei:add tei:lem tei:rdg tei:provenance tei:acquisition tei:damage tei:note"/>
 	<xsl:include href="common_link.xsl"/>
 	<xsl:include href="common_main.xsl"/>
 	<xsl:include href="apparatus.xsl"/>
@@ -11,73 +11,83 @@
 	</xsl:template>
 	
 	<xsl:template match="tei:body">
-		<xsl:element name="div">
-			<xsl:attribute name="class" select="'teiLetter_body'"/>
-			<xsl:if test="ancestor::tei:text/@type='letter'">
-				<xsl:attribute name="style" select="'display: inline-grid; min-width: 80%;'"/>
+		<xsl:variable name="hasEnvelope">
+		    <xsl:if test="parent::tei:text/@type='envelope'">
+				<xsl:value-of select="wega:getLanguageString('physDesc.objectDesc.form.envelope', $lang)"/>
+		    </xsl:if>
+		</xsl:variable>
+		<xsl:variable name="hasScript">
+		    <xsl:if test="not(contains(parent::tei:text/@type,'document')) and $doc//tei:handNote[1]/@script">
+				<xsl:value-of select="wega:getLanguageString(concat('handNoteHead',  functx:capitalize-first($doc//tei:handNote[1]/@script)), $lang)"/>
 			</xsl:if>
-			<xsl:choose>
-				<xsl:when test="parent::tei:text/@type='envelope'">
+		</xsl:variable>
+		<xsl:choose>
+				<xsl:when test="parent::tei:text[@type='envelope' or @type='telegram' or starts-with(@type,'card')]">
 					<xsl:element name="h4">
 						<xsl:attribute name="style" select="'padding-top: 2em; padding-bottom: 0.5em;'"/>
-						[<xsl:value-of select="wega:getLanguageString('physDesc.objectDesc.form.envelope', $lang)"/>:]</xsl:element>
-					<xsl:element name="div">
-						<xsl:attribute name="style" select="'border: solid;'"/>
-						<xsl:apply-templates/>		
-					</xsl:element>
-				</xsl:when>
-				<xsl:when test="not(contains(parent::tei:text/@type,'document'))">
-					<xsl:if test="$doc//tei:handNote[1]/@script">
-						<xsl:element name="h4">
-							<xsl:attribute name="style" select="'padding-top: 0em; padding-bottom: 2em;'"/>
-							<xsl:text>[</xsl:text>
-							<xsl:value-of select="wega:getLanguageString(concat('handNoteHead',  functx:capitalize-first($doc//tei:handNote[1]/@script)), $lang)"/>
-							<xsl:text>]</xsl:text>    
-						</xsl:element>
-					</xsl:if>
-					<xsl:apply-templates/>
+					    <xsl:text>[</xsl:text>
+					    <xsl:value-of select="string-join(($hasEnvelope[normalize-space(.) != ''], $hasScript),', ')"/>
+					    <xsl:text>]</xsl:text>
+				    </xsl:element>
+					<xsl:for-each select="element()">
+						<xsl:choose>
+						    <xsl:when test="self::tei:div">
+						        <xsl:element name="div">
+        							<xsl:attribute name="class" select="'box_outer'"/>
+        							<xsl:apply-templates/>
+						        </xsl:element>
+						    </xsl:when>
+						    <xsl:when test="self::tei:pb">
+						        <xsl:call-template name="render-pb"/>
+						    </xsl:when>
+						    <xsl:otherwise>
+						    	<xsl:apply-templates/>
+						    </xsl:otherwise>
+						</xsl:choose>
+					</xsl:for-each>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:apply-templates/>
 				</xsl:otherwise>
 			</xsl:choose>
-			<xsl:if test="//tei:note[@place='bottom']">
-				<xsl:call-template name="createEndnotes"/>
+		<xsl:element name="div">
+			<xsl:attribute name="class" select="'teiLetter_body'"/>
+			<xsl:if test="ancestor::tei:text/@type='letter'">
+				<xsl:attribute name="style" select="'display: inline-grid; min-width: 80%;'"/>
 			</xsl:if>
 		</xsl:element>
+		<xsl:if test="//tei:note[@place='bottom']">
+			<xsl:call-template name="createEndnotes"/>
+		</xsl:if>
 		<xsl:call-template name="createApparatus"/>
 	</xsl:template>
 	
 	<xsl:template match="tei:div[@type='row']">
 		<xsl:element name="div">
-			<xsl:attribute name="class" select="'row justify-content-center'"/>
-			<xsl:if test="ancestor::tei:text/@type = 'telegram'">
-			<xsl:choose>
-			    <xsl:when test="@rend='nobox'">
-                    <xsl:attribute name="style" select="'border: none;'"/>
-                </xsl:when>
-			    <xsl:otherwise>
-			        <xsl:attribute name="style" select="'border: solid;'"/>
-			    </xsl:otherwise>
-			</xsl:choose>
-			</xsl:if>
+			<xsl:attribute name="class">
+    			<xsl:text>row justify-content-center</xsl:text>
+    			<xsl:if test="ancestor::tei:text/@type = 'telegram'">
+        			<xsl:choose>
+        				<xsl:when test="@rend='nobox'"> box_none</xsl:when>
+        				<xsl:otherwise> box_inner_solid</xsl:otherwise>
+        			</xsl:choose>
+    			</xsl:if>
+    		</xsl:attribute>
 			<xsl:apply-templates select="./tei:div"/>
 		</xsl:element>
 	</xsl:template>
 	
 	<xsl:template match="tei:div[parent::tei:div[@type='row']]">
 		<xsl:element name="div">
-			<xsl:choose>
-				<xsl:when test="contains(@type, 'col-')">
-					<xsl:attribute name="class" select="@type"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:attribute name="class" select="'col'"/>
-				</xsl:otherwise>
-			</xsl:choose>
-			<xsl:if test="ancestor::tei:text/@type = 'telegram'">
-				<xsl:attribute name="style" select="'border: 0.5pt dashed; overflow-x: scroll; white-space: nowrap;'"/>
-			</xsl:if>
+			<xsl:attribute name="class">
+    			<xsl:choose>
+    				<xsl:when test="contains(@type, 'col-')">
+    					<xsl:value-of select="@type"/>
+    				</xsl:when>
+    				<xsl:otherwise>col</xsl:otherwise>
+    			</xsl:choose>
+				<xsl:if test="ancestor::tei:text/@type = 'telegram'"> box_telegram box_inner_dotted</xsl:if>
+			</xsl:attribute>
 			<xsl:apply-templates/>
 		</xsl:element>
 	</xsl:template>
@@ -86,14 +96,12 @@
 		<xsl:element name="div">
 			<xsl:apply-templates select="@xml:id"/>
 			<xsl:if test="@rend">
-				<xsl:choose>
-					<xsl:when test="@rend='box'">
-						<xsl:attribute name="style" select="'border: 1px solid black;'"/>
-					</xsl:when>
-					<xsl:when test="@rend='nobox'">
-						<xsl:attribute name="style" select="'border: none;'"/>
-					</xsl:when>
-				</xsl:choose>
+    			<xsl:attribute name="class">
+    				<xsl:choose>
+    					<xsl:when test="@rend='box'">box_inner_solid</xsl:when>
+    					<xsl:when test="@rend='nobox'">box_none</xsl:when>
+    				</xsl:choose>
+				</xsl:attribute>
 			</xsl:if>
 			<xsl:choose>
 				<xsl:when test="@type='writingSession'">
@@ -163,61 +171,6 @@
 		</xsl:choose>
 	</xsl:template>
 	
-	<!--<xsl:template match="tei:rdg"/>
-    <xsl:template match="tei:lem">
-        <xsl:apply-templates/>
-    </xsl:template>-->
-	
-	<!--<xsl:template match="tei:app">
-        <xsl:variable name="appInlineID">
-            <xsl:number level="any"/>
-        </xsl:variable>
-        <xsl:choose>
-            <!-\-    tei:rdg[@cause='kein_Absatz'] nicht existent in den Daten. Dieser Zweig kann entfallen.       -\->
-            <xsl:when test="./tei:rdg[@cause='kein_Absatz']">
-                <span class="teiLetter_noteDefinitionMark" onmouseout="UnTip()">
-                    <xsl:attribute name="onmouseover">
-                        <xsl:text>TagToTip('</xsl:text>
-                        <xsl:value-of select="concat('app_',$appInlineID)"/>
-                        <xsl:text>')</xsl:text>
-                    </xsl:attribute>
-                    <xsl:text>*</xsl:text>
-                </span>
-                <span class="teiLetter_noteInline">
-                    <xsl:attribute name="id">
-                        <xsl:value-of select="concat('app_',$appInlineID)"/>
-                    </xsl:attribute>
-                    <xsl:text>Lesart ohne Absatz</xsl:text>
-                </span>
-            </xsl:when>
-            <xsl:otherwise>
-                <span class="teiLetter_lem" onmouseout="UnTip()">
-                    <xsl:attribute name="onmouseover">
-                        <xsl:text>TagToTip('</xsl:text>
-                        <xsl:value-of select="concat('app_',$appInlineID)"/>
-                        <xsl:text>')</xsl:text>
-                    </xsl:attribute>
-                    <xsl:apply-templates select="./tei:lem"/>
-                </span>
-                <span class="teiLetter_noteInline">
-                    <xsl:attribute name="id">
-                        <xsl:value-of select="concat('app_',$appInlineID)"/>
-                    </xsl:attribute>
-                    <xsl:text>Lesart(en): </xsl:text>
-                    <xsl:for-each select="./tei:rdg">
-                        <xsl:value-of select="normalize-space(.)"/>
-                        <xsl:if test="position()!=last()">
-                            <xsl:text>; </xsl:text>
-                        </xsl:if>
-                    </xsl:for-each>
-                </span>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>-->
-	
-	<!--<xsl:template match="tei:title[@level='a']">
-        <xsl:apply-templates/>
-    </xsl:template>-->
 	<xsl:template match="text()[parent::tei:title]">
 		<xsl:choose>
 			<xsl:when test="$lang eq 'en'">
@@ -334,6 +287,11 @@
 				<xsl:value-of select="concat('textAlign-',@rend)"/>
 			</xsl:if>
 		</xsl:variable>
+		<xsl:variable name="p-place">
+			<xsl:if test="@place">
+				<xsl:value-of select="concat('p-place-',replace(@place,'\.','-'))"/>
+			</xsl:if>
+		</xsl:variable>
 		<xsl:variable name="inlineEnd">
 			<xsl:if test="exists(following-sibling::element()[1][self::tei:closer[@rend='inline']])">
 				<xsl:text>inlineEnd</xsl:text>
@@ -346,7 +304,7 @@
 		</xsl:variable>
 		<xsl:element name="p">
 			<xsl:attribute name="class">
-				<xsl:value-of select="string-join(($p-rend, $inlineEnd, $address),' ')"/>
+				<xsl:value-of select="string-join(($p-rend, $p-place, $inlineEnd, $address),' ')"/>
 			</xsl:attribute>
 			<xsl:apply-templates/>
 		</xsl:element>
@@ -397,6 +355,5 @@
 			<xsl:apply-templates/>
 		</xsl:element>
 	</xsl:template>
-	
 	
 </xsl:stylesheet>

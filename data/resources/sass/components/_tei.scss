@@ -144,6 +144,7 @@ hr.tei_pb-text:before {
 	font-size: medium;
 	text-align: justify;
 	line-height: 1.5;
+	margin-bottom: 1em;
 }
 
 .tei_choice, .tei_subst {
@@ -264,6 +265,10 @@ li.listSubTitle {
 
 .textAlign-left {
     text-align: left;
+}
+
+.p-place-margin-bottom {
+	margin-top: 5em !important;
 }
 
 .biblio-entry {
@@ -467,4 +472,46 @@ li.listSubTitle {
       	calc(-1.5*var(--r)) calc(-1.5*var(--r)) /calc(3*var(--r)) calc(3*var(--r)),
     	linear-gradient(#fff 0 0)  no-repeat
       	50%/calc(100% - 3*var(--r)) calc(100% - 3*var(--r));
+}
+
+/* boxing for telegrams and other */
+
+.box_outer
+{
+	border: solid;
+    box-shadow: 8px 8px 3px gray;
+    margin-left: -20px;
+    margin-right: -20px;
+    margin-bottom: 2.5em;
+    border-radius: 5px;
+    padding-top: 15px;
+    padding-bottom: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.box_inner_solid 
+{
+	border: 1px solid black;
+}
+
+.box_inner_dotted 
+{
+	border: 1px dotted black;
+}
+
+.box_inner_dashed 
+{
+	border: 1px dashed black;
+}
+
+.box_none 
+{
+	border: none!important;
+}
+
+.box_telegram
+{
+	overflow-x: scroll;
+	white-space: nowrap;
 }

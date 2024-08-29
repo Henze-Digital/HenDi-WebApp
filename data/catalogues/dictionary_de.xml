@@ -180,16 +180,19 @@
     
     <entry xml:id="handshiftManuscript">handschriftlich</entry>
     <entry xml:id="handshiftTypescript">Typoskript</entry>
+    <entry xml:id="handshiftPrinted">gedruktes Dokument</entry>
     <entry xml:id="handNoteHeadManuscript">Manuskript</entry>
     <entry xml:id="handNoteHeadTypescript">Typoskript</entry>
+    <entry xml:id="handNoteHeadPrinted">Druck</entry>
     <entry xml:id="handNoteManuscript">Handschrift</entry>
     <entry xml:id="handNoteTypescript">Maschinenschrift</entry>
-	<entry xml:id="paperloss">Papierverlust</entry>
-	<entry xml:id="smoke">Beschädigung durch Rauch oder Feuer</entry>
-	<entry xml:id="seal">Beschädigung durch Siegel(einriss)</entry>
-	<entry xml:id="water">Wasserschaden</entry>
-	<entry xml:id="ink">Tintenfleck</entry>
+    <entry xml:id="handNotePrinted">Druck</entry>
 	<entry xml:id="damageDefault">Beschädigung</entry>
+	<entry xml:id="textLoss.smoke">Beschädigung durch Rauch oder Feuer</entry>
+	<entry xml:id="textLoss.seal">Beschädigung durch Siegel(einriss)</entry>
+	<entry xml:id="textLoss.water">Wasserschaden</entry>
+	<entry xml:id="textLoss.ink">Tintenfleck</entry>
+	<entry xml:id="textLoss.paperloss">Papierverlust</entry>
 	<entry xml:id="textLoss.punch">Textverlust durch Lochung</entry>
 	<entry xml:id="textLoss.pasting">Textverlust durch Überklebung</entry>
 	<entry xml:id="textLoss.ink">Textverlust durch Tinte</entry>
@@ -492,6 +495,7 @@
     <entry xml:id="show">einblenden</entry>
     <entry xml:id="hide">ausblenden</entry>
     <entry xml:id="to">An</entry>
+	<entry xml:id="toBelongs">Zu</entry>
     <entry xml:id="from">Von</entry>
 	<entry xml:id="till">Bis</entry>
     <entry xml:id="fromTo">vom %1 bis %2</entry>
@@ -536,6 +540,9 @@
     <entry xml:id="leaf">Bl.</entry>
     <entry xml:id="issue">Heft</entry>
     <entry xml:id="edBy">hg. von</entry>
+    <entry xml:id="edByIdemM">dems.</entry>
+    <entry xml:id="edByIdemF">ders.</entry>
+    <entry xml:id="edByIdemPl">dens.</entry>
     <entry xml:id="ed">Hg.</entry>
     <entry xml:id="detailsAvailable">Details verfügbar</entry>
     <entry xml:id="emptyResultSet">Zu dieser Filtereinstellung wurden keine Einträge gefunden.</entry>
@@ -797,6 +804,7 @@
     
     <!-- objectDesc form types -->
     <entry xml:id="physDesc.objectDesc.form">Dokumenttyp</entry>
+    <entry xml:id="physDesc.objectDesc.form.card">Karte</entry>
     <entry xml:id="physDesc.objectDesc.form.card.business">Visitenkarte</entry>
 <!--    <entry xml:id="physDesc.objectDesc.form.card.letter">Briefkarte/Weihnachtskarte/Glückwunschkarte/Grußkarte</entry>-->
     <entry xml:id="physDesc.objectDesc.form.card.letter">Briefkarte</entry>
@@ -817,6 +825,9 @@
     <entry xml:id="physDesc.objectDesc.form.telegram">Telegramm</entry>
     <entry xml:id="physDesc.objectDesc.form.unknown">Unbekannt</entry>
 	<entry xml:id="physDesc.objectDesc.material.copy.carbon">Durchschlag</entry>
+	<entry xml:id="physDesc.objectDesc.material.copy.photo">Fotokopie</entry>
+	<entry xml:id="physDesc.objectDesc.material.copy">Abschrift</entry>
+	<entry xml:id="physDesc.objectDesc.material.fax">Fax</entry>
 	
 	<!-- hands -->
 	<entry xml:id="handNotes">Schreibstile</entry>
@@ -886,6 +897,7 @@
 	<entry xml:id="orgType.group">Gruppe</entry>
 	<entry xml:id="orgType.library">Bibliothek</entry>
 	<entry xml:id="orgType.military">militärisch</entry>
+	<entry xml:id="orgType.museum">Museum</entry>
 	<entry xml:id="orgType.music">musikalisch</entry>
 	<entry xml:id="orgType.orchestra">Orchester</entry>
 	<entry xml:id="orgType.organizer">Veranstalter</entry>
@@ -910,6 +922,7 @@
     <entry xml:id="stamp">Stempel</entry>
     <entry xml:id="stampType-stamp">Briefmarke</entry>
     <entry xml:id="stampType-oneline">Stempel (einzeilig)</entry>
+	<entry xml:id="stampType-rollerDate">Datumsstempel</entry>
     <entry xml:id="stampType-round">Rundstempel</entry>
     <entry xml:id="stampType-square">Stempel (quadratisch)</entry>
     <entry xml:id="stampType-rectangular">Stempel (rechteckig)</entry>

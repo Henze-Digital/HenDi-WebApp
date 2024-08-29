@@ -23,47 +23,25 @@ import module namespace str="http://xquery.weber-gesamtausgabe.de/modules/str" a
  : This function will also resolve duplicates
  :
  : @author Peter Stadler
+ : @author Dennis Ried
  : @param $docID the ID of the document
  : @return the document node of the resource found for the specified ID
 :)
-declare function crud:doc($docID as xs:string) as document-node()? {
-    let $collectionPath := config:getCollectionPath($docID)
-    let $docURL := str:join-path-elements(($collectionPath, $docID)) || '.xml'
-    return 
-        if(doc-available($docURL)) then
-            let $doc := doc($docURL) 
-            return
-                if($doc/*/*:ref/@target) then crud:doc($doc/*/*:ref/@target)
-                else $doc
-        else if($config:isDevelopment) then wega-util:log-to-file('debug', 'crud:doc(): unable to open ' || $docID)
-        else ()
-};
-
-(:~
- : Get document uri by ID
- :
- : @author Dennis Ried
- : @param $docID the ID of the document
- : @return the document uri of the resource found for the specified ID
-:)
-declare function crud:docUri($docID as xs:string) as xs:string? {
-    let $collectionPath := config:getCollectionPath($docID)
-    let $docURL := str:join-path-elements(($collectionPath, $docID)) || '.xml'
-    return 
-        $docURL
-};
-
-(:~
- : Checks if an document is available by ID
- :
- : @author Dennis Ried
- : @param $docID the ID of the document
- : @return boolean
-:)
-declare function crud:docAvailable($docID as xs:string?) as xs:boolean {
-     if($docID)
-     then doc-available(crud:docUri($docID))
-     else false()
+declare function crud:doc($docID as xs:string?) as document-node()? {
+    if($docID)
+    then(
+        let $collectionPath := config:getCollectionPath($docID)
+        let $docURL := str:join-path-elements(($collectionPath, $docID)) || '.xml'
+        return 
+            if(doc-available($docURL)) then
+                let $doc := doc($docURL) 
+                return
+                    if($doc/*/*:ref/@target) then crud:doc($doc/*/*:ref/@target)
+                    else $doc
+            else if($config:isDevelopment) then wega-util:log-to-file('debug', 'crud:doc(): unable to open ' || $docID)
+            else ()
+    )
+    else()
 };
 
 (:~

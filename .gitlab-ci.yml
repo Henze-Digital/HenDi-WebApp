@@ -45,6 +45,7 @@ update:submodules:
       fi
   rules:
     - if: $CI_PIPELINE_SOURCE == "trigger"
+    - if: $UPDATE_SUBMODULE == "true"
 
 # jobs for building the webapp
 build:develop:
@@ -120,3 +121,6 @@ clean:pipelines:
     - apt install -y curl jq
   script:
     - sh delete-pipelines.sh
+  rules:
+    - if: $CLEAN == "pipelines"
+    - when: never

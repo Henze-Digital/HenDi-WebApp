@@ -26,7 +26,7 @@ declare function wdt:orgs($item as item()*) as map(*) {
         'name' : 'orgs',
         'prefix' : substring(config:get-option('orgsIdPattern'), 1, 3),
         'check' : function() as xs:boolean {
-            if($item castable as xs:string and crud:docAvailable($item)) then matches($item, config:wrap-regex('orgsIdPattern'))
+            if($item castable as xs:string and crud:doc($item)) then matches($item, config:wrap-regex('orgsIdPattern'))
             else false()
         },
         'filter' : function() as document-node()* {
@@ -93,7 +93,7 @@ declare function wdt:persons($item as item()*) as map(*) {
         'name' : 'persons',
         'prefix' : substring(config:get-option('personsIdPattern'), 1, 3),
         'check' : function() as xs:boolean {
-            if($item castable as xs:string and crud:docAvailable($item)) then matches($item, config:wrap-regex('personsIdPattern'))
+            if($item castable as xs:string and crud:doc($item)) then matches($item, config:wrap-regex('personsIdPattern'))
             else false()
         },
         'filter' : function() as document-node()* {
@@ -193,12 +193,19 @@ declare function wdt:letters($item as item()*) as map(*) {
         let $letterClass := if($letterEnvelope or $letterEnclosures)
         					then($letterClass || ' (' || lang:get-language-string('with',$lang) || ' ' || string-join(($letterEnvelope, $letterEnclosures), concat(' ', lang:get-language-string('and',$lang),' ')) || ')')
         					else($letterClass)
-        let $letterClass := if(($TEI//tei:msDesc)[1]//tei:objectDesc[1]//tei:material[@function='copy.carbon']) then($letterClass || ' [' || lang:get-language-string('physDesc.objectDesc.material.copy.carbon',$lang) || '] ' || lang:get-language-string('from', $lang) || ' ')
-                            else($letterClass || ' ' || lower-case(lang:get-language-string('from', $lang)) || ' ')
+        let $letterClass := $letterClass || ' ' || (
+                                if(($TEI//tei:msDesc)[1]//tei:objectDesc[1]//tei:material[@function])
+                                then('[' || lang:get-language-string(('physDesc.objectDesc.material.' || ($TEI//tei:msDesc)[1]//tei:objectDesc[1]//tei:material/@function),$lang) || '] ')
+                                else()
+                            ) || (
+                                if($TEI//tei:relation[@name='isEnvelopeOf'])
+                                then (lower-case(lang:get-language-string('toBelongs', $lang)) || ':')
+                                else(lower-case(lang:get-language-string('from', $lang)))
+                            ) || ' '
         return (
             element tei:title {
                 if($letterClass) then ($letterClass) else(),
-                concat($sender, ' ', lower-case(lang:get-language-string('to',$lang)), ' ', $addressee, ','), $date
+                concat($sender, ' ', lower-case(lang:get-language-string('to',$lang)), ' ', $addressee, ','), string-join(tokenize($date, ' '),'&#8239;')
             }
         )
     }
@@ -847,7 +854,7 @@ declare function wdt:places($item as item()*) as map(*) {
         'name' : 'places',
         'prefix' : substring(config:get-option('placesIdPattern'), 1, 3),
         'check' : function() as xs:boolean {
-            if($item castable as xs:string and crud:docAvailable($item)) then matches($item, config:wrap-regex('placesIdPattern'))
+            if($item castable as xs:string) then matches($item, config:wrap-regex('placesIdPattern'))
             else false()
         },
         'filter' : function() as document-node()* {

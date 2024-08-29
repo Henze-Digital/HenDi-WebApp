@@ -89,12 +89,13 @@ declare
     %templates:wrap
     function app:documentFooter($node as node(), $model as map(*)) as map(*) {
         let $lang := $model('lang')
-        let $svnProps := config:get-svn-props($model('docID'))
-        let $author := map:get($svnProps, 'author')
-        let $date := xs:dateTime(map:get($svnProps, 'dateTime'))
+        let $dataProps := config:get-data-props($model('docID'))
+        let $author := map:get($dataProps, 'author')
+        let $date := xs:dateTime(map:get($dataProps, 'dateTime'))
         let $formatedDate := 
             try { date:format-date($date, $config:default-date-picture-string($lang), $lang) }
             catch * { wega-util:log-to-file('warn', 'Failed to get Subversion properties for ' || $model('docID') ) }
+        let $rev := map:get($dataProps, 'rev')
         let $version := config:expath-descriptor()/@version => string()
         let $versionDate := date:format-date(xs:date(config:get-option('versionDate')), $config:default-date-picture-string($lang), $lang)
         return
@@ -103,7 +104,7 @@ declare
                 'permalink' : config:permalink($model('docID')),
                 'versionNews' : app:createDocLink(crud:doc(config:get-option('versionNews')), lang:get-language-string('versionInformation',($version, $versionDate), $lang), $lang, ()),
                 'latestChange' :
-                    if($config:isDevelopment) then lang:get-language-string('lastChangeDateWithAuthor',($formatedDate,$author),$lang)
+                    if($config:isDevelopment) then lang:get-language-string('lastChangeDateWithAuthor',($formatedDate,$author,$rev),$lang)
                     else lang:get-language-string('lastChangeDateWithoutAuthor', $formatedDate, $lang)
             }
 };
@@ -721,20 +722,20 @@ declare %private function app:createLetterLink($teiDate as element(tei:date)?, $
 };
 
 (:~
- : Construct a name from a tei:persName or tei:name element wrapped in a <span> 
- : If a @key is given on persName the regularized form will be returned, otherwise the content of persName.
- : If persName is empty than "unknown" is returned.
+ : Construct a name from a tei:persName, tei:orgName, or tei:name element wrapped in a <span> 
+ : If a @key is given on the element the regularized form will be returned, otherwise the content of the element.
+ : If the element is empty than "unknown" is returned.
  : 
  : @author Peter Stadler
- : @param $persName the tei:persName element
+ : @param $persName the tei:persName, tei:orgName, or tei:name element
  : @param $lang the current language (de|en)
- : @param $order (sf|fs) whether to print "surname, forename" or "forename surname"
- : @return 
+ : @param $order (sf|fs|s) whether to print "surname, forename", or "forename surname", or just the surname
+ : @return a html:span element with the constructed name
  :)
-declare function app:printCorrespondentName($persName as element()?, $lang as xs:string, $order as xs:string) as element() {
+declare function app:printCorrespondentName($persName as element()?, $lang as xs:string, $order as xs:string) as element(xhtml:span) {
     if(exists($persName/@key)) then 
         if ($order eq 'fs') then app:createDocLink(crud:doc($persName/string(@key)), wega-util:print-forename-surname-from-nameLike-element($persName), $lang, ('class=' || config:get-doctype-by-id($persName/@key)))
-        else if ($order eq 's') then app:createDocLink(crud:doc($persName/string(@key)), substring-before(query:title($persName/@key),','), $lang, ('class=preview ' || concat($persName/@key, " ", config:get-doctype-by-id($persName/@key))))
+        else if ($order eq 's') then app:createDocLink(crud:doc($persName/string(@key)), functx:substring-before-if-contains(query:title($persName/@key), ', '), $lang, ('class=preview ' || concat($persName/@key, " ", config:get-doctype-by-id($persName/@key))))
         else app:createDocLink(crud:doc($persName/string(@key)), query:title($persName/@key), $lang, ('class=' || config:get-doctype-by-id($persName/@key)))
     else if(not(functx:all-whitespace($persName))) then 
         if ($order eq 'fs') then <xhtml:span class="noDataFound">{wega-util:print-forename-surname-from-nameLike-element($persName)}</xhtml:span>
@@ -1438,12 +1439,12 @@ declare
     function app:preview-correspPartner-name($node as node(), $model as map(*), $lang as xs:string, $popover as xs:string) as element() {
         let $key := $model('correspPartner')
         let $myPopover := wega-util-shared:semantic-boolean($popover)
-        let $doc2keyAvailable := crud:docAvailable($key)
+        let $doc2key := crud:doc($key)
         return
-            if($key and $myPopover and $doc2keyAvailable)
-            then app:createDocLink(crud:doc($key), crud:doc($key)//(tei:persName|tei:orgName)[@type='reg'] ! string-join(str:txtFromTEI(., $lang), ''), $lang, (), true())
+            if($myPopover and $doc2key)
+            then app:createDocLink($doc2key, $doc2key//(tei:persName|tei:orgName)[@type='reg'] ! string-join(str:txtFromTEI(., $lang), ''), $lang, (), true())
             else element xhtml:span {
-                if($key and $doc2keyAvailable) then wdt:lookup(config:get-doctype-by-id($key), data($key))?title('txt')
+                if($doc2key) then wdt:lookup(config:get-doctype-by-id($key), data($key))?title('txt')
                 else str:normalize-space($model('correspPartner'))
             }
 };
@@ -1455,16 +1456,16 @@ declare
         let $keys := $model('editors')
         for $key in $keys
             let $myPopover := wega-util-shared:semantic-boolean($popover)
-            let $doc2keyAvailable := crud:docAvailable($key)
+            let $doc2key := crud:doc($key)
                 return
                     <li class="media editors" xmlns="http://www.w3.org/1999/xhtml">
 						<span class="pull-left">
 							<i class="fa fa-user"/>
 						</span> {
-                            if($key and $myPopover and $doc2keyAvailable)
-                            then app:createDocLink(crud:doc($key), crud:doc($key)//(tei:persName|tei:orgName)[@type='reg'] ! string-join(str:txtFromTEI(., $lang), ''), $lang, (), true())
+                            if($myPopover and $doc2key)
+                            then app:createDocLink($doc2key, $doc2key//(tei:persName|tei:orgName)[@type='reg'] ! string-join(str:txtFromTEI(., $lang), ''), $lang, (), true())
                             else element xhtml:span {
-                                if($key and $doc2keyAvailable) then wdt:lookup(config:get-doctype-by-id($key), data($key))?title('txt')
+                                if($doc2key) then wdt:lookup(config:get-doctype-by-id($key), data($key))?title('txt')
                                 else str:normalize-space($key)
                             }
                         }
@@ -1933,27 +1934,26 @@ declare
     %templates:wrap
     %templates:default("lang", "en")
     function app:respStmts($node as node(), $model as map(*), $lang as xs:string) as element()* {
-        functx:distinct-deep(
+        
         let $respStmts := for $respStmt in $model?respStmts
         					return (
             					<dt xmlns="http://www.w3.org/1999/xhtml">{app:translate-resp($respStmt/tei:resp, $lang)}</dt>,
 					            <dd xmlns="http://www.w3.org/1999/xhtml">{str:normalize-space(string-join($respStmt/tei:name, '; '))}</dd>
         							)
         let $trlDocs := collection(config:get-option('dataCollectionPath'))//tei:relation[@name='isTranslationOf'][@key=$model?docID]/root()
-        for $trlDoc in $trlDocs
-            let $trlRespStmt := $trlDoc//tei:respStmt[tei:resp[.='Übersetzung']]
-            let $trlDocLang := $trlDoc//tei:profileDesc/tei:langUsage/tei:language/@ident => string()
-            let $trlDocLang := switch ($trlDocLang)
-                                case 'en' return 'gb'
-                                default return $trlDocLang
-            let $trlLang := element span { attribute class {'fi fi-' || $trlDocLang}}
-            let $respLabel := app:translate-resp($trlRespStmt/tei:resp, $lang)
-            let $respStmtsRelated := 
-            	(<dt xmlns="http://www.w3.org/1999/xhtml">{$respLabel, '&#160;', $trlLang}</dt>,
-                <dd xmlns="http://www.w3.org/1999/xhtml">{str:normalize-space(string-join($trlRespStmt/tei:name, '; '))}</dd>)
+        let $respStmtsTrl := for $trlDoc in $trlDocs
+                                    let $trlRespStmt := $trlDoc//tei:respStmt[tei:resp[.='Übersetzung']]
+                                    let $trlDocLang := $trlDoc//tei:profileDesc/tei:langUsage/tei:language/@ident => string()
+                                    let $trlDocLang := switch ($trlDocLang)
+                                                        case 'en' return 'gb'
+                                                        default return $trlDocLang
+                                    let $trlLang := element span { attribute class {'fi fi-' || $trlDocLang}}
+                                    let $respLabel := app:translate-resp($trlRespStmt/tei:resp, $lang)
+                                    return
+                                        (<dt xmlns="http://www.w3.org/1999/xhtml">{$respLabel, '&#160;', $trlLang}</dt>,
+                                        <dd xmlns="http://www.w3.org/1999/xhtml">{str:normalize-space(string-join($trlRespStmt/tei:name, '; '))}</dd>)
         return
-            ($respStmts, $respStmtsRelated)
-        )
+            functx:distinct-deep(($respStmts, $respStmtsTrl))
 };
 
 declare 
@@ -2543,7 +2543,7 @@ declare
     for $relator at $i in $model('relatorGrp')/node()
         let $key := $relator/@codedval | $relator/@key
         let $myPopover := wega-util-shared:semantic-boolean($popover)
-        let $doc2keyAvailable := crud:docAvailable($key)
+        let $doc2key := crud:doc($key)
         let $relators-translation-lang :=
         	if($relator/(self::mei:*|self::tei:*)[@role[. = 'trl'] and @label])
         	then(
@@ -2554,7 +2554,7 @@ declare
 	            else wega-util:log-to-file('warn', 'app:preview-relator-trlLang(): Failed to reckognize label'))
             else()
         return
-            if($key and $myPopover and $doc2keyAvailable)
+            if($myPopover and $doc2key)
             then (if($i gt 1)
                   then(element xhtml:span {' | '})
                   else(),
@@ -2566,7 +2566,7 @@ declare
                 if($i gt 1)
                     then(element xhtml:span {' | '})
                     else(),
-                if($key and $doc2keyAvailable)
+                if($doc2key)
                     then wdt:lookup(config:get-doctype-by-id($key), data($key))?title('txt')
                     else (str:normalize-space($relator),
                 if($relators-translation-lang)
@@ -3057,7 +3057,7 @@ declare
 		for $person in $persons
 	        let $key := $person/@key
 	        let $myPopover := wega-util-shared:semantic-boolean($popover)
-	        let $doc2keyAvailable := crud:docAvailable($key)
+	        let $doc2key := crud:doc($key)
 	        let $resps := for $each in distinct-values($persons[. = $person]/parent::tei:respStmt/tei:resp)
 	                        order by $each
 	                        return $each
@@ -3065,10 +3065,10 @@ declare
 	        return
 	            <li>
 	                <span>{
-    	            	if($key and $myPopover and $doc2keyAvailable)
-    		            then (app:createDocLink(crud:doc($key), query:title($key), $lang, (), true()))
+    	            	if($myPopover and $doc2key)
+    		            then (app:createDocLink($doc2key, query:title($key), $lang, (), true()))
     		            else element xhtml:span {
-    		                if($key and $doc2keyAvailable)
+    		                if($doc2key)
     		                then wdt:lookup(config:get-doctype-by-id($key), data($key))?title('txt')
     		                else (str:normalize-space($person))
     		            }

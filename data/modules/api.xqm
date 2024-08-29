@@ -142,7 +142,7 @@ declare function api:application-status($model as map(*)*) as map(*) {
             map:entry('results',
                  map {
                  "status": if($healthy) then "healthy" else "unhealthy",
-                 "svnRevision": if (config:getCurrentSvnRev()) then config:getCurrentSvnRev() else 0,
+                 "dataRevision": if (config:getCurrentDataRev()) then config:getCurrentDataRev() else 0,
                  "deployment": xs:dateTime($config:repo-descriptor/repo:deployed),
                  "version": config:expath-descriptor()/data(@version)
              }
@@ -463,8 +463,8 @@ declare %private function api:findByID($id as xs:string) as document-node()* {
 };
 
 (:
-declare function api:ant-currentSvnRev($model as map(*)) as xs:int? {
-    config:getCurrentSvnRev()
+declare function api:ant-currentDataRev($model as map(*)) as xs:int? {
+    config:getCurrentDataRev()
 };
 
 declare function api:ant-deleteResources($model as map(*)) {
@@ -483,15 +483,15 @@ declare function api:ant-deleteResources($model as map(*)) {
 };
 :)
 
-(:declare function api:ant-patchSvnHistory($model as map(*)) as map(*)? {
+(:declare function api:ant-patchDataHistory($model as map(*)) as map(*)? {
     if($model('data')/*/@head castable as xs:integer) then (
-        update value $config:svn-change-history-file/dictionary/@head with $model('data')/*/data(@head),
+        update value $config:data-change-history-file/dictionary/@head with $model('data')/*/data(@head),
         for $entry in $model('data')//entry
         let $id := $entry/data(@xml:id)
-        let $old := $config:svn-change-history-file//id($id)
+        let $old := $config:data-change-history-file//id($id)
         return 
             if($old) then update replace $old with $entry
-            else update insert $entry into $config:svn-change-history-file/dictionary
+            else update insert $entry into $config:data-change-history-file/dictionary
         )
     else map {'code' : 400, 'message' : 'could not parse XML fragment', 'fields' : 'invalid format'}
 };

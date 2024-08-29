@@ -21,6 +21,8 @@
     <xsl:param name="catalogues-collection-path"/>
     <xsl:param name="environment"/>
     
+    <xsl:param name="maxSize">600</xsl:param>
+    
     <xsl:include href="common_funcs.xsl"/>
     
     <xsl:key name="charDecl" match="tei:char" use="@xml:id"/>
@@ -51,13 +53,17 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-<!--        <xsl:choose>-->
-<!--            <xsl:when test="$enclosure"/>-->
-<!--            <xsl:otherwise>-->
-                <xsl:element name="a">
-                    <xsl:attribute name="class" select="string-join(('noteMarker', $marker), ' ')"/>
-                    <xsl:attribute name="id" select="concat('ref-', $id)"/>
-                    <xsl:attribute name="data-toggle">popover</xsl:attribute>
+	<xsl:variable name="class" as="xs:string?">
+            <xsl:choose>
+                <xsl:when test="$marker castable as xs:int">arabic</xsl:when>
+                <xsl:when test="empty($marker)"/>
+                <xsl:otherwise><xsl:value-of select="$marker"/></xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+	<xsl:element name="a">
+                    <xsl:attribute name="class" select="string-join(('noteMarker', $class), ' ')"/>
+            <xsl:attribute name="id" select="wega:get-backref-id($id)"/>
+            <xsl:attribute name="data-toggle">popover</xsl:attribute>
                     <xsl:attribute name="data-trigger">focus</xsl:attribute>
                     <xsl:attribute name="tabindex">0</xsl:attribute>
                     <xsl:attribute name="data-ref" select="concat('#', $id)"/>
@@ -65,6 +71,9 @@
                         <xsl:when test="$marker eq 'arabic'">
                             <xsl:value-of select="count(preceding::tei:note[@type=('commentary','definition','textConst','internal')]) + 1"/>
                         </xsl:when>
+                    	<xsl:when test="$marker castable as xs:int">
+                    		<xsl:value-of select="$marker"/>
+                    	</xsl:when>
                         <xsl:when test="not($marker) and self::tei:note[not(@type=('textConst','internal'))]">
                             <xsl:text>*</xsl:text>
                         </xsl:when>
@@ -130,20 +139,32 @@
     <xsl:template name="createEndnotes">
         <xsl:element name="div">
             <xsl:attribute name="id" select="'endNotes'"/>
-            <xsl:element name="h3">
-                <xsl:value-of select="wega:getLanguageString('originalFootnotes', $lang)"/>
-            </xsl:element>
+            <xsl:element name="h3"><xsl:value-of select="wega:getLanguageString('originalFootnotes', $lang)"/></xsl:element>
             <xsl:element name="ul">
                 <xsl:for-each select="//tei:note[@place='bottom']">
                     <xsl:element name="li">
                         <xsl:attribute name="id" select="@xml:id"/>
+                        <xsl:if test="@n">
+                            <!-- the value of @data-title will be injected as the title of the popover -->
+                            <xsl:attribute name="data-title" select="concat(wega:getLanguageString('originalFootnotes', $lang), ' ', @n)"/>
+                        </xsl:if>
                         <xsl:element name="a">
-                            <xsl:attribute name="href" select="concat('#backref-', @xml:id)"/>
+                            <xsl:attribute name="href" select="wega:get-backref-link(@xml:id)"/>
                             <xsl:attribute name="class">fn-backref</xsl:attribute>
-                            <xsl:element name="i">
-                                <xsl:attribute name="class">fa fa-arrow-up</xsl:attribute>
-                                <xsl:attribute name="aria-hidden">true</xsl:attribute>
-                            </xsl:element>
+                        <xsl:choose>
+                          <!-- for automatically numbered footnotes -->
+                        <xsl:when test="@n">
+                        		<xsl:value-of select="@n"/>
+                        	</xsl:when>
+                        	
+                            <!-- default footnote backlink symbol -->
+                                <xsl:otherwise>
+                                	<xsl:element name="i">
+                                		<xsl:attribute name="class">fa fa-arrow-up</xsl:attribute>
+                                		<xsl:attribute name="aria-hidden">true</xsl:attribute>
+                                    </xsl:element>
+                                </xsl:otherwise>
+                            </xsl:choose>
                         </xsl:element>
                         <xsl:apply-templates/>
                     </xsl:element>
@@ -634,7 +655,7 @@
 	</xsl:template>
     
     <!--  Hier mit priority 0.5, da in Briefen und Tagebüchern unterschiedlich behandelt  -->
-    <xsl:template match="tei:pb" priority="0.5">
+	<xsl:template match="tei:pb" priority="0.5" name="render-pb">
         <xsl:variable name="pbTitleText">
             <xsl:choose>
                 <xsl:when test="matches(@n, '\d(r|v)')">
@@ -745,8 +766,7 @@
                                         <xsl:sequence select="(1,7.5,1,.5)"/>
                                     </xsl:when>
                                     <xsl:otherwise>
-                                        <xsl:message>XSLT Warning: unsupported ammount of table cells <xsl:value-of select="$docID"/>
-                                        </xsl:message>
+                                        <xsl:message>XSLT Warning: unsupported ammount of table cells <xsl:value-of select="$docID"/></xsl:message>
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </xsl:when>
@@ -837,16 +857,38 @@
     </xsl:template>
 
     <xsl:template match="tei:notatedMusic | tei:figure">
-        <xsl:element name="span">
+        <xsl:variable name="elem">
+            <!-- 
+                inline figures and notatedMusic will be transformed to html:span elements
+                while 'real' figures will be transformed to html:figure.
+                html:figure elements will need to be placed outside of paragraphs and can contain captions. 
+            -->
+            <xsl:choose>
+                <xsl:when test="@rend='inline'">span</xsl:when>
+                <xsl:when test="self::tei:notatedMusic[@rend='maxSize']">figure</xsl:when>
+                <xsl:when test="self::tei:notatedMusic[not(@rend='maxSize')]">span</xsl:when>
+                <xsl:otherwise>figure</xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:element name="{$elem}">
             <xsl:attribute name="class" select="string-join((concat('tei_', local-name()), @rend), ' ')"/>
             <xsl:choose>
                 <xsl:when test="tei:graphic">
                     <xsl:apply-templates select="tei:graphic"/>
                 </xsl:when>
                 <xsl:otherwise>
+                    <xsl:text>[</xsl:text>
+                    <xsl:value-of select="wega:getLanguageString(local-name(), $lang)"/>
+                    <xsl:text>: </xsl:text>
                     <xsl:apply-templates select="tei:desc | tei:figDesc"/>
+                <xsl:text>]</xsl:text>
                 </xsl:otherwise>
             </xsl:choose>
+        <xsl:if test="tei:figDesc/@rend='caption' and $elem = 'figure'">
+                <xsl:element name="figcaption">
+                    <xsl:apply-templates select="tei:figDesc/node()"/>
+                </xsl:element>
+            </xsl:if>
         </xsl:element>
     </xsl:template>
     
@@ -854,8 +896,14 @@
         <xsl:variable name="figureSize">
             <!-- There's more to do here: different images for different screen sizes and resolutions, etc. -->
             <xsl:choose>
+                <xsl:when test="parent::tei:*/@rend='align-horizontally'">
+                    <xsl:value-of select="concat($maxSize div count(parent::tei:*/tei:graphic) -1, ',')"/>
+                </xsl:when>
                 <xsl:when test="parent::tei:*/@rend='maxSize'">
-                    <xsl:value-of select="'600,'"/>
+                    <xsl:value-of select="concat($maxSize, ',')"/>
+                </xsl:when>
+            <xsl:when test="parent::tei:*/@rend=('float-left', 'float-right')">
+                    <xsl:value-of select="concat($maxSize div 3, ',')"/>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:value-of select="'full'"/>
@@ -1025,6 +1073,16 @@
 
     <xsl:template match="tei:footNote"/>
 
+    <!--
+        (historic) footnotes with @n attribute will be treated like modern footnotes,
+        i.e. footnote reference numbers will be sequentially numbered and added automatically 
+    -->
+    <xsl:template match="tei:footNote[@n]" priority="2">
+        <xsl:call-template name="popover">
+            <xsl:with-param name="marker" select="@n"/>
+        </xsl:call-template>
+    </xsl:template>
+
     <xsl:template match="tei:g">
         <xsl:variable name="smuflCodepoint" as="xs:string">
             <xsl:variable name="charName" select="concat('_', functx:substring-before-if-contains(functx:substring-after-last(@ref, '/'), '.'))"/>
@@ -1042,8 +1100,7 @@
                     <xsl:apply-templates/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:message>XSLT Warning: template for `tei:g` failed to recognize glyph in document <xsl:value-of select="$docID"/>
-                    </xsl:message>
+                    <xsl:message>XSLT Warning: template for `tei:g` failed to recognize glyph in document <xsl:value-of select="$docID"/></xsl:message>
                     <xsl:apply-templates/>
                 </xsl:otherwise>
             </xsl:choose>

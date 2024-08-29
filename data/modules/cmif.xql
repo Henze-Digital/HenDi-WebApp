@@ -23,8 +23,8 @@ declare option output:indent "yes";
 
 declare variable $ct:source-uuid := config:get-option('cmifID');
 declare variable $ct:last-modified as xs:dateTime? := 
-    if($config:svn-change-history-file/dictionary/@dateTime castable as xs:dateTime) 
-    then $config:svn-change-history-file/dictionary/xs:dateTime(@dateTime)
+    if($config:data-change-history-file/dictionary/@dateTime castable as xs:dateTime) 
+    then $config:data-change-history-file/dictionary/xs:dateTime(@dateTime)
     else (
         let $versionDateSeq := tokenize(config:get-option('versionDate'),'-')
         let $year := subsequence($versionDateSeq,1,1)
@@ -37,7 +37,10 @@ declare variable $ct:etag as xs:string? :=
     if(exists($ct:last-modified))
     then util:hash($ct:last-modified, 'md5')
     else ();
- declare function ct:create-header() as element(tei:teiHeader) {
+    
+declare variable $ct:version as xs:string := request:get-parameter('v', '1');
+
+declare function ct:create-header() as element(tei:teiHeader) {
     <teiHeader xmlns="http://www.tei-c.org/ns/1.0">
         <fileDesc>
             <titleStmt>
@@ -109,8 +112,11 @@ declare function ct:correspDesc($input as element(tei:correspDesc)) as element(t
         else (),
         if(not($input/tei:correspAction[@type='received']))
         then ct:identity-transform-with-switches(<correspAction xmlns="http://www.tei-c.org/ns/1.0" type="received"><persName>Unbekannt</persName></correspAction>)
+        else (),
+        if($ct:version ge '2')
+        then ct:cmif2-note($input/root())
         else ()
-        }
+    }
 };
 
 declare function ct:correspAction($input as element()) as element(tei:correspAction) {
@@ -127,14 +133,14 @@ declare function ct:correspAction($input as element()) as element(tei:correspAct
 declare function ct:participant($input as element()) as element() {
     let $id := $input/@key => tokenize('\s+')
     (: no support for multiple keys, e.g. `<rs type="persons" key="A000914 A008040">Jähns, F. W. und Ida</rs>` :)
-    let $gnd := if(count($id) = 1) then query:get-gnd($id) else ()
+    let $target := if(count($id) = 1) then ct:ref-target($id) else ()
     let $elemName := 
         (: map everything (except orgName) to persName, since correspSearch only supports these :)
         if(local-name($input) = ('rs', 'name')) then 'persName'
         else local-name($input)
     return 
         element {QName('http://www.tei-c.org/ns/1.0', $elemName)} {
-            if($gnd) then attribute {'ref'} {'http://d-nb.info/gnd/' || $gnd}
+            if($target) then attribute {'ref'} {$target}
             else if(count($id) = 1) then attribute {'ref'} {config:get-option('permaLinkPrefix') || '/' || $id}
             else (),
             normalize-space($input)
@@ -143,10 +149,10 @@ declare function ct:participant($input as element()) as element() {
 
 declare function ct:place($input as element()) as element(tei:placeName) {
     let $id := ($input//@key)[1] (: take care of nested structures like <placeName key="zzz"><settlement key="yyy">foo</settlement> :)
-    let $geoID := query:get-geonamesID($id)
+    let $target := ct:ref-target($id)
     return 
         element {QName('http://www.tei-c.org/ns/1.0', 'placeName')} {
-            if($geoID) then attribute {'ref'} {'http://www.geonames.org/' || $geoID}
+            if($target) then attribute {'ref'} {$target}
             else if($id) then attribute {'ref'} {config:get-option('permaLinkPrefix') || '/' || $id}
             else (),
             normalize-space($input)
@@ -155,13 +161,32 @@ declare function ct:place($input as element()) as element(tei:placeName) {
 
 declare function ct:date($input as element()) as element(tei:date) {
     element {QName('http://www.tei-c.org/ns/1.0', local-name($input))} {
-        $input/@*[not(local-name(.) = ('n', 'calendar', 'type'))],
+        for $att in $input/@*[not(local-name(.) = ('n', 'calendar', 'type'))]
+        return attribute {local-name($att)}{functx:substring-before-if-contains($att,'T')},
         if($input/@type = 'editor') then(attribute {'evidence'}{'conjectured'}) else()
         (: 
         no content allowed here with the schema at 
         https://raw.githubusercontent.com/TEI-Correspondence-SIG/CMIF/master/schema/cmi-customization.rng  
         :)
     }
+};
+
+(:~
+ : Extract text features for CMIF v2 and put them in a tei:note
+ :)
+declare function ct:cmif2-note($doc as document-node()) as element(tei:note)? {
+    let $persons := ct:mentioned-entity-by-wega-facet($doc, 'persons', 'cmif:mentionsPerson')
+    let $places := ct:mentioned-entity-by-wega-facet($doc, 'places', 'cmif:mentionsPlace')
+    let $fullTextURL := config:permalink($doc/*/@xml:id) || '.xml?format=tei_all'
+    return
+        element {QName('http://www.tei-c.org/ns/1.0', 'note')} {
+            $persons,
+            $places,
+            element {QName('http://www.tei-c.org/ns/1.0', 'ref')} {
+                attribute {'type'} {'cmif:isAvailableAsTEIfile'},
+                attribute {'target'} {$fullTextURL}
+            }
+        }
 };
 
 declare function ct:corresp-list() as element(tei:TEI) {
@@ -184,6 +209,54 @@ declare %private function ct:response-headers() as empty-sequence() {
         response:set-header('Cache-Control', 'max-age=300,public')
     )
     else ()
+};
+
+(:~
+ : Helper function to construct entity references within CMIF v2 tei:note element
+ :
+ : @param $doc the document to extract the features from
+ : @param $wegaFacet the facet string as used in query:get-facets#2
+ : @param $cmifURI the corresponding CMIF v2 URI as proposed in https://encoding-correspondence.bbaw.de/v1/CMIF.html#c-6
+ :)
+declare %private function ct:mentioned-entity-by-wega-facet(
+    $doc as document-node(), 
+    $wegaFacet as xs:string, 
+    $cmifURI as xs:string) as element(tei:ref)* 
+    {
+        for $entity in ($doc => query:get-facets($wegaFacet))/parent::*
+        group by $id := $entity/@key
+        let $target := ct:ref-target($id)
+        return
+            element {QName('http://www.tei-c.org/ns/1.0', 'ref')} {
+                attribute {'type'} {$cmifURI},
+                attribute {'target'} {$target},
+                query:title($id)
+            }
+};
+
+(:~
+ : Helper function to construct @target attributes
+ : If an authority ID exists (GND for persons, Geonames for places), use this;
+ : otherwise use our WeGA permalink
+ :)
+declare %private function ct:ref-target($id as xs:string?) as xs:anyURI? {
+    let $docType := config:get-doctype-by-id($id)
+    let $authorityID := 
+        switch($docType)
+        case 'persons' return query:get-gnd($id)
+        case 'places' return query:get-geonamesID($id)
+        default return ()
+    return
+        if($authorityID) 
+        then 
+            switch($docType)
+            case 'persons' return xs:anyURI('http://d-nb.info/gnd/' || $authorityID)
+            case 'places' return xs:anyURI('http://www.geonames.org/' || $authorityID)
+            default return ()
+        else 
+        if($id) 
+        then xs:anyURI(config:get-option('permaLinkPrefix') || '/' || $id)
+        else () 
 };
 
 (:~
@@ -220,7 +293,7 @@ then (
 else (
     ct:response-headers(),
     mycache:doc(str:join-path-elements(
-        ($config:tmp-collection-path, 'correspDesc.xml')), 
+        ($config:tmp-collection-path, 'cmif_v' || $ct:version || '.xml')), 
         ct:corresp-list#0, 
         (), 
         function($currentDateTimeOfFile as xs:dateTime?) as xs:boolean { wega-util:check-if-update-necessary($currentDateTimeOfFile, xs:dayTimeDuration('P999D')) }, 

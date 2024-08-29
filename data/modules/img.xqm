@@ -221,7 +221,7 @@ declare %private function img:wikipedia-images($model as map(*), $lang as xs:str
     let $wikiArticle := $wikiModel?wikiContent 
     (: Look for images in wikipedia infobox (for organizations and english wikipedia) and thumbnails  :)
     let $images := 
-        $wikiArticle//xhtml:td[@class='infobox-image']//xhtml:img |
+        $wikiArticle//xhtml:td[contains(@class, 'infobox-image')]//xhtml:img |
  $wikiArticle//xhtml:figure[@typeof='mw:File/Thumb']//xhtml:img
     return 
         for $img in $images
@@ -250,7 +250,7 @@ declare %private function img:wikipedia-images($model as map(*), $lang as xs:str
         return 
             if($thumbURI castable as xs:anyURI) then
                 map {
-                    'caption' : normalize-space(concat($caption[1],' (', lang:get-language-string('sourceWikipedia', $lang), ')')),
+                    'caption' : normalize-space(concat($caption,' (', lang:get-language-string('sourceWikipedia', $lang), ')')),
                     'linkTarget' : $linkTarget,
                     'source' : 'Wikimedia',
                     'url' : function($size) {
@@ -445,7 +445,7 @@ declare %private function img:bildindex-images($model as map(*), $lang as xs:str
             if($picURI castable as xs:anyURI) then
                 map {
                     'caption' : str:normalize-space($div//xhtml:span[contains(@class, 'galHeadline')]) || ' (Quelle: Bildindex der Kunst und Architektur)',
-                    'linkTarget' : $div/xhtml:figure/xhtml:a/@href,
+                    'linkTarget' : $div/xhtml:figure/xhtml:a/data(@href),
                     'source' : 'Bildindex der Kunst und Architektur',
                     'url' : function($size) {
                         if($picURI = '/images/nopic_large.png')
@@ -497,8 +497,11 @@ declare
             return
                 element {node-name($node)} {
                     $node/@*[not(local-name(.) = ('src', 'title', 'alt'))],
-                    attribute title {$model('portrait')('caption')},
-                    attribute alt {$model('portrait')('caption')},
+                    if($model('portrait')('caption')) then (
+                        attribute title {$model('portrait')('caption')},
+                    attribute alt {$model('portrait')('caption')}
+                    )
+                    else attribute alt {'Preview Icon'},
                     attribute src {$url}
                 }
         else $node
@@ -519,9 +522,13 @@ declare %private function img:get-generic-portrait($model as map(*), $lang as xs
         else if(config:is-corresp($model('docID'))) then 'corresp'
         else if(config:is-biblio($model('docID'))) then 'biblio'
         else $model('doc')//tei:sex/text()
+     let $caption :=
+        if(config:is-person($model('docID')))
+        then 'no portrait available'
+        else ()
     return
         map {
-            'caption' : 'no portrait available',
+            'caption' : $caption,
             'linkTarget' : (),
             'source' : 'Carl-Maria-von-Weber-Gesamtausgabe',
             'url' : function($size) {

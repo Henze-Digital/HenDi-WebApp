@@ -399,7 +399,7 @@ declare function wega-util:settlement-key-from-rism-siglum($siglum as xs:string)
 :)
 declare function wega-util:log-to-file($priority as xs:string, $message as xs:string) as empty-sequence() {
     let $file := config:get-option('errorLogFile')
-    let $message := concat($message, ' (rev. ', config:getCurrentSvnRev(), ')')
+    let $message := concat($message, ' (rev. ', config:getCurrentDataRev(), ')')
     return (
         util:log-app($priority, $file, $message),
         if($config:isDevelopment and ($priority = ('error', 'warn', 'debug'))) then util:log-system-out($message)
