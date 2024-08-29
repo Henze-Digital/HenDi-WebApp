@@ -11,18 +11,24 @@
 	</xsl:template>
 	
 	<xsl:template match="tei:body">
-		<xsl:element name="div">
-			<xsl:attribute name="class" select="'teiLetter_body'"/>
-			<xsl:if test="ancestor::tei:text/@type='letter'">
-				<xsl:attribute name="style" select="'display: inline-grid; min-width: 80%;'"/>
+		<xsl:variable name="hasEnvelope">
+		    <xsl:if test="parent::tei:text/@type='envelope'">
+				<xsl:value-of select="wega:getLanguageString('physDesc.objectDesc.form.envelope', $lang)"/>
+		    </xsl:if>
+		</xsl:variable>
+		<xsl:variable name="hasScript">
+		    <xsl:if test="not(contains(parent::tei:text/@type,'document')) and $doc//tei:handNote[1]/@script">
+				<xsl:value-of select="wega:getLanguageString(concat('handNoteHead',  functx:capitalize-first($doc//tei:handNote[1]/@script)), $lang)"/>
 			</xsl:if>
-			<xsl:choose>
+		</xsl:variable>
+		<xsl:choose>
 				<xsl:when test="parent::tei:text[@type='envelope' or @type='telegram' or starts-with(@type,'card')]">
-					<xsl:if test="parent::tei:text/@type='envelope'">
-    					<xsl:element name="h4">
-    						<xsl:attribute name="style" select="'padding-top: 2em; padding-bottom: 0.5em;'"/>
-    						[<xsl:value-of select="wega:getLanguageString('physDesc.objectDesc.form.envelope', $lang)"/>:]</xsl:element>
-					</xsl:if>
+					<xsl:element name="h4">
+						<xsl:attribute name="style" select="'padding-top: 2em; padding-bottom: 0.5em;'"/>
+					    <xsl:text>[</xsl:text>
+					    <xsl:value-of select="string-join(($hasEnvelope[normalize-space(.) != ''], $hasScript),', ')"/>
+					    <xsl:text>]</xsl:text>
+				    </xsl:element>
 					<xsl:for-each select="element()">
 						<xsl:choose>
 						    <xsl:when test="self::tei:div">
@@ -40,25 +46,19 @@
 						</xsl:choose>
 					</xsl:for-each>
 				</xsl:when>
-				<xsl:when test="not(contains(parent::tei:text/@type,'document'))">
-					<xsl:if test="$doc//tei:handNote[1]/@script">
-						<xsl:element name="h4">
-							<xsl:attribute name="style" select="'padding-top: 0em; padding-bottom: 2em;'"/>
-							<xsl:text>[</xsl:text>
-							<xsl:value-of select="wega:getLanguageString(concat('handNoteHead',  functx:capitalize-first($doc//tei:handNote[1]/@script)), $lang)"/>
-							<xsl:text>]</xsl:text>    
-						</xsl:element>
-					</xsl:if>
-					<xsl:apply-templates/>
-				</xsl:when>
 				<xsl:otherwise>
 					<xsl:apply-templates/>
 				</xsl:otherwise>
 			</xsl:choose>
-			<xsl:if test="//tei:note[@place='bottom']">
-				<xsl:call-template name="createEndnotes"/>
+		<xsl:element name="div">
+			<xsl:attribute name="class" select="'teiLetter_body'"/>
+			<xsl:if test="ancestor::tei:text/@type='letter'">
+				<xsl:attribute name="style" select="'display: inline-grid; min-width: 80%;'"/>
 			</xsl:if>
 		</xsl:element>
+		<xsl:if test="//tei:note[@place='bottom']">
+			<xsl:call-template name="createEndnotes"/>
+		</xsl:if>
 		<xsl:call-template name="createApparatus"/>
 	</xsl:template>
 	
