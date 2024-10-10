@@ -135,7 +135,8 @@ declare function api:code-findByElement($model as map(*)) {
 };
 
 declare function api:application-status($model as map(*)*) as map(*) {
-    let $healthy := crud:doc('A001000A')//tei:persName[@type='reg']/tei:surname = 'Henze'
+    let $healthy := query:get-author-element(crud:doc('A042BF20'))[@key = 'A001000A']
+    
     return
         map:merge(( 
             if(not($healthy)) then map:entry('code', 500) else (),
