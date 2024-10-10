@@ -135,7 +135,7 @@ declare function api:code-findByElement($model as map(*)) {
 };
 
 declare function api:application-status($model as map(*)*) as map(*) {
-    let $healthy := query:get-author-element(crud:doc('A042BF20'))[@key = 'A001000A']
+    let $healthy := core:getOrCreateColl('corresp', 'A001000A', true()) => count() gt 0
     
     return
         map:merge(( 
