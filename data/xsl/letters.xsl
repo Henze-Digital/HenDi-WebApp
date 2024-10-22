@@ -21,34 +21,34 @@
 				<xsl:value-of select="wega:getLanguageString(concat('handNoteHead',  functx:capitalize-first($doc//tei:handNote[1]/@script)), $lang)"/>
 			</xsl:if>
 		</xsl:variable>
+		<xsl:element name="h4">
+			<xsl:attribute name="style" select="'padding-top: 2em; padding-bottom: 0.5em;'"/>
+		    <xsl:text>[</xsl:text>
+		    <xsl:value-of select="string-join(($hasEnvelope[normalize-space(.) != ''], $hasScript),', ')"/>
+		    <xsl:text>]</xsl:text>
+	    </xsl:element>
 		<xsl:choose>
-				<xsl:when test="parent::tei:text[@type='envelope' or @type='telegram' or starts-with(@type,'card')]">
-					<xsl:element name="h4">
-						<xsl:attribute name="style" select="'padding-top: 2em; padding-bottom: 0.5em;'"/>
-					    <xsl:text>[</xsl:text>
-					    <xsl:value-of select="string-join(($hasEnvelope[normalize-space(.) != ''], $hasScript),', ')"/>
-					    <xsl:text>]</xsl:text>
-				    </xsl:element>
-					<xsl:for-each select="element()">
-						<xsl:choose>
-						    <xsl:when test="self::tei:div">
-						        <xsl:element name="div">
-        							<xsl:attribute name="class" select="'box_outer'"/>
-        							<xsl:apply-templates/>
-						        </xsl:element>
-						    </xsl:when>
-						    <xsl:when test="self::tei:pb">
-						        <xsl:call-template name="render-pb"/>
-						    </xsl:when>
-						    <xsl:otherwise>
-						    	<xsl:apply-templates/>
-						    </xsl:otherwise>
-						</xsl:choose>
-					</xsl:for-each>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:apply-templates/>
-				</xsl:otherwise>
+			<xsl:when test="parent::tei:text[@type='envelope' or @type='telegram' or starts-with(@type,'card')]">
+				<xsl:for-each select="element()">
+					<xsl:choose>
+					    <xsl:when test="self::tei:div">
+					        <xsl:element name="div">
+        						<xsl:attribute name="class" select="'box_outer'"/>
+        						<xsl:apply-templates/>
+					        </xsl:element>
+					    </xsl:when>
+					    <xsl:when test="self::tei:pb">
+					        <xsl:call-template name="render-pb"/>
+					    </xsl:when>
+					    <xsl:otherwise>
+					    	<xsl:apply-templates/>
+					    </xsl:otherwise>
+					</xsl:choose>
+				</xsl:for-each>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:apply-templates/>
+			</xsl:otherwise>
 			</xsl:choose>
 		<xsl:element name="div">
 			<xsl:attribute name="class" select="'teiLetter_body'"/>
