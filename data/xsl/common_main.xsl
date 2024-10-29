@@ -57,7 +57,9 @@
             <xsl:choose>
                 <xsl:when test="$marker castable as xs:int">arabic</xsl:when>
                 <xsl:when test="empty($marker)"/>
-                <xsl:otherwise><xsl:value-of select="$marker"/></xsl:otherwise>
+                <xsl:otherwise>
+                    <xsl:value-of select="$marker"/>
+                </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
 	<xsl:element name="a">
@@ -112,7 +114,7 @@
                                 <xsl:attribute name="class">fa-regular fa-flag</xsl:attribute>
                             </xsl:element>
                         </xsl:when>
-                        <xsl:when test="not($marker) and (self::tei:p|self::tei:fw|self::tei:opener|self::tei:closer)[@hendi:rotation]">
+                        <xsl:when test="not($marker) and (self::tei:div|self::tei:p|self::tei:fw|self::tei:opener|self::tei:closer)[@hendi:rotation]">
                             <xsl:element name="i">
                                 <xsl:attribute name="class">fa-solid fa-arrow-rotate-right</xsl:attribute>
                             </xsl:element>                    
@@ -139,7 +141,9 @@
     <xsl:template name="createEndnotes">
         <xsl:element name="div">
             <xsl:attribute name="id" select="'endNotes'"/>
-            <xsl:element name="h3"><xsl:value-of select="wega:getLanguageString('originalFootnotes', $lang)"/></xsl:element>
+            <xsl:element name="h3">
+                <xsl:value-of select="wega:getLanguageString('originalFootnotes', $lang)"/>
+            </xsl:element>
             <xsl:element name="ul">
                 <xsl:for-each select="//tei:note[@place='bottom']">
                     <xsl:element name="li">
@@ -766,7 +770,8 @@
                                         <xsl:sequence select="(1,7.5,1,.5)"/>
                                     </xsl:when>
                                     <xsl:otherwise>
-                                        <xsl:message>XSLT Warning: unsupported ammount of table cells <xsl:value-of select="$docID"/></xsl:message>
+                                        <xsl:message>XSLT Warning: unsupported ammount of table cells <xsl:value-of select="$docID"/>
+                                        </xsl:message>
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </xsl:when>
@@ -951,8 +956,12 @@
                         <xsl:attribute name="title" select="normalize-space($title)"/>
                         <xsl:attribute name="alt" select="normalize-space($title)"/>
                         <xsl:attribute name="src" select="concat($imageBaseURL, '/full/', $figureSize, '/0/native.jpg')"/>
-                    	<xsl:if test="./@height"><xsl:attribute name="height" select="./@height"/></xsl:if>
-                    	<xsl:if test="./@width"><xsl:attribute name="width" select="./@width"/></xsl:if>
+                    	<xsl:if test="./@height">
+                            <xsl:attribute name="height" select="./@height"/>
+                        </xsl:if>
+                    	<xsl:if test="./@width">
+                            <xsl:attribute name="width" select="./@width"/>
+                        </xsl:if>
                     </xsl:element>
                 </xsl:element>
             </xsl:otherwise>
@@ -1100,7 +1109,8 @@
                     <xsl:apply-templates/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:message>XSLT Warning: template for `tei:g` failed to recognize glyph in document <xsl:value-of select="$docID"/></xsl:message>
+                    <xsl:message>XSLT Warning: template for `tei:g` failed to recognize glyph in document <xsl:value-of select="$docID"/>
+                    </xsl:message>
                     <xsl:apply-templates/>
                 </xsl:otherwise>
             </xsl:choose>

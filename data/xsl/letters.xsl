@@ -46,16 +46,18 @@
 					</xsl:choose>
 				</xsl:for-each>
 			</xsl:when>
+			<xsl:when test="ancestor::tei:text[@type='letter']">
+			    <xsl:element name="div">
+			        <xsl:attribute name="class" select="'teiLetter_body'"/>
+    				<xsl:attribute name="style" select="'display: inline-grid; min-width: 80%;'"/>
+    				<xsl:apply-templates/>
+        		</xsl:element>
+			</xsl:when>
 			<xsl:otherwise>
 				<xsl:apply-templates/>
 			</xsl:otherwise>
-			</xsl:choose>
-		<xsl:element name="div">
-			<xsl:attribute name="class" select="'teiLetter_body'"/>
-			<xsl:if test="ancestor::tei:text/@type='letter'">
-				<xsl:attribute name="style" select="'display: inline-grid; min-width: 80%;'"/>
-			</xsl:if>
-		</xsl:element>
+		</xsl:choose>
+		
 		<xsl:if test="//tei:note[@place='bottom']">
 			<xsl:call-template name="createEndnotes"/>
 		</xsl:if>
@@ -95,13 +97,18 @@
 	<xsl:template match="tei:div[not(@type='row') and not(parent::tei:div[@type='row'])]">
 		<xsl:element name="div">
 			<xsl:apply-templates select="@xml:id"/>
-			<xsl:if test="@rend">
-    			<xsl:attribute name="class">
-    				<xsl:choose>
-    					<xsl:when test="@rend='box'">box_inner_solid</xsl:when>
-    					<xsl:when test="@rend='nobox'">box_none</xsl:when>
-    				</xsl:choose>
-				</xsl:attribute>
+			<xsl:variable name="boxing">
+			    <xsl:choose>
+					<xsl:when test="@rend='box'">box_inner_solid</xsl:when>
+					<xsl:when test="@rend='nobox'">box_none</xsl:when>
+					<xsl:otherwise/>
+				</xsl:choose>
+			</xsl:variable>
+			<xsl:attribute name="class">
+				<xsl:value-of select="string-join(('tei_hi_borderBloc', $boxing),' ')"/>
+			</xsl:attribute>
+			<xsl:if test="@hendi:rotation">
+    			<xsl:call-template name="popover"/>
 			</xsl:if>
 			<xsl:choose>
 				<xsl:when test="@type='writingSession'">
