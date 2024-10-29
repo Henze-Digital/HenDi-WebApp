@@ -360,7 +360,7 @@
     	</xsl:if>
     </xsl:template>
     
-    <xsl:template match="tei:layoutDesc">
+    <xsl:template match="tei:layoutDesc[tei:layout != '']">
         <xsl:element name="h4">
             <xsl:attribute name="class">media-heading</xsl:attribute>
 <xsl:value-of select="wega:getLanguageString('physDesc.layout', $lang)"/>
