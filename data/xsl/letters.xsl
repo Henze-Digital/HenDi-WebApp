@@ -21,12 +21,14 @@
 				<xsl:value-of select="wega:getLanguageString(concat('handNoteHead',  functx:capitalize-first($doc//tei:handNote[1]/@script)), $lang)"/>
 			</xsl:if>
 		</xsl:variable>
-		<xsl:element name="h4">
-			<xsl:attribute name="style" select="'padding-top: 2em; padding-bottom: 0.5em;'"/>
-		    <xsl:text>[</xsl:text>
-		    <xsl:value-of select="string-join(($hasEnvelope[normalize-space(.) != ''], $hasScript),', ')"/>
-		    <xsl:text>]</xsl:text>
-	    </xsl:element>
+		<xsl:if test="$hasScript != ''">
+			<xsl:element name="h4">
+				<xsl:attribute name="style" select="'padding-top: 2em; padding-bottom: 0.5em;'"/>
+			    <xsl:text>[</xsl:text>
+			    <xsl:value-of select="string-join(($hasEnvelope[normalize-space(.) != ''], $hasScript),', ')"/>
+			    <xsl:text>]</xsl:text>
+		    </xsl:element>
+		</xsl:if>
 		<xsl:choose>
 			<xsl:when test="parent::tei:text[@type='envelope' or @type='telegram' or starts-with(@type,'card')]">
 				<xsl:for-each select="element()">
@@ -104,8 +106,11 @@
 					<xsl:otherwise/>
 				</xsl:choose>
 			</xsl:variable>
+			<xsl:variable name="rotation">
+			    <xsl:if test="@hendi:rotation"><xsl:text>tei_hi_borderBloc</xsl:text></xsl:if>
+			</xsl:variable>
 			<xsl:attribute name="class">
-				<xsl:value-of select="string-join(('tei_hi_borderBloc', $boxing),' ')"/>
+				<xsl:value-of select="string-join(($rotation, $boxing),' ')"/>
 			</xsl:attribute>
 			<xsl:if test="@hendi:rotation">
     			<xsl:call-template name="popover"/>
