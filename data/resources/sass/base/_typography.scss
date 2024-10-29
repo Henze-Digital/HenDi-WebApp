@@ -17,13 +17,13 @@ h3,.heading3
  line-height: 1.5em;
 }
 
-h2,h3,h4,.heading3,.heading4
+h2,h3,h4,h5,.heading3,.heading4
 {
 /*    margin-top: 0px; */  
     font-family: $font-family-sans-serif-bold;
 }
 
-h4,.heading4
+h4,h5,.heading4
 {
     line-height: 20px;
     font-weight: 400px;
@@ -36,12 +36,6 @@ h4.quote
 	font-size: x-large;
 	line-height: 1.1;
 	margin-bottom: 1rem;
-}
-
-h5
-{
-    line-height: 20px;
-    font-weight: bold;
 }
 
 a:hover
