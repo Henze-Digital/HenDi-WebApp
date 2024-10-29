@@ -2002,6 +2002,10 @@ declare
                 case element(tei:msFrag) return wega-util:transform($model($key)/tei:*[not(self::tei:msIdentifier)], doc(concat($config:xsl-collection-path, '/editorial.xsl')), config:get-xsl-params(()))
                 case element(tei:msDesc) return wega-util:transform($model($key)/tei:*[not(self::tei:msIdentifier or self::tei:msFrag)], doc(concat($config:xsl-collection-path, '/editorial.xsl')), config:get-xsl-params(()))
                 default return ()
+        let $sourceData-addition :=
+            typeswitch($model($key))
+                case element (tei:bibl) return $model($key)/text()
+                default return ()
         let $source-id := concat("source_",util:hash(generate-id($model($key)),'md5'))
         let $collapse := exists($sourceData-content) or exists($model($key)/tei:additional) or exists($model($key)/tei:relatedItem)
         return
@@ -2012,6 +2016,7 @@ declare
                 'sourceId' : $source-id,
                 'sourceLink-content' : $sourceLink-content,
                 'sourceData-content' : $sourceData-content,
+                'sourceData-addition' : $sourceData-addition,
                 'sourceCategory' : $sourceCategory
             }
 };
