@@ -306,10 +306,15 @@
 				<xsl:value-of select="concat('textAlign-',@rend)"/>
 			</xsl:if>
 		</xsl:variable>
+		<xsl:variable name="inlineEnd" as="xs:string?">
+            <xsl:if test="following-sibling::node()[1][self::tei:closer[@rend='inline']]">
+                <xsl:text>inlineEnd</xsl:text>
+            </xsl:if>
+        </xsl:variable>
       <xsl:element name="p">
         <xsl:attribute name="class">
-				<xsl:value-of select="string-join(('tei_hi_borderBloc', $p-rend),' ')"/>
-			</xsl:attribute>
+			<xsl:value-of select="string-join(('tei_hi_borderBloc', $p-rend, $inlineEnd),' ')"/>
+		</xsl:attribute>
         <xsl:call-template name="popover"/>
         <xsl:apply-templates/>
       </xsl:element>
