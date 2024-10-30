@@ -4,6 +4,7 @@ module namespace hwh-util="http://henze-digital.zenmem.de/modules/hwh-util";
 
 import module namespace functx="http://www.functx.com";
 import module namespace crud="http://xquery.weber-gesamtausgabe.de/modules/crud" at "crud.xqm";
+import module namespace config="http://xquery.weber-gesamtausgabe.de/modules/config" at "config.xqm";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 declare namespace mei="http://www.music-encoding.org/ns/mei";
@@ -177,4 +178,43 @@ declare function hwh-util:ordering-relators($relatorGrps as node()*) as node()* 
 		order by $relatorOrder
 		return
 			$relatorGrp
+};
+
+(:~
+ : Construct one normalized xs:date from a tei:date element's date or duration attributes (@from, @to, @when, @notBefore, @notAfter)
+ : (Adaption to date:getOneNormalizedDate() from WeGA-WebApp-lib)
+ :
+ : @author Dennis Ried
+ : @param $date the tei:date
+ : @param $latest a boolean whether the constructed date shall be the latest or earliest possible
+ : @return the constructed date as xs:date or empty
+ :)
+declare function hwh-util:getOneNormalizedDateTime($date as element()?, $latest as xs:boolean) as item()? {
+    if($latest) then max($date/@* ! hwh-util:getCastableDateTime(., $latest))
+    else min($date/@* ! hwh-util:getCastableDateTime(., $latest))
+};
+
+(:~
+ : Checks, if given $date is castable as xs:date or xs:dateTime and returns this date or dateTime.
+ : If $date is castable as xs:gYear the first or the last day of the year (depending on $latest) will be returned 
+ : (Adaption of date:getCastableDate() from WeGA-WebApp-lib)
+ : 
+ : @author Dennis Ried
+ : @param $date the date to test as xs:string
+ : @param $latest if $latest is set to true() the last day of the year will be returned
+ : @return the date/dateTime as xs:date/xs:dateTime or (constructed) date as xs:date, empty-sequence() if no conversion is possible
+ :)
+declare %private function hwh-util:getCastableDateTime($date as xs:string, $latest as xs:boolean) as item()? {
+    if($date castable as xs:date) then xs:date($date)
+    else if($date castable as xs:dateTime) then
+        xs:date(xs:dateTime($date))
+    else if($date castable as xs:gYear) then 
+        if($latest) then xs:date(concat($date,'-12-31'))
+        else xs:date(concat($date,'-01-01'))
+    else if($date castable as xs:gYearMonth) then
+        if($latest) then xs:date(concat($date, '-', functx:days-in-month(xs:date(concat($date,'-01')))))
+        else xs:date(concat($date,'-01'))
+    else if($date castable as xs:gMonthDay) then xs:date(concat('9999-', substring-after($date, '--')))
+    else if($date castable as xs:gDay) then xs:date(concat('9999-12-', substring-after($date, '---')))
+    else()
 };

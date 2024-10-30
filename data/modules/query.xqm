@@ -18,6 +18,7 @@ import module namespace crud="http://xquery.weber-gesamtausgabe.de/modules/crud"
 import module namespace core="http://xquery.weber-gesamtausgabe.de/modules/core" at "core.xqm";
 import module namespace wdt="http://xquery.weber-gesamtausgabe.de/modules/wdt" at "wdt.xqm";
 import module namespace wega-util="http://xquery.weber-gesamtausgabe.de/modules/wega-util" at "wega-util.xqm";
+import module namespace hwh-util="http://henze-digital.zenmem.de/modules/hwh-util" at "hwh-util.xqm";
 import module namespace er="http://xquery.weber-gesamtausgabe.de/modules/external-requests" at "external-requests.xqm";
 import module namespace functx="http://www.functx.com";
 import module namespace str="http://xquery.weber-gesamtausgabe.de/modules/str" at "xmldb:exist:///db/apps/WeGA-WebApp-lib/xquery/str.xqm";
@@ -311,7 +312,6 @@ declare function query:text-sources($doc as document-node()) as element()* {
 
 (:~
  : Get the normalized date for a document
- : NB: This should be aligned with the function `facets:normalize-date()` from the WeGA-data facets module! 
  :
  : @author Peter Stadler
  : @param $doc the TEI document
@@ -331,6 +331,26 @@ declare function query:get-normalized-date($doc as document-node()) as xs:date? 
         default return () 
     return 
         if($date castable as xs:date) then $date cast as xs:date
+        else ()
+};
+
+(:~
+ : Get the normalized date or dateTime for a document
+ : Extention of query:get-normalized-date) for indexing letters that may include time stamps
+ :
+ : @author Dennis Ried
+ : @param $doc the TEI document
+ : @return xs:date
+ :)
+declare function query:get-normalized-dateTime($doc as document-node()) as item()? {
+    let $docID := $doc/*/data(@xml:id)
+    let $date := 
+        switch(config:get-doctype-by-id($docID))
+        case 'letters' return hwh-util:getOneNormalizedDateTime(($doc//tei:correspAction[@type='sent']/tei:date, $doc//tei:correspAction[@type='received']/tei:date)[1], false())
+        default return () 
+    return 
+        if($date castable as xs:date) then $date cast as xs:date
+        else if($date castable as xs:dateTime) then $date cast as xs:dateTime
         else ()
 };
 
