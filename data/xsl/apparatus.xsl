@@ -1161,7 +1161,7 @@
 		</xsl:call-template>
 	</xsl:template>
 	
-	<xsl:template match="(tei:p|tei:seg|tei:div)[starts-with(@xml:id,'rest.')]" mode="apparatus">
+	<xsl:template match="(tei:p|tei:seg|tei:div)[starts-with(@xml:id,'rest.')]" mode="apparatus" priority="1">
 		<xsl:call-template name="apparatusEntry">
 			<xsl:with-param name="counter-param">
 				<xsl:value-of select="'note'"/>
