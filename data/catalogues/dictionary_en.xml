@@ -914,4 +914,6 @@
 	<entry xml:id="stampType-rectangular">Stamp (rectangular)</entry>
 	<entry xml:id="notClassified">Not classified</entry>
 	<entry xml:id="moreInfoInApparatus">For more information see apparatus</entry>
+	
+	<entry xml:id="restriction">Restricted content</entry>
 </dictionary>

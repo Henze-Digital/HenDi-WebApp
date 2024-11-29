@@ -928,4 +928,6 @@
     <entry xml:id="stampType-rectangular">Stempel (rechteckig)</entry>
     <entry xml:id="notClassified">Nicht klassifiziert</entry>
     <entry xml:id="moreInfoInApparatus">Für weitere Informationen siehe den Apparat</entry>
+	
+	<entry xml:id="restriction">Gesperrter Inhalt</entry>
 </dictionary>
