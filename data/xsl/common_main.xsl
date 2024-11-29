@@ -115,9 +115,11 @@
                             </xsl:element>
                         </xsl:when>
                     	<xsl:when test="not($marker) and (self::tei:div|self::tei:p|self::tei:seg)[starts-with(@xml:id,'rest.')]">
+                            <xsl:text>[</xsl:text>
                             <xsl:element name="i">
                             	<xsl:attribute name="class">fa-solid fa-text-slash</xsl:attribute>
                             </xsl:element>
+                            <xsl:text>]</xsl:text>
                         </xsl:when>
                         <xsl:when test="not($marker) and (self::tei:div|self::tei:p|self::tei:fw|self::tei:opener|self::tei:closer)[@hendi:rotation]">
                             <xsl:element name="i">

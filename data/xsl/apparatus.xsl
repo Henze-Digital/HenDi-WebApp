@@ -1126,9 +1126,7 @@
 		<xsl:variable name="elemId" select="@xml:id"/>
 		<xsl:variable name="elemNotes" select="$doc//tei:note[substring-after(@corresp,'#') = $elemId]"/>
 		<xsl:element name="span">
-		    <xsl:text> </xsl:text>
 			<xsl:call-template name="popover"/>
-			<xsl:text> </xsl:text>
 		</xsl:element>
 	</xsl:template>
 	
