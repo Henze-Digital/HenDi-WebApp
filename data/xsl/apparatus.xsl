@@ -1122,7 +1122,7 @@
 		</xsl:element>
 	</xsl:template>
 	
-	<xsl:template match="(tei:p|tei:seg|tei:div)[starts-with(@xml:id,'rest.')]">
+	<xsl:template match="(tei:p|tei:seg|tei:div)[starts-with(@xml:id,'rest.')]" priority="1">
 		<xsl:variable name="elemId" select="@xml:id"/>
 		<xsl:variable name="elemNotes" select="$doc//tei:note[substring-after(@corresp,'#') = $elemId]"/>
 		<xsl:element name="span">
@@ -1161,7 +1161,7 @@
 		</xsl:call-template>
 	</xsl:template>
 	
-	<xsl:template match="(tei:p|tei:seg|tei:div)[starts-with(@xml:id,'rest.')]" mode="apparatus" priority="1">
+	<xsl:template match="(tei:p|tei:seg|tei:div)[starts-with(@xml:id,'rest.')]" mode="apparatus">
 		<xsl:call-template name="apparatusEntry">
 			<xsl:with-param name="counter-param">
 				<xsl:value-of select="'note'"/>
